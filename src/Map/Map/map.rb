@@ -11,7 +11,7 @@ class Map
 	end
 
   # Prints the entire map.
-	def print_map
+	def display
     #greeting
     puts "\nYou're in " + @name + "!\n\n";
     @tiles.each do |sub|

@@ -84,7 +84,7 @@ class Player < Entity
   end
 
   # Prints the map in regards to what the player has seen.
-  def print_player_map
+  def print_map
 
     puts "\nYou're in " + @map.name + "!\n\n"
     row_count = 0

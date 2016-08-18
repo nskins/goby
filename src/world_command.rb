@@ -111,7 +111,7 @@ def interpret_command(command, player)
   when "help"
     help(player); return
   when "map"
-    player.print_player_map; return
+    player.print_map; return
   when "inv"
     print "Current gold in pouch: #{player.gold}.\n\n"
     puts "Your inventory:"
