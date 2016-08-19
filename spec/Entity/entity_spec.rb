@@ -231,4 +231,40 @@ RSpec.describe Entity do
     end
   end
 
+  context "use item by string" do
+    it "correctly uses a present item" do
+      entity = Entity.new(max_hp: 20, hp: 10,
+                          inventory: [Couple.new(Food.new(recovers: 5), 3)])
+      entity.use_item_by_string("Food", entity)
+      expect(entity.hp).to eq 15
+      expect(entity.inventory[0].first).to eq Food.new
+      expect(entity.inventory[0].second).to eq 2
+    end
+
+    it "correctly equips an equippable (such as a weapon)" do
+      entity = Entity.new(inventory: [Couple.new(Weapon.new, 3)])
+      entity.use_item_by_string("Weapon", entity)
+      expect(entity.weapon).to eq Weapon.new
+      expect(entity.inventory[0].second).to eq 2
+    end
+  end
+
+  context "use item by object" do
+    it "correctly uses a present item" do
+      entity = Entity.new(max_hp: 20, hp: 10,
+                          inventory: [Couple.new(Food.new(recovers: 5), 3)])
+      entity.use_item_by_object(Food.new, entity)
+      expect(entity.hp).to eq 15
+      expect(entity.inventory[0].first).to eq Food.new
+      expect(entity.inventory[0].second).to eq 2
+    end
+
+    it "correctly equips an equippable (such as a weapon)" do
+      entity = Entity.new(inventory: [Couple.new(Weapon.new, 1)])
+      entity.use_item_by_object(Weapon.new, entity)
+      expect(entity.weapon).to eq Weapon.new
+      expect(entity.inventory.length).to eq 0
+    end
+  end
+
 end

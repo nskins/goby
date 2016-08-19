@@ -38,19 +38,6 @@ RSpec.describe Equippable do
       expect(entity.attack).to eq 0
       expect(entity.defense).to eq 0
     end
-
-    it "does not lower the entity's attributes below zero" do
-      entity = Entity.new(attack: 2, defense: 2)
-      equ = Equippable.new(stat_change: StatChange.new(attack: -5,
-                                                       defense: -5))
-      alter_stats(equ, entity, true)
-      expect(entity.attack).to eq 0
-      expect(entity.defense).to eq 0
-
-      alter_stats(equ, entity, false)
-      expect(entity.attack).to eq 2
-      expect(entity.defense).to eq 2
-    end
   end
 
   context "restore status" do
