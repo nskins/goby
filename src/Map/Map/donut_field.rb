@@ -10,24 +10,20 @@ class DonutField < Map
   def initialize(params = {})
     @name = "Donut Field"
     @tiles = [
-              [ Wall.new, Wall.new, Wall.new, Wall.new, Wall.new ],
 
-              [ Wall.new, Dirt.new, Dirt.new,
+              [ Dirt.new, Dirt.new,
                   Dirt.new(description: "Dirt surrounds you.\nYou sense a strange presence.",
-                           monsters: [Alien.new]),
-                  Wall.new ],
+                           monsters: [Alien.new]) ],
 
-              [ Wall.new, Dirt.new, Wall.new, Dirt.new, Wall.new ],
+              [ Dirt.new, Wall.new, Dirt.new ],
 
-              [ Wall.new, Dirt.new(description: "The world-famous \"Bob's Bakery\" stands here.",
+              [ Dirt.new(description: "The world-famous \"Bob's Bakery\" stands here.",
                                    events: [Bakery.new]),
                   Dirt.new(description: "A small box is submerged in the mud.",
                            events: [ Box.new(gold: 60) ] ),
-                  Dirt.new, Wall.new ],
-
-              [ Wall.new, Wall.new, Wall.new, Wall.new, Wall.new ]
+                  Dirt.new ]
              ]
-    @regen_location = Couple.new(1,1)
+    @regen_location = Couple.new(0,0)
   end
 
 end

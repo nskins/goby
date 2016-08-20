@@ -25,31 +25,39 @@ class Player < Entity
   end
 
   def move_to(coordinates, map = @map)
+    # Prevents operations on nil.
     if @map.nil? || map.nil? then return end
 
-    tile = @map.tiles[coordinates.first][coordinates.second]
-    if tile.passable
-      @map = map
-      @location = coordinates
-      update_map
+    y = coordinates.first; x = coordinates.second
 
-      if !(tile.monsters.empty?)
-        # 50% chance of monster appearing
-        monster_outcome = Random.rand(0..99)
+    # Prevents moving onto nonexistent and impassable tiles.
+    if (y < 0 || y >= @map.tiles.length ||
+        x < 0 || x >= @map.tiles[y].length ||
+        (!@map.tiles[y][x].passable))
+          print "You cannot move there!\n\n"
+          print_possible_moves(self)
+          return
+    end
 
-        if (monster_outcome < 50)
-          system("clear")
-          clone = DeepClone.clone(tile.monsters[Random.rand(0..(tile.monsters.size-1))])
-          battle(clone)
-        end
+    @map = map
+    @location = coordinates
+    tile = @map.tiles[y][x]
+
+    update_map
+
+    if !(tile.monsters.empty?)
+      # 50% chance of monster appearing
+      monster_outcome = Random.rand(0..99)
+
+      if (monster_outcome < 50)
+        system("clear")
+        clone = DeepClone.clone(tile.monsters[Random.rand(0..(tile.monsters.size-1))])
+        battle(clone)
       end
 
-      describe_tile(self)
-
-    else
-      print "You can't go that way!\n\n"
-      print_possible_moves(self)
     end
+
+    describe_tile(self)
   end
 
   def move_north
@@ -73,10 +81,12 @@ class Player < Entity
   end
 
   def update_map
+    # Prevents operations on nil.
     if (@map.nil?) then return end
 
     for y in (@location.first-1)..(@location.first+1)
       for x in (@location.second-1)..(@location.second+1)
+        # Prevents operations on nonexistent tiles.
         if (y >= 0 && y < @map.tiles.length && x >= 0 && x < @map.tiles[y].length)
           @map.tiles[y][x].seen = true
         end
@@ -102,10 +112,10 @@ class Player < Entity
             if row_count == @location.first && col_count == @location.second
               print "¶"
             else
-              print "•"
+              print "·"
             end
           else
-            print "#"
+            print "■"
           end
         else
           print " "
@@ -115,8 +125,8 @@ class Player < Entity
       row_count += 1
       puts ""
     end
-    puts "\n• - passable space" +
-         "\n# - impassable space" +
+    puts "\n· - passable space" +
+         "\n■ - impassable space" +
          "\n¶ - your location\n\n"
   end
 

@@ -21,15 +21,15 @@ class Map
       end
       sub.each do |tile|
         if tile.passable
-          print "•"
+          print "·"
         else
-          print "#"
+          print "■"
         end
       end
     puts ""
     end
-    puts "\n• - passable space" +
-         "\n# - impassable space"
+		puts "\n· - passable space" +
+         "\n■ - impassable space"
   end
 
 	attr_accessor :name, :tiles, :regen_location
