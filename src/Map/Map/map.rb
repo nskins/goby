@@ -2,7 +2,7 @@ class Map
 
 	def initialize(params = {})
 		@name = params[:name] || "Map"
-		@tiles = params[:tiles] || [ [Tile.new({})] ]
+		@tiles = params[:tiles] || [ [Tile.new ] ]
 		@regen_location = params[:regen_location] || Couple.new(0,0)
 	end
 
