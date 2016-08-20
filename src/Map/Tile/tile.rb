@@ -17,6 +17,12 @@ class Tile
 		@monsters = params[:monsters] || []
 	end
 
+	def ==(rhs)
+		return (@passable == rhs.passable &&
+						@seen == rhs.seen &&
+						@description == rhs.description)
+	end
+
 	attr_accessor :passable, :seen, :description, :events, :monsters
 
 end
