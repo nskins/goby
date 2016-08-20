@@ -15,7 +15,8 @@ RSpec.describe Player do
       expect(player.gold).to eq 0
       expect(player.weapon).to eq nil
       expect(player.helmet).to eq nil
-      expect(player.battle_commands).to eq [Escape.new, Kick.new]
+      expect(player.battle_commands).to eq [BattleCommand.new(name: "Escape"),
+                                            BattleCommand.new(name: "Kick")]
       expect(player.escaped).to eq false
       expect(player.map).to eq nil
       expect(player.location).to eq nil
@@ -33,7 +34,7 @@ RSpec.describe Player do
                         helmet: Helmet.new,
                         battle_commands: [BattleCommand.new(name: "Yell")],
                         escaped: true,
-                        map: DonutField.new,
+                        map: Map.new,
                         location: Couple.new(1,1))
       expect(hero.name).to eq "Hero"
       expect(hero.max_hp).to eq 50
@@ -47,7 +48,7 @@ RSpec.describe Player do
       expect(hero.battle_commands).to eq [BattleCommand.new(name: "Yell")]
       # cannot be overwritten.
       expect(hero.escaped).to eq false
-      expect(hero.map).to eq DonutField.new
+      expect(hero.map).to eq Map.new
       expect(hero.location).to eq Couple.new(1,1)
     end
   end

@@ -30,7 +30,7 @@ RSpec.describe Monster do
                         gold: 10,
                         weapon: Weapon.new,
                         helmet: Helmet.new,
-                        battle_commands: [Kick.new],
+                        battle_commands: [Attack.new(name: "Kick")],
                         escaped: true,
                         visible: false,
                         regen: false,
@@ -44,7 +44,7 @@ RSpec.describe Monster do
       expect(clown.gold).to eq 10
       expect(clown.weapon).to eq Weapon.new
       expect(clown.helmet).to eq Helmet.new
-      expect(clown.battle_commands).to eq [Kick.new]
+      expect(clown.battle_commands).to eq [Attack.new(name: "Kick")]
       # cannot be overwritten.
       expect(clown.escaped).to eq false
       expect(clown.visible).to eq false

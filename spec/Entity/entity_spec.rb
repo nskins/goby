@@ -30,7 +30,7 @@ RSpec.describe Entity do
                         gold: 10,
                         weapon: Weapon.new,
                         helmet: Helmet.new,
-                        battle_commands: [Kick.new],
+                        battle_commands: [Attack.new(name: "Kick")],
                         escaped: true)
       expect(hero.name).to eq "Hero"
       expect(hero.max_hp).to eq 50
@@ -41,7 +41,7 @@ RSpec.describe Entity do
       expect(hero.gold).to eq 10
       expect(hero.weapon).to eq Weapon.new
       expect(hero.helmet).to eq Helmet.new
-      expect(hero.battle_commands).to eq [Kick.new]
+      expect(hero.battle_commands).to eq [Attack.new(name: "Kick")]
       # cannot be overwritten.
       expect(hero.escaped).to eq false
     end
@@ -50,9 +50,9 @@ RSpec.describe Entity do
   context "add battle command" do
     it "properly adds the command in a trivial case" do
       entity = Entity.new
-      entity.add_battle_command(Kick.new)
+      entity.add_battle_command(BattleCommand.new)
       expect(entity.battle_commands.length).to eq 1
-      expect(entity.battle_commands).to eq [Kick.new]
+      expect(entity.battle_commands).to eq [BattleCommand.new]
     end
 
     it "maintains the sorted invariant for a more complex case" do
@@ -182,15 +182,15 @@ RSpec.describe Entity do
   context "remove battle command" do
     it "has no effect when no such command is present" do
       entity = Entity.new
-      entity.add_battle_command(Kick.new)
+      entity.add_battle_command(Attack.new(name: "Kick"))
       entity.remove_battle_command(BattleCommand.new(name: "Poke"))
       expect(entity.battle_commands.length).to eq 1
     end
 
     it "correctly removes the command in the trivial case" do
       entity = Entity.new
-      entity.add_battle_command(Kick.new)
-      entity.remove_battle_command(Kick.new)
+      entity.add_battle_command(Attack.new(name: "Kick"))
+      entity.remove_battle_command(Attack.new(name: "Kick"))
       expect(entity.battle_commands.length).to eq 0
     end
   end
