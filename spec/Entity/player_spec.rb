@@ -3,6 +3,19 @@ require_relative '../../src/Map/Map/donut_field.rb'
 
 RSpec.describe Player do
 
+  before(:all) do
+    # Constructs a map in the shape of a plus sign.
+    @map = Map.new(tiles: [ [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ],
+                            [ Tile.new, Tile.new, Tile.new ],
+                            [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ] ],
+                   regen_location: Couple.new(1,1))
+    @center = @map.regen_location
+  end
+
+  before(:each) do
+    @dude = Player.new(map: @map, location: @center)
+  end
+
   context "constructor" do
     it "has the correct default parameters" do
       player = Player.new
@@ -50,6 +63,82 @@ RSpec.describe Player do
       expect(hero.escaped).to eq false
       expect(hero.map).to eq Map.new
       expect(hero.location).to eq Couple.new(1,1)
+    end
+  end
+
+  context "move to" do
+    it "correctly moves the player to a passable tile" do
+      @dude.move_to(Couple.new(2,1))
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(2,1)
+    end
+
+    it "prevents the player from moving on an impassable tile" do
+      @dude.move_to(Couple.new(2,2))
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq @center
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @dude.move_to(Couple.new(3,3))
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq @center
+    end
+  end
+
+  context "move north" do
+    it "correctly moves the player to a passable tile" do
+      @dude.move_north
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(0,1)
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @dude.move_north; @dude.move_north
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(0,1)
+    end
+  end
+
+  context "move east" do
+    it "correctly moves the player to a passable tile" do
+      @dude.move_east
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(1,2)
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @dude.move_east; @dude.move_east
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(1,2)
+    end
+  end
+
+  context "move south" do
+    it "correctly moves the player to a passable tile" do
+      @dude.move_south
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(2,1)
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @dude.move_south; @dude.move_south
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(2,1)
+    end
+  end
+
+  context "move west" do
+    it "correctly moves the player to a passable tile" do
+      @dude.move_west
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(1,0)
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @dude.move_west; @dude.move_west
+      expect(@dude.map).to eq @map
+      expect(@dude.location).to eq Couple.new(1,0)
     end
   end
 
