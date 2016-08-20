@@ -17,9 +17,8 @@ class Entity
     # Maintain sorted battle commands.
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
 
-    # These statements are overcomplicated for sake of reading.
-    @weapon = params[:weapon] || nil
-    @helmet = params[:helmet] || nil
+    unless params[:weapon].nil? then params[:weapon].use(self) end
+    unless params[:helmet].nil? then params[:helmet].use(self) end
 
     # This should only be switched to true during battle.
     @escaped = false

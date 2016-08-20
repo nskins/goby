@@ -6,7 +6,7 @@ class Weapon < Equippable
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Weapon"
-    @attack = params[:attack] || Attack.new({})
+    @attack = params[:attack] || nil
   end
 
   def unequip(entity)

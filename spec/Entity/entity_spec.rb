@@ -28,20 +28,27 @@ RSpec.describe Entity do
                         defense: 4,
                         inventory: [Item.new],
                         gold: 10,
-                        weapon: Weapon.new,
-                        helmet: Helmet.new,
+                        weapon: Weapon.new(
+                            attack: Attack.new,
+                            stat_change: StatChange.new(
+                                    attack: 3, defense: 1)),
+                        helmet: Helmet.new(
+                            stat_change: StatChange.new(
+                                    attack: 1, defense: 5)),
                         battle_commands: [Attack.new(name: "Kick")],
                         escaped: true)
       expect(hero.name).to eq "Hero"
       expect(hero.max_hp).to eq 50
       expect(hero.hp).to eq 35
-      expect(hero.attack).to eq 12
-      expect(hero.defense).to eq 4
+      # Attack & defense increase due to the equipped items.
+      expect(hero.attack).to eq 16
+      expect(hero.defense).to eq 10
       expect(hero.inventory).to eq [Item.new]
       expect(hero.gold).to eq 10
       expect(hero.weapon).to eq Weapon.new
       expect(hero.helmet).to eq Helmet.new
-      expect(hero.battle_commands).to eq [Attack.new(name: "Kick")]
+      # Attack.new is present due to the equipped weapon.
+      expect(hero.battle_commands).to eq [Attack.new, Attack.new(name: "Kick")]
       # cannot be overwritten.
       expect(hero.escaped).to eq false
     end
