@@ -38,7 +38,7 @@ def display_special_commands(player)
     if (counter != 0)
       print "\n"
     end
-    
+
   end
 end
 
@@ -119,7 +119,10 @@ def interpret_command(command, player)
   when "status"
     player.print_status; return
   when "attacks"
-    player.print_attacks_with_stats; return
+    # TODO: fix the function.
+    # player.print_attacks_with_stats
+    print "TODO: fix print_attacks_with_stats\n\n"
+    return
   end
 
   # Other commands.

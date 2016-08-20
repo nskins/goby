@@ -97,6 +97,7 @@ class Entity
   end
 
   # TODO: somehow combine the following two functions using boolean switch?
+  # TODO: fix this function.
   def print_attacks_with_stats
     @battle_commands.each do |command|
 
