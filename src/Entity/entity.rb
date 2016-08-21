@@ -47,6 +47,11 @@ class Entity
     @inventory.push(Couple.new(item, amount))
   end
 
+  # Override this method for control over the entity's battle commands.
+	def choose_attack
+	  return @battle_commands[Random.rand(@battle_commands.length)]
+	end
+
   # Requires a BattleCommand as the argument.
   # Returns the index of that command, if it exists.
   # Otherwise, returns -1.

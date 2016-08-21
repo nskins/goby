@@ -9,7 +9,7 @@ class Escape < BattleCommand
     #the less HP the enemy has, the higher prob. of run succeeding.
     #variables for readability
     weakness = enemy.hp/enemy.max_hp
-    chance = (weakness * 5).to_i
+    chance = ((weakness * 5) + 1).to_i
 
     # Chance might be too low?
     if (Random.rand(chance) == 0)

@@ -24,6 +24,35 @@ class Player < Entity
     update_map
   end
 
+  def choose_attack
+    puts "Choose an action:"
+    print_battle_commands
+
+    input = player_input
+    index = has_battle_command_by_string(input)
+
+    #input error loop
+    while (index == -1)
+      puts "You don't have '#{input}'"
+      puts "Try one of these:"
+      print_battle_commands
+
+      input = player_input
+      index = has_battle_command_by_string(input)
+    end
+
+    return @battle_commands[index]
+	end
+
+  def die
+    @location = @map.regen_location
+    type("After being knocked out in battle, you wake up in #{@map.name}\n")
+    type("Looks like you lost some gold...\n\n")
+    sleep(2)
+    @gold /= 2
+    @hp = @max_hp
+  end
+
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
     if @map.nil? || map.nil? then return end
@@ -130,40 +159,15 @@ class Player < Entity
          "\n¶ - your location\n\n"
   end
 
-  def die
-    @location = @map.regen_location
-    type("After being knocked out in battle, you wake up in #{@map.name}\n")
-    type("Looks like you lost some gold...\n\n")
-    sleep(2)
-    @gold /= 2
-    @hp = @max_hp
-  end
-
   def battle(monster)
-    # Default battle introduction text.
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 
     # Main battle loop.
     while hp > 0
-      puts "Choose an action:"
-      print_battle_commands
-
-      input = player_input
-      index = has_battle_command_by_string(input)
-
-      #input error loop
-      while (index == -1)
-        puts "You don't have '#{input}'"
-        puts "Try one of these:"
-        print_battle_commands
-
-        input = player_input
-        index = has_battle_command_by_string(input)
-      end
 
       # Execute the player's command.
-      @battle_commands[index].run(self, monster)
+      choose_attack.run(self, monster)
 
       # Case: The player has successfully escaped.
       if (@escaped)
