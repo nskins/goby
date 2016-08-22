@@ -8,6 +8,7 @@ class Helmet < Equippable
   end
 
   def unequip(entity)
+    super(entity)
     entity.helmet = nil
     restore_status(self, entity)
   end

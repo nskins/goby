@@ -10,6 +10,7 @@ def display_default_commands
   puts "n (north); s (south);"
   puts "e (east); w (west);"
   puts "help; map; inv; use [item]"
+  puts "unequip [item]; drop [item]"
   print "status; attacks\n\n" # TODO: merge attacks into status.
 end
 
@@ -114,8 +115,6 @@ def interpret_command(command, player)
   when "map"
     player.print_map; return
   when "inv"
-    print "Current gold in pouch: #{player.gold}.\n\n"
-    puts "Your inventory:"
     player.print_inventory; return
   when "status"
     player.print_status; return

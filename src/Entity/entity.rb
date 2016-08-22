@@ -130,9 +130,18 @@ class Entity
 
   # Prints the inventory in a nice format.
   def print_inventory
-    @inventory.each do |couple|
-      puts couple.first.name + " (#{couple.second})"
+    print "Current gold in pouch: #{@gold}.\n\n"
+
+    if (@inventory.empty?)
+      puts "#{@name}'s inventory is empty!"
+    else
+      puts "#{@name}'s inventory:"
+
+      @inventory.each do |couple|
+        puts couple.first.name + " (#{couple.second})"
+      end
     end
+
     print "\n"
   end
 

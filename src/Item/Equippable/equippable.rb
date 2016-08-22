@@ -11,7 +11,7 @@ class Equippable < Item
   # Override this method to remove the appropriate equippable.
   # See weapon.rb and helmet.rb for example overrides.
   def unequip(entity)
-    # ERROR
+    print "#{entity.name} puts #{self.name} back into the inventory.\n\n"
   end
 
   attr_accessor :stat_change
@@ -27,7 +27,7 @@ class Equippable < Item
         restore_status(prev_item, entity)
       end
 
-      print "#{self.name} is now equipped!\n\n"
+      print "#{entity.name} equips #{self.name}!\n\n"
     end
 
 end

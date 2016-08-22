@@ -10,6 +10,7 @@ class Weapon < Equippable
   end
 
   def unequip(entity)
+    super(entity)
     entity.weapon = nil
     restore_status(self, entity)
 
