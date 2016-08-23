@@ -101,7 +101,7 @@ class Shop < Event
           # Case: The player has a positive number of the specified item.
           elsif ((index > -1) && (item_count = player.inventory[index].second) > 0)
             item = player.inventory[index].first
-            puts "I'll buy that for #{item.price / 2} gold."
+            puts "\nI'll buy that for #{item.price / 2} gold."
             print "How many do you want to sell?: "
             amount_to_sell = gets.chomp
 
@@ -132,7 +132,7 @@ class Shop < Event
 
         # Case: The player does not have anything to sell.
         else
-          print "\nYou have nothing to sell!!\n\n"
+          print "You have nothing to sell!!\n\n"
         end
       end
 
