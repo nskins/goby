@@ -254,6 +254,22 @@ RSpec.describe Entity do
       expect(entity.weapon).to eq Weapon.new
       expect(entity.inventory[0].second).to eq 2
     end
+
+    it "can display a message when food is eaten" do
+      entity = Entity.new(
+        max_hp: 20,
+        hp: 10,
+        inventory: [Couple.new(Food.new(name: 'Donut', recovers: 5), 3)]
+      )
+      food_item = entity.inventory.first.first
+
+      expect(food_item).to be_an_instance_of(Food)
+
+      expected = "#{entity.name} uses #{food_item.name} and recovers "\
+        "#{food_item.recovers} HP!\n\nHP: #{entity.hp}/#{entity.max_hp}"
+
+      expect(entity.food_effects(food_item)).to eq(expected)
+    end
   end
 
   context "use item by object" do

@@ -226,10 +226,16 @@ class Entity
     if (index != -1)
       actual_item = inventory[index].first
       actual_item.use(e)
-      if actual_item.consumable then remove_item(actual_item) end
+      remove_item(actual_item) if actual_item.consumable
+      type(food_effects(actual_item)) if actual_item.is_a?(Food)
     else
       print "What?! You don't have THAT!\n\n"
     end
+  end
+
+  def food_effects(food_item)
+    "#{name} uses #{food_item.name} and recovers #{food_item.recovers}"\
+    " HP!\n\nHP: #{hp}/#{max_hp}"
   end
 
   def ==(rhs)
