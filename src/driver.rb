@@ -1,7 +1,10 @@
 require_relative "world_command.rb"
+require_relative "Story/introduction.rb"
 
 def run_driver(player)
   system("clear")
+
+  print_introduction
 
   unless player.map.nil?
     describe_tile(player)

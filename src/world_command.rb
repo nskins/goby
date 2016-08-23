@@ -11,7 +11,7 @@ def display_default_commands
   puts "e (east); w (west);"
   puts "help; map; inv; use [item]"
   puts "unequip [item]; drop [item]"
-  print "status; attacks\n\n" # TODO: merge attacks into status.
+  print "status; attacks; quit\n\n" # TODO: merge attacks into status.
 end
 
 def display_special_commands(player)
