@@ -5,6 +5,7 @@ class Equippable < Item
     super(params)
     @name = params[:name] || "Equippable"
     @stat_change = params[:stat_change] || StatChange.new({})
+    @type = :equippable
   end
 
   # REQUIRES: The entity is actually unequipping such an item.
@@ -14,7 +15,7 @@ class Equippable < Item
     print "#{entity.name} puts #{self.name} back into the inventory.\n\n"
   end
 
-  attr_accessor :stat_change
+  attr_accessor :stat_change, :type
 
   protected
 

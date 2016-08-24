@@ -5,6 +5,7 @@ class Helmet < Equippable
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Helmet"
+    @type = :helmet
   end
 
   def unequip(entity)

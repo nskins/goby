@@ -7,6 +7,7 @@ class Weapon < Equippable
     super(params)
     @name = params[:name] || "Weapon"
     @attack = params[:attack] || nil
+    @type = :weapon
   end
 
   def unequip(entity)

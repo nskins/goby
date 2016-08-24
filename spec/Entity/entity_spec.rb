@@ -12,11 +12,10 @@ RSpec.describe Entity do
       expect(entity.hp).to eq 0
       expect(entity.attack). to eq 0
       expect(entity.defense).to eq 0
-      expect(entity.inventory).to eq []
+      expect(entity.inventory).to eq Array.new
       expect(entity.gold).to eq 0
-      expect(entity.weapon).to eq nil
-      expect(entity.helmet).to eq nil
-      expect(entity.battle_commands).to eq []
+      expect(entity.battle_commands).to eq Array.new
+      expect(entity.outfit).to eq Hash.new
       expect(entity.escaped).to eq false
     end
 
@@ -28,13 +27,13 @@ RSpec.describe Entity do
                         defense: 4,
                         inventory: [Item.new],
                         gold: 10,
-                        weapon: Weapon.new(
-                            attack: Attack.new,
-                            stat_change: StatChange.new(
-                                    attack: 3, defense: 1)),
-                        helmet: Helmet.new(
-                            stat_change: StatChange.new(
-                                    attack: 1, defense: 5)),
+                        outfit: { weapon: Weapon.new(
+                                    attack: Attack.new,
+                                    stat_change: StatChange.new(
+                                        attack: 3, defense: 1)),
+                                  helmet: Helmet.new(
+                                      stat_change: StatChange.new(
+                                              attack: 1, defense: 5)) },
                         battle_commands: [Attack.new(name: "Kick")],
                         escaped: true)
       expect(hero.name).to eq "Hero"
@@ -45,8 +44,8 @@ RSpec.describe Entity do
       expect(hero.defense).to eq 10
       expect(hero.inventory).to eq [Item.new]
       expect(hero.gold).to eq 10
-      expect(hero.weapon).to eq Weapon.new
-      expect(hero.helmet).to eq Helmet.new
+      expect(hero.outfit[:weapon]).to eq Weapon.new
+      expect(hero.outfit[:helmet]).to eq Helmet.new
       # Attack.new is present due to the equipped weapon.
       expect(hero.battle_commands).to eq [Attack.new, Attack.new(name: "Kick")]
       # cannot be overwritten.

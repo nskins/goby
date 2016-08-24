@@ -9,11 +9,10 @@ RSpec.describe Monster do
       expect(monster.hp).to eq 0
       expect(monster.attack). to eq 0
       expect(monster.defense).to eq 0
-      expect(monster.inventory).to eq []
+      expect(monster.inventory).to eq Array.new
       expect(monster.gold).to eq 0
-      expect(monster.weapon).to eq nil
-      expect(monster.helmet).to eq nil
-      expect(monster.battle_commands).to eq []
+      expect(monster.outfit).to eq Hash.new
+      expect(monster.battle_commands).to eq Array.new
       expect(monster.escaped).to eq false
       expect(monster.visible).to eq true
       expect(monster.message).to eq "!!!"
@@ -27,8 +26,13 @@ RSpec.describe Monster do
                         defense: 2,
                         inventory: [Item.new],
                         gold: 10,
-                        weapon: Weapon.new,
-                        helmet: Helmet.new,
+                        outfit: { weapon: Weapon.new(
+                                    attack: Attack.new,
+                                    stat_change: StatChange.new(
+                                        attack: 3, defense: 1)),
+                                  helmet: Helmet.new(
+                                      stat_change: StatChange.new(
+                                              attack: 1, defense: 5)) },
                         battle_commands: [Attack.new(name: "Kick")],
                         escaped: true,
                         visible: false,
@@ -36,12 +40,12 @@ RSpec.describe Monster do
       expect(clown.name).to eq "Clown"
       expect(clown.max_hp).to eq 20
       expect(clown.hp).to eq 15
-      expect(clown.attack).to eq 2
-      expect(clown.defense).to eq 2
+      expect(clown.attack).to eq 6
+      expect(clown.defense).to eq 8
       expect(clown.inventory).to eq [Item.new]
       expect(clown.gold).to eq 10
-      expect(clown.weapon).to eq Weapon.new
-      expect(clown.helmet).to eq Helmet.new
+      expect(clown.outfit[:weapon]).to eq Weapon.new
+      expect(clown.outfit[:helmet]).to eq Helmet.new
       expect(clown.battle_commands).to eq [Attack.new(name: "Kick")]
       # cannot be overwritten.
       expect(clown.escaped).to eq false

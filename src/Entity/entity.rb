@@ -9,16 +9,16 @@ class Entity
     @attack = params[:attack] || 0
     @defense = params[:defense] || 0
 
-    @inventory = params[:inventory] || []
+    @inventory = params[:inventory] || Array.new
     @gold = params[:gold] || 0
 
     # Custom battle commands.
-    @battle_commands = params[:battle_commands] || []
+    @battle_commands = params[:battle_commands] || Array.new
     # Maintain sorted battle commands.
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
 
-    unless params[:weapon].nil? then params[:weapon].use(self) end
-    unless params[:helmet].nil? then params[:helmet].use(self) end
+    # See its attr_accessor below.
+    @outfit = Hash.new
 
     # This should only be switched to true during battle.
     @escaped = false
@@ -247,8 +247,10 @@ class Entity
   # is its count in the inventory.
   attr_accessor :inventory, :gold
 
-  attr_accessor :weapon
-  attr_accessor :helmet
+  # The outfit is stored as a hash where the key
+  # is the outfit component (weapon, helmet, etc.)
+  # and the value is the associated equipped item.
+  attr_accessor :outfit
 
   attr_accessor :battle_commands
 
