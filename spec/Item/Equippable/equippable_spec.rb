@@ -9,6 +9,7 @@ RSpec.describe Equippable do
       expect(equ.price).to eq 0
       expect(equ.consumable).to eq false
       expect(equ.stat_change).to eq StatChange.new({})
+      expect(equ.type).to eq :equippable
     end
 
     it "correctly assigns custom parameters" do
@@ -16,12 +17,15 @@ RSpec.describe Equippable do
                                price: 20,
                                consumable: true,
                                stat_change: StatChange.new(attack: 2,
-                                                           defense: 2))
+                                                           defense: 2),
+                               type: :weapon)
       expect(big_hat.name).to eq "Big Hat"
       expect(big_hat.price).to eq 20
       expect(big_hat.consumable).to eq true
       expect(big_hat.stat_change).to eq StatChange.new(attack: 2,
                                                        defense: 2)
+      # Cannot be overwritten.
+      expect(big_hat.type).to eq :equippable
     end
   end
 
