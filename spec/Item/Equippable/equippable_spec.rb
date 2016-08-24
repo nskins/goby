@@ -7,19 +7,19 @@ RSpec.describe Equippable do
       equ = Equippable.new
       expect(equ.name).to eq "Equippable"
       expect(equ.price).to eq 0
-      expect(equ.consumable).to eq true
+      expect(equ.consumable).to eq false
       expect(equ.stat_change).to eq StatChange.new({})
     end
 
     it "correctly assigns custom parameters" do
       big_hat = Equippable.new(name: "Big Hat",
                                price: 20,
-                               consumable: false,
+                               consumable: true,
                                stat_change: StatChange.new(attack: 2,
                                                            defense: 2))
       expect(big_hat.name).to eq "Big Hat"
       expect(big_hat.price).to eq 20
-      expect(big_hat.consumable).to eq false
+      expect(big_hat.consumable).to eq true
       expect(big_hat.stat_change).to eq StatChange.new(attack: 2,
                                                        defense: 2)
     end

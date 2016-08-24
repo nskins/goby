@@ -4,33 +4,42 @@ class Equippable < Item
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Equippable"
+
+    if params[:consumable].nil? then @consumable = false
+    else @consumable = params[:consumable] end
+
     @stat_change = params[:stat_change] || StatChange.new({})
     @type = :equippable
   end
 
-  # REQUIRES: The entity is actually unequipping such an item.
-  # Override this method to remove the appropriate equippable.
-  # See weapon.rb and helmet.rb for example overrides.
+  def equip(entity)
+    prev_item = nil
+    if (!entity.outfit.nil?)
+      prev_item = entity.outfit.key(@type)
+    end
+
+    entity.outfit[@type] = self
+    alter_stats(self, entity, true)
+
+    if (!prev_item.nil?)
+      restore_status(prev_item, entity)
+    end
+
+    entity.remove_item(self)
+
+    print "#{entity.name} equips #{self.name}!\n\n"
+  end
+
   def unequip(entity)
-    print "#{entity.name} puts #{self.name} back into the inventory.\n\n"
+    entity.outfit[@type] = nil
+    restore_status(self, entity)
+  end
+
+  def use(entity)
+    print "Type 'equip #{@name}' to equip this item.\n\n"
   end
 
   attr_accessor :stat_change, :type
-
-  protected
-
-    # This method should never be called outside of the 'use' method.
-    def equip(entity, prev_item)
-      alter_stats(self, entity, true)
-
-      # Updates stats when the entity had a previous item equipped.
-      if (!prev_item.nil?)
-        restore_status(prev_item, entity)
-      end
-
-      print "#{entity.name} equips #{self.name}!\n\n"
-    end
-
 end
 
 # Defines the stats that change when equipping the equippable item.

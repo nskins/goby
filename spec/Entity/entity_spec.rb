@@ -116,7 +116,7 @@ RSpec.describe Entity do
   context "equip item by string" do
     it "correctly equips the weapon and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Weapon.new(stat_change: { attack: 3 } ), 1)])
+                                        Weapon.new(stat_change: StatChange.new({ attack: 3 }) ), 1)])
       entity.equip_item_by_string("Weapon")
       expect(entity.outfit[:weapon]).to eq Weapon.new
       expect(entity.attack).to eq 3
@@ -124,7 +124,7 @@ RSpec.describe Entity do
 
     it "correctly equips the helmet and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Helmet.new(stat_change: { defense: 3 } ), 1)])
+                                        Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
       entity.equip_item_by_string("Helmet")
       expect(entity.outfit[:helmet]).to eq Helmet.new
       expect(entity.defense).to eq 3

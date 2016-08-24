@@ -18,7 +18,12 @@ class Entity
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
 
     # See its attr_accessor below.
-    @outfit = Hash.new
+    if (!params[:outfit].nil?)
+      params[:outfit].each {|type,value| value.equip(self) }
+      @outfit = params[:outfit]
+    else
+      @outfit = Hash.new
+    end
 
     # This should only be switched to true during battle.
     @escaped = false
@@ -51,6 +56,18 @@ class Entity
 	def choose_attack
 	  return @battle_commands[Random.rand(@battle_commands.length)]
 	end
+
+  def equip_item_by_string(name)
+    index = has_item_by_string(name)
+    if (index != -1)
+      actual_item = inventory[index].first
+      actual_item.equip(self)
+      # Equipping the item will always remove it from the entity's inventory.
+      remove_item(actual_item)
+    else
+      print "What?! You don't have THAT!\n\n"
+    end
+  end
 
   # Requires a BattleCommand as the argument.
   # Returns the index of that command, if it exists.

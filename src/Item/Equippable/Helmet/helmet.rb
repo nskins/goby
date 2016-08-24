@@ -8,16 +8,4 @@ class Helmet < Equippable
     @type = :helmet
   end
 
-  def unequip(entity)
-    super(entity)
-    entity.helmet = nil
-    restore_status(self, entity)
-  end
-
-  def use(entity)
-    prev_helmet = entity.helmet
-    entity.helmet = self
-    equip(entity, prev_helmet)
-  end
-
 end

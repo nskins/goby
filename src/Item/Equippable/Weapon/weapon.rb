@@ -10,21 +10,13 @@ class Weapon < Equippable
     @type = :weapon
   end
 
-  def unequip(entity)
-    super(entity)
-    entity.weapon = nil
-    restore_status(self, entity)
-
-    if (!@attack.nil?)
-      entity.remove_battle_command(@attack)
+  def equip(entity)
+    prev_weapon = nil
+    if (!entity.outfit.nil?)
+      prev_weapon = entity.outfit.key(@type)
     end
 
-  end
-
-  def use(entity)
-    prev_weapon = entity.weapon
-    entity.weapon = self
-    equip(entity, prev_weapon)
+    super(entity)
 
     if (!prev_weapon.nil? && prev_weapon.attack.nil?)
       entity.remove_battle_command(prev_weapon.attack)
@@ -33,6 +25,16 @@ class Weapon < Equippable
     if (!self.attack.nil?)
       entity.add_battle_command(self.attack)
     end
+
+  end
+
+  def unequip(entity)
+    super(entity)
+
+    if (!@attack.nil?)
+      entity.remove_battle_command(@attack)
+    end
+
   end
 
   # An instance of Attack.
