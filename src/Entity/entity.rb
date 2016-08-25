@@ -62,9 +62,13 @@ class Entity
     index = has_item_by_string(name)
     if (index != -1)
       actual_item = inventory[index].first
-      actual_item.equip(self)
-      # Equipping the item will always remove it from the entity's inventory.
-      remove_item(actual_item)
+      if (defined? actual_item.equip)
+        actual_item.equip(self)
+        # Equipping the item will always remove it from the entity's inventory.
+        remove_item(actual_item)
+      else
+        print "#{actual_item.name} cannot be equipped!\n\n"
+      end
     else
       print "What?! You don't have THAT!\n\n"
     end
