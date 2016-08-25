@@ -6,8 +6,8 @@ class Entity
 
     @max_hp = hp = params[:max_hp] || 0
     @hp = params[:hp] || hp
-    @attack = params[:attack] || 0
-    @defense = params[:defense] || 0
+    @attack = params[:attack] || 1
+    @defense = params[:defense] || 1
 
     @inventory = params[:inventory] || Array.new
     @gold = params[:gold] || 0
@@ -18,11 +18,12 @@ class Entity
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
 
     # See its attr_accessor below.
+    @outfit = Hash.new
     if (!params[:outfit].nil?)
-      params[:outfit].each {|type,value| value.equip(self) }
+      params[:outfit].each do |type,value|
+        value.equip(self)
+      end
       @outfit = params[:outfit]
-    else
-      @outfit = Hash.new
     end
 
     # This should only be switched to true during battle.
@@ -170,15 +171,15 @@ class Entity
     print "\n"
 
     print "Weapon: "
-    if (!@weapon.nil?)
-      puts "#{weapon.name}"
+    if (!@outfit[:weapon].nil?)
+      puts "#{@outfit[:weapon].name}"
     else
       puts "none"
     end
 
     print "Helmet: "
-    if (!@helmet.nil?)
-      puts "#{helmet.name}"
+    if (!@outfit[:helmet].nil?)
+      puts "#{@outfit[:helmet].name}"
     else
       puts "none"
     end
@@ -214,10 +215,13 @@ class Entity
   end
 
   def unequip_item_by_string(name)
-    if ((!@weapon.nil?) && name.casecmp(@weapon.name) == 0)
-      @weapon.unequip(self)
-    elsif ((!@helmet.nil?) && name.casecmp(@helmet.name) == 0)
-      @helmet.unequip(self)
+    pair = @outfit.detect { |type, value| name.casecmp(value.name) == 0 }
+    if (!pair.nil?)
+      # On a successful find, the "detect" method always returns
+      # an array of length 2; thus, the following line should not fail.
+      item = pair[1]
+      item.unequip(self)
+      add_item(item)
     else
       print "You are not equipping THAT!\n\n"
     end

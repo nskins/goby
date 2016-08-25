@@ -13,26 +13,22 @@ class Equippable < Item
   end
 
   def equip(entity)
-    prev_item = nil
-    if (!entity.outfit.nil?)
-      prev_item = entity.outfit.key(@type)
-    end
+    prev_item = entity.outfit[@type]
 
     entity.outfit[@type] = self
     alter_stats(self, entity, true)
 
     if (!prev_item.nil?)
-      restore_status(prev_item, entity)
+      alter_stats(prev_item, entity, false)
+      entity.add_item(prev_item)
     end
-
-    entity.remove_item(self)
 
     print "#{entity.name} equips #{self.name}!\n\n"
   end
 
   def unequip(entity)
     entity.outfit[@type] = nil
-    restore_status(self, entity)
+    alter_stats(self, entity, false)
   end
 
   def use(entity)
@@ -68,9 +64,4 @@ def alter_stats(item, entity, equipping)
     entity.attack -= item.stat_change.attack
     entity.defense -= item.stat_change.defense
   end
-end
-
-def restore_status(prev_item, entity)
-  alter_stats(prev_item, entity, false)
-  entity.add_item(prev_item)
 end

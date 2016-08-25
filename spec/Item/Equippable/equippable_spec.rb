@@ -35,22 +35,10 @@ RSpec.describe Equippable do
       equ = Equippable.new(stat_change: StatChange.new(attack: 2,
                                                        defense: 2))
       alter_stats(equ, entity, true)
-      expect(entity.attack).to eq 2
-      expect(entity.defense).to eq 2
+      expect(entity.attack).to eq 3
+      expect(entity.defense).to eq 3
 
       alter_stats(equ, entity, false)
-      expect(entity.attack).to eq 0
-      expect(entity.defense).to eq 0
-    end
-  end
-
-  context "restore status" do
-    it "changes the entity's status in the trivial case" do
-      entity = Entity.new(attack: 4, defense: 4)
-      equ = Equippable.new(stat_change: StatChange.new(attack: 3,
-                                                       defense: 3))
-      restore_status(equ, entity)
-      expect(entity.inventory.length).to eq 1
       expect(entity.attack).to eq 1
       expect(entity.defense).to eq 1
     end

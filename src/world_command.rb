@@ -9,8 +9,9 @@ def display_default_commands
   puts "* Default commands:"
   puts "n (north); s (south);"
   puts "e (east); w (west);"
-  puts "help; map; inv; use [item]"
-  puts "unequip [item]; drop [item]"
+  puts "help; map; inv;"
+  puts "use [item]; drop [item]"
+  puts "equip [item]; unequip [item];"
   print "status; attacks; quit\n\n" # TODO: merge attacks into status.
 end
 
@@ -92,12 +93,14 @@ def interpret_command(command, player)
       else
         print "You can't drop what you don't have!\n\n"
       end
+      return
+    when "equip"
+      player.equip_item_by_string(name); return
     when "unequip"
-      player.unequip_item_by_string(name)
+      player.unequip_item_by_string(name); return
     when "use"
-      player.use_item_by_string(name, player)
+      player.use_item_by_string(name, player); return
     end
-    return
   end
 
   # Single-word default commands.

@@ -10,8 +10,8 @@ class Player < Entity
     @name = params[:name] || "Player"
     @max_hp = hp = params[:max_hp] || 100
     @hp = params[:hp] || hp
-    @attack = params[:attack] || 15
-    @defense = params[:defense] || 1
+    @attack = @attack || 1
+    @defense = @defense || 1
     @map = params[:map] || nil
     @location = params[:location] || nil
 

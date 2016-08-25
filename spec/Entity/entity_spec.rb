@@ -10,8 +10,8 @@ RSpec.describe Entity do
       expect(entity.name).to eq "Entity"
       expect(entity.max_hp).to eq 0
       expect(entity.hp).to eq 0
-      expect(entity.attack). to eq 0
-      expect(entity.defense).to eq 0
+      expect(entity.attack). to eq 1
+      expect(entity.defense).to eq 1
       expect(entity.inventory).to eq Array.new
       expect(entity.gold).to eq 0
       expect(entity.battle_commands).to eq Array.new
@@ -25,15 +25,15 @@ RSpec.describe Entity do
                         hp: 35,
                         attack: 12,
                         defense: 4,
-                        inventory: [Item.new],
+                        inventory: [Couple.new(Item.new, 1)],
                         gold: 10,
-                        outfit: { weapon: Weapon.new(
+                        outfit: Hash[:weapon, Weapon.new(
                                     attack: Attack.new,
                                     stat_change: StatChange.new(
                                         attack: 3, defense: 1)),
-                                  helmet: Helmet.new(
+                                  :helmet, Helmet.new(
                                       stat_change: StatChange.new(
-                                              attack: 1, defense: 5)) },
+                                              attack: 1, defense: 5)) ],
                         battle_commands: [Attack.new(name: "Kick")],
                         escaped: true)
       expect(hero.name).to eq "Hero"
@@ -42,7 +42,7 @@ RSpec.describe Entity do
       # Attack & defense increase due to the equipped items.
       expect(hero.attack).to eq 16
       expect(hero.defense).to eq 10
-      expect(hero.inventory).to eq [Item.new]
+      expect(hero.inventory).to eq [Couple.new(Item.new, 1)]
       expect(hero.gold).to eq 10
       expect(hero.outfit[:weapon]).to eq Weapon.new
       expect(hero.outfit[:helmet]).to eq Helmet.new
@@ -119,7 +119,7 @@ RSpec.describe Entity do
                                         Weapon.new(stat_change: StatChange.new({ attack: 3 }) ), 1)])
       entity.equip_item_by_string("Weapon")
       expect(entity.outfit[:weapon]).to eq Weapon.new
-      expect(entity.attack).to eq 3
+      expect(entity.attack).to eq 4
     end
 
     it "correctly equips the helmet and alters the stats" do
@@ -127,7 +127,7 @@ RSpec.describe Entity do
                                         Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
       entity.equip_item_by_string("Helmet")
       expect(entity.outfit[:helmet]).to eq Helmet.new
-      expect(entity.defense).to eq 3
+      expect(entity.defense).to eq 4
     end
   end
 

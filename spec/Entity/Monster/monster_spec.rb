@@ -7,8 +7,8 @@ RSpec.describe Monster do
       expect(monster.name).to eq "Monster"
       expect(monster.max_hp).to eq 0
       expect(monster.hp).to eq 0
-      expect(monster.attack). to eq 0
-      expect(monster.defense).to eq 0
+      expect(monster.attack). to eq 1
+      expect(monster.defense).to eq 1
       expect(monster.inventory).to eq Array.new
       expect(monster.gold).to eq 0
       expect(monster.outfit).to eq Hash.new
@@ -24,7 +24,7 @@ RSpec.describe Monster do
                         hp: 15,
                         attack: 2,
                         defense: 2,
-                        inventory: [Item.new],
+                        inventory: [Couple.new(Item.new, 1)],
                         gold: 10,
                         outfit: { weapon: Weapon.new(
                                     attack: Attack.new,
@@ -42,11 +42,11 @@ RSpec.describe Monster do
       expect(clown.hp).to eq 15
       expect(clown.attack).to eq 6
       expect(clown.defense).to eq 8
-      expect(clown.inventory).to eq [Item.new]
+      expect(clown.inventory).to eq [Couple.new(Item.new, 1)]
       expect(clown.gold).to eq 10
       expect(clown.outfit[:weapon]).to eq Weapon.new
       expect(clown.outfit[:helmet]).to eq Helmet.new
-      expect(clown.battle_commands).to eq [Attack.new(name: "Kick")]
+      expect(clown.battle_commands).to eq [Attack.new, Attack.new(name: "Kick")]
       # cannot be overwritten.
       expect(clown.escaped).to eq false
       expect(clown.visible).to eq false

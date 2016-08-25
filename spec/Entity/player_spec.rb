@@ -22,7 +22,7 @@ RSpec.describe Player do
       expect(player.name).to eq "Player"
       expect(player.max_hp).to eq 100
       expect(player.hp).to eq 100
-      expect(player.attack). to eq 15
+      expect(player.attack). to eq 1
       expect(player.defense).to eq 1
       expect(player.inventory).to eq Array.new
       expect(player.gold).to eq 0
@@ -40,7 +40,7 @@ RSpec.describe Player do
                         hp: 35,
                         attack: 12,
                         defense: 4,
-                        inventory: [Item.new],
+                        inventory: [Couple.new(Item.new, 1)],
                         gold: 10,
                         outfit: { weapon: Weapon.new(
                                     attack: Attack.new,
@@ -58,7 +58,7 @@ RSpec.describe Player do
       expect(hero.hp).to eq 35
       expect(hero.attack).to eq 16
       expect(hero.defense).to eq 10
-      expect(hero.inventory).to eq [Item.new]
+      expect(hero.inventory).to eq [Couple.new(Item.new, 1)]
       expect(hero.gold).to eq 10
       expect(hero.outfit[:weapon]).to eq Weapon.new
       expect(hero.outfit[:helmet]).to eq Helmet.new
