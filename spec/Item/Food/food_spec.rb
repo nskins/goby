@@ -43,15 +43,15 @@ RSpec.describe Food do
       food = Food.new(name: 'Fruit', recovers: 5)
 
       expected = "#{entity.name} uses Fruit and recovers "\
-        "5 HP!\n\nHP: 18/20"
+        "5 HP!\n\nHP: 18/20\n\n"
       expect { food.use(entity) }.to output(expected).to_stdout
 
       expected = "#{entity.name} uses Fruit and recovers "\
-        "2 HP!\n\nHP: 20/20"
+        "2 HP!\n\nHP: 20/20\n\n"
       expect { food.use(entity) }.to output(expected).to_stdout
 
       expected = "#{entity.name} uses Fruit and recovers "\
-        "0 HP!\n\nHP: 20/20"
+        "0 HP!\n\nHP: 20/20\n\n"
       expect { food.use(entity) }.to output(expected).to_stdout
     end
   end

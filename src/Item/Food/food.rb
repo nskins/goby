@@ -16,12 +16,12 @@ class Food < Item
       this_recover = @recovers
       entity.hp += @recovers
     end
-    type(effects_message(entity, this_recover))
+    print effects_message(entity, this_recover)
   end
 
   def effects_message(entity, recover)
     "#{entity.name} uses #{name} and recovers #{recover}"\
-    " HP!\n\nHP: #{entity.hp}/#{entity.max_hp}"
+    " HP!\n\nHP: #{entity.hp}/#{entity.max_hp}\n\n"
   end
 
   # The amount of HP that the food recovers.
