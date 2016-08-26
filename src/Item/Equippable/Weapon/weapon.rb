@@ -13,7 +13,7 @@ class Weapon < Equippable
   def equip(entity)
     prev_weapon = nil
     if (!entity.outfit.nil?)
-      prev_weapon = entity.outfit.key(@type)
+      prev_weapon = entity.outfit[@type]
     end
 
     super(entity)
