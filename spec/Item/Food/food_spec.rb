@@ -38,20 +38,26 @@ RSpec.describe Food do
       expect(entity.hp).to eq 20
     end
 
-    it "can display a message when food is eaten" do
-      entity = Entity.new(
-        max_hp: 20,
-        hp: 10,
-        inventory: [Couple.new(Food.new(name: 'Donut', recovers: 5), 3)]
-      )
-      food_item = entity.inventory.first.first
+    it "has a dynamic message for when food is eaten" do
+      entity = Entity.new(max_hp: 20, hp: 10)
+      food = Food.new(name: 'Fruit', recovers: 5)
+      recovers = food.recovers
+      food.use(entity)
+      expected = "#{entity.name} uses Fruit and recovers "\
+        "5 HP!\n\nHP: 15/20"
 
-      expect(food_item).to be_an_instance_of(Food)
+      expect(food.effects_message(entity, recovers)).to eq(expected)
 
-      expected = "#{entity.name} uses #{food_item.name} and recovers "\
-        "#{food_item.recovers} HP!\n\nHP: #{entity.hp}/#{entity.max_hp}"
+      food.use(entity)
+      if entity.hp + food.recovers > entity.max_hp
+        new_recover = entity.max_hp - entity.hp
+      else
+        new_recover = food.recovers
+      end
+      expected = "#{entity.name} uses Fruit and recovers "\
+        "0 HP!\n\nHP: 20/20"
 
-      expect(entity.food_effects(food_item)).to eq(expected)
+      expect(food.effects_message(entity, new_recover)).to eq(expected)
     end
   end
 

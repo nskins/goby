@@ -9,13 +9,19 @@ class Food < Item
   end
 
   def use(entity)
-    entity.hp += @recovers
-
-    # Prevents HP > max HP.
-    if (entity.hp > entity.max_hp)
+    if entity.hp + recovers > entity.max_hp
+      this_recover = entity.max_hp - entity.hp
       entity.hp = entity.max_hp
+    else
+      this_recover = recovers
+      entity.hp += recovers
     end
+    type(effects_message(entity, this_recover))
+  end
 
+  def effects_message(entity, recover)
+    "#{entity.name} uses #{name} and recovers #{recover}"\
+    " HP!\n\nHP: #{entity.hp}/#{entity.max_hp}"
   end
 
   # The amount of HP that the food recovers.
