@@ -62,6 +62,7 @@ class Entity
     index = has_item_by_string(name)
     if (index != -1)
       actual_item = inventory[index].first
+      # Checks for Equippable without importing the file.
       if (defined? actual_item.equip)
         actual_item.equip(self)
         # Equipping the item will always remove it from the entity's inventory.

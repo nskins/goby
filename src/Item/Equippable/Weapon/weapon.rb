@@ -12,18 +12,18 @@ class Weapon < Equippable
 
   def equip(entity)
     prev_weapon = nil
-    if (!entity.outfit.nil?)
+    if (!entity.outfit[@type].nil?)
       prev_weapon = entity.outfit[@type]
     end
 
     super(entity)
 
-    if (!prev_weapon.nil? && prev_weapon.attack.nil?)
+    if ((!prev_weapon.nil?) && (!prev_weapon.attack.nil?))
       entity.remove_battle_command(prev_weapon.attack)
     end
 
-    if (!self.attack.nil?)
-      entity.add_battle_command(self.attack)
+    if (!@attack.nil?)
+      entity.add_battle_command(@attack)
     end
 
   end

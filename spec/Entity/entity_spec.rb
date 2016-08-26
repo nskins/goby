@@ -116,10 +116,12 @@ RSpec.describe Entity do
   context "equip item by string" do
     it "correctly equips the weapon and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Weapon.new(stat_change: StatChange.new({ attack: 3 }) ), 1)])
+                                        Weapon.new(stat_change: StatChange.new({ attack: 3 }),
+                                                   attack: Attack.new), 1)])
       entity.equip_item_by_string("Weapon")
       expect(entity.outfit[:weapon]).to eq Weapon.new
       expect(entity.attack).to eq 4
+      expect(entity.battle_commands).to eq [Attack.new]
     end
 
     it "correctly equips the helmet and alters the stats" do
@@ -148,21 +150,25 @@ RSpec.describe Entity do
     it "correctly switches the equipped items and alters status as appropriate" do
       entity = Entity.new(inventory: [Couple.new(
                                         Weapon.new(name: "Hammer",
-                                                  stat_change: StatChange.new({ attack: 3 }) ), 1),
+                                                   stat_change: StatChange.new({ attack: 3 }),
+                                                   attack: Attack.new(name: "Bash")), 1),
                                       Couple.new(
                                         Weapon.new(name: "Knife",
-                                                   stat_change: StatChange.new({ attack: 5}) ), 1)])
+                                                   stat_change: StatChange.new({ attack: 5 }),
+                                                   attack: Attack.new(name: "Stab")), 1)])
       entity.equip_item_by_string("Hammer")
       expect(entity.attack).to eq 4
+      expect(entity.outfit[:weapon].name).to eq "Hammer"
+      expect(entity.battle_commands).to eq [Attack.new(name: "Bash")]
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first.name).to eq "Knife"
-      expect(entity.outfit[:weapon].name).to eq "Hammer"
 
       entity.equip_item_by_string("Knife")
       expect(entity.attack).to eq 6
+      expect(entity.outfit[:weapon].name).to eq "Knife"
+      expect(entity.battle_commands).to eq [Attack.new(name: "Stab")]
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first.name).to eq "Hammer"
-      expect(entity.outfit[:weapon].name).to eq "Knife"
     end
   end
 
@@ -292,12 +298,13 @@ RSpec.describe Entity do
 
   context "unequip item by string" do
     it "correctly unequips an equipped item" do
-      entity = Entity.new(outfit: { weapon: Weapon.new })
+      entity = Entity.new(outfit: { weapon: Weapon.new(attack: Attack.new) })
       entity.unequip_item_by_string("Weapon")
       expect(entity.outfit).to be_empty
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first).to eq Weapon.new
       expect(entity.inventory[0].second).to eq 1
+      expect(entity.battle_commands).to be_empty
     end
 
     it "does not result in error when unequipping the same item twice" do
