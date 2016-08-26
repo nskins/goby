@@ -23,12 +23,14 @@ class Equippable < Item
       entity.add_item(prev_item)
     end
 
-    print "#{entity.name} equips #{self.name}!\n\n"
+    print "#{entity.name} equips #{@name}!\n\n"
   end
 
   def unequip(entity)
-    entity.outfit[@type] = nil
+    entity.outfit.delete(@type)
     alter_stats(self, entity, false)
+
+    print "#{entity.name} unequips #{@name}!\n\n"
   end
 
   def use(entity)
