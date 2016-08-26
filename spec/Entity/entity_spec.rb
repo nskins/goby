@@ -10,13 +10,12 @@ RSpec.describe Entity do
       expect(entity.name).to eq "Entity"
       expect(entity.max_hp).to eq 0
       expect(entity.hp).to eq 0
-      expect(entity.attack). to eq 0
-      expect(entity.defense).to eq 0
-      expect(entity.inventory).to eq []
+      expect(entity.attack). to eq 1
+      expect(entity.defense).to eq 1
+      expect(entity.inventory).to eq Array.new
       expect(entity.gold).to eq 0
-      expect(entity.weapon).to eq nil
-      expect(entity.helmet).to eq nil
-      expect(entity.battle_commands).to eq []
+      expect(entity.battle_commands).to eq Array.new
+      expect(entity.outfit).to eq Hash.new
       expect(entity.escaped).to eq false
     end
 
@@ -26,15 +25,15 @@ RSpec.describe Entity do
                         hp: 35,
                         attack: 12,
                         defense: 4,
-                        inventory: [Item.new],
+                        inventory: [Couple.new(Item.new, 1)],
                         gold: 10,
-                        weapon: Weapon.new(
-                            attack: Attack.new,
-                            stat_change: StatChange.new(
-                                    attack: 3, defense: 1)),
-                        helmet: Helmet.new(
-                            stat_change: StatChange.new(
-                                    attack: 1, defense: 5)),
+                        outfit: { weapon: Weapon.new(
+                                    attack: Attack.new,
+                                    stat_change: StatChange.new(
+                                        attack: 3, defense: 1)),
+                                  helmet: Helmet.new(
+                                      stat_change: StatChange.new(
+                                              attack: 1, defense: 5)) },
                         battle_commands: [Attack.new(name: "Kick")],
                         escaped: true)
       expect(hero.name).to eq "Hero"
@@ -43,10 +42,10 @@ RSpec.describe Entity do
       # Attack & defense increase due to the equipped items.
       expect(hero.attack).to eq 16
       expect(hero.defense).to eq 10
-      expect(hero.inventory).to eq [Item.new]
+      expect(hero.inventory).to eq [Couple.new(Item.new, 1)]
       expect(hero.gold).to eq 10
-      expect(hero.weapon).to eq Weapon.new
-      expect(hero.helmet).to eq Helmet.new
+      expect(hero.outfit[:weapon]).to eq Weapon.new
+      expect(hero.outfit[:helmet]).to eq Helmet.new
       # Attack.new is present due to the equipped weapon.
       expect(hero.battle_commands).to eq [Attack.new, Attack.new(name: "Kick")]
       # cannot be overwritten.
@@ -111,6 +110,65 @@ RSpec.describe Entity do
 
       expect(entity.inventory[2].first).to eq Item.new(name: "Orange")
       expect(entity.inventory[2].second).to eq 4
+    end
+  end
+
+  context "equip item by string" do
+    it "correctly equips the weapon and alters the stats" do
+      entity = Entity.new(inventory: [Couple.new(
+                                        Weapon.new(stat_change: StatChange.new({ attack: 3 }),
+                                                   attack: Attack.new), 1)])
+      entity.equip_item_by_string("Weapon")
+      expect(entity.outfit[:weapon]).to eq Weapon.new
+      expect(entity.attack).to eq 4
+      expect(entity.battle_commands).to eq [Attack.new]
+    end
+
+    it "correctly equips the helmet and alters the stats" do
+      entity = Entity.new(inventory: [Couple.new(
+                                        Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
+      entity.equip_item_by_string("Helmet")
+      expect(entity.outfit[:helmet]).to eq Helmet.new
+      expect(entity.defense).to eq 4
+    end
+
+    it "does not equip anything for an absent item" do
+      entity = Entity.new
+      entity.equip_item_by_string("Weapon")
+      expect(entity.outfit).to be_empty
+    end
+
+    it "only removes one of the equipped item from the inventory" do
+      entity = Entity.new(inventory: [Couple.new(
+                                        Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 2)])
+      entity.equip_item_by_string("Helmet")
+      expect(entity.inventory.length).to eq 1
+      expect(entity.inventory[0].first).to eq Helmet.new
+      expect(entity.inventory[0].second).to eq 1
+    end
+
+    it "correctly switches the equipped items and alters status as appropriate" do
+      entity = Entity.new(inventory: [Couple.new(
+                                        Weapon.new(name: "Hammer",
+                                                   stat_change: StatChange.new({ attack: 3 }),
+                                                   attack: Attack.new(name: "Bash")), 1),
+                                      Couple.new(
+                                        Weapon.new(name: "Knife",
+                                                   stat_change: StatChange.new({ attack: 5 }),
+                                                   attack: Attack.new(name: "Stab")), 1)])
+      entity.equip_item_by_string("Hammer")
+      expect(entity.attack).to eq 4
+      expect(entity.outfit[:weapon].name).to eq "Hammer"
+      expect(entity.battle_commands).to eq [Attack.new(name: "Bash")]
+      expect(entity.inventory.length).to eq 1
+      expect(entity.inventory[0].first.name).to eq "Knife"
+
+      entity.equip_item_by_string("Knife")
+      expect(entity.attack).to eq 6
+      expect(entity.outfit[:weapon].name).to eq "Knife"
+      expect(entity.battle_commands).to eq [Attack.new(name: "Stab")]
+      expect(entity.inventory.length).to eq 1
+      expect(entity.inventory[0].first.name).to eq "Hammer"
     end
   end
 
@@ -238,6 +296,33 @@ RSpec.describe Entity do
     end
   end
 
+  context "unequip item by string" do
+    it "correctly unequips an equipped item" do
+      entity = Entity.new(outfit: { weapon: Weapon.new(attack: Attack.new) })
+      entity.unequip_item_by_string("Weapon")
+      expect(entity.outfit).to be_empty
+      expect(entity.inventory.length).to eq 1
+      expect(entity.inventory[0].first).to eq Weapon.new
+      expect(entity.inventory[0].second).to eq 1
+      expect(entity.battle_commands).to be_empty
+    end
+
+    it "does not result in error when unequipping the same item twice" do
+      entity = Entity.new(inventory: [Couple.new(
+                                        Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 2)])
+      entity.equip_item_by_string("Helmet")
+      entity.unequip_item_by_string("Helmet")
+      expect(entity.inventory.length).to eq 1
+      expect(entity.inventory[0].first).to eq Helmet.new
+      expect(entity.inventory[0].second).to eq 2
+
+      entity.unequip_item_by_string("Helmet")
+      expect(entity.inventory.length).to eq 1
+      expect(entity.inventory[0].first).to eq Helmet.new
+      expect(entity.inventory[0].second).to eq 2
+    end
+  end
+
   context "use item by string" do
     it "correctly uses a present item" do
       entity = Entity.new(max_hp: 20, hp: 10,
@@ -246,29 +331,6 @@ RSpec.describe Entity do
       expect(entity.hp).to eq 15
       expect(entity.inventory[0].first).to eq Food.new
       expect(entity.inventory[0].second).to eq 2
-    end
-
-    it "correctly equips an equippable (such as a weapon)" do
-      entity = Entity.new(inventory: [Couple.new(Weapon.new, 3)])
-      entity.use_item_by_string("Weapon", entity)
-      expect(entity.weapon).to eq Weapon.new
-      expect(entity.inventory[0].second).to eq 2
-    end
-
-    it "can display a message when food is eaten" do
-      entity = Entity.new(
-        max_hp: 20,
-        hp: 10,
-        inventory: [Couple.new(Food.new(name: 'Donut', recovers: 5), 3)]
-      )
-      food_item = entity.inventory.first.first
-
-      expect(food_item).to be_an_instance_of(Food)
-
-      expected = "#{entity.name} uses #{food_item.name} and recovers "\
-        "#{food_item.recovers} HP!\n\nHP: #{entity.hp}/#{entity.max_hp}"
-
-      expect(entity.food_effects(food_item)).to eq(expected)
     end
   end
 
@@ -280,13 +342,6 @@ RSpec.describe Entity do
       expect(entity.hp).to eq 15
       expect(entity.inventory[0].first).to eq Food.new
       expect(entity.inventory[0].second).to eq 2
-    end
-
-    it "correctly equips an equippable (such as a weapon)" do
-      entity = Entity.new(inventory: [Couple.new(Weapon.new, 1)])
-      entity.use_item_by_object(Weapon.new, entity)
-      expect(entity.weapon).to eq Weapon.new
-      expect(entity.inventory.length).to eq 0
     end
   end
 

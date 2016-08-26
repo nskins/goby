@@ -6,19 +6,25 @@ class Entity
 
     @max_hp = hp = params[:max_hp] || 0
     @hp = params[:hp] || hp
-    @attack = params[:attack] || 0
-    @defense = params[:defense] || 0
+    @attack = params[:attack] || 1
+    @defense = params[:defense] || 1
 
-    @inventory = params[:inventory] || []
+    @inventory = params[:inventory] || Array.new
     @gold = params[:gold] || 0
 
     # Custom battle commands.
-    @battle_commands = params[:battle_commands] || []
+    @battle_commands = params[:battle_commands] || Array.new
     # Maintain sorted battle commands.
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
 
-    unless params[:weapon].nil? then params[:weapon].use(self) end
-    unless params[:helmet].nil? then params[:helmet].use(self) end
+    # See its attr_accessor below.
+    @outfit = Hash.new
+    if (!params[:outfit].nil?)
+      params[:outfit].each do |type,value|
+        value.equip(self)
+      end
+      @outfit = params[:outfit]
+    end
 
     # This should only be switched to true during battle.
     @escaped = false
@@ -51,6 +57,23 @@ class Entity
 	def choose_attack
 	  return @battle_commands[Random.rand(@battle_commands.length)]
 	end
+
+  def equip_item_by_string(name)
+    index = has_item_by_string(name)
+    if (index != -1)
+      actual_item = inventory[index].first
+      # Checks for Equippable without importing the file.
+      if (defined? actual_item.equip)
+        actual_item.equip(self)
+        # Equipping the item will always remove it from the entity's inventory.
+        remove_item(actual_item)
+      else
+        print "#{actual_item.name} cannot be equipped!\n\n"
+      end
+    else
+      print "What?! You don't have THAT!\n\n"
+    end
+  end
 
   # Requires a BattleCommand as the argument.
   # Returns the index of that command, if it exists.
@@ -153,15 +176,15 @@ class Entity
     print "\n"
 
     print "Weapon: "
-    if (!@weapon.nil?)
-      puts "#{weapon.name}"
+    if (!@outfit[:weapon].nil?)
+      puts "#{@outfit[:weapon].name}"
     else
       puts "none"
     end
 
     print "Helmet: "
-    if (!@helmet.nil?)
-      puts "#{helmet.name}"
+    if (!@outfit[:helmet].nil?)
+      puts "#{@outfit[:helmet].name}"
     else
       puts "none"
     end
@@ -197,10 +220,13 @@ class Entity
   end
 
   def unequip_item_by_string(name)
-    if ((!@weapon.nil?) && name.casecmp(@weapon.name) == 0)
-      @weapon.unequip(self)
-    elsif ((!@helmet.nil?) && name.casecmp(@helmet.name) == 0)
-      @helmet.unequip(self)
+    pair = @outfit.detect { |type, value| name.casecmp(value.name) == 0 }
+    if (!pair.nil?)
+      # On a successful find, the "detect" method always returns
+      # an array of length 2; thus, the following line should not fail.
+      item = pair[1]
+      item.unequip(self)
+      add_item(item)
     else
       print "You are not equipping THAT!\n\n"
     end
@@ -253,8 +279,10 @@ class Entity
   # is its count in the inventory.
   attr_accessor :inventory, :gold
 
-  attr_accessor :weapon
-  attr_accessor :helmet
+  # The outfit is stored as a hash where the key
+  # is the outfit component (weapon, helmet, etc.)
+  # and the value is the associated equipped item.
+  attr_accessor :outfit
 
   attr_accessor :battle_commands
 

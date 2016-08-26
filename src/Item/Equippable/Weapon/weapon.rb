@@ -7,31 +7,34 @@ class Weapon < Equippable
     super(params)
     @name = params[:name] || "Weapon"
     @attack = params[:attack] || nil
+    @type = :weapon
+  end
+
+  def equip(entity)
+    prev_weapon = nil
+    if (!entity.outfit[@type].nil?)
+      prev_weapon = entity.outfit[@type]
+    end
+
+    super(entity)
+
+    if ((!prev_weapon.nil?) && (!prev_weapon.attack.nil?))
+      entity.remove_battle_command(prev_weapon.attack)
+    end
+
+    if (!@attack.nil?)
+      entity.add_battle_command(@attack)
+    end
+
   end
 
   def unequip(entity)
     super(entity)
-    entity.weapon = nil
-    restore_status(self, entity)
 
     if (!@attack.nil?)
       entity.remove_battle_command(@attack)
     end
 
-  end
-
-  def use(entity)
-    prev_weapon = entity.weapon
-    entity.weapon = self
-    equip(entity, prev_weapon)
-
-    if (!prev_weapon.nil? && prev_weapon.attack.nil?)
-      entity.remove_battle_command(prev_weapon.attack)
-    end
-
-    if (!self.attack.nil?)
-      entity.add_battle_command(self.attack)
-    end
   end
 
   # An instance of Attack.

@@ -22,12 +22,11 @@ RSpec.describe Player do
       expect(player.name).to eq "Player"
       expect(player.max_hp).to eq 100
       expect(player.hp).to eq 100
-      expect(player.attack). to eq 15
+      expect(player.attack). to eq 1
       expect(player.defense).to eq 1
-      expect(player.inventory).to eq []
+      expect(player.inventory).to eq Array.new
       expect(player.gold).to eq 0
-      expect(player.weapon).to eq nil
-      expect(player.helmet).to eq nil
+      expect(player.outfit).to eq Hash.new
       expect(player.battle_commands).to eq [BattleCommand.new(name: "Escape"),
                                             BattleCommand.new(name: "Kick")]
       expect(player.escaped).to eq false
@@ -41,10 +40,15 @@ RSpec.describe Player do
                         hp: 35,
                         attack: 12,
                         defense: 4,
-                        inventory: [Item.new],
+                        inventory: [Couple.new(Item.new, 1)],
                         gold: 10,
-                        weapon: Weapon.new,
-                        helmet: Helmet.new,
+                        outfit: { weapon: Weapon.new(
+                                    attack: Attack.new,
+                                    stat_change: StatChange.new(
+                                        attack: 3, defense: 1)),
+                                  helmet: Helmet.new(
+                                      stat_change: StatChange.new(
+                                              attack: 1, defense: 5)) },
                         battle_commands: [BattleCommand.new(name: "Yell")],
                         escaped: true,
                         map: Map.new,
@@ -52,13 +56,13 @@ RSpec.describe Player do
       expect(hero.name).to eq "Hero"
       expect(hero.max_hp).to eq 50
       expect(hero.hp).to eq 35
-      expect(hero.attack).to eq 12
-      expect(hero.defense).to eq 4
-      expect(hero.inventory).to eq [Item.new]
+      expect(hero.attack).to eq 16
+      expect(hero.defense).to eq 10
+      expect(hero.inventory).to eq [Couple.new(Item.new, 1)]
       expect(hero.gold).to eq 10
-      expect(hero.weapon).to eq Weapon.new
-      expect(hero.helmet).to eq Helmet.new
-      expect(hero.battle_commands).to eq [BattleCommand.new(name: "Yell")]
+      expect(hero.outfit[:weapon]).to eq Weapon.new
+      expect(hero.outfit[:helmet]).to eq Helmet.new
+      expect(hero.battle_commands).to eq [Attack.new, BattleCommand.new(name: "Yell")]
       # cannot be overwritten.
       expect(hero.escaped).to eq false
       expect(hero.map).to eq Map.new
