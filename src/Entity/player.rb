@@ -55,7 +55,7 @@ class Player < Entity
 
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
-    if @map.nil? || map.nil? then return end
+    return if (@map.nil? || map.nil?)
 
     y = coordinates.first; x = coordinates.second
 
@@ -111,7 +111,7 @@ class Player < Entity
 
   def update_map
     # Prevents operations on nil.
-    if (@map.nil?) then return end
+    return if (@map.nil?)
 
     for y in (@location.first-1)..(@location.first+1)
       for x in (@location.second-1)..(@location.second+1)

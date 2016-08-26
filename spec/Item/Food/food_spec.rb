@@ -39,25 +39,20 @@ RSpec.describe Food do
     end
 
     it "has a dynamic message for when food is eaten" do
-      entity = Entity.new(max_hp: 20, hp: 10)
+      entity = Entity.new(max_hp: 20, hp: 13)
       food = Food.new(name: 'Fruit', recovers: 5)
-      recovers = food.recovers
-      food.use(entity)
+
       expected = "#{entity.name} uses Fruit and recovers "\
-        "5 HP!\n\nHP: 15/20"
+        "5 HP!\n\nHP: 18/20"
+      expect { food.use(entity) }.to output(expected).to_stdout
 
-      expect(food.effects_message(entity, recovers)).to eq(expected)
+      expected = "#{entity.name} uses Fruit and recovers "\
+        "2 HP!\n\nHP: 20/20"
+      expect { food.use(entity) }.to output(expected).to_stdout
 
-      food.use(entity)
-      if entity.hp + food.recovers > entity.max_hp
-        new_recover = entity.max_hp - entity.hp
-      else
-        new_recover = food.recovers
-      end
       expected = "#{entity.name} uses Fruit and recovers "\
         "0 HP!\n\nHP: 20/20"
-
-      expect(food.effects_message(entity, new_recover)).to eq(expected)
+      expect { food.use(entity) }.to output(expected).to_stdout
     end
   end
 

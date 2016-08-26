@@ -239,7 +239,7 @@ class Entity
     if (index != -1)
       actual_item = inventory[index].first
       actual_item.use(e)
-      if actual_item.consumable then remove_item(actual_item) end
+      remove_item(actual_item) if actual_item.consumable
     else
       print "What?! You don't have THAT!\n\n"
     end

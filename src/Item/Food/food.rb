@@ -13,8 +13,8 @@ class Food < Item
       this_recover = entity.max_hp - entity.hp
       entity.hp = entity.max_hp
     else
-      this_recover = recovers
-      entity.hp += recovers
+      this_recover = @recovers
+      entity.hp += @recovers
     end
     type(effects_message(entity, this_recover))
   end

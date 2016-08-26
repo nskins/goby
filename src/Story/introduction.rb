@@ -5,7 +5,7 @@ def print_introduction
   input = gets.chomp
   print "\n"
 
-  if (input.casecmp('y') == 0) then return end
+  return if (input.casecmp('y') == 0)
 
   puts "Welcome to the Preset Game. This is a simple example"
   print "of what is possible using the Goby framework.\n\n"
