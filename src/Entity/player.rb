@@ -8,10 +8,6 @@ class Player < Entity
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Player"
-    @max_hp = hp = params[:max_hp] || 1
-    @hp = params[:hp] || hp
-    @attack = @attack || 1
-    @defense = @defense || 1
     @map = params[:map] || nil
     @location = params[:location] || nil
 
