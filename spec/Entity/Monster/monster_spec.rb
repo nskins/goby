@@ -5,8 +5,8 @@ RSpec.describe Monster do
     it "has the correct default parameters" do
       monster = Monster.new
       expect(monster.name).to eq "Monster"
-      expect(monster.max_hp).to eq 0
-      expect(monster.hp).to eq 0
+      expect(monster.max_hp).to eq 1
+      expect(monster.hp).to eq 1
       expect(monster.attack). to eq 1
       expect(monster.defense).to eq 1
       expect(monster.inventory).to eq Array.new

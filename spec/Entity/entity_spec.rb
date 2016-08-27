@@ -8,8 +8,8 @@ RSpec.describe Entity do
     it "has the correct default parameters" do
       entity = Entity.new
       expect(entity.name).to eq "Entity"
-      expect(entity.max_hp).to eq 0
-      expect(entity.hp).to eq 0
+      expect(entity.max_hp).to eq 1
+      expect(entity.hp).to eq 1
       expect(entity.attack). to eq 1
       expect(entity.defense).to eq 1
       expect(entity.inventory).to eq Array.new

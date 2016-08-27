@@ -4,7 +4,7 @@ class Entity
   def initialize(params = {})
     @name = params[:name] || "Entity"
 
-    @max_hp = hp = params[:max_hp] || 0
+    @max_hp = hp = params[:max_hp] || 1
     @hp = params[:hp] || hp
     @attack = params[:attack] || 1
     @defense = params[:defense] || 1

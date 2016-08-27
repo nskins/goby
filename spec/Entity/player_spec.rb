@@ -20,15 +20,14 @@ RSpec.describe Player do
     it "has the correct default parameters" do
       player = Player.new
       expect(player.name).to eq "Player"
-      expect(player.max_hp).to eq 100
-      expect(player.hp).to eq 100
+      expect(player.max_hp).to eq 1
+      expect(player.hp).to eq 1
       expect(player.attack). to eq 1
       expect(player.defense).to eq 1
       expect(player.inventory).to eq Array.new
       expect(player.gold).to eq 0
       expect(player.outfit).to eq Hash.new
-      expect(player.battle_commands).to eq [BattleCommand.new(name: "Escape"),
-                                            BattleCommand.new(name: "Kick")]
+      expect(player.battle_commands).to eq Array.new
       expect(player.escaped).to eq false
       expect(player.map).to eq nil
       expect(player.location).to eq nil

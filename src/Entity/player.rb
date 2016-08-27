@@ -8,18 +8,12 @@ class Player < Entity
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Player"
-    @max_hp = hp = params[:max_hp] || 100
+    @max_hp = hp = params[:max_hp] || 1
     @hp = params[:hp] || hp
     @attack = @attack || 1
     @defense = @defense || 1
     @map = params[:map] || nil
     @location = params[:location] || nil
-
-    if params[:battle_commands].nil?
-      # Default battle commands.
-      add_battle_command(Escape.new)
-      add_battle_command(Kick.new)
-    end
 
     update_map
   end
