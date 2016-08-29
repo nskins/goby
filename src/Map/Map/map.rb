@@ -32,6 +32,11 @@ class Map
          "\n■ - impassable space"
   end
 
+	# coordinates: Couple(Int,Int).
+	def in_bounds(coordinates)
+		return true
+	end
+
 	attr_accessor :name, :tiles, :regen_location
 
 end
