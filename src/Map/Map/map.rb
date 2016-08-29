@@ -32,9 +32,10 @@ class Map
          "\n■ - impassable space"
   end
 
-	# coordinates: Couple(Int,Int).
-	def in_bounds(coordinates)
-		return true
+	# y, x: Int
+	# Returns true when @tiles[y][x] is an existing index of @tiles.
+	def in_bounds(y, x)
+		return (y >= 0 && y < @tiles.length && x >= 0 && x < @tiles[y].length)
 	end
 
 	attr_accessor :name, :tiles, :regen_location

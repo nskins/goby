@@ -25,17 +25,17 @@ RSpec.describe Map do
 
   context "in bounds" do
     it "returns true when the coordinates are within the map bounds" do
-      expect(@lake.in_bounds(Couple.new(0,0))).to eq true
-      expect(@lake.in_bounds(Couple.new(0,1))).to eq true
+      expect(@lake.in_bounds(0,0)).to eq true
+      expect(@lake.in_bounds(0,1)).to eq true
     end
 
     it "returns false when the coordinates are outside the map bounds" do
-      expect(@lake.in_bounds(Couple.new(-1,0))).to eq false
-      expect(@lake.in_bounds(Couple.new(0,-1))).to eq false
-      expect(@lake.in_bounds(Couple.new(-1,-1))).to eq false
-      expect(@lake.in_bounds(Couple.new(1,0))).to eq false
-      expect(@lake.in_bounds(Couple.new(0,2))).to eq false
-      expect(@lake.in_bounds(Couple.new(1,1))).to eq false
+      expect(@lake.in_bounds(-1,0)).to eq false
+      expect(@lake.in_bounds(0,-1)).to eq false
+      expect(@lake.in_bounds(-1,-1)).to eq false
+      expect(@lake.in_bounds(1,0)).to eq false
+      expect(@lake.in_bounds(0,2)).to eq false
+      expect(@lake.in_bounds(1,1)).to eq false
     end
   end
 
