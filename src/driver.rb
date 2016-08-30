@@ -6,10 +6,8 @@ def run_driver(player)
 
   print_introduction
 
-  unless player.map.nil?
-    describe_tile(player)
-    input = player_input
-  end
+  describe_tile(player)
+  input = player_input
 
   while (input.casecmp("quit") != 0)
     interpret_command(input, player)
