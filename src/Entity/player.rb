@@ -2,14 +2,31 @@ require 'deep_clone'
 require_relative 'entity.rb'
 require_relative '../world_command.rb'
 require_relative '../Battle/BattleCommand/escape.rb'
+require_relative '../Map/Map/map.rb'
+require_relative '../Map/Tile/tile.rb'
 
 class Player < Entity
+
+  DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
+  DEFAULT_LOCATION = Couple.new(0,0)
 
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Player"
-    @map = params[:map] || nil
-    @location = params[:location] || nil
+
+    @map = DEFAULT_MAP
+    @location = DEFAULT_LOCATION
+
+    # Ensure that the map and the location are valid.
+    if ((!params[:map].nil?) && (!params[:location].nil?))
+
+      y = params[:location].first; x = params[:location].second
+
+      if (params[:map].in_bounds(y,x) && params[:map].tiles[y][x].passable)
+        @map = params[:map]
+        @location = params[:location]
+      end
+    end
 
     update_map
   end
@@ -35,6 +52,7 @@ class Player < Entity
 	end
 
   def die
+    # TODO: fix next line. regen_location could be nil or "bad."
     @location = @map.regen_location
     type("After being knocked out in battle, you wake up in #{@map.name}\n")
     type("Looks like you lost some gold...\n\n")
@@ -45,16 +63,15 @@ class Player < Entity
 
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
-    return if (@map.nil? || map.nil?)
+    return if map.nil?
 
     y = coordinates.first; x = coordinates.second
 
     # Prevents moving onto nonexistent and impassable tiles.
-    if (!@map.in_bounds(y,x) ||
-       (!@map.tiles[y][x].passable))
-          print "You cannot move there!\n\n"
-          print_possible_moves(self)
-          return
+    if (!@map.in_bounds(y,x) || (!@map.tiles[y][x].passable))
+      print "You cannot move there!\n\n"
+      print_possible_moves(self)
+      return
     end
 
     @map = map
@@ -99,9 +116,6 @@ class Player < Entity
   end
 
   def update_map
-    # Prevents operations on nil.
-    return if (@map.nil?)
-
     for y in (@location.first-1)..(@location.first+1)
       for x in (@location.second-1)..(@location.second+1)
         # Prevents operations on nonexistent tiles.
@@ -193,6 +207,6 @@ class Player < Entity
 
   end
 
-  attr_accessor :map, :location
+  attr_reader :map, :location
 
 end

@@ -29,8 +29,8 @@ RSpec.describe Player do
       expect(player.outfit).to eq Hash.new
       expect(player.battle_commands).to eq Array.new
       expect(player.escaped).to eq false
-      expect(player.map).to eq nil
-      expect(player.location).to eq nil
+      expect(player.map).to eq Player::DEFAULT_MAP
+      expect(player.location).to eq Player::DEFAULT_LOCATION
     end
 
     it "correctly assigns custom parameters" do
@@ -50,7 +50,7 @@ RSpec.describe Player do
                                               attack: 1, defense: 5)) },
                         battle_commands: [BattleCommand.new(name: "Yell")],
                         escaped: true,
-                        map: Map.new,
+                        map: @map,
                         location: Couple.new(1,1))
       expect(hero.name).to eq "Hero"
       expect(hero.max_hp).to eq 50
@@ -64,9 +64,37 @@ RSpec.describe Player do
       expect(hero.battle_commands).to eq [Attack.new, BattleCommand.new(name: "Yell")]
       # cannot be overwritten.
       expect(hero.escaped).to eq false
-      expect(hero.map).to eq Map.new
+      expect(hero.map).to eq @map
       expect(hero.location).to eq Couple.new(1,1)
     end
+
+    context "places the player in the default map & location" do
+      it "receives the nil map" do
+        player = Player.new(location: Couple.new(2,4))
+        expect(player.map).to eq Player::DEFAULT_MAP
+        expect(player.location).to eq Player::DEFAULT_LOCATION
+      end
+
+      it "receives the nil location" do
+        player = Player.new(map: Map.new)
+        expect(player.map).to eq Player::DEFAULT_MAP
+        expect(player.location).to eq Player::DEFAULT_LOCATION
+      end
+
+      it "receives an out-of-bounds location" do
+        player = Player.new(map: Map.new, location: Couple.new(0,1))
+        expect(player.map).to eq Player::DEFAULT_MAP
+        expect(player.location).to eq Player::DEFAULT_LOCATION
+      end
+
+      it "receives an impassable location" do
+        player = Player.new(map: Map.new(tiles: [ [ Tile.new(passable: false) ] ]),
+                            location: Couple.new(0,0))
+        expect(player.map).to eq Player::DEFAULT_MAP
+        expect(player.location).to eq Player::DEFAULT_LOCATION
+      end
+    end
+
   end
 
   context "move to" do
