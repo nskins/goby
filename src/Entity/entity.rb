@@ -278,7 +278,7 @@ class Entity
   # and the value is the associated equipped item.
   attr_accessor :outfit
 
-  attr_accessor :battle_commands
+  attr_reader :battle_commands
 
   attr_accessor :escaped
 
