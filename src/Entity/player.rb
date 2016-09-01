@@ -36,7 +36,7 @@ class Player < Entity
     print_battle_commands
 
     input = player_input
-    index = has_battle_command_by_string(input)
+    index = has_battle_command(input)
 
     #input error loop
     while (index == -1)
@@ -45,7 +45,7 @@ class Player < Entity
       print_battle_commands
 
       input = player_input
-      index = has_battle_command_by_string(input)
+      index = has_battle_command(input)
     end
 
     return @battle_commands[index]

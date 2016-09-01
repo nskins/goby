@@ -93,7 +93,7 @@ class Shop < Event
 
           print "What would you like to sell? (or none): "
           name = gets.chomp
-          index = player.has_item_by_string(name)
+          index = player.has_item(name)
 
           # Case: The player does not want to sell an item.
           if (name.casecmp("none") == 0)

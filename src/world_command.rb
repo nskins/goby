@@ -84,7 +84,7 @@ def interpret_command(command, player)
     # Determine the appropriate command to use.
     case(words[0])
     when "drop"
-      index = player.has_item_by_string(name)
+      index = player.has_item(name)
       if (index != -1)
         # TODO: Perhaps the player should be allowed to specify
         #       how many of the Item to drop.
@@ -95,11 +95,11 @@ def interpret_command(command, player)
       end
       return
     when "equip"
-      player.equip_item_by_string(name); return
+      player.equip_item(name); return
     when "unequip"
-      player.unequip_item_by_string(name); return
+      player.unequip_item(name); return
     when "use"
-      player.use_item_by_string(name, player); return
+      player.use_item(name, player); return
     end
   end
 
