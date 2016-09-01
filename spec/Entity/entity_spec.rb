@@ -113,12 +113,12 @@ RSpec.describe Entity do
     end
   end
 
-  context "equip item by string" do
+  context "equip item" do
     it "correctly equips the weapon and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
                                         Weapon.new(stat_change: StatChange.new({ attack: 3 }),
                                                    attack: Attack.new), 1)])
-      entity.equip_item_by_string("Weapon")
+      entity.equip_item("Weapon")
       expect(entity.outfit[:weapon]).to eq Weapon.new
       expect(entity.attack).to eq 4
       expect(entity.battle_commands).to eq [Attack.new]
@@ -127,21 +127,21 @@ RSpec.describe Entity do
     it "correctly equips the helmet and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
                                         Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
-      entity.equip_item_by_string("Helmet")
+      entity.equip_item("Helmet")
       expect(entity.outfit[:helmet]).to eq Helmet.new
       expect(entity.defense).to eq 4
     end
 
     it "does not equip anything for an absent item" do
       entity = Entity.new
-      entity.equip_item_by_string("Weapon")
+      entity.equip_item("Weapon")
       expect(entity.outfit).to be_empty
     end
 
     it "only removes one of the equipped item from the inventory" do
       entity = Entity.new(inventory: [Couple.new(
                                         Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 2)])
-      entity.equip_item_by_string("Helmet")
+      entity.equip_item("Helmet")
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first).to eq Helmet.new
       expect(entity.inventory[0].second).to eq 1
@@ -156,14 +156,14 @@ RSpec.describe Entity do
                                         Weapon.new(name: "Knife",
                                                    stat_change: StatChange.new({ attack: 5 }),
                                                    attack: Attack.new(name: "Stab")), 1)])
-      entity.equip_item_by_string("Hammer")
+      entity.equip_item("Hammer")
       expect(entity.attack).to eq 4
       expect(entity.outfit[:weapon].name).to eq "Hammer"
       expect(entity.battle_commands).to eq [Attack.new(name: "Bash")]
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first.name).to eq "Knife"
 
-      entity.equip_item_by_string("Knife")
+      entity.equip_item("Knife")
       expect(entity.attack).to eq 6
       expect(entity.outfit[:weapon].name).to eq "Knife"
       expect(entity.battle_commands).to eq [Attack.new(name: "Stab")]
@@ -172,74 +172,70 @@ RSpec.describe Entity do
     end
   end
 
-  context "has battle command by object" do
-    it "correctly indicates an absent command" do
+  context "has battle command" do
+    it "correctly indicates an absent command for an object argument" do
       entity = Entity.new(battle_commands: [
         BattleCommand.new(name: "Kick"),
         BattleCommand.new(name: "Poke")])
-      index = entity.has_battle_command_by_object(BattleCommand.new(name: "Chop"))
+      index = entity.has_battle_command(BattleCommand.new(name: "Chop"))
       expect(index).to eq -1
     end
 
-    it "correctly indicates a present command" do
+    it "correctly indicates a present command for an object argument" do
       entity = Entity.new(battle_commands: [
         BattleCommand.new(name: "Kick"),
         BattleCommand.new(name: "Poke")])
-      index = entity.has_battle_command_by_object(BattleCommand.new(name: "Poke"))
+      index = entity.has_battle_command(BattleCommand.new(name: "Poke"))
+      expect(index).to eq 1
+    end
+
+    it "correctly indicates an absent command for a string argument" do
+      entity = Entity.new(battle_commands: [
+        BattleCommand.new(name: "Kick"),
+        BattleCommand.new(name: "Poke")])
+      index = entity.has_battle_command("Chop")
+      expect(index).to eq -1
+    end
+
+    it "correctly indicates a present command for a string argument" do
+      entity = Entity.new(battle_commands: [
+        BattleCommand.new(name: "Kick"),
+        BattleCommand.new(name: "Poke")])
+      index = entity.has_battle_command("Poke")
       expect(index).to eq 1
     end
   end
 
-  context "has battle command by string" do
-    it "correctly indicates an absent command" do
-      entity = Entity.new(battle_commands: [
-        BattleCommand.new(name: "Kick"),
-        BattleCommand.new(name: "Poke")])
-      index = entity.has_battle_command_by_string("Chop")
-      expect(index).to eq -1
-    end
-
-    it "correctly indicates a present command" do
-      entity = Entity.new(battle_commands: [
-        BattleCommand.new(name: "Kick"),
-        BattleCommand.new(name: "Poke")])
-      index = entity.has_battle_command_by_string("Poke")
-      expect(index).to eq 1
-    end
-  end
-
-  context "has item by object" do
-    it "correctly indicates an absent item" do
+  context "has item" do
+    it "correctly indicates an absent item for an object argument" do
       entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
-      index = entity.has_item_by_object(Item.new(name: "Banana"))
+      index = entity.has_item(Item.new(name: "Banana"))
       expect(index).to eq -1
     end
 
-    it "correctly indicates a present item" do
+    it "correctly indicates a present item for an object argument" do
       entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
-      index = entity.has_item_by_object(Item.new(name: "Apple"))
+      index = entity.has_item(Item.new(name: "Apple"))
       expect(index).to eq 0
     end
-  end
 
-  context "has item by string" do
-    it "correctly indicates an absent item" do
+    it "correctly indicates an absent item for a string argument" do
       entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
-      index = entity.has_item_by_string("Banana")
+      index = entity.has_item("Banana")
       expect(index).to eq -1
     end
 
-    it "correctly indicates a present item" do
+    it "correctly indicates a present item for a string argument" do
       entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
-      index = entity.has_item_by_string("Orange")
+      index = entity.has_item("Orange")
       expect(index).to eq 1
     end
   end
@@ -296,10 +292,10 @@ RSpec.describe Entity do
     end
   end
 
-  context "unequip item by string" do
+  context "unequip item" do
     it "correctly unequips an equipped item" do
       entity = Entity.new(outfit: { weapon: Weapon.new(attack: Attack.new) })
-      entity.unequip_item_by_string("Weapon")
+      entity.unequip_item("Weapon")
       expect(entity.outfit).to be_empty
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first).to eq Weapon.new
@@ -310,35 +306,33 @@ RSpec.describe Entity do
     it "does not result in error when unequipping the same item twice" do
       entity = Entity.new(inventory: [Couple.new(
                                         Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 2)])
-      entity.equip_item_by_string("Helmet")
-      entity.unequip_item_by_string("Helmet")
+      entity.equip_item("Helmet")
+      entity.unequip_item("Helmet")
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first).to eq Helmet.new
       expect(entity.inventory[0].second).to eq 2
 
-      entity.unequip_item_by_string("Helmet")
+      entity.unequip_item("Helmet")
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first).to eq Helmet.new
       expect(entity.inventory[0].second).to eq 2
     end
   end
 
-  context "use item by string" do
-    it "correctly uses a present item" do
+  context "use item" do
+    it "correctly uses a present item for an object argument" do
       entity = Entity.new(max_hp: 20, hp: 10,
                           inventory: [Couple.new(Food.new(recovers: 5), 3)])
-      entity.use_item_by_string("Food", entity)
+      entity.use_item(Food.new, entity)
       expect(entity.hp).to eq 15
       expect(entity.inventory[0].first).to eq Food.new
       expect(entity.inventory[0].second).to eq 2
     end
-  end
 
-  context "use item by object" do
-    it "correctly uses a present item" do
+    it "correctly uses a present item for a string argument" do
       entity = Entity.new(max_hp: 20, hp: 10,
                           inventory: [Couple.new(Food.new(recovers: 5), 3)])
-      entity.use_item_by_object(Food.new, entity)
+      entity.use_item("Food", entity)
       expect(entity.hp).to eq 15
       expect(entity.inventory[0].first).to eq Food.new
       expect(entity.inventory[0].second).to eq 2
