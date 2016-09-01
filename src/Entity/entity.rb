@@ -58,8 +58,8 @@ class Entity
 	  return @battle_commands[Random.rand(@battle_commands.length)]
 	end
 
-  def equip_item_by_string(name)
-    index = has_item_by_string(name)
+  def equip_item(item)
+    index = has_item(item)
     if (index != -1)
       actual_item = inventory[index].first
       # Checks for Equippable without importing the file.
@@ -75,48 +75,22 @@ class Entity
     end
   end
 
-  # Requires a BattleCommand as the argument.
-  # Returns the index of that command, if it exists.
-  # Otherwise, returns -1.
-  def has_battle_command_by_object(cmd)
-    @battle_commands.each_with_index do |command, index|
-      if (command == cmd)
-        return index
-      end
-    end
-    return -1
-  end
-
-  # Requires a String as the argument.
   # Returns the index of that attack, if it exists.
   # Otherwise, returns -1.
-  def has_battle_command_by_string(name)
+  def has_battle_command(cmd)
     @battle_commands.each_with_index do |command, index|
-      if (command.name.casecmp(name) == 0)
+      if (command.name.casecmp(cmd.to_s) == 0)
         return index
       end
     end
     return -1
   end
 
-  # Requires an Item as the argument.
   # Returns the index of that item, if it exists.
   # Otherwise, returns -1.
-  def has_item_by_object(item)
+  def has_item(item)
     inventory.each_with_index do |couple, index|
-      if (couple.first == item)
-        return index
-      end
-    end
-    return -1
-  end
-
-  # Requires a String as the argument.
-  # Returns the index of that item, if it exists.
-  # Otherwise, returns -1.
-  def has_item_by_string(name)
-    inventory.each_with_index do |couple, index|
-      if (name.casecmp(couple.first.name) == 0)
+      if (couple.first.name.casecmp(item.to_s) == 0)
         return index
       end
     end
@@ -194,7 +168,7 @@ class Entity
 
   # Removes the battle command, if it exists, from the entity's collection.
   def remove_battle_command(command)
-    index = has_battle_command_by_object(command)
+    index = has_battle_command(command)
     if (index >= 0)
       @battle_commands.delete_at(index)
     end
@@ -219,8 +193,8 @@ class Entity
     end
   end
 
-  def unequip_item_by_string(name)
-    pair = @outfit.detect { |type, value| name.casecmp(value.name) == 0 }
+  def unequip_item(item)
+    pair = @outfit.detect { |type, value| value.name.casecmp(item.to_s) == 0 }
     if (!pair.nil?)
       # On a successful find, the "detect" method always returns
       # an array of length 2; thus, the following line should not fail.
@@ -234,21 +208,8 @@ class Entity
 
   # If the item exists in the Entity's inventory,
   # then it uses the item on Entity e.
-  def use_item_by_object(item, e)
-    index = has_item_by_object(item)
-    if (index != -1)
-      actual_item = inventory[index].first
-      actual_item.use(e)
-      remove_item(actual_item) if actual_item.consumable
-    else
-      print "What?! You don't have THAT!\n\n"
-    end
-  end
-
-  # If the item exists in the Entity's inventory,
-  # then it uses the item on Entity e.
-  def use_item_by_string(name, e)
-    index = has_item_by_string(name)
+  def use_item(item, e)
+    index = has_item(item)
     if (index != -1)
       actual_item = inventory[index].first
       actual_item.use(e)
