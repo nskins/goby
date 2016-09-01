@@ -25,4 +25,12 @@ RSpec.describe BattleCommand do
       expect(dance).not_to eq kick
     end
   end
+
+  context "to_s" do
+    it "returns the name of the BattleCommand" do
+      cmd = BattleCommand.new
+      expect(cmd.to_s).to eq cmd.name
+    end
+  end
+  
 end

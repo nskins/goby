@@ -37,5 +37,12 @@ RSpec.describe Item do
       expect(hammer).not_to eq banana
     end
   end
-  
+
+  context "to_s" do
+    it "returns the name of the Item" do
+      item = Item.new
+      expect(item.to_s).to eq item.name
+    end
+  end
+
 end

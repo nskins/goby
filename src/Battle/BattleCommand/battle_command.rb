@@ -14,6 +14,10 @@ class BattleCommand
     return (@name.casecmp(rhs.name) == 0)
   end
 
+  def to_s
+    @name
+  end
+
   attr_accessor :name
 
 end
