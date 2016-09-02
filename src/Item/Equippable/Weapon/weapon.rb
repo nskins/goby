@@ -3,6 +3,12 @@ require_relative '../../../Battle/BattleCommand/Attack/attack.rb'
 
 class Weapon < Equippable
 
+  # @param [Hash] params the parameters for creating a Weapon.
+  # @option params [String] :name the name.
+  # @option params [Integer] :price the cost in a shop.
+  # @option params [Boolean] :consumable determines whether the item is lost when used.
+  # @option params [StatChange] :stat_change the change in stats for when the item is equipped.
+  # @option params [Attack] :attack the attack which is added to the entity's battle commands.
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Weapon"
@@ -10,6 +16,9 @@ class Weapon < Equippable
     @type = :weapon
   end
 
+  # Equips onto the entity and changes the entity's attributes accordingly.
+  #
+  # @param [Entity] entity the entity who is equipping the equippable.
   def equip(entity)
     prev_weapon = nil
     if (!entity.outfit[@type].nil?)
@@ -28,6 +37,9 @@ class Weapon < Equippable
 
   end
 
+  # Unequips from the entity and changes the entity's attributes accordingly.
+  #
+  # @param [Entity] entity the entity who is unequipping the equippable.
   def unequip(entity)
     super(entity)
 
