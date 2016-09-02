@@ -2,18 +2,21 @@ require_relative '../battle_command.rb'
 
 class Attack < BattleCommand
 
+  # @param [Hash] params the parameters for creating an Attack.
+  # @option params [String] :name the name.
+  # @option params [Integer] :damage the strength.
+  # @option params [Integer] :success_rate the chance of success.
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Attack"
-    # The default attack won't do any damage.
     @damage = params[:damage] || 0
-    # The default attack will always succeed.
     @success_rate = params[:success_rate] || 100
-    # The default attack is not attached to a weapon.
-    if params[:weapon_attack].nil? then @weapon_attack = false
-    else @weapon_attack = params[:weapon_attack] end
   end
 
+  # Inflicts damage on the enemy based on user's stats.
+  #
+  # @param [Entity] user the one who is using the attack.
+  # @param [Entity] enemy the one on whom the attack is used.
   def run(user, enemy)
     if (Random.rand(100) < @success_rate)
 
@@ -28,11 +31,6 @@ class Attack < BattleCommand
 
       else
         multiplier = 1 + ((user.attack * 0.1) - (enemy.defense * 0.1))
-      end
-
-      if (@weapon_attack)
-        # TODO: fix power attribute.
-        # multiplier *= user.weapon.power
       end
 
       enemy.hp -= @damage * multiplier
@@ -56,6 +54,6 @@ class Attack < BattleCommand
 
   end
 
-	attr_accessor :damage, :success_rate, :weapon_attack
+	attr_accessor :damage, :success_rate
 
 end
