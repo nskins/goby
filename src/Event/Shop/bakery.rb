@@ -2,6 +2,7 @@ require_relative 'shop.rb'
 require_relative '../../Item/Food/donut.rb'
 require_relative '../../Item/Equippable/Weapon/baguette.rb'
 
+# PRESET DATA
 class Bakery < Shop
 
   def initialize(params = {})

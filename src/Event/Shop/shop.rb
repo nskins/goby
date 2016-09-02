@@ -2,15 +2,22 @@ require_relative '../event.rb'
 
 class Shop < Event
 
+  # @param [Hash] params the parameters for creating a Shop.
+  # @option params [String] :name the name.
+  # @option params [Integer] :mode convenient way for a shop to have multiple actions.
+  # @option params [Boolean] :visible whether the shop can be seen/activated.
+  # @option params [[Item]] :items an array of items that the shop sells.
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Shop"
     @command = "shop"
-    @items = []
+    @items = params[:items] || Array.new
   end
 
-  # Returns the index of the item, if it exists.
-  # Otherwise, returns -1.
+  # Returns the index of the specified item, if it exists.
+  #
+  # @param [String] name the item's name.
+  # @return [Integer] the index of an existing item. Otherwise -1.
   def has_item(name)
     @items.each_with_index do |item, index|
       if (item.name.casecmp(name) == 0)
@@ -28,6 +35,9 @@ class Shop < Event
     print "\n"
   end
 
+  # The default shop experience.
+  #
+  # @param [Player] player the player interacting with the shop.
   def run(player)
 
     # Initial greeting.

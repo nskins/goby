@@ -1,5 +1,6 @@
 require_relative 'event.rb'
 
+# PRESET DATA
 class Box < Event
 
   def initialize(params = {})
