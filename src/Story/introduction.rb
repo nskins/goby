@@ -1,5 +1,7 @@
 require_relative '../world_command.rb'
 
+# PRESET DATA
+# Prints how-to-play instructions if the user requires them.
 def print_introduction
   print "Do you know how to play? (y/n): "
   input = gets.chomp

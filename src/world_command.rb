@@ -1,10 +1,14 @@
 # Functions that handle commands on the "world map."
 
+# Prints the default and special (tile-specific) commands.
+#
+# @param [Player] player the player who needs help.
 def help(player)
   display_default_commands
   display_special_commands(player)
 end
 
+# Prints the commands that are available everywhere.
 def display_default_commands
   puts "* Default commands:"
   puts "n (north); s (south);"
@@ -15,6 +19,9 @@ def display_default_commands
   print "status; attacks; quit\n\n" # TODO: merge attacks into status.
 end
 
+# Prints the commands that are tile-specific.
+#
+# @param [Player] player the player who wants to see the special commands.
 def display_special_commands(player)
   events = player.map.tiles[player.location.first][player.location.second].events
   if (!(events.empty?) && events.any? { |event| event.visible })
@@ -44,6 +51,9 @@ def display_special_commands(player)
   end
 end
 
+# Prints the available cardinal directions to which the player can move.
+#
+# @param [Player] player the player who needs to see the possible moves.
 def print_possible_moves(player)
   y = player.location.first
   x = player.location.second
@@ -69,6 +79,10 @@ def print_possible_moves(player)
   print "\n\n"
 end
 
+# Handles the player's input and executes the appropriate action.
+#
+# @param [String] command the player's entire command input.
+# @param [Player] player the player using the command.
 def interpret_command(command, player)
   words = command.split.map(&:downcase)
 
@@ -144,6 +158,8 @@ def interpret_command(command, player)
 end
 
 # Describes the tile to the player after each move.
+#
+# @param [Player] player the player who needs the tile description.
 def describe_tile(player)
   tile = player.map.tiles[player.location.first][player.location.second]
   events = tile.events

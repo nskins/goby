@@ -1,6 +1,9 @@
 require_relative "world_command.rb"
 require_relative "Story/introduction.rb"
 
+# Runs the main game loop.
+#
+# @param [Player] player the player of the game.
 def run_driver(player)
   system("clear")
 
