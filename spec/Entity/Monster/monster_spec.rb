@@ -14,7 +14,6 @@ RSpec.describe Monster do
       expect(monster.outfit).to eq Hash.new
       expect(monster.battle_commands).to eq Array.new
       expect(monster.escaped).to eq false
-      expect(monster.visible).to eq true
       expect(monster.message).to eq "!!!"
     end
 
@@ -35,7 +34,6 @@ RSpec.describe Monster do
                                               attack: 1, defense: 5)) },
                         battle_commands: [Attack.new(name: "Kick")],
                         escaped: true,
-                        visible: false,
                         message: "\"Oh, hi.\"")
       expect(clown.name).to eq "Clown"
       expect(clown.max_hp).to eq 20
@@ -49,7 +47,6 @@ RSpec.describe Monster do
       expect(clown.battle_commands).to eq [Attack.new, Attack.new(name: "Kick")]
       # cannot be overwritten.
       expect(clown.escaped).to eq false
-      expect(clown.visible).to eq false
       expect(clown.message).to eq "\"Oh, hi.\""
     end
   end

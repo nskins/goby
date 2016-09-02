@@ -1,6 +1,17 @@
 require_relative '../util.rb'
 
 class Entity
+
+  # @param [Hash] params the parameters for creating an Entity.
+  # @option params [String] :name the name.
+  # @option params [Integer] :max_hp the greatest amount of health.
+  # @option params [Integer] :hp the current amount of health.
+  # @option params [Integer] :attack the strength in battle.
+  # @option params [Integer] :defense the prevention of attack power on oneself.
+  # @option params [[Couple(Item, Integer)]] :inventory a list of pairs of items and their respective amounts.
+  # @option params [Integer] :gold the currency used for economical transactions.
+  # @option params [[BattleCommand]] :battle_commands the commands that can be used in battle.
+  # @option params [Hash] :outfit the collection of equippable items currently worn.
   def initialize(params = {})
     @name = params[:name] || "Entity"
 
@@ -12,7 +23,6 @@ class Entity
     @inventory = params[:inventory] || Array.new
     @gold = params[:gold] || 0
 
-    # Custom battle commands.
     @battle_commands = params[:battle_commands] || Array.new
     # Maintain sorted battle commands.
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
@@ -31,6 +41,8 @@ class Entity
   end
 
   # Adds the specified battle command to the entity's collection.
+  #
+  # @param [BattleCommand] command the command being added.
   def add_battle_command(command)
     @battle_commands.push(command)
 
@@ -39,6 +51,9 @@ class Entity
   end
 
   # Adds the item and the given amount to the inventory.
+  #
+  # @param [Item] item the item being added.
+  # @param [Integer] amount the amount of the item to add.
   def add_item(item, amount = 1)
 
     # Increase the amount if the item already exists in the inventory.
@@ -53,18 +68,27 @@ class Entity
     @inventory.push(Couple.new(item, amount))
   end
 
-  # Override this method for control over the entity's battle commands.
+  # Determines how the entity should select an attack in battle.
+  # Override this method for control over this functionality.
+  #
+  # @return [BattleCommand] the chosen battle command.
 	def choose_attack
 	  return @battle_commands[Random.rand(@battle_commands.length)]
 	end
 
+  # Equips the specified item to the entity's outfit.
+  #
+  # @param [Item, String] item the item (or its name) to equip.
   def equip_item(item)
+
     index = has_item(item)
     if (index != -1)
       actual_item = inventory[index].first
+
       # Checks for Equippable without importing the file.
       if (defined? actual_item.equip)
         actual_item.equip(self)
+
         # Equipping the item will always remove it from the entity's inventory.
         remove_item(actual_item)
       else
@@ -75,8 +99,10 @@ class Entity
     end
   end
 
-  # Returns the index of that attack, if it exists.
-  # Otherwise, returns -1.
+  # Returns the index of the specified command, if it exists.
+  #
+  # @param [BattleCommand, String] cmd the battle command (or its name).
+  # @return [Integer] the index of an existing command. Otherwise -1.
   def has_battle_command(cmd)
     @battle_commands.each_with_index do |command, index|
       if (command.name.casecmp(cmd.to_s) == 0)
@@ -86,8 +112,10 @@ class Entity
     return -1
   end
 
-  # Returns the index of that item, if it exists.
-  # Otherwise, returns -1.
+  # Returns the index of the specified item, if it exists.
+  #
+  # @param [Item, String] item the item (or its name).
+  # @return [Integer] the index of an existing item. Otherwise -1.
   def has_item(item)
     inventory.each_with_index do |couple, index|
       if (couple.first.name.casecmp(item.to_s) == 0)
@@ -98,8 +126,8 @@ class Entity
     return -1
   end
 
-  # TODO: somehow combine the following two functions using boolean switch?
-  # TODO: fix this function.
+  # @todo somehow combine the following two functions using boolean switch?
+  # @todo fix this function.
   def print_attacks_with_stats
     @battle_commands.each do |command|
 
@@ -118,6 +146,7 @@ class Entity
     print "\n"
   end
 
+  # Prints the available battle commands.
   def print_battle_commands
     @battle_commands.each do |command|
       print "❊ " + command.name + "  \n"
@@ -167,6 +196,8 @@ class Entity
   end
 
   # Removes the battle command, if it exists, from the entity's collection.
+  #
+  # @param [BattleCommand] command the command being removed.
   def remove_battle_command(command)
     index = has_battle_command(command)
     if (index >= 0)
@@ -174,8 +205,10 @@ class Entity
     end
   end
 
-  # Removes the item, if it exists, and, at most,
-  # the given amount from the inventory.
+  # Removes the item, if it exists, and, at most, the given amount from the inventory.
+  #
+  # @param [Item] item the item being removed.
+  # @param [Integer] amount the amount of the item to remove.
   def remove_item(item, amount = 1)
 
     # Decrease the amount if the item already exists in the inventory.
@@ -193,6 +226,9 @@ class Entity
     end
   end
 
+  # Unequips the specified item from the entity's outfit.
+  #
+  # @param [Item, String] item the item (or its name) to unequip.
   def unequip_item(item)
     pair = @outfit.detect { |type, value| value.name.casecmp(item.to_s) == 0 }
     if (!pair.nil?)
@@ -206,19 +242,22 @@ class Entity
     end
   end
 
-  # If the item exists in the Entity's inventory,
-  # then it uses the item on Entity e.
-  def use_item(item, e)
+  # Uses the item, if it exists, on the specified entity.
+  #
+  # @param [Item, String] item the item (or its name) to use.
+  # @param [Entity] entity the entity on which to use the item.
+  def use_item(item, entity)
     index = has_item(item)
     if (index != -1)
       actual_item = inventory[index].first
-      actual_item.use(e)
+      actual_item.use(entity)
       remove_item(actual_item) if actual_item.consumable
     else
       print "What?! You don't have THAT!\n\n"
     end
   end
 
+  # @param [Entity] rhs the entity on the right.
   def ==(rhs)
     @name == rhs.name
   end
@@ -228,11 +267,9 @@ class Entity
   attr_accessor :attack
   attr_accessor :defense
 
-  # The inventory is stored as an array
-  # of Couple objects. The first data type
-  # is the item's name. The second data type
-  # is its count in the inventory.
-  attr_accessor :inventory, :gold
+  # The inventory is stored as an array of Couple objects.
+  attr_accessor :inventory
+  attr_accessor :gold
 
   # The outfit is stored as a hash where the key
   # is the outfit component (weapon, helmet, etc.)

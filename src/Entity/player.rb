@@ -10,6 +10,18 @@ class Player < Entity
   DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
   DEFAULT_LOCATION = Couple.new(0,0)
 
+  # @param [Hash] params the parameters for creating a Player.
+  # @option params [String] :name the name.
+  # @option params [Integer] :max_hp the greatest amount of health.
+  # @option params [Integer] :hp the current amount of health.
+  # @option params [Integer] :attack the strength in battle.
+  # @option params [Integer] :defense the prevention of attack power on oneself.
+  # @option params [[Couple(Item, Integer)]] :inventory a list of pairs of items and their respective amounts.
+  # @option params [Integer] :gold the currency used for economical transactions.
+  # @option params [[BattleCommand]] :battle_commands the commands that can be used in battle.
+  # @option params [Hash] :outfit the collection of equippable items currently worn.
+  # @option params [Map] :map the map on which the player is located.
+  # @option params [Couple(Integer,Integer)] :location the 2D index of the map (the exact tile).
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Player"
@@ -31,6 +43,9 @@ class Player < Entity
     update_map
   end
 
+  # Uses player input to determine the battle command.
+  #
+  # @return [BattleCommand] the chosen battle command.
   def choose_attack
     puts "Choose an action:"
     print_battle_commands
@@ -51,6 +66,7 @@ class Player < Entity
     return @battle_commands[index]
 	end
 
+  # Sends the player back to a safe location, halves its gold, and restores HP.
   def die
     # TODO: fix next line. regen_location could be nil or "bad."
     @location = @map.regen_location
@@ -61,6 +77,10 @@ class Player < Entity
     @hp = @max_hp
   end
 
+  # Safe setter function for location and map.
+  #
+  # @param [Couple(Integer,Integer)] coordinates the new location.
+  # @param [Map] map the (possibly) new map.
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
     return if map.nil?
@@ -95,26 +115,31 @@ class Player < Entity
     describe_tile(self)
   end
 
+  # Moves the player north. Decreases 'y' coordinate by 1.
   def move_north
     north_tile = Couple.new(@location.first - 1, @location.second)
     move_to(north_tile)
   end
 
+  # Moves the player east. Increases 'x' coordinate by 1.
   def move_east
     east_tile = Couple.new(@location.first, @location.second + 1)
     move_to(east_tile)
   end
 
+  # Moves the player south. Increases 'y' coordinate by 1.
   def move_south
     south_tile = Couple.new(@location.first + 1, @location.second)
     move_to(south_tile)
   end
 
+  # Moves the player west. Decreases 'x' coordinate by 1.
   def move_west
     west_tile = Couple.new(@location.first, @location.second - 1)
     move_to(west_tile)
   end
 
+  # Updates the 'seen' attributes of the tiles on the player's current map.
   def update_map
     for y in (@location.first-1)..(@location.first+1)
       for x in (@location.second-1)..(@location.second+1)
@@ -162,6 +187,9 @@ class Player < Entity
          "\n¶ - your location\n\n"
   end
 
+  # Engages in battle with the specified monster.
+  #
+  # @param [Monster] monster the opponent of the battle.
   def battle(monster)
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
