@@ -1,22 +1,24 @@
 class Tile
 
+	# @param [Hash] params the parameters for creating a Tile.
+  # @option params [Boolean] :passable if true, the player can move here.
+	# @option params [Boolean] :seen if true, it will be printed on the map.
+	# @option params [String] :description a summary/message of the contents.
+	# @option params [[Event]] :events the events found on this tile.
+	# @option params [[Monster]] :monsters the monsters found on this tile.
 	def initialize(params = {})
-		# Passable tiles allow players to "be" there.
 		if params[:passable].nil? then @passable = true
     else @passable = params[:passable] end
 
-		# Seen tiles are visible on the printed map.
 		if params[:seen].nil? then @seen = false
     else @seen = params[:seen] end
 
-		# The description informs the player about the tile.
 		@description = params[:description] || ""
-		# The player interacts with events on the tile.
-		@events = params[:events] || []
-		# Monsters that appear randomly on this tile.
-		@monsters = params[:monsters] || []
+		@events = params[:events] || Array.new
+		@monsters = params[:monsters] || Array.new
 	end
 
+	# @param [Tile] rhs the tile on the right.
 	def ==(rhs)
 		return (@passable == rhs.passable &&
 						@seen == rhs.seen &&

@@ -5,12 +5,12 @@ require_relative '../../Entity/Monster/alien.rb'
 require_relative '../../Event/box.rb'
 require_relative '../../Event/Shop/bakery.rb'
 
+# PRESET DATA
 class DonutField < Map
-
   def initialize(params = {})
     @name = "Donut Field"
-    @tiles = [
 
+    @tiles = [
               [ Dirt.new, Dirt.new,
                   Dirt.new(description: "Dirt surrounds you.\nYou sense a strange presence.",
                            monsters: [Alien.new]) ],
@@ -23,7 +23,7 @@ class DonutField < Map
                            events: [ Box.new(gold: 60) ] ),
                   Dirt.new ]
              ]
+
     @regen_location = Couple.new(0,0)
   end
-
 end
