@@ -8,7 +8,6 @@ def run_driver(player)
   system("clear")
 
   print_introduction
-
   describe_tile(player)
   input = player_input
 

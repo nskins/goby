@@ -1,7 +1,6 @@
 require 'deep_clone'
 require_relative 'entity.rb'
 require_relative '../world_command.rb'
-require_relative '../Battle/BattleCommand/escape.rb'
 require_relative '../Map/Map/map.rb'
 require_relative '../Map/Tile/tile.rb'
 
