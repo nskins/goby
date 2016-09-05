@@ -15,7 +15,7 @@ rm -f src/Event/Shop/bakery.rb
 
 # Removes 'Item' preset data.
 
-rm -f .src/Item/Food/donut.rb
+rm -f src/Item/Food/donut.rb
 rm -f src/Item/Equippable/Weapon/baguette.rb
 
 # Removes 'Map' preset data.
