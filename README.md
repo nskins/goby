@@ -20,7 +20,7 @@ We use [YARD](https://github.com/lsegal/yard) for documentation. In order to see
 
 Then run the following command in our project's root directory:
 
-```yardoc```
+```yardoc ```
 
 The doc files will then be available as HTML files in the doc/ directory.
 
