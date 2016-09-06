@@ -1,4 +1,4 @@
-require_relative '../../../src/Item/Equippable/equippable.rb'
+require_relative '../../../lib/Item/Equippable/equippable.rb'
 
 RSpec.describe Equippable do
 

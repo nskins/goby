@@ -1,4 +1,4 @@
-require_relative '../../../src/Map/Map/map.rb'
+require_relative '../../../lib/Map/Map/map.rb'
 
 RSpec.describe Map do
 

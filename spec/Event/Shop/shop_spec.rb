@@ -1,4 +1,4 @@
-require_relative '../../../src/Event/Shop/shop.rb'
+require_relative '../../../lib/Event/Shop/shop.rb'
 
 RSpec.describe Shop do
 

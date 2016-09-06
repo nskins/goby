@@ -1,4 +1,4 @@
-require_relative '../../../../src/Item/Equippable/Weapon/weapon.rb'
+require_relative '../../../../lib/Item/Equippable/Weapon/weapon.rb'
 
 RSpec.describe Weapon do
 

@@ -1,4 +1,4 @@
-require_relative '../../../../src/Battle/BattleCommand/Attack/attack.rb'
+require_relative '../../../../lib/Battle/BattleCommand/Attack/attack.rb'
 
 RSpec.describe Attack do
 

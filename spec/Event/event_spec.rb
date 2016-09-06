@@ -1,4 +1,4 @@
-require_relative '../../src/Event/event.rb'
+require_relative '../../lib/Event/event.rb'
 
 RSpec.describe Event do
   

@@ -6,7 +6,7 @@ Goby is a Ruby framework for developing [text](https://en.wikipedia.org/wiki/Tex
 
 Play our (short) example game:
 
-```ruby src/main.rb```
+```ruby lib/main.rb```
 
 Remove the example game (which leaves only the framework):
 

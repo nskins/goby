@@ -1,4 +1,4 @@
-require_relative '../../../src/Entity/Monster/monster.rb'
+require_relative '../../../lib/Entity/Monster/monster.rb'
 
 RSpec.describe Monster do
   context "constructor" do

@@ -1,5 +1,5 @@
-require_relative '../../../src/Item/Food/food.rb'
-require_relative '../../../src/Entity/entity.rb'
+require_relative '../../../lib/Item/Food/food.rb'
+require_relative '../../../lib/Entity/entity.rb'
 
 RSpec.describe Food do
   context "constructor" do

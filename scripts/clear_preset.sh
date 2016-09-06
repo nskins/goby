@@ -1,42 +1,42 @@
 # Removes 'Battle' preset data.
 
-rm -f src/Battle/BattleCommand/escape.rb
-rm -f src/Battle/BattleCommand/Attack/kick.rb
-rm -f src/Battle/BattleCommand/Attack/smash.rb
+rm -f lib/Battle/BattleCommand/escape.rb
+rm -f lib/Battle/BattleCommand/Attack/kick.rb
+rm -f lib/Battle/BattleCommand/Attack/smash.rb
 
 # Removes 'Entity' preset data.
 
-rm -f src/Entity/Monster/alien.rb
+rm -f lib/Entity/Monster/alien.rb
 
 # Removes 'Event' preset data.
 
-rm -f src/Event/box.rb
-rm -f src/Event/Shop/bakery.rb
+rm -f lib/Event/box.rb
+rm -f lib/Event/Shop/bakery.rb
 
 # Removes 'Item' preset data.
 
-rm -f src/Item/Food/donut.rb
-rm -f src/Item/Equippable/Weapon/baguette.rb
+rm -f lib/Item/Food/donut.rb
+rm -f lib/Item/Equippable/Weapon/baguette.rb
 
 # Removes 'Map' preset data.
 
-rm -f src/Map/Map/donut_field.rb
-rm -f src/Map/Tile/dirt.rb
-rm -f src/Map/Tile/wall.rb
+rm -f lib/Map/Map/donut_field.rb
+rm -f lib/Map/Tile/dirt.rb
+rm -f lib/Map/Tile/wall.rb
 
 # Removes 'Story' preset data.
 
-rm -f src/Story/introduction.rb
+rm -f lib/Story/introduction.rb
 
 # Removes content references in 'driver.rb'.
-sed -i '/introduction/d' src/driver.rb
+sed -i '/introduction/d' lib/driver.rb
 
 # Removes content references in 'main.rb'.
-sed -i '/Battle/d' src/main.rb
-sed -i '/Map/d' src/main.rb
-sed -i '/name/d' src/main.rb
-sed -i '/max_hp/d' src/main.rb
-sed -i '/attack/d' src/main.rb
-sed -i '/battle/d' src/main.rb
-sed -i '/map/d' src/main.rb
-sed -i '/location/d' src/main.rb
+sed -i '/Battle/d' lib/main.rb
+sed -i '/Map/d' lib/main.rb
+sed -i '/name/d' lib/main.rb
+sed -i '/max_hp/d' lib/main.rb
+sed -i '/attack/d' lib/main.rb
+sed -i '/battle/d' lib/main.rb
+sed -i '/map/d' lib/main.rb
+sed -i '/location/d' lib/main.rb

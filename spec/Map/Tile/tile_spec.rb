@@ -1,6 +1,6 @@
-require_relative '../../../src/Map/Tile/tile.rb'
-require_relative '../../../src/Event/event.rb'
-require_relative '../../../src/Entity/Monster/monster.rb'
+require_relative '../../../lib/Map/Tile/tile.rb'
+require_relative '../../../lib/Event/event.rb'
+require_relative '../../../lib/Entity/Monster/monster.rb'
 
 RSpec.describe Tile do
 

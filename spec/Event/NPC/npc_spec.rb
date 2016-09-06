@@ -1,4 +1,4 @@
-require_relative '../../../src/Event/NPC/npc.rb'
+require_relative '../../../lib/Event/NPC/npc.rb'
 
 RSpec.describe NPC do
 
