@@ -13,10 +13,10 @@ def display_default_commands
   puts "* Default commands:"
   puts "n (north); s (south);"
   puts "e (east); w (west);"
-  puts "help; map; inv;"
+  puts "help; map; inv; status;"
   puts "use [item]; drop [item]"
   puts "equip [item]; unequip [item];"
-  print "status; attacks; quit\n\n" # TODO: merge attacks into status.
+  print "quit\n\n"
 end
 
 # Prints the commands that are tile-specific.
@@ -135,11 +135,6 @@ def interpret_command(command, player)
     player.print_inventory; return
   when "status"
     player.print_status; return
-  when "attacks"
-    # TODO: fix the function.
-    # player.print_attacks_with_stats
-    print "TODO: fix print_attacks_with_stats\n\n"
-    return
   end
 
   # Other commands.

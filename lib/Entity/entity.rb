@@ -126,26 +126,6 @@ class Entity
     return -1
   end
 
-  # @todo somehow combine the following two functions using boolean switch?
-  # @todo fix this function.
-  def print_attacks_with_stats
-    @battle_commands.each do |command|
-
-      # Simple way to check for both damage and success rate attributes.
-      # Prevents the name from being displayed for non-attacks.
-      unless command.damage.nil?
-        puts command.name + "\n  Damage: #{command.damage}"
-
-        unless command.success_rate.nil?
-          puts "  Success Rate: #{command.success_rate}"
-        end
-
-      end
-    end
-
-    print "\n"
-  end
-
   # Prints the available battle commands.
   def print_battle_commands
     @battle_commands.each do |command|
@@ -205,7 +185,7 @@ class Entity
     else
       puts "none"
     end
-    
+
     print "Legs: "
     if (!@outfit[:legs].nil?)
       puts "#{@outfit[:legs].name}"
