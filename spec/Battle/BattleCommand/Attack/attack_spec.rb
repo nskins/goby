@@ -8,6 +8,8 @@ RSpec.describe Attack do
       expect(attack.name).to eq "Attack"
       expect(attack.damage).to eq 0
       expect(attack.success_rate).to eq 100
+      expect(attack.description).to eq "    Damage: 0\n"\
+                                       "    Success Rate: 100%\n"
     end
 
     it "correctly assigns custom parameters" do
@@ -17,6 +19,8 @@ RSpec.describe Attack do
       expect(poke.name).to eq "Poke"
       expect(poke.damage).to eq 12
       expect(poke.success_rate).to eq 95
+      expect(poke.description).to eq "    Damage: 12\n"\
+                                     "    Success Rate: 95%\n"
     end
   end
 

@@ -7,7 +7,7 @@ require_relative "Map/Map/donut_field.rb"
 player = Player.new(
                     name: "Player1",
                     max_hp: 100,
-                    attack: 15,
+                    attack: 10,
                     battle_commands: [ Escape.new, Kick.new ],
                     map: DonutField.new,
                     location: Couple.new(0,0)

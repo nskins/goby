@@ -6,7 +6,7 @@ class Alien < Monster
   def initialize(params = {})
     super(params)
     @name = "Alien"
-    @max_hp = hp = 40
+    @max_hp = @hp = 30
     @attack = 6
     @defense = 2
     @battle_commands = [ Kick.new ]

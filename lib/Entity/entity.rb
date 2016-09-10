@@ -127,11 +127,15 @@ class Entity
   end
 
   # Prints the available battle commands.
-  def print_battle_commands
+  #
+  # @param [Boolean] verbose when true, prints the commands' descriptions.
+  def print_battle_commands(verbose)
+    puts "Battle Commands:" if verbose
     @battle_commands.each do |command|
-      print "❊ " + command.name + "  \n"
+      print "❊ #{command.name} \n"
+      print command.description if verbose
     end
-    print "\n"
+    print "\n" unless verbose
   end
 
   # Prints the inventory in a nice format.
@@ -193,6 +197,8 @@ class Entity
       puts "none"
     end
 
+    print "\n"
+    print_battle_commands(true)
     print "\n"
   end
 

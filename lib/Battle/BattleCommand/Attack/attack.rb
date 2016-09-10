@@ -11,6 +11,9 @@ class Attack < BattleCommand
     @name = params[:name] || "Attack"
     @damage = params[:damage] || 0
     @success_rate = params[:success_rate] || 100
+    @description = params[:description] || "    Damage: #{@damage}\n"\
+                                           "    Success Rate: #{@success_rate}%\n"
+
   end
 
   # Inflicts damage on the enemy based on user's stats.
