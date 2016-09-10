@@ -6,11 +6,14 @@ RSpec.describe BattleCommand do
     it "has the correct default parameters" do
       cmd = BattleCommand.new
       expect(cmd.name).to eq "BattleCommand"
+      expect(cmd.description).to eq nil
     end
 
     it "correctly assigns custom parameters" do
-      dance = BattleCommand.new(name: "Dance")
+      dance = BattleCommand.new(name: "Dance",
+                                description: "Sway the hips.")
       expect(dance.name).to eq "Dance"
+      expect(dance.description).to eq "Sway the hips."
     end
   end
 
@@ -32,5 +35,5 @@ RSpec.describe BattleCommand do
       expect(cmd.to_s).to eq cmd.name
     end
   end
-  
+
 end

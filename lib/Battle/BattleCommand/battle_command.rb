@@ -2,8 +2,10 @@ class BattleCommand
 
   # @param [Hash] params the parameters for creating a BattleCommand.
   # @option params [String] :name the name.
+  # @option params [String] :description a summary/message of its purpose.
   def initialize(params = {})
     @name = params[:name] || "BattleCommand"
+    @description = params[:description]
   end
 
   # The process that runs when this command is used in battle.
@@ -25,6 +27,6 @@ class BattleCommand
     @name
   end
 
-  attr_accessor :name
+  attr_accessor :name, :description
 
 end
