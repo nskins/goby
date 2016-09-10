@@ -185,9 +185,30 @@ class Entity
       puts "none"
     end
 
+    print "Shield: "
+    if (!@outfit[:shield].nil?)
+      puts "#{@outfit[:shield].name}"
+    else
+      puts "none"
+    end
+
     print "Helmet: "
     if (!@outfit[:helmet].nil?)
       puts "#{@outfit[:helmet].name}"
+    else
+      puts "none"
+    end
+
+    print "Torso: "
+    if (!@outfit[:torso].nil?)
+      puts "#{@outfit[:torso].name}"
+    else
+      puts "none"
+    end
+    
+    print "Legs: "
+    if (!@outfit[:legs].nil?)
+      puts "#{@outfit[:legs].name}"
     else
       puts "none"
     end
