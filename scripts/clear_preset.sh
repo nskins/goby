@@ -11,10 +11,13 @@ rm -f lib/Entity/Monster/alien.rb
 # Removes 'Event' preset data.
 
 rm -f lib/Event/box.rb
+rm -f lib/Event/hole.rb
+rm -f lib/Event/NPC/dan.rb
 rm -f lib/Event/Shop/bakery.rb
 
 # Removes 'Item' preset data.
 
+rm -f lib/Item/shovel.rb
 rm -f lib/Item/Food/donut.rb
 rm -f lib/Item/Equippable/Weapon/baguette.rb
 
