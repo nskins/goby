@@ -6,6 +6,7 @@ require_relative '../../Event/box.rb'
 require_relative '../../Event/hole.rb'
 require_relative '../../Event/NPC/dan.rb'
 require_relative '../../Event/Shop/bakery.rb'
+require_relative '../../Event/Shop/wacky_clothes.rb'
 
 # PRESET DATA
 class DonutField < Map
@@ -21,7 +22,9 @@ class DonutField < Map
 
               [ Dirt.new(description: "The world-famous \"Bob's Bakery\" stands here.",
                          events: [Bakery.new, Hole.new]),
-                  Dirt.new(events: [ Box.new(gold: 60) ] ), Dirt.new ]
+                  Dirt.new(events: [ Box.new(gold: 60) ] ),
+                Dirt.new(description: "There is a shop with strange clothes nearby.",
+                         events: [WackyClothesShop.new]) ]
              ]
 
     @regen_location = Couple.new(0,0)
