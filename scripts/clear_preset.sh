@@ -19,6 +19,10 @@ rm -f lib/Event/Shop/bakery.rb
 
 rm -f lib/Item/shovel.rb
 rm -f lib/Item/Food/donut.rb
+rm -f lib/Item/Equippable/Helmet/bucket.rb
+rm -f lib/Item/Equippable/Legs/ripped_pants.rb
+rm -f lib/Item/Equippable/Shield/riot_shield.rb
+rm -f lib/Item/Equippable/Torso/parka.rb
 rm -f lib/Item/Equippable/Weapon/baguette.rb
 
 # Removes 'Map' preset data.
