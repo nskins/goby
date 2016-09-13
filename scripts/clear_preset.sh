@@ -14,6 +14,7 @@ rm -f lib/Event/box.rb
 rm -f lib/Event/hole.rb
 rm -f lib/Event/NPC/dan.rb
 rm -f lib/Event/Shop/bakery.rb
+rm -f lib/Event/Shop/wacky_clothes.rb
 
 # Removes 'Item' preset data.
 
