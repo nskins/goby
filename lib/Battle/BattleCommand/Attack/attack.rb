@@ -46,8 +46,8 @@ class Attack < BattleCommand
         type("#{user.name} uses #{@name} and it is successful, ")
         type("bringing #{enemy.name}'s HP down to #{enemy.hp.round(2)}.")
       else
-        type("#{user.name} uses #{@name}, but #{enemy.name}'s defense")
-        type("is so high that it doesn't have any effect.")
+        type("#{user.name} uses #{@name}, but #{enemy.name}'s defense ")
+        type("is too high so there's no effect.")
       end
       print "\n\n"
 

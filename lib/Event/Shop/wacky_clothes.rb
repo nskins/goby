@@ -6,7 +6,7 @@ require_relative '../../Item/Equippable/Torso/parka.rb'
 
 class WackyClothesShop < Shop
   def initialize(params = { name: "the Wacky Clothes Shop",
-                            items: [ RippedPants.new, Bucket.new,
+                            items: [ Bucket.new, RippedPants.new,
                                      Parka.new, RiotShield.new ] })
     super(params)
   end
