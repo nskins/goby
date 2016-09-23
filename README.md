@@ -4,6 +4,10 @@ Goby is a Ruby framework for developing [text](https://en.wikipedia.org/wiki/Tex
 
 ## Preset Data
 
+Begin by bundling:
+
+```bundle install```
+
 Play our (short) example game:
 
 ```ruby lib/main.rb```
