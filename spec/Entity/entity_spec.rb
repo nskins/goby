@@ -132,6 +132,30 @@ RSpec.describe Entity do
       expect(entity.defense).to eq 4
     end
 
+    it "correctly equips the shield and alters the stats" do
+      entity = Entity.new(inventory: [Couple.new(
+                                        Shield.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
+      entity.equip_item("Shield")
+      expect(entity.outfit[:shield]).to eq Shield.new
+      expect(entity.defense).to eq 4
+    end
+
+    it "correctly equips the legs and alters the stats" do
+      entity = Entity.new(inventory: [Couple.new(
+                                        Legs.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
+      entity.equip_item("Legs")
+      expect(entity.outfit[:legs]).to eq Legs.new
+      expect(entity.defense).to eq 4
+    end
+
+    it "correctly equips the torso and alters the stats" do
+      entity = Entity.new(inventory: [Couple.new(
+                                        Torso.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
+      entity.equip_item("Torso")
+      expect(entity.outfit[:torso]).to eq Torso.new
+      expect(entity.defense).to eq 4
+    end
+
     it "does not equip anything for an absent item" do
       entity = Entity.new
       entity.equip_item("Weapon")

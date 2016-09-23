@@ -151,7 +151,10 @@ class Shop < Event
       print "Would you like to buy, sell, or exit?: "
       input = gets.chomp
       print "\n"
+
     end
+
+    print "#{player.name} has left #{@name}.\n\n"
   end
 
   attr_accessor :name, :items
