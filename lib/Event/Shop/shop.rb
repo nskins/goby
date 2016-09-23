@@ -151,6 +151,11 @@ class Shop < Event
       print "Would you like to buy, sell, or exit?: "
       input = gets.chomp
       print "\n"
+
+    end
+
+    if (input == "exit")
+      puts "#{player.name} has left #{@name}."
     end
   end
 
