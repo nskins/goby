@@ -152,6 +152,7 @@ class Shop < Event
       input = gets.chomp
       print "\n"
     end
+    print "#{player.name} has left #{@name}.\n\n"
   end
 
   attr_accessor :name, :items
