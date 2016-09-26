@@ -4,10 +4,6 @@ Goby is a Ruby framework for developing [text](https://en.wikipedia.org/wiki/Tex
 
 ## Preset Data
 
-Begin by bundling:
-
-```bundle install```
-
 Play our (short) example game:
 
 ```ruby lib/main.rb```
@@ -35,4 +31,3 @@ First, ensure that all tests are passing:
 ```rspec ```
 
 If so, then submit a pull request. Thanks!
-

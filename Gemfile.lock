@@ -6,7 +6,7 @@ GEM
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
-    rspec-core (3.5.2)
+    rspec-core (3.5.3)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -15,14 +15,12 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
-    ruby_deep_clone (0.7.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   rspec (~> 3.0)
-  ruby_deep_clone
 
 BUNDLED WITH
    1.12.5

@@ -1,4 +1,3 @@
-require 'deep_clone'
 require_relative 'entity.rb'
 require_relative '../world_command.rb'
 require_relative '../Map/Map/map.rb'
@@ -105,7 +104,7 @@ class Player < Entity
 
       if (monster_outcome < 50)
         system("clear")
-        clone = DeepClone.clone(tile.monsters[Random.rand(0..(tile.monsters.size-1))])
+        clone = tile.monsters[Random.rand(0..(tile.monsters.size-1))].clone
         battle(clone)
       end
 
