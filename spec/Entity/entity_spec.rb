@@ -34,7 +34,10 @@ RSpec.describe Entity do
                                   helmet: Helmet.new(
                                       stat_change: StatChange.new(
                                               attack: 1, defense: 5)) },
-                        battle_commands: [Attack.new(name: "Kick")],
+                        battle_commands: [
+                          Attack.new(name: "Punch"),
+                          Attack.new(name: "Kick")
+                        ],
                         escaped: true)
       expect(hero.name).to eq "Hero"
       expect(hero.max_hp).to eq 50
@@ -47,7 +50,11 @@ RSpec.describe Entity do
       expect(hero.outfit[:weapon]).to eq Weapon.new
       expect(hero.outfit[:helmet]).to eq Helmet.new
       # Attack.new is present due to the equipped weapon.
-      expect(hero.battle_commands).to eq [Attack.new, Attack.new(name: "Kick")]
+      expect(hero.battle_commands).to eq [
+        Attack.new,
+        Attack.new(name: "Kick"),
+        Attack.new(name: "Punch")
+      ]
       # cannot be overwritten.
       expect(hero.escaped).to eq false
     end
