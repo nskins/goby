@@ -48,7 +48,10 @@ RSpec.describe Player do
                                   helmet: Helmet.new(
                                       stat_change: StatChange.new(
                                               attack: 1, defense: 5)) },
-                        battle_commands: [BattleCommand.new(name: "Yell")],
+                        battle_commands: [
+                          BattleCommand.new(name: "Yell"),
+                          BattleCommand.new(name: "Run")
+                        ],
                         escaped: true,
                         map: @map,
                         location: Couple.new(1,1))
@@ -61,7 +64,11 @@ RSpec.describe Player do
       expect(hero.gold).to eq 10
       expect(hero.outfit[:weapon]).to eq Weapon.new
       expect(hero.outfit[:helmet]).to eq Helmet.new
-      expect(hero.battle_commands).to eq [Attack.new, BattleCommand.new(name: "Yell")]
+      expect(hero.battle_commands).to eq [
+        Attack.new,
+        BattleCommand.new(name: "Run"),
+        BattleCommand.new(name: "Yell")
+      ]
       # cannot be overwritten.
       expect(hero.escaped).to eq false
       expect(hero.map).to eq @map
