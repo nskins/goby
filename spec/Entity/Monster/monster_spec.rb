@@ -32,7 +32,10 @@ RSpec.describe Monster do
                                   helmet: Helmet.new(
                                       stat_change: StatChange.new(
                                               attack: 1, defense: 5)) },
-                        battle_commands: [Attack.new(name: "Kick")],
+                        battle_commands: [
+                          Attack.new(name: "Scratch"),
+                          Attack.new(name: "Kick")
+                        ],
                         escaped: true,
                         message: "\"Oh, hi.\"")
       expect(clown.name).to eq "Clown"
@@ -44,7 +47,11 @@ RSpec.describe Monster do
       expect(clown.gold).to eq 10
       expect(clown.outfit[:weapon]).to eq Weapon.new
       expect(clown.outfit[:helmet]).to eq Helmet.new
-      expect(clown.battle_commands).to eq [Attack.new, Attack.new(name: "Kick")]
+      expect(clown.battle_commands).to eq [
+        Attack.new,
+        Attack.new(name: "Kick"),
+        Attack.new(name: "Scratch")
+      ]
       # cannot be overwritten.
       expect(clown.escaped).to eq false
       expect(clown.message).to eq "\"Oh, hi.\""
