@@ -26,17 +26,24 @@ class Attack < BattleCommand
       multiplier = 1
 
       if enemy.defense > user.attack
-        multiplier = 1 - ((enemy.defense * 0.1) - (user.attack * 0.1))
+
+        # RANDOMIZE ATTACK
+        inflict = Random.new.rand(0.05..0.15).round(2)
+        multiplier = 1 - ((enemy.defense * 0.1) - (user.attack * inflict))
+
 
         if multiplier < 0
           multiplier = 0
         end
 
       else
-        multiplier = 1 + ((user.attack * 0.1) - (enemy.defense * 0.1))
+        # RANDOMIZE ATTACK
+        inflict = Random.new.rand(0.05..0.15).round(2)
+        multiplier = 1 + ((user.attack * inflict) - (enemy.defense * 0.1))
+
       end
 
-      enemy.hp -= @damage * multiplier
+      enemy.hp -= (@damage * multiplier).round(0)
 
       if enemy.hp < 0
         enemy.hp = 0
@@ -45,6 +52,7 @@ class Attack < BattleCommand
       if multiplier > 0
         type("#{user.name} uses #{@name} and it is successful, ")
         type("bringing #{enemy.name}'s HP down to #{enemy.hp.round(2)}.")
+
       else
         type("#{user.name} uses #{@name}, but #{enemy.name}'s defense ")
         type("is too high so there's no effect.")

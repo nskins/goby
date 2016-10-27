@@ -1,4 +1,9 @@
 require_relative '../../../../lib/Battle/BattleCommand/Attack/attack.rb'
+require_relative '../../../../lib/Battle/BattleCommand/Attack/kick.rb'
+require_relative '../../../../lib/Entity/entity.rb'
+require_relative '../../../../lib/Entity/player.rb'
+require_relative '../../../../lib/Entity/Monster/alien.rb'
+
 
 RSpec.describe Attack do
 
@@ -34,6 +39,19 @@ RSpec.describe Attack do
       kick = Attack.new(name: "Kick")
       expect(poke).not_to eq kick
     end
+  end
+
+  it "deals random damage" do
+    user = Player.new(name: "Hero",
+                      max_hp: 50,
+                      hp: 35,
+                      attack: 12,
+                      defense: 4
+                      )
+    enemy = Alien.new
+    attack = Kick.new
+    attack.run(user, enemy)
+    expect(enemy.hp).to be_within(18).of(23)
   end
 
 end
