@@ -51,7 +51,7 @@ class Attack < BattleCommand
 
       if multiplier > 0
         type("#{user.name} uses #{@name} and it is successful, ")
-        type("bringing #{enemy.name}'s HP down to #{enemy.hp.round(2)}.")
+        type("bringing #{enemy.name}'s HP down to #{enemy.hp}.")
 
       else
         type("#{user.name} uses #{@name}, but #{enemy.name}'s defense ")

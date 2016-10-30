@@ -1,9 +1,6 @@
 require_relative '../../../../lib/Battle/BattleCommand/Attack/attack.rb'
-require_relative '../../../../lib/Battle/BattleCommand/Attack/kick.rb'
-require_relative '../../../../lib/Entity/entity.rb'
 require_relative '../../../../lib/Entity/player.rb'
-require_relative '../../../../lib/Entity/Monster/alien.rb'
-
+require_relative '../../../../lib/Entity/Monster/monster.rb'
 
 RSpec.describe Attack do
 
@@ -48,8 +45,10 @@ RSpec.describe Attack do
                       attack: 12,
                       defense: 4
                       )
-    enemy = Alien.new
-    attack = Kick.new
+    enemy = Monster.new(max_hp: 30,
+                        defense: 2
+                        )
+    attack = Attack.new(damage: 5)
     attack.run(user, enemy)
     expect(enemy.hp).to be_within(18).of(23)
   end
