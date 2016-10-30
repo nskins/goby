@@ -4,7 +4,7 @@ require_relative 'attack.rb'
 class Smash < Attack
 
   def initialize(params = { name: "Smash",
-                            damage: 10,
+                            strength: 10,
                             success_rate: 80 } )
     super(params)
   end

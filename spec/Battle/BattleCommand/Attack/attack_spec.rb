@@ -8,20 +8,20 @@ RSpec.describe Attack do
     it "has the correct default parameters" do
       attack = Attack.new
       expect(attack.name).to eq "Attack"
-      expect(attack.damage).to eq 0
+      expect(attack.strength).to eq 0
       expect(attack.success_rate).to eq 100
-      expect(attack.description).to eq "    Damage: 0\n"\
+      expect(attack.description).to eq "    Strength: 0\n"\
                                        "    Success Rate: 100%\n"
     end
 
     it "correctly assigns custom parameters" do
       poke = Attack.new(name: "Poke",
-                        damage: 12,
+                        strength: 12,
                         success_rate: 95)
       expect(poke.name).to eq "Poke"
-      expect(poke.damage).to eq 12
+      expect(poke.strength).to eq 12
       expect(poke.success_rate).to eq 95
-      expect(poke.description).to eq "    Damage: 12\n"\
+      expect(poke.description).to eq "    Strength: 12\n"\
                                      "    Success Rate: 95%\n"
     end
   end
@@ -48,8 +48,9 @@ RSpec.describe Attack do
     enemy = Monster.new(max_hp: 30,
                         defense: 2
                         )
-    attack = Attack.new(damage: 5)
-    attack.run(user, enemy)
+    attack = Attack.new(strength: 5)
+    damage = attack.calculate_damage(user, enemy)
+    enemy.hp -= damage
     expect(enemy.hp).to be_within(18).of(23)
   end
 
