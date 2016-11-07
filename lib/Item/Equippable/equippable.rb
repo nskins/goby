@@ -28,7 +28,7 @@ class Equippable < Item
     entity.outfit[@type] = self
     alter_stats(self, entity, true)
 
-    if (!prev_item.nil?)
+    if prev_item
       alter_stats(prev_item, entity, false)
       entity.add_item(prev_item)
     end
