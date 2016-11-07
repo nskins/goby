@@ -188,48 +188,56 @@ class Player < Entity
   # Engages in battle with the specified monster.
   #
   # @param [Monster] monster the opponent of the battle.
+
   def battle(monster)
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 
+    if monster.agility > self.agility
+      first_attacker = monster
+      second_attacker = self
+      type("The #{monster.name} gets to attack first!\n\n")
+    else
+      first_attacker = self
+      second_attacker = monster
+      type("You get to attack first!\n")
+    end
+
     # Main battle loop.
     while hp > 0
+      first_attacker.choose_attack.run(first_attacker, second_attacker)
 
-      # Execute the player's command.
-      choose_attack.run(self, monster)
-
-      # Case: The player has successfully escaped.
-      if (@escaped)
-        @escaped = false
+      if (first_attacker.escaped)
+        first_attacker.escaped = false
         return
       end
 
-      if (monster.hp > 0)
-        monster.choose_attack.run(monster, self)
+      break if monster.hp <= 0
 
-        # Case: The monster has successfully escaped.
-        if (monster.escaped)
-          monster.escaped = false
-          return
-        end
+      second_attacker.choose_attack.run(second_attacker, first_attacker)
 
-      # Case: The monster has been defeated.
-      else
-      	type("You defeated the #{monster.name}\n")
-        gold_reward = Random.rand(0..monster.gold)
-        if (gold_reward > 0)
-          type("and they dropped #{gold_reward} gold!\n")
-          @gold += gold_reward
-        end
-        print "\n"
-
+      if (second_attacker.escaped)
+        second_attacker.escaped = false
         return
       end
+
+      break if monster.hp <= 0
 
     end
 
-    # Case: Breaking out of main battle loop => player is dead.
-    sleep(2); die
+    if hp <=0
+      sleep(2); die
+    end
+
+    if monster.hp <= 0
+      type("You defeated the #{monster.name}\n")
+      gold_reward = Random.rand(0..monster.gold)
+          
+      if (gold_reward > 0)
+        type("and they dropped #{gold_reward} gold!\n\n")
+        @gold += gold_reward
+      end
+    end
 
   end
 
