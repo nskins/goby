@@ -212,7 +212,7 @@ class Player < Entity
         return
       end
 
-      break if monster.hp <= 0
+      break if monster.hp <= 0 || hp <=0
 
       second_attacker.choose_attack.run(second_attacker, first_attacker)
 
@@ -221,7 +221,7 @@ class Player < Entity
         return
       end
 
-      break if monster.hp <= 0
+      break if monster.hp <= 0 || hp <=0
 
     end
 
