@@ -19,6 +19,7 @@ class Entity
     @hp = params[:hp] || hp
     @attack = params[:attack] || 1
     @defense = params[:defense] || 1
+    @agility = params[:agility] || 1
 
     @inventory = params[:inventory] || Array.new
     @gold = params[:gold] || 0
@@ -273,6 +274,7 @@ class Entity
   attr_accessor :max_hp, :hp
   attr_accessor :attack
   attr_accessor :defense
+  attr_accessor :agility
 
   # The inventory is stored as an array of Couple objects.
   attr_accessor :inventory
