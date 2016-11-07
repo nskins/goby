@@ -8,6 +8,7 @@ player = Player.new(
                     name: "Player1",
                     max_hp: 100,
                     attack: 10,
+                    agility: 2,
                     battle_commands: [ Escape.new, Kick.new ],
                     map: DonutField.new,
                     location: Couple.new(0,0)
