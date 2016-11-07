@@ -12,6 +12,7 @@ RSpec.describe Entity do
       expect(entity.hp).to eq 1
       expect(entity.attack). to eq 1
       expect(entity.defense).to eq 1
+      expect(entity.agility).to eq 1
       expect(entity.inventory).to eq Array.new
       expect(entity.gold).to eq 0
       expect(entity.battle_commands).to eq Array.new
@@ -25,6 +26,7 @@ RSpec.describe Entity do
                         hp: 35,
                         attack: 12,
                         defense: 4,
+                        agility: 9,
                         inventory: [Couple.new(Item.new, 1)],
                         gold: 10,
                         outfit: { weapon: Weapon.new(
@@ -45,6 +47,7 @@ RSpec.describe Entity do
       # Attack & defense increase due to the equipped items.
       expect(hero.attack).to eq 16
       expect(hero.defense).to eq 10
+      expect(hero.agility).to eq 9
       expect(hero.inventory).to eq [Couple.new(Item.new, 1)]
       expect(hero.gold).to eq 10
       expect(hero.outfit[:weapon]).to eq Weapon.new
