@@ -193,14 +193,14 @@ class Player < Entity
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 
-    if monster.agility > self.agility
-      first_attacker = monster
-      second_attacker = self
-      type("The #{monster.name} gets to attack first!\n\n")
-    else
+    if player_first?(monster)
       first_attacker = self
       second_attacker = monster
       type("You get to attack first!\n")
+    else
+      first_attacker = monster
+      second_attacker = self
+      type("The #{monster.name} gets to attack first!\n\n")
     end
 
     # Main battle loop.
@@ -242,5 +242,13 @@ class Player < Entity
   end
 
   attr_reader :map, :location
+
+  private
+  
+  def player_first?(monster)
+    sum = monster.agility + agility
+    random_number = Random.rand(0..sum - 1)
+    random_number < agility
+  end
 
 end
