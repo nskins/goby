@@ -193,18 +193,18 @@ class Player < Entity
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 
-    if player_first?(monster)
-      first_attacker = self
-      second_attacker = monster
-      type("You get to attack first!\n")
-    else
-      first_attacker = monster
-      second_attacker = self
-      type("The #{monster.name} gets to attack first!\n\n")
-    end
+    while hp > 0
+      if player_first?(monster)
+        first_attacker = self
+        second_attacker = monster
+        type("Player's turn to attack!\n")
+      else
+        first_attacker = monster
+        second_attacker = self
+        type("The #{monster.name} attacks!\n\n")
+      end
 
     # Main battle loop.
-    while hp > 0
       first_attacker.choose_attack.run(first_attacker, second_attacker)
 
       if (first_attacker.escaped)
