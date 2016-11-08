@@ -28,7 +28,7 @@ class Player < Entity
     @location = DEFAULT_LOCATION
 
     # Ensure that the map and the location are valid.
-    if ((!params[:map].nil?) && (!params[:location].nil?))
+    if (params[:map] && params[:location])
 
       y = params[:location].first; x = params[:location].second
 

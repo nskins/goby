@@ -30,7 +30,7 @@ class Entity
 
     # See its attr_accessor below.
     @outfit = Hash.new
-    if (!params[:outfit].nil?)
+    if params[:outfit]
       params[:outfit].each do |type,value|
         value.equip(self)
       end
@@ -164,35 +164,35 @@ class Entity
     print "\n"
 
     print "Weapon: "
-    if (!@outfit[:weapon].nil?)
+    if @outfit[:weapon]
       puts "#{@outfit[:weapon].name}"
     else
       puts "none"
     end
 
     print "Shield: "
-    if (!@outfit[:shield].nil?)
+    if @outfit[:shield]
       puts "#{@outfit[:shield].name}"
     else
       puts "none"
     end
 
     print "Helmet: "
-    if (!@outfit[:helmet].nil?)
+    if @outfit[:helmet]
       puts "#{@outfit[:helmet].name}"
     else
       puts "none"
     end
 
     print "Torso: "
-    if (!@outfit[:torso].nil?)
+    if @outfit[:torso]
       puts "#{@outfit[:torso].name}"
     else
       puts "none"
     end
 
     print "Legs: "
-    if (!@outfit[:legs].nil?)
+    if @outfit[:legs]
       puts "#{@outfit[:legs].name}"
     else
       puts "none"
@@ -239,7 +239,7 @@ class Entity
   # @param [Item, String] item the item (or its name) to unequip.
   def unequip_item(item)
     pair = @outfit.detect { |type, value| value.name.casecmp(item.to_s) == 0 }
-    if (!pair.nil?)
+    if pair
       # On a successful find, the "detect" method always returns
       # an array of length 2; thus, the following line should not fail.
       item = pair[1]
