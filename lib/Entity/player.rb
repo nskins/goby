@@ -188,51 +188,68 @@ class Player < Entity
   # Engages in battle with the specified monster.
   #
   # @param [Monster] monster the opponent of the battle.
+
   def battle(monster)
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 
-    # Main battle loop.
     while hp > 0
-
-      # Execute the player's command.
-      choose_attack.run(self, monster)
-
-      # Case: The player has successfully escaped.
-      if (@escaped)
-        @escaped = false
-        return
+      # Both choose an attack.
+      player_attack = choose_attack
+      monster_attack = monster.choose_attack
+      
+      attackers = Array.new
+      attacks = Array.new
+      
+      if player_first?(monster)
+        attackers << self << monster
+        attacks << player_attack << monster_attack
+      else
+        attackers << monster << self
+        attacks << monster_attack << player_attack
       end
-
-      if (monster.hp > 0)
-        monster.choose_attack.run(monster, self)
-
-        # Case: The monster has successfully escaped.
-        if (monster.escaped)
-          monster.escaped = false
+      
+      2.times do |i|  
+        # The attacker runs its attack on the other attacker.
+        attacks[i].run(attackers[i], attackers[(i + 1) % 2])
+        
+        if (attackers[i].escaped)
+          attackers[i].escaped = false
           return
         end
-
-      # Case: The monster has been defeated.
-      else
-      	type("You defeated the #{monster.name}\n")
-        gold_reward = Random.rand(0..monster.gold)
-        if (gold_reward > 0)
-          type("and they dropped #{gold_reward} gold!\n")
-          @gold += gold_reward
-        end
-        print "\n"
-
-        return
+        
+        break if monster.hp <= 0 || hp <= 0
+        
       end
+        
+      break if monster.hp <= 0 || hp <= 0
 
     end
 
-    # Case: Breaking out of main battle loop => player is dead.
-    sleep(2); die
+    if hp <=0
+      sleep(2); die
+    end
+
+    if monster.hp <= 0
+      type("You defeated the #{monster.name}\n")
+      gold_reward = Random.rand(0..monster.gold)
+          
+      if (gold_reward > 0)
+        type("and they dropped #{gold_reward} gold!\n\n")
+        @gold += gold_reward
+      end
+    end
 
   end
 
   attr_reader :map, :location
+
+  private
+  
+  def player_first?(monster)
+    sum = monster.agility + agility
+    random_number = Random.rand(0..sum - 1)
+    random_number < agility
+  end
 
 end
