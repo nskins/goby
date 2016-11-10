@@ -194,34 +194,35 @@ class Player < Entity
     type("You've run into a vicious #{monster.name}!\n\n")
 
     while hp > 0
+      # Both choose an attack.
+      player_attack = choose_attack
+      monster_attack = monster.choose_attack
+      
+      attackers = Array.new
+      attacks = Array.new
+      
       if player_first?(monster)
-        first_attacker = self
-        second_attacker = monster
-        type("Player's turn to attack!\n")
+        attackers << self << monster
+        attacks << player_attack << monster_attack
       else
-        first_attacker = monster
-        second_attacker = self
-        type("The #{monster.name} attacks!\n\n")
+        attackers << monster << self
+        attacks << monster_attack << player_attack
       end
-
-    # Main battle loop.
-      first_attacker.choose_attack.run(first_attacker, second_attacker)
-
-      if (first_attacker.escaped)
-        first_attacker.escaped = false
-        return
+      
+      2.times do |i|  
+        # The attacker runs its attack on the other attacker.
+        attacks[i].run(attackers[i], attackers[(i + 1) % 2])
+        
+        if (attackers[i].escaped)
+          attackers[i].escaped = false
+          return
+        end
+        
+        break if monster.hp <= 0 || hp <= 0
+        
       end
-
-      break if monster.hp <= 0 || hp <=0
-
-      second_attacker.choose_attack.run(second_attacker, first_attacker)
-
-      if (second_attacker.escaped)
-        second_attacker.escaped = false
-        return
-      end
-
-      break if monster.hp <= 0 || hp <=0
+        
+      break if monster.hp <= 0 || hp <= 0
 
     end
 
