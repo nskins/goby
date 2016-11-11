@@ -104,7 +104,7 @@ def interpret_command(command, player)
         #       how many of the Item to drop.
         item = player.inventory[index].first
         player.remove_item(item, 1)
-        print "You have dropped #{item}\n\n"
+        print "You have dropped #{item}.\n\n"
       else
         print "You can't drop what you don't have!\n\n"
       end
