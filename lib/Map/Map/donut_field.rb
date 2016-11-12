@@ -17,25 +17,24 @@ class DonutField < Map
     wall = Wall.new
     
     @tiles = Array.new
-  
-    # Set the first row of the map with generic Dirt.
-    @tiles[0] = Array.new
-    3.times { @tiles[0] << dirt.clone }
+    
+    # Create a 3x3 map of all one type of Tile (Dirt),
+    3.times do |i|
+      @tiles[i] = Array.new
+      3.times do |j|
+        @tiles[i][j] = dirt.clone
+      end
+    end 
+    
+    # Put the wall in the center.
+    @tiles[1][1] = wall.clone
     
     # Add special events to the first row.
     @tiles[0][2].description = "Dirt surrounds you.\nYou sense a strange presence."
     @tiles[0][2].monsters = [Alien.new]
     
-    # Set the second row of the map.
-    @tiles[1] = Array.new
-    @tiles[1] << dirt.clone << wall.clone << dirt.clone
-    
     # Add special events to the second row.
     @tiles[1][2].events = [Dan.new]
-    
-    # Set the third row of the map.
-    @tiles[2] = Array.new
-    3.times { @tiles[2] << dirt.clone }
       
     # Add special events to the third row.
     @tiles[2][0].description = "The world-famous \"Bob's Bakery\" stands here."
