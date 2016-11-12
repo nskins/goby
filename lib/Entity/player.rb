@@ -173,7 +173,7 @@ class Player < Entity
             print "■ "
           end
         else
-          print " "
+          print "  "
         end
         col_count += 1
       end
