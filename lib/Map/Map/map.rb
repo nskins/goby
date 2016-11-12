@@ -26,9 +26,9 @@ class Map
       end
       sub.each do |tile|
         if tile.passable
-          print "·"
+          print "· "
         else
-          print "■"
+          print "■ "
         end
       end
     puts ""

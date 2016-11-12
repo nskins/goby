@@ -165,12 +165,12 @@ class Player < Entity
         if tile.seen
           if tile.passable
             if row_count == @location.first && col_count == @location.second
-              print "¶"
+              print "¶ "
             else
-              print "·"
+              print "· "
             end
           else
-            print "■"
+            print "■ "
           end
         else
           print " "
