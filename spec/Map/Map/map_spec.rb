@@ -4,7 +4,7 @@ RSpec.describe Map do
 
   before(:all) do
     @lake = Map.new(name: "Lake",
-                    tiles: [ [ Tile.new, Tile.new ] ],
+                    tiles: [ [ Tile.new, Tile.new(passable: false) ] ],
                     regen_location: Couple.new(0,1))
   end
 
@@ -18,9 +18,15 @@ RSpec.describe Map do
 
     it "correctly assigns custom parameters" do
       expect(@lake.name).to eq "Lake"
-      expect(@lake.tiles).to eq [ [ Tile.new, Tile.new ] ]
+      expect(@lake.tiles).to eq [ [ Tile.new, Tile.new(passable: false) ] ]
       expect(@lake.regen_location).to eq Couple.new(0,1)
     end
+  end
+  
+  context "display" do
+    specify { expect(@lake.display).to output(
+        "· ■ "
+      ).to_stdout }
   end
 
   context "in bounds" do
