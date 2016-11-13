@@ -1,4 +1,9 @@
 class Tile
+	
+	# Default graphic for passable tiles.
+	DEFAULT_PASSABLE = "·"
+	# Default graphic for impassable tiles.
+	DEFAULT_IMPASSABLE = "■"
 
 	# @param [Hash] params the parameters for creating a Tile.
   # @option params [Boolean] :passable if true, the player can move here.
@@ -33,8 +38,8 @@ class Tile
 	
 		# Returns the default graphic by considering passable.
 		def default_graphic
-			return "·" if @passable
-			return "■"
+			return DEFAULT_PASSABLE if @passable
+			return DEFAULT_IMPASSABLE
 		end
 
 end
