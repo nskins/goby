@@ -6,6 +6,7 @@ class Tile
 	# @option params [String] :description a summary/message of the contents.
 	# @option params [[Event]] :events the events found on this tile.
 	# @option params [[Monster]] :monsters the monsters found on this tile.
+	# @option params [String] :graphic the representation of the tile graphically.
 	def initialize(params = {})
 		if params[:passable].nil? then @passable = true
     else @passable = params[:passable] end
@@ -16,6 +17,7 @@ class Tile
 		@description = params[:description] || ""
 		@events = params[:events] || Array.new
 		@monsters = params[:monsters] || Array.new
+		@graphic = params[:graphic] || default_graphic
 	end
 
 	# @param [Tile] rhs the tile on the right.
@@ -25,6 +27,14 @@ class Tile
 						@description == rhs.description)
 	end
 
-	attr_accessor :passable, :seen, :description, :events, :monsters
+	attr_accessor :passable, :seen, :description, :events, :monsters, :graphic
+	
+	private 
+	
+		# Returns the default graphic by considering passable.
+		def default_graphic
+			return "·" if @passable
+			return "■"
+		end
 
 end
