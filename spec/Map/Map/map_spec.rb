@@ -23,10 +23,10 @@ RSpec.describe Map do
     end
   end
   
-  context "display" do
-    specify { expect(@lake.display).to output(
-        "· ■ "
-      ).to_stdout }
+  context "to_s" do
+    it "should display a simple map" do
+      expect(@lake.to_s).to eq("· ■ \n")
+    end
   end
 
   context "in bounds" do

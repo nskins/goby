@@ -16,25 +16,15 @@ class Map
 	end
 
   # Prints the map in a nice format.
-	def display
-    #greeting
-    puts "\nYou're in " + @name + "!\n\n";
-    @tiles.each do |sub|
-      #centers map under the greeting
-      for i in 1..(name.length/2)
-        print " "
+	def to_s
+		output = ""
+    @tiles.each do |row|
+      row.each do |tile|
+        output += (tile.graphic + " ")
       end
-      sub.each do |tile|
-        if tile.passable
-          print "· "
-        else
-          print "■ "
-        end
-      end
-    puts ""
+			output += "\n"
     end
-		puts "\n· - passable space" +
-         "\n■ - impassable space"
+		return output
   end
 
 	# Returns true when @tiles[y][x] is an existing index of @tiles.
