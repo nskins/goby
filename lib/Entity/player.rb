@@ -151,38 +151,42 @@ class Player < Entity
   end
 
   # Prints the map in regards to what the player has seen.
+  # Additionally, provides current location and the map's name.
   def print_map
-
-    puts "\nYou're in " + @map.name + "!\n\n"
-    row_count = 0
-    @map.tiles.each do |sub|
-      #centers each row under the "welcome" sign
-      for i in 1..(@map.name.length/2)
+    
+    # Provide some spacing to center the name.
+    (0..(@map.name.length/4)).each do
+      print " "
+    end
+  
+    print @map.name + "\n\n"
+    
+    @map.tiles.each_with_index do |row, r|
+      # Provide spacing for the beginning of each row.
+      (0..(@map.name.length/2)).each do
         print " "
       end
-      col_count = 0
-      sub.each do |tile|
-        if tile.seen
-          if tile.passable
-            if row_count == @location.first && col_count == @location.second
-              print "¶ "
-            else
-              print "· "
-            end
-          else
-            print "■ "
-          end
-        else
+      row.each_with_index do |tile, t|
+        if ((@location.first == r) && (@location.second == t))
+          print "¶ "
+        elsif (!tile.seen)
           print "  "
+        else
+          print tile.graphic + " "
         end
-        col_count += 1
       end
-      row_count += 1
-      puts ""
+			print "\n"
     end
-    puts "\n· - passable space" +
-         "\n■ - impassable space" +
-         "\n¶ - your location\n\n"
+    
+    print "\n"
+    
+    # Provide some spacing to center the legend.
+    (0..(@map.name.length/4)).each do
+      print " "
+    end
+    
+    # Prints the legend.
+    puts "¶ - #{@name}'s \n       location\n\n"
   end
 
   # Engages in battle with the specified monster.
