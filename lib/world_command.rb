@@ -11,8 +11,8 @@ end
 # Prints the commands that are available everywhere.
 def display_default_commands
   puts "* Default commands:"
-  puts "n (north); s (south);"
-  puts "e (east); w (west);"
+  puts "d (north); s (south);"
+  puts "d (east); a (west);"
   puts "help; map; inv; status;"
   puts "use [item]; drop [item]"
   puts "equip [item]; unequip [item];"
