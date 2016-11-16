@@ -62,11 +62,11 @@ def print_possible_moves(player)
   puts "* Movement:"
 
   if y > 0 && tiles[y - 1][x].passable
-    print "north (n); "
+    print "north (w); "
   end
 
   if x < (tiles[y].length-1) && tiles[y][x + 1].passable
-    print "east (e); "
+    print "east (d); "
   end
 
   if y < (tiles.length-1) && tiles[y + 1][x].passable
@@ -74,7 +74,7 @@ def print_possible_moves(player)
   end
 
   if x > 0 && tiles[y][x - 1].passable
-    print "west (w);"
+    print "west (a);"
   end
   print "\n\n"
 end
@@ -120,13 +120,13 @@ def interpret_command(command, player)
 
   # Single-word default commands.
   case(command)
-  when "n"
+  when "w"
     player.move_north; return
-  when "e"
+  when "d"
     player.move_east; return
   when "s"
     player.move_south; return
-  when "w"
+  when "a"
     player.move_west; return
   when "help"
     help(player); return
