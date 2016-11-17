@@ -139,7 +139,7 @@ def interpret_command(command, player)
   # Other commands.
   events = player.map.tiles[player.location.first][player.location.second].events
   events.each do |event|
-    if (event.visible && words[0] == event.command)
+    if (event.visible && words[0].casecmp(event.command).zero?)
       event.run(player)
       return
     end
