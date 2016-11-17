@@ -33,12 +33,12 @@ RSpec.describe Equippable do
     it "changes the entity's stats in the trivial case" do
       entity = Entity.new
       equ = Equippable.new(stat_change: StatChange.new(attack: 2,
-                                                       defense: 2))
-      alter_stats(equ, entity, true)
+                                                       defense: 3))
+      equ.alter_stats(entity, true)
       expect(entity.attack).to eq 3
-      expect(entity.defense).to eq 3
+      expect(entity.defense).to eq 4
 
-      alter_stats(equ, entity, false)
+      equ.alter_stats(entity, false)
       expect(entity.attack).to eq 1
       expect(entity.defense).to eq 1
     end

@@ -18,6 +18,21 @@ class Equippable < Item
     @stat_change = params[:stat_change] || StatChange.new
     @type = :equippable
   end
+  
+  # Alters the stats of the entity
+  #
+  # @param [Entity] entity the entity equipping/unequipping the item.
+  # @param [Boolean] equipping flag for when the item is being equipped or unequipped.
+  # @todo ensure stats cannot go below zero (but does it matter..?).
+  def alter_stats(entity, equipping)
+    if equipping
+      entity.attack += @stat_change.attack
+      entity.defense += @stat_change.defense
+    else
+      entity.attack -= @stat_change.attack
+      entity.defense -= @stat_change.defense
+    end
+  end
 
   # Equips onto the entity and changes the entity's attributes accordingly.
   #
@@ -26,10 +41,10 @@ class Equippable < Item
     prev_item = entity.outfit[@type]
 
     entity.outfit[@type] = self
-    alter_stats(self, entity, true)
+    alter_stats(entity, true)
 
     if prev_item
-      alter_stats(prev_item, entity, false)
+      prev_item.alter_stats(entity, false)
       entity.add_item(prev_item)
     end
 
@@ -41,7 +56,7 @@ class Equippable < Item
   # @param [Entity] entity the entity who is unequipping the equippable.
   def unequip(entity)
     entity.outfit.delete(@type)
-    alter_stats(self, entity, false)
+    alter_stats(entity, false)
 
     print "#{entity.name} unequips #{@name}!\n\n"
   end
@@ -76,21 +91,4 @@ class StatChange
   end
 
   attr_accessor :attack, :defense
-end
-
-# Alters the stats of the entity
-#
-# @param [Equippable] item the item being equipped/unequipped.
-# @param [Entity] entity the entity equipping/unequipping the item.
-# @param [Boolean] equipping flag for when the item is being equipped or unequipped.
-# @todo switch to Equippable member function.
-# @todo ensure stats cannot go below zero.
-def alter_stats(item, entity, equipping)
-  if equipping
-    entity.attack += item.stat_change.attack
-    entity.defense += item.stat_change.defense
-  else
-    entity.attack -= item.stat_change.attack
-    entity.defense -= item.stat_change.defense
-  end
 end
