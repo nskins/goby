@@ -6,7 +6,7 @@ class Equippable < Item
   # @option params [String] :name the name.
   # @option params [Integer] :price the cost in a shop.
   # @option params [Boolean] :consumable determines whether the item is lost when used.
-  # @option params [StatChange] :stat_change the change in stats for when the item is equipped.
+  # @option params [Hash] :stat_change the change in stats for when the item is equipped.
   def initialize(params = {})
     super(params)
     @name = params[:name] || "Equippable"
@@ -15,7 +15,7 @@ class Equippable < Item
     if params[:consumable].nil? then @consumable = false
     else @consumable = params[:consumable] end
 
-    @stat_change = params[:stat_change] || StatChange.new
+    @stat_change = params[:stat_change] || {}
     @type = :equippable
   end
   
@@ -25,13 +25,16 @@ class Equippable < Item
   # @param [Boolean] equipping flag for when the item is being equipped or unequipped.
   # @todo ensure stats cannot go below zero (but does it matter..?).
   def alter_stats(entity, equipping)
+      
+    # Alter the stats as appropriate.
     if equipping
-      entity.attack += @stat_change.attack
-      entity.defense += @stat_change.defense
+      entity.attack += @stat_change[:attack] if @stat_change[:attack]
+      entity.defense += @stat_change[:defense] if @stat_change[:defense]
     else
-      entity.attack -= @stat_change.attack
-      entity.defense -= @stat_change.defense
+      entity.attack -= @stat_change[:attack] if @stat_change[:attack]
+      entity.defense -= @stat_change[:defense] if @stat_change[:defense]
     end
+    
   end
 
   # Equips onto the entity and changes the entity's attributes accordingly.
@@ -69,26 +72,4 @@ class Equippable < Item
   end
 
   attr_accessor :stat_change, :type
-end
-
-# Defines the stats that change when equipping the equippable item.
-class StatChange
-
-  # @param [Hash] params the parameters for creating a StatChange.
-  # @option params [Integer] :attack the amount by which to increase attack.
-  # @option params [Integer] :defense the amount by which to increase defense.
-  def initialize(params = {})
-    @attack = params[:attack] || 0
-    @defense = params[:defense] || 0
-  end
-
-  # @param [StatChange] rhs the stat change on the right.
-  def ==(rhs)
-    if (@attack == rhs.attack && @defense == rhs.defense)
-      return true
-    end
-    return false
-  end
-
-  attr_accessor :attack, :defense
 end

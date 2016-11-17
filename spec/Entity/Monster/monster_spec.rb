@@ -29,11 +29,12 @@ RSpec.describe Monster do
                         gold: 10,
                         outfit: { weapon: Weapon.new(
                                     attack: Attack.new,
-                                    stat_change: StatChange.new(
-                                        attack: 3, defense: 1)),
+                                    stat_change: {attack: 3, defense: 1}
+                                  ),
                                   helmet: Helmet.new(
-                                      stat_change: StatChange.new(
-                                              attack: 1, defense: 5)) },
+                                      stat_change: {attack: 1, defense: 5}
+                                  )
+                                },
                         battle_commands: [
                           Attack.new(name: "Scratch"),
                           Attack.new(name: "Kick")

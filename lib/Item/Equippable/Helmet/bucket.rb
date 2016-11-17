@@ -4,7 +4,7 @@ require_relative 'helmet.rb'
 class Bucket < Helmet
   def initialize(params = { name: "Bucket",
                             price: 20,
-                            stat_change: StatChange.new(defense: 2)})
+                            stat_change: {defense: 2}})
     super(params)
   end
 end

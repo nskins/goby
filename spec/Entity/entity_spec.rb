@@ -31,11 +31,11 @@ RSpec.describe Entity do
                         gold: 10,
                         outfit: { weapon: Weapon.new(
                                     attack: Attack.new,
-                                    stat_change: StatChange.new(
-                                        attack: 3, defense: 1)),
+                                    stat_change: {attack: 3, defense: 1}
+                                  ),
                                   helmet: Helmet.new(
-                                      stat_change: StatChange.new(
-                                              attack: 1, defense: 5)) },
+                                      stat_change: {attack: 1, defense: 5}
+                                  ) },
                         battle_commands: [
                           Attack.new(name: "Punch"),
                           Attack.new(name: "Kick")
@@ -126,7 +126,7 @@ RSpec.describe Entity do
   context "equip item" do
     it "correctly equips the weapon and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Weapon.new(stat_change: StatChange.new({ attack: 3 }),
+                                        Weapon.new(stat_change: { attack: 3 },
                                                    attack: Attack.new), 1)])
       entity.equip_item("Weapon")
       expect(entity.outfit[:weapon]).to eq Weapon.new
@@ -136,7 +136,7 @@ RSpec.describe Entity do
 
     it "correctly equips the helmet and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
+                                        Helmet.new(stat_change: { defense: 3 } ), 1)])
       entity.equip_item("Helmet")
       expect(entity.outfit[:helmet]).to eq Helmet.new
       expect(entity.defense).to eq 4
@@ -144,7 +144,7 @@ RSpec.describe Entity do
 
     it "correctly equips the shield and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Shield.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
+                                        Shield.new(stat_change: { defense: 3 } ), 1)])
       entity.equip_item("Shield")
       expect(entity.outfit[:shield]).to eq Shield.new
       expect(entity.defense).to eq 4
@@ -152,7 +152,7 @@ RSpec.describe Entity do
 
     it "correctly equips the legs and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Legs.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
+                                        Legs.new(stat_change: { defense: 3 } ), 1)])
       entity.equip_item("Legs")
       expect(entity.outfit[:legs]).to eq Legs.new
       expect(entity.defense).to eq 4
@@ -160,7 +160,7 @@ RSpec.describe Entity do
 
     it "correctly equips the torso and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Torso.new(stat_change: StatChange.new({ defense: 3 }) ), 1)])
+                                        Torso.new(stat_change: { defense: 3 } ), 1)])
       entity.equip_item("Torso")
       expect(entity.outfit[:torso]).to eq Torso.new
       expect(entity.defense).to eq 4
@@ -174,7 +174,7 @@ RSpec.describe Entity do
 
     it "only removes one of the equipped item from the inventory" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 2)])
+                                        Helmet.new(stat_change: { defense: 3 } ), 2)])
       entity.equip_item("Helmet")
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first).to eq Helmet.new
@@ -184,11 +184,11 @@ RSpec.describe Entity do
     it "correctly switches the equipped items and alters status as appropriate" do
       entity = Entity.new(inventory: [Couple.new(
                                         Weapon.new(name: "Hammer",
-                                                   stat_change: StatChange.new({ attack: 3 }),
+                                                   stat_change: { attack: 3 },
                                                    attack: Attack.new(name: "Bash")), 1),
                                       Couple.new(
                                         Weapon.new(name: "Knife",
-                                                   stat_change: StatChange.new({ attack: 5 }),
+                                                   stat_change: { attack: 5 },
                                                    attack: Attack.new(name: "Stab")), 1)])
       entity.equip_item("Hammer")
       expect(entity.attack).to eq 4
@@ -339,7 +339,7 @@ RSpec.describe Entity do
 
     it "does not result in error when unequipping the same item twice" do
       entity = Entity.new(inventory: [Couple.new(
-                                        Helmet.new(stat_change: StatChange.new({ defense: 3 }) ), 2)])
+                                        Helmet.new(stat_change: { defense: 3 } ), 2)])
       entity.equip_item("Helmet")
       entity.unequip_item("Helmet")
       expect(entity.inventory.length).to eq 1
