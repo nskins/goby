@@ -118,22 +118,21 @@ def interpret_command(command, player)
   end
 
   # Single-word default commands.
-  case(command)
-  when "n"
+  if command.casecmp("n").zero?
     player.move_north; return
-  when "e"
+  elsif command.casecmp("e").zero?
     player.move_east; return
-  when "s"
+  elsif command.casecmp("s").zero?
     player.move_south; return
-  when "w"
+  elsif command.casecmp("w").zero?
     player.move_west; return
-  when "help"
+  elsif command.casecmp("help").zero?
     help(player); return
-  when "map"
+  elsif command.casecmp("map").zero?
     player.print_map; return
-  when "inv"
+  elsif command.casecmp("inv").zero?
     player.print_inventory; return
-  when "status"
+  elsif command.casecmp("status").zero?
     player.print_status; return
   end
 
