@@ -8,7 +8,6 @@ RSpec.describe Weapon do
       expect(weapon.name).to eq "Weapon"
       expect(weapon.price).to eq 0
       expect(weapon.consumable).to eq false
-      # expect(weapon.stat_change).to eq {} TODO
       expect(weapon.type).to eq :weapon
     end
 
@@ -21,7 +20,8 @@ RSpec.describe Weapon do
       expect(pencil.name).to eq "Pencil"
       expect(pencil.price).to eq 20
       expect(pencil.consumable).to eq true
-      # expect(pencil.stat_change).to eq Hash.new({attack: 2, defense: 2}) TODO
+      expect(pencil.stat_change[:attack]).to eq 2
+      expect(pencil.stat_change[:defense]).to eq 2
       # Cannot be overwritten.
       expect(pencil.type).to eq :weapon
     end

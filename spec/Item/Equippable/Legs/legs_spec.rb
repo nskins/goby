@@ -8,7 +8,6 @@ RSpec.describe Legs do
       expect(legs.name).to eq "Legs"
       expect(legs.price).to eq 0
       expect(legs.consumable).to eq false
-      # expect(legs.stat_change).to eq {} TODO
       expect(legs.type).to eq :legs
     end
 
@@ -21,7 +20,8 @@ RSpec.describe Legs do
       expect(pants.name).to eq "Pants"
       expect(pants.price).to eq 20
       expect(pants.consumable).to eq true
-      # expect(pants.stat_change).to eq Hash.new({attack: 2, defense: 2}) TODO
+      expect(pants.stat_change[:attack]).to eq 2
+      expect(pants.stat_change[:defense]).to eq 2
       # Cannot be overwritten.
       expect(pants.type).to eq :legs
     end

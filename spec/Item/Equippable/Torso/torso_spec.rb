@@ -8,7 +8,6 @@ RSpec.describe Torso do
       expect(torso.name).to eq "Torso"
       expect(torso.price).to eq 0
       expect(torso.consumable).to eq false
-      # expect(torso.stat_change).to eq {} TODO
       expect(torso.type).to eq :torso
     end
 
@@ -21,7 +20,8 @@ RSpec.describe Torso do
       expect(shirt.name).to eq "Shirt"
       expect(shirt.price).to eq 20
       expect(shirt.consumable).to eq true
-      # expect(shirt.stat_change).to eq Hash.new({attack: 2, defense: 2}) TODO
+      expect(shirt.stat_change[:attack]).to eq 2
+      expect(shirt.stat_change[:defense]).to eq 2
       # Cannot be overwritten.
       expect(shirt.type).to eq :torso
     end
