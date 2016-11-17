@@ -84,7 +84,7 @@ end
 # @param [String] command the player's entire command input.
 # @param [Player] player the player using the command.
 def interpret_command(command, player)
-  words = command.split.map(&:downcase)
+  words = command.split()
 
   # Default commands that take multiple "arguments" (words).
   if (words.size > 1)
@@ -96,8 +96,7 @@ def interpret_command(command, player)
     end
 
     # Determine the appropriate command to use.
-    case(words[0])
-    when "drop"
+    if words[0].casecmp("drop").zero?
       index = player.has_item(name)
       if (index != -1)
         # TODO: Perhaps the player should be allowed to specify
@@ -109,11 +108,11 @@ def interpret_command(command, player)
         print "You can't drop what you don't have!\n\n"
       end
       return
-    when "equip"
+    elsif words[0].casecmp("equip").zero?
       player.equip_item(name); return
-    when "unequip"
+    elsif words[0].casecmp("unequip").zero?
       player.unequip_item(name); return
-    when "use"
+    elsif words[0].casecmp("use").zero?
       player.use_item(name, player); return
     end
   end
