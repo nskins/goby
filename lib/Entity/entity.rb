@@ -158,9 +158,10 @@ class Entity
 
   # Prints the status in a nice format.
   def print_status
-    puts "HP: #{hp}/#{max_hp}"
-    puts "Attack: #{attack}"
-    puts "Defense: #{defense}"
+    puts "HP: #{@hp}/#{@max_hp}"
+    puts "Attack: #{@attack}"
+    puts "Defense: #{@defense}"
+    puts "Agility: #{@agility}"
     print "\n"
 
     print "Weapon: "

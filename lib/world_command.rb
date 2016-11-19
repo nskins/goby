@@ -84,7 +84,7 @@ end
 # @param [String] command the player's entire command input.
 # @param [Player] player the player using the command.
 def interpret_command(command, player)
-  words = command.split.map(&:downcase)
+  words = command.split()
 
   # Default commands that take multiple "arguments" (words).
   if (words.size > 1)
@@ -96,8 +96,7 @@ def interpret_command(command, player)
     end
 
     # Determine the appropriate command to use.
-    case(words[0])
-    when "drop"
+    if words[0].casecmp("drop").zero?
       index = player.has_item(name)
       if (index != -1)
         # TODO: Perhaps the player should be allowed to specify
@@ -109,39 +108,38 @@ def interpret_command(command, player)
         print "You can't drop what you don't have!\n\n"
       end
       return
-    when "equip"
+    elsif words[0].casecmp("equip").zero?
       player.equip_item(name); return
-    when "unequip"
+    elsif words[0].casecmp("unequip").zero?
       player.unequip_item(name); return
-    when "use"
+    elsif words[0].casecmp("use").zero?
       player.use_item(name, player); return
     end
   end
 
   # Single-word default commands.
-  case(command)
-  when "w"
+  if command.casecmp("w").zero?
     player.move_north; return
-  when "d"
-    player.move_east; return
-  when "s"
-    player.move_south; return
-  when "a"
+  elsif command.casecmp("a").zero?
     player.move_west; return
-  when "help"
+  elsif command.casecmp("s").zero?
+    player.move_south; return
+  elsif command.casecmp("d").zero?
+    player.move_east; return
+  elsif command.casecmp("help").zero?
     help(player); return
-  when "map"
+  elsif command.casecmp("map").zero?
     player.print_map; return
-  when "inv"
+  elsif command.casecmp("inv").zero?
     player.print_inventory; return
-  when "status"
+  elsif command.casecmp("status").zero?
     player.print_status; return
   end
 
   # Other commands.
   events = player.map.tiles[player.location.first][player.location.second].events
   events.each do |event|
-    if (event.visible && words[0] == event.command)
+    if (event.visible && words[0].casecmp(event.command).zero?)
       event.run(player)
       return
     end

@@ -8,7 +8,6 @@ RSpec.describe Helmet do
       expect(helmet.name).to eq "Helmet"
       expect(helmet.price).to eq 0
       expect(helmet.consumable).to eq false
-      expect(helmet.stat_change).to eq StatChange.new({})
       expect(helmet.type).to eq :helmet
     end
 
@@ -16,14 +15,13 @@ RSpec.describe Helmet do
       big_hat = Helmet.new(name: "Big Hat",
                            price: 20,
                            consumable: true,
-                           stat_change: StatChange.new(attack: 2,
-                                                       defense: 2),
+                           stat_change: {attack: 2, defense: 2},
                            type: :weapon)
       expect(big_hat.name).to eq "Big Hat"
       expect(big_hat.price).to eq 20
       expect(big_hat.consumable).to eq true
-      expect(big_hat.stat_change).to eq StatChange.new(attack: 2,
-                                                       defense: 2)
+      expect(big_hat.stat_change[:attack]).to eq 2
+      expect(big_hat.stat_change[:defense]).to eq 2
       # Cannot be overwritten.
       expect(big_hat.type).to eq :helmet
     end

@@ -4,7 +4,7 @@ require_relative 'torso.rb'
 class Parka < Torso
   def initialize(params = { name: "Parka",
                             price: 40,
-                            stat_change: StatChange.new(defense: 4)})
+                            stat_change: {defense: 4}})
     super(params)
   end
 end

@@ -7,7 +7,7 @@ class Baguette < Weapon
     super(params)
     @name = "Baguette"
     @price = 40
-    @stat_change = StatChange.new(attack: 8, defense: 2)
+    @stat_change = {attack: 8, defense: 2}
     @attack = Smash.new
   end
 end
