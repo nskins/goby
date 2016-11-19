@@ -113,28 +113,28 @@ class Player < Entity
     describe_tile(self)
   end
 
-  # Moves the player north. Decreases 'y' coordinate by 1.
-  def move_north
-    north_tile = Couple.new(@location.first - 1, @location.second)
-    move_to(north_tile)
+  # Moves the player up. Decreases 'y' coordinate by 1.
+  def move_up
+    up_tile = Couple.new(@location.first - 1, @location.second)
+    move_to(up_tile)
   end
 
-  # Moves the player east. Increases 'x' coordinate by 1.
-  def move_east
-    east_tile = Couple.new(@location.first, @location.second + 1)
-    move_to(east_tile)
+  # Moves the player right. Increases 'x' coordinate by 1.
+  def move_right
+    right_tile = Couple.new(@location.first, @location.second + 1)
+    move_to(right_tile)
   end
 
-  # Moves the player south. Increases 'y' coordinate by 1.
-  def move_south
-    south_tile = Couple.new(@location.first + 1, @location.second)
-    move_to(south_tile)
+  # Moves the player down. Increases 'y' coordinate by 1.
+  def move_down
+    down_tile = Couple.new(@location.first + 1, @location.second)
+    move_to(down_tile)
   end
 
-  # Moves the player west. Decreases 'x' coordinate by 1.
-  def move_west
-    west_tile = Couple.new(@location.first, @location.second - 1)
-    move_to(west_tile)
+  # Moves the player left. Decreases 'x' coordinate by 1.
+  def move_left
+    left_tile = Couple.new(@location.first, @location.second - 1)
+    move_to(left_tile)
   end
 
   # Updates the 'seen' attributes of the tiles on the player's current map.

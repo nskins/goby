@@ -11,8 +11,7 @@ end
 # Prints the commands that are available everywhere.
 def display_default_commands
   puts "* Default commands:"
-  puts "d (north); s (south);"
-  puts "d (east); a (west);"
+  puts "w (↑); a (←); s (↓); d(→);"
   puts "help; map; inv; status;"
   puts "use [item]; drop [item]"
   puts "equip [item]; unequip [item];"
@@ -120,13 +119,13 @@ def interpret_command(command, player)
 
   # Single-word default commands.
   if command.casecmp("w").zero?
-    player.move_north; return
+    player.move_up; return
   elsif command.casecmp("a").zero?
-    player.move_west; return
+    player.move_left; return
   elsif command.casecmp("s").zero?
-    player.move_south; return
+    player.move_down; return
   elsif command.casecmp("d").zero?
-    player.move_east; return
+    player.move_right; return
   elsif command.casecmp("help").zero?
     help(player); return
   elsif command.casecmp("map").zero?
@@ -140,7 +139,7 @@ def interpret_command(command, player)
   # Other commands.
   events = player.map.tiles[player.location.first][player.location.second].events
   events.each do |event|
-    if (event.visible && words[0].casecmp(event.command).zero?)
+    if (event.visible && words[0] && words[0].casecmp(event.command).zero?)
       event.run(player)
       return
     end
