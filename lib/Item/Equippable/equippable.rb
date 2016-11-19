@@ -30,9 +30,11 @@ class Equippable < Item
     if equipping
       entity.attack += @stat_change[:attack] if @stat_change[:attack]
       entity.defense += @stat_change[:defense] if @stat_change[:defense]
+      entity.agility += @stat_change[:agility] if @stat_change[:agility]
     else
       entity.attack -= @stat_change[:attack] if @stat_change[:attack]
       entity.defense -= @stat_change[:defense] if @stat_change[:defense]
+      entity.agility -= @stat_change[:agility] if @stat_change[:agility]
     end
     
   end
