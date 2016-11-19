@@ -59,23 +59,24 @@ def print_possible_moves(player)
   x = player.location.second
   tiles = player.map.tiles
 
-  puts "* Movement:"
-
-  if y > 0 && tiles[y - 1][x].passable
-    print "north (w); "
+  print "* Movement: "
+  
+  if x > 0 && tiles[y][x - 1].passable
+    print "← "
   end
-
-  if x < (tiles[y].length-1) && tiles[y][x + 1].passable
-    print "east (d); "
+  
+  if y > 0 && tiles[y - 1][x].passable
+    print "↑ "
   end
 
   if y < (tiles.length-1) && tiles[y + 1][x].passable
-    print "south (s); "
+    print "↓ "
   end
-
-  if x > 0 && tiles[y][x - 1].passable
-    print "west (a);"
+  
+  if x < (tiles[y].length-1) && tiles[y][x + 1].passable
+    print "→ "
   end
+  
   print "\n\n"
 end
 
