@@ -5,7 +5,7 @@ class Map
 	# @option params [[Tile]] :tiles the content of the map.
 	# @option params [Couple(Int,Int)] :regen_location the respawn-on-death coordinates.
 
-
+################ Added @music attribute and attr_accessor :music #############################
 	def initialize(params = {})
 		@name = params[:name] || "Map"
 		@tiles = params[:tiles] || [ [Tile.new ] ]
@@ -13,12 +13,15 @@ class Map
 		@music = false
 	end
 
+################################# Adding this method ####################################
+	# def play_music(bool, path)
 	def play_music(bool)
 		@music = bool
 
 		_relativePATH = File.expand_path File.dirname(__FILE__)
 
 		if @music === true
+
 			$pid = Process.spawn "while true; do afplay #{_relativePATH}/intro.mp3; done"
 
 		elsif @music === false
@@ -29,6 +32,7 @@ class Map
 			p "Please enter a true or false parameter"
 		end
 	end
+##########################################################################################
 
 	# @param [Map] rhs the map on the right.
 	def ==(rhs)

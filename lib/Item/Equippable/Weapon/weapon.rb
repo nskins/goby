@@ -7,7 +7,7 @@ class Weapon < Equippable
   # @option params [String] :name the name.
   # @option params [Integer] :price the cost in a shop.
   # @option params [Boolean] :consumable determines whether the item is lost when used.
-  # @option params [StatChange] :stat_change the change in stats for when the item is equipped.
+  # @option params [Hash] :stat_change the change in stats for when the item is equipped.
   # @option params [Attack] :attack the attack which is added to the entity's battle commands.
   def initialize(params = {})
     super(params)
@@ -21,17 +21,17 @@ class Weapon < Equippable
   # @param [Entity] entity the entity who is equipping the equippable.
   def equip(entity)
     prev_weapon = nil
-    if (!entity.outfit[@type].nil?)
+    if entity.outfit[@type]
       prev_weapon = entity.outfit[@type]
     end
 
     super(entity)
 
-    if ((!prev_weapon.nil?) && (!prev_weapon.attack.nil?))
+    if (prev_weapon && prev_weapon.attack)
       entity.remove_battle_command(prev_weapon.attack)
     end
 
-    if (!@attack.nil?)
+    if @attack
       entity.add_battle_command(@attack)
     end
 
@@ -43,7 +43,7 @@ class Weapon < Equippable
   def unequip(entity)
     super(entity)
 
-    if (!@attack.nil?)
+    if @attack
       entity.remove_battle_command(@attack)
     end
 

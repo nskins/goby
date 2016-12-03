@@ -19,6 +19,7 @@ class Entity
     @hp = params[:hp] || hp
     @attack = params[:attack] || 1
     @defense = params[:defense] || 1
+    @agility = params[:agility] || 1
 
     @inventory = params[:inventory] || Array.new
     @gold = params[:gold] || 0
@@ -29,7 +30,7 @@ class Entity
 
     # See its attr_accessor below.
     @outfit = Hash.new
-    if (!params[:outfit].nil?)
+    if params[:outfit]
       params[:outfit].each do |type,value|
         value.equip(self)
       end
@@ -157,41 +158,42 @@ class Entity
 
   # Prints the status in a nice format.
   def print_status
-    puts "HP: #{hp}/#{max_hp}"
-    puts "Attack: #{attack}"
-    puts "Defense: #{defense}"
+    puts "HP: #{@hp}/#{@max_hp}"
+    puts "Attack: #{@attack}"
+    puts "Defense: #{@defense}"
+    puts "Agility: #{@agility}"
     print "\n"
 
     print "Weapon: "
-    if (!@outfit[:weapon].nil?)
+    if @outfit[:weapon]
       puts "#{@outfit[:weapon].name}"
     else
       puts "none"
     end
 
     print "Shield: "
-    if (!@outfit[:shield].nil?)
+    if @outfit[:shield]
       puts "#{@outfit[:shield].name}"
     else
       puts "none"
     end
 
     print "Helmet: "
-    if (!@outfit[:helmet].nil?)
+    if @outfit[:helmet]
       puts "#{@outfit[:helmet].name}"
     else
       puts "none"
     end
 
     print "Torso: "
-    if (!@outfit[:torso].nil?)
+    if @outfit[:torso]
       puts "#{@outfit[:torso].name}"
     else
       puts "none"
     end
 
     print "Legs: "
-    if (!@outfit[:legs].nil?)
+    if @outfit[:legs]
       puts "#{@outfit[:legs].name}"
     else
       puts "none"
@@ -238,7 +240,7 @@ class Entity
   # @param [Item, String] item the item (or its name) to unequip.
   def unequip_item(item)
     pair = @outfit.detect { |type, value| value.name.casecmp(item.to_s) == 0 }
-    if (!pair.nil?)
+    if pair
       # On a successful find, the "detect" method always returns
       # an array of length 2; thus, the following line should not fail.
       item = pair[1]
@@ -273,6 +275,7 @@ class Entity
   attr_accessor :max_hp, :hp
   attr_accessor :attack
   attr_accessor :defense
+  attr_accessor :agility
 
   # The inventory is stored as an array of Couple objects.
   attr_accessor :inventory

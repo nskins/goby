@@ -28,7 +28,7 @@ class Player < Entity
     @location = DEFAULT_LOCATION
 
     # Ensure that the map and the location are valid.
-    if ((!params[:map].nil?) && (!params[:location].nil?))
+    if (params[:map] && params[:location])
 
       y = params[:location].first; x = params[:location].second
 
@@ -113,28 +113,28 @@ class Player < Entity
     describe_tile(self)
   end
 
-  # Moves the player north. Decreases 'y' coordinate by 1.
-  def move_north
-    north_tile = Couple.new(@location.first - 1, @location.second)
-    move_to(north_tile)
+  # Moves the player up. Decreases 'y' coordinate by 1.
+  def move_up
+    up_tile = Couple.new(@location.first - 1, @location.second)
+    move_to(up_tile)
   end
 
-  # Moves the player east. Increases 'x' coordinate by 1.
-  def move_east
-    east_tile = Couple.new(@location.first, @location.second + 1)
-    move_to(east_tile)
+  # Moves the player right. Increases 'x' coordinate by 1.
+  def move_right
+    right_tile = Couple.new(@location.first, @location.second + 1)
+    move_to(right_tile)
   end
 
-  # Moves the player south. Increases 'y' coordinate by 1.
-  def move_south
-    south_tile = Couple.new(@location.first + 1, @location.second)
-    move_to(south_tile)
+  # Moves the player down. Increases 'y' coordinate by 1.
+  def move_down
+    down_tile = Couple.new(@location.first + 1, @location.second)
+    move_to(down_tile)
   end
 
-  # Moves the player west. Decreases 'x' coordinate by 1.
-  def move_west
-    west_tile = Couple.new(@location.first, @location.second - 1)
-    move_to(west_tile)
+  # Moves the player left. Decreases 'x' coordinate by 1.
+  def move_left
+    left_tile = Couple.new(@location.first, @location.second - 1)
+    move_to(left_tile)
   end
 
   # Updates the 'seen' attributes of the tiles on the player's current map.
@@ -151,88 +151,109 @@ class Player < Entity
   end
 
   # Prints the map in regards to what the player has seen.
+  # Additionally, provides current location and the map's name.
   def print_map
-
-    puts "\nYou're in " + @map.name + "!\n\n"
-    row_count = 0
-    @map.tiles.each do |sub|
-      #centers each row under the "welcome" sign
-      for i in 1..(@map.name.length/2)
+    
+    # Provide some spacing to center the name.
+    (0..(@map.name.length/4)).each do
+      print " "
+    end
+  
+    print @map.name + "\n\n"
+    
+    @map.tiles.each_with_index do |row, r|
+      # Provide spacing for the beginning of each row.
+      (0..(@map.name.length/2)).each do
         print " "
       end
-      col_count = 0
-      sub.each do |tile|
-        if tile.seen
-          if tile.passable
-            if row_count == @location.first && col_count == @location.second
-              print "¶"
-            else
-              print "·"
-            end
-          else
-            print "■"
-          end
+      row.each_with_index do |tile, t|
+        if ((@location.first == r) && (@location.second == t))
+          print "¶ "
+        elsif (!tile.seen)
+          print "  "
         else
-          print " "
+          print tile.graphic + " "
         end
-        col_count += 1
       end
-      row_count += 1
-      puts ""
+			print "\n"
     end
-    puts "\n· - passable space" +
-         "\n■ - impassable space" +
-         "\n¶ - your location\n\n"
+    
+    print "\n"
+    
+    # Provide some spacing to center the legend.
+    (0..(@map.name.length/4)).each do
+      print " "
+    end
+    
+    # Prints the legend.
+    puts "¶ - #{@name}'s \n       location\n\n"
   end
 
   # Engages in battle with the specified monster.
   #
   # @param [Monster] monster the opponent of the battle.
+
   def battle(monster)
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 
-    # Main battle loop.
     while hp > 0
-
-      # Execute the player's command.
-      choose_attack.run(self, monster)
-
-      # Case: The player has successfully escaped.
-      if (@escaped)
-        @escaped = false
-        return
+      # Both choose an attack.
+      player_attack = choose_attack
+      monster_attack = monster.choose_attack
+      
+      attackers = Array.new
+      attacks = Array.new
+      
+      if player_first?(monster)
+        attackers << self << monster
+        attacks << player_attack << monster_attack
+      else
+        attackers << monster << self
+        attacks << monster_attack << player_attack
       end
-
-      if (monster.hp > 0)
-        monster.choose_attack.run(monster, self)
-
-        # Case: The monster has successfully escaped.
-        if (monster.escaped)
-          monster.escaped = false
+      
+      2.times do |i|  
+        # The attacker runs its attack on the other attacker.
+        attacks[i].run(attackers[i], attackers[(i + 1) % 2])
+        
+        if (attackers[i].escaped)
+          attackers[i].escaped = false
           return
         end
-
-      # Case: The monster has been defeated.
-      else
-      	type("You defeated the #{monster.name}\n")
-        gold_reward = Random.rand(0..monster.gold)
-        if (gold_reward > 0)
-          type("and they dropped #{gold_reward} gold!\n")
-          @gold += gold_reward
-        end
-        print "\n"
-
-        return
+        
+        break if monster.hp <= 0 || hp <= 0
+        
       end
+        
+      break if monster.hp <= 0 || hp <= 0
 
     end
 
-    # Case: Breaking out of main battle loop => player is dead.
-    sleep(2); die
+    if hp <=0
+      sleep(2); die
+    end
+
+    if monster.hp <= 0
+      type("You defeated the #{monster.name}\n")
+      gold_reward = Random.rand(0..monster.gold)
+          
+      if (gold_reward > 0)
+        type("and they dropped #{gold_reward} gold!\n\n")
+        @gold += gold_reward
+      end
+    end
 
   end
 
   attr_reader :map, :location
+
+  private
+  
+  def player_first?(monster)
+    sum = monster.agility + agility
+    random_number = Random.rand(0..sum - 1)
+    random_number < agility
+  end
 
 end

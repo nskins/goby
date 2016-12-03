@@ -18,7 +18,9 @@ class Dan < NPC
       @mode = 1
     when 1
       type("#{@name}: \"I must go now.\"\n\n")
+      
       @visible = false
+      player.map.tiles[player.location.first][player.location.second].graphic = Tile::DEFAULT_PASSABLE
     end
   end
 end

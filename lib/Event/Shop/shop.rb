@@ -48,7 +48,7 @@ class Shop < Event
     input = gets.chomp
     print "\n"
 
-    while (input != "exit")
+    while (input.casecmp("exit") != 0)
 
       if (input.casecmp("buy") == 0)
         print "Please take a look at my wares.\n\n"

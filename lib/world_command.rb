@@ -67,11 +67,11 @@ def print_possible_moves(player)
   tiles = player.map.tiles
 
   print "* Movement: "
-  
+
   if x > 0 && tiles[y][x - 1].passable
     print "← "
   end
-  
+
   if y > 0 && tiles[y - 1][x].passable
     print "↑ "
   end
@@ -79,11 +79,11 @@ def print_possible_moves(player)
   if y < (tiles.length-1) && tiles[y + 1][x].passable
     print "↓ "
   end
-  
+
   if x < (tiles[y].length-1) && tiles[y][x + 1].passable
     print "→ "
   end
-  
+
   print "\n\n"
 end
 
@@ -150,6 +150,7 @@ def interpret_command(command, player)
     if (event.visible && words[0] && words[0].casecmp(event.command).zero?)
       player.map.play_music(false)
       event.run(player)
+      player.map.play_music(true)
       return
     end
   end
