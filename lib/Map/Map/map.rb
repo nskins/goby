@@ -4,8 +4,8 @@ class Map
 	# @option params [String] :name the name.
 	# @option params [[Tile]] :tiles the content of the map.
 	# @option params [Couple(Int,Int)] :regen_location the respawn-on-death coordinates.
-	
-################ Added @music attribute and attr_accessor :music #############################
+
+
 	def initialize(params = {})
 		@name = params[:name] || "Map"
 		@tiles = params[:tiles] || [ [Tile.new ] ]
@@ -13,36 +13,22 @@ class Map
 		@music = false
 	end
 
-################################# Adding this method ####################################
-	# def play_music(bool, path)
 	def play_music(bool)
 		@music = bool
-		
+
 		_relativePATH = File.expand_path File.dirname(__FILE__)
-		# p "Relative: " + _relativePATH
 
-		# _path = path
-		# p "_path: " + _path
-
-		# _path = Dir.pwd 
-		# p _path
-		# pathname = Pathname.relative_path_from(Dir.pwd)
-		# p "pathname: " + pathname
 		if @music === true
-			# $pid = Process.spawn "afplay /Users/jupiterbaudot/Desktop/code_projects/goby/lib/Map/Map/intro.mp3"
 			$pid = Process.spawn "while true; do afplay #{_relativePATH}/intro.mp3; done"
-			# $pid = Process.spawn "while true; do afplay /Users/jupiterbaudot/Desktop/code_projects/goby/lib/Map/Map/intro.mp3; done"
-			# $pid = Process.spawn "while true; do afplay #{_path}/intro.mp3; done"
-			
+
 		elsif @music === false
 			# Use sleep for testing music off.  Music will continue to play until it hits the end of track
-			sleep(15)
+			# sleep(15)
 			Process.kill(15, $pid)
 		else
 			p "Please enter a true or false parameter"
 		end
 	end
-##########################################################################################
 
 	# @param [Map] rhs the map on the right.
 	def ==(rhs)
@@ -88,5 +74,5 @@ end
 
 # For manually testing this individual file (will need to comment out @tiles &@regen_locations in initialize)
 # @map = Map.new
-# @map.play_music(true, Dir.pwd)
-# @map.play_music(false, Dir.pwd)
+# @map.play_music(true)
+# @map.play_music(false)
