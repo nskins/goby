@@ -140,7 +140,9 @@ def interpret_command(command, player)
   events = player.map.tiles[player.location.first][player.location.second].events
   events.each do |event|
     if (event.visible && words[0] && words[0].casecmp(event.command).zero?)
+      player.map.play_music(false)
       event.run(player)
+      player.map.play_music(true)
       return
     end
   end

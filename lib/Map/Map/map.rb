@@ -8,6 +8,25 @@ class Map
 		@name = params[:name] || "Map"
 		@tiles = params[:tiles] || [ [Tile.new ] ]
 		@regen_location = params[:regen_location] || Couple.new(0,0)
+		@music = false
+	end
+	
+	def play_music(bool)
+		@music = bool
+
+		_relativePATH = File.expand_path File.dirname(__FILE__)
+
+		if @music === true
+
+			$pid = Process.spawn "while true; do afplay #{_relativePATH}/intro.mp3; done"
+
+		elsif @music === false
+			# Use sleep for testing music off.  Music will continue to play until it hits the end of track
+			# sleep(15)
+			Process.kill(15, $pid)
+		else
+			p "Please enter a true or false parameter"
+		end
 	end
 
 	# @param [Map] rhs the map on the right.
@@ -37,6 +56,11 @@ class Map
 		return (y >= 0 && y < @tiles.length && x >= 0 && x < @tiles[y].length)
 	end
 
-	attr_accessor :name, :tiles, :regen_location
+	attr_accessor :name, :tiles, :regen_location, :music
 
 end
+
+# For manually testing this individual file (will need to comment out @tiles &@regen_locations in initialize)
+# @map = Map.new
+# @map.play_music(true)
+# @map.play_music(false)

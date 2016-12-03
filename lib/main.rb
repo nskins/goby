@@ -13,4 +13,6 @@ player = Player.new(
                     map: DonutField.new,
                     location: Couple.new(0,0)
                    )
+#Plays music upon load
+player.map.play_music(true)
 run_driver(player)
