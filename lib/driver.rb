@@ -16,4 +16,7 @@ def run_driver(player)
     input = player_input
   end
 
+  #Kills the music after typing quit
+  player.map.stop_music
+
 end

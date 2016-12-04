@@ -10,7 +10,8 @@ require_relative '../../Event/Shop/wacky_clothes.rb'
 
 # PRESET DATA
 class DonutField < Map
-  def initialize(params = {})
+  def initialize(params = {music: '/intro.mp3'})
+    super(params)
     @name = "Donut Field"
     
     dirt = Dirt.new
