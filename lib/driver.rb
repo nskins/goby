@@ -17,6 +17,6 @@ def run_driver(player)
   end
 
   #Kills the music after typing quit
-  Process.kill(15, $pid)
+  player.map.stop_music
 
 end

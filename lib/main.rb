@@ -14,5 +14,5 @@ player = Player.new(
                     location: Couple.new(0,0)
                    )
 #Plays music upon load
-player.map.play_music(true)
+player.map.play_music
 run_driver(player)

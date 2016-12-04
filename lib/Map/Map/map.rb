@@ -4,28 +4,25 @@ class Map
 	# @option params [String] :name the name.
 	# @option params [[Tile]] :tiles the content of the map.
 	# @option params [Couple(Int,Int)] :regen_location the respawn-on-death coordinates.
+	# @option params [String] :music the filename of the music file.
 	def initialize(params = {})
 		@name = params[:name] || "Map"
 		@tiles = params[:tiles] || [ [Tile.new ] ]
 		@regen_location = params[:regen_location] || Couple.new(0,0)
-		@music = false
+		
+		_relativePATH = File.expand_path File.dirname(__FILE__)
+		@music = _relativePATH + params[:music] if params[:music]
 	end
 	
-	def play_music(bool)
-		@music = bool
-
-		_relativePATH = File.expand_path File.dirname(__FILE__)
-
-		if @music === true
-
-			$pid = Process.spawn "while true; do afplay #{_relativePATH}/intro.mp3; done"
-
-		elsif @music === false
-			# Use sleep for testing music off.  Music will continue to play until it hits the end of track
-			# sleep(15)
+	def play_music
+		stop_music
+		$pid = Process.spawn "while true; do aplay #{@music}; done"
+	end
+	
+	def stop_music
+		if $pid
 			Process.kill(15, $pid)
-		else
-			p "Please enter a true or false parameter"
+			$pid = nil
 		end
 	end
 
