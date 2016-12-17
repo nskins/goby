@@ -125,57 +125,57 @@ RSpec.describe Player do
     end
   end
 
-  context "move north" do
+  context "move up" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_north
+      @dude.move_up
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq Couple.new(0,1)
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_north; @dude.move_north
+      @dude.move_up; @dude.move_up
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq Couple.new(0,1)
     end
   end
 
-  context "move east" do
+  context "move right" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_east
+      @dude.move_right
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq Couple.new(1,2)
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_east; @dude.move_east
+      @dude.move_right; @dude.move_right
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq Couple.new(1,2)
     end
   end
 
-  context "move south" do
+  context "move down" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_south
+      @dude.move_down
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq Couple.new(2,1)
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_south; @dude.move_south
+      @dude.move_down; @dude.move_down
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq Couple.new(2,1)
     end
   end
 
-  context "move west" do
+  context "move left" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_west
+      @dude.move_left
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq Couple.new(1,0)
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_west; @dude.move_west
+      @dude.move_left; @dude.move_left
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq Couple.new(1,0)
     end

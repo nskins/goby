@@ -25,17 +25,17 @@ RSpec.describe do
       end
     
       it "should correctly move the player right" do
-        interpret_command("e", @player)
+        interpret_command("d", @player)
         expect(@player.location).to eq Couple.new(1, 1)
       end
     
       it "should correctly move the player up" do
-        interpret_command("n", @player)
+        interpret_command("w", @player)
         expect(@player.location).to eq Couple.new(0, 1)
       end
     
       it "should correctly move the player left" do
-        interpret_command("w", @player)
+        interpret_command("a", @player)
         expect(@player.location).to eq Couple.new(0, 0)
       end
     end
@@ -47,17 +47,17 @@ RSpec.describe do
       end
     
       it "should correctly move the player right" do
-        interpret_command("E", @player)
+        interpret_command("D", @player)
         expect(@player.location).to eq Couple.new(1, 1)
       end
     
       it "should correctly move the player up" do
-        interpret_command("N", @player)
+        interpret_command("W", @player)
         expect(@player.location).to eq Couple.new(0, 1)
       end
     
       it "should correctly move the player left" do
-        interpret_command("W", @player)
+        interpret_command("A", @player)
         expect(@player.location).to eq Couple.new(0, 0)
       end
     end
