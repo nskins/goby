@@ -1,4 +1,4 @@
-# Goby
+# Goby [![Build Status](https://travis-ci.org/nskins/goby.png)](https://travis-ci.org/nskins/goby)
 
 Goby is a Ruby framework for developing [text](https://en.wikipedia.org/wiki/Text-based_game)-[RPGs](https://en.wikipedia.org/wiki/Role-playing_game). Popular examples of such games are [Zork](https://en.wikipedia.org/wiki/Zork) and [Colossal Cave Adventure](https://en.wikipedia.org/wiki/Colossal_Cave_Adventure). Our purpose is to provide the engine and underlying logic so the user can focus on the fun part: content creation!
 
