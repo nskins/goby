@@ -2,17 +2,20 @@ require_relative '../battle_command.rb'
 
 class Attack < BattleCommand
 
-  # @param [Hash] params the parameters for creating an Attack.
-  # @option params [String] :name the name.
-  # @option params [Integer] :strength the strength.
-  # @option params [Integer] :success_rate the chance of success.
-  def initialize(params = {})
-    super(params)
-    @name = params[:name] || "Attack"
-    @strength = params[:strength] || 0
-    @success_rate = params[:success_rate] || 100
-    @description = params[:description] || "    Strength: #{@strength}\n"\
-                                           "    Success Rate: #{@success_rate}%\n"
+  # @param [String] name the name.
+  # @param [Integer] strength the strength.
+  # @param [Integer] success_rate the chance of success.
+  # @param [String] description a summary/message of its purpose.
+  def initialize(name: "Attack", strength: 0, success_rate: 100, description: nil)
+    super(name: name, description: description)
+    
+    @strength = strength
+    @success_rate = success_rate
+    
+    if description.nil?
+      @description = "    Strength: #{@strength}\n"\
+                     "    Success Rate: #{@success_rate}%\n"
+    end
 
   end
 

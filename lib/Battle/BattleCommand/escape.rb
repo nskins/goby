@@ -2,10 +2,8 @@ require_relative 'battle_command.rb'
 
 # PRESET DATA
 class Escape < BattleCommand
-  def initialize(params = {})
-    super(params)
-    @name = "Escape"
-    @description = "    Attempt to flee from the enemy.\n"
+  def initialize
+    super(name: "Escape", description: "    Attempt to flee from the enemy.\n")
   end
 
   # Samples a probability to determine if the user will escape from battle.
