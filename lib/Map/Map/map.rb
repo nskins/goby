@@ -1,13 +1,12 @@
 class Map
 
-	# @param [Hash] params the parameters for creating a Map.
-	# @option params [String] :name the name.
-	# @option params [[Tile]] :tiles the content of the map.
-	# @option params [Couple(Int,Int)] :regen_location the respawn-on-death coordinates.
-	def initialize(params = {})
-		@name = params[:name] || "Map"
-		@tiles = params[:tiles] || [ [Tile.new ] ]
-		@regen_location = params[:regen_location] || Couple.new(0,0)
+	# @param [String] name the name.
+	# @param [[Tile]] tiles the content of the map.
+	# @param [Couple(Int,Int)] regen_location the respawn-on-death coordinates.
+	def initialize(name: "Map", tiles: [[Tile.new]], regen_location: Couple.new(0,0))
+		@name = name
+		@tiles = tiles
+		@regen_location = regen_location
 	end
 
 	# @param [Map] rhs the map on the right.

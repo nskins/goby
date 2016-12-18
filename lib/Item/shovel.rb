@@ -1,8 +1,8 @@
 require_relative 'item.rb'
 
 class Shovel < Item
-  def initialize(params = { name: "Shovel", consumable: false })
-    super(params)
+  def initialize
+    super(name: "Shovel", consumable: false)
   end
 
   def use(entity)

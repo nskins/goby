@@ -2,9 +2,7 @@ require_relative 'legs.rb'
 
 # PRESET DATA
 class RippedPants < Legs
-  def initialize(params = { name: "Ripped Pants",
-                            price: 25,
-                            stat_change: {defense: 3}})
-    super(params)
+  def initialize
+    super(name: "Ripped Pants", price: 25, stat_change: {defense: 3})
   end
 end

@@ -4,12 +4,7 @@ require_relative '../../Item/Equippable/Weapon/baguette.rb'
 
 # PRESET DATA
 class Bakery < Shop
-
-  def initialize(params = {})
-    super(params)
-    @name = "Bob's Bakery"
-    @items = [Donut.new, Baguette.new]
+  def initialize
+    super(name: "Bob's Bakery", items: [Donut.new, Baguette.new])
   end
-
-
 end

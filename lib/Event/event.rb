@@ -1,18 +1,17 @@
 class Event
 
-  # @param [Hash] params the parameters for creating an Event.
-  # @option params [String] :command the command to activate the event.
-  # @option params [Integer] :mode convenient way for an event to have multiple actions.
-  # @option params [Boolean] :visible whether the event can be seen/activated.
-  def initialize(params = {})
-    @command = params[:command] || "event"
-
+  # @param [String] command the command to activate the event.
+  # @param [Integer] mode convenient way for an event to have multiple actions.
+  # @param [Boolean] visible whether the event can be seen/activated.
+  def initialize(command: "event", mode: 0, visible: true)
+    @command = command
+    
     # Can be used in a case statement in run for different outcomes.
-    @mode = params[:mode] || 0
+    @mode = mode
 
     # The event can only be activated when this is true.
-    if params[:visible].nil? then @visible = true
-    else @visible = params[:visible] end
+    @visible = visible
+    
   end
 
   # The function that runs when the player activates the event.
@@ -29,8 +28,6 @@ class Event
   end
 
   # Specify the command in the subclass.
-  attr_accessor :command
-  attr_accessor :mode
-  attr_accessor :visible
+  attr_accessor :command, :mode, :visible
 
 end

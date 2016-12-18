@@ -52,7 +52,6 @@ RSpec.describe Player do
                           BattleCommand.new(name: "Yell"),
                           BattleCommand.new(name: "Run")
                         ],
-                        escaped: true,
                         map: @map,
                         location: Couple.new(1,1))
       expect(hero.name).to eq "Hero"

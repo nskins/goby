@@ -14,7 +14,6 @@ RSpec.describe Shop do
 
     it "correctly assigns custom parameters" do
       box = Shop.new(name: "Box",
-                     command: "shop",
                      mode: 1,
                      visible: false,
                      items: [Item.new])

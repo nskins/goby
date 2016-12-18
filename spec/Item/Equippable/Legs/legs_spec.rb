@@ -15,8 +15,7 @@ RSpec.describe Legs do
       pants = Legs.new(name: "Pants",
                        price: 20,
                        consumable: true,
-                       stat_change: {attack: 2, defense: 2},
-                       type: :helmet)
+                       stat_change: {attack: 2, defense: 2})
       expect(pants.name).to eq "Pants"
       expect(pants.price).to eq 20
       expect(pants.consumable).to eq true

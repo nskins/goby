@@ -8,33 +8,35 @@ class Player < Entity
   DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
   DEFAULT_LOCATION = Couple.new(0,0)
 
-  # @param [Hash] params the parameters for creating a Player.
-  # @option params [String] :name the name.
-  # @option params [Integer] :max_hp the greatest amount of health.
-  # @option params [Integer] :hp the current amount of health.
-  # @option params [Integer] :attack the strength in battle.
-  # @option params [Integer] :defense the prevention of attack power on oneself.
-  # @option params [[Couple(Item, Integer)]] :inventory a list of pairs of items and their respective amounts.
-  # @option params [Integer] :gold the currency used for economical transactions.
-  # @option params [[BattleCommand]] :battle_commands the commands that can be used in battle.
-  # @option params [Hash] :outfit the collection of equippable items currently worn.
-  # @option params [Map] :map the map on which the player is located.
-  # @option params [Couple(Integer,Integer)] :location the 2D index of the map (the exact tile).
-  def initialize(params = {})
-    super(params)
-    @name = params[:name] || "Player"
+  # @param [String] name the name.
+  # @param [Integer] max_hp the greatest amount of health.
+  # @param [Integer] hp the current amount of health.
+  # @param [Integer] attack the strength in battle.
+  # @param [Integer] defense the prevention of attack power on oneself.
+  # @param [Integer] agility the speed in battle.
+  # @param [[Couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
+  # @param [Integer] gold the currency used for economical transactions.
+  # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
+  # @param [Hash] outfit the collection of equippable items currently worn.
+  # @param [Map] map the map on which the player is located.
+  # @param [Couple(Integer,Integer)] location the 2D index of the map (the exact tile).
+  def initialize(name: "Player", max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1,
+                 inventory: [], gold: 0, battle_commands: [], outfit: {}, map: DEFAULT_MAP,
+                 location: DEFAULT_LOCATION)
+    super(name: name, max_hp: max_hp, hp: hp, attack: attack, defense: defense, agility: agility,
+          inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
 
     @map = DEFAULT_MAP
     @location = DEFAULT_LOCATION
 
     # Ensure that the map and the location are valid.
-    if (params[:map] && params[:location])
+    if (map && location)
 
-      y = params[:location].first; x = params[:location].second
+      y = location.first; x = location.second
 
-      if (params[:map].in_bounds(y,x) && params[:map].tiles[y][x].passable)
-        @map = params[:map]
-        @location = params[:location]
+      if (map.in_bounds(y,x) && map.tiles[y][x].passable)
+        @map = map
+        @location = location
       end
     end
 

@@ -15,8 +15,7 @@ RSpec.describe Equippable do
       big_hat = Equippable.new(name: "Big Hat",
                                price: 20,
                                consumable: true,
-                               stat_change: {attack: 2, defense: 2, agility: 2},
-                               type: :weapon)
+                               stat_change: {attack: 2, defense: 2, agility: 2})
       expect(big_hat.name).to eq "Big Hat"
       expect(big_hat.price).to eq 20
       expect(big_hat.consumable).to eq true

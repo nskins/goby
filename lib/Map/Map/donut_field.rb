@@ -10,14 +10,17 @@ require_relative '../../Event/Shop/wacky_clothes.rb'
 
 # PRESET DATA
 class DonutField < Map
-  def initialize(params = {})
-    @name = "Donut Field"
+  def initialize
+    super(name: "Donut Field")
     
     dirt = Dirt.new
     wall = Wall.new
     
-    shop = Tile.new(graphic: "△")
-    event = Dirt.new(graphic: "?")
+    shop = Tile.new
+    shop.graphic = '△'
+    
+    event = Dirt.new
+    event.graphic = '?'
     
     @tiles = Array.new
     
@@ -52,8 +55,5 @@ class DonutField < Map
     @tiles[2][2] = shop.clone
     @tiles[2][2].description = "There is a shop with strange clothes nearby."
     @tiles[2][2].events = [WackyClothesShop.new]
-
-    # Set the location for the character to spawn after death.
-    @regen_location = Couple.new(0,0)
   end
 end

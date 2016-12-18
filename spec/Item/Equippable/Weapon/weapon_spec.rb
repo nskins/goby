@@ -15,8 +15,7 @@ RSpec.describe Weapon do
       pencil = Weapon.new(name: "Pencil",
                            price: 20,
                            consumable: true,
-                           stat_change: {attack: 2, defense: 2},
-                           type: :helmet)
+                           stat_change: {attack: 2, defense: 2})
       expect(pencil.name).to eq "Pencil"
       expect(pencil.price).to eq 20
       expect(pencil.consumable).to eq true
