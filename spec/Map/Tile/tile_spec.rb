@@ -36,36 +36,4 @@ RSpec.describe Tile do
     end
   end
 
-  context "equality operator" do
-    it "returns true for the seemingly trivial case" do
-      expect(Tile.new).to eq Tile.new
-    end
-
-    it "returns true when only events and monsters are different" do
-      tile1 = Tile.new(events: [Event.new(command: "open")],
-                       monsters: [Monster.new(name: "Clown")])
-      tile2 = Tile.new(events: [Event.new(command: "close")],
-                       monsters: [Monster.new(name: "Alien")])
-      expect(tile1).to eq tile2
-    end
-
-    it "returns false for tiles with different passable attributes" do
-      dirt = Tile.new(passable: true)
-      wall = Tile.new(passable: false)
-      expect(dirt).not_to eq wall
-    end
-
-    it "returns false for tiles with different seen attributes" do
-      tile1 = Tile.new(seen: true)
-      tile2 = Tile.new(seen: false)
-      expect(tile1).not_to eq tile2
-    end
-
-    it "returns false for tiles with different descriptions" do
-      dirt = Tile.new(description: "Dirt surrounds you.")
-      water = Tile.new(description: "Water surrounds you.")
-      expect(dirt).not_to eq water
-    end
-  end
-
 end

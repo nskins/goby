@@ -25,13 +25,6 @@ class Tile
 		@graphic = params[:graphic] || default_graphic
 	end
 
-	# @param [Tile] rhs the tile on the right.
-	def ==(rhs)
-		return (@passable == rhs.passable &&
-						@seen == rhs.seen &&
-						@description == rhs.description)
-	end
-
 	attr_accessor :passable, :seen, :description, :events, :monsters, :graphic
 	
 	private 

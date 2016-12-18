@@ -12,13 +12,14 @@ RSpec.describe Map do
     it "has the correct default parameters" do
       map = Map.new
       expect(map.name).to eq "Map"
-      expect(map.tiles).to eq [ [ Tile.new ] ]
+      expect(map.tiles[0][0].passable).to be true
       expect(map.regen_location).to eq Couple.new(0,0)
     end
 
     it "correctly assigns custom parameters" do
       expect(@lake.name).to eq "Lake"
-      expect(@lake.tiles).to eq [ [ Tile.new, Tile.new(passable: false) ] ]
+      expect(@lake.tiles[0][0].passable).to be true
+      expect(@lake.tiles[0][1].passable).to be false
       expect(@lake.regen_location).to eq Couple.new(0,1)
     end
   end
