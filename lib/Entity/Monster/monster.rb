@@ -2,21 +2,22 @@ require_relative "../entity.rb"
 
 class Monster < Entity
 
-	# @param [Hash] params the parameters for creating a Monster.
-  # @option params [String] :name the name.
-  # @option params [Integer] :max_hp the greatest amount of health.
-  # @option params [Integer] :hp the current amount of health.
-  # @option params [Integer] :attack the strength in battle.
-  # @option params [Integer] :defense the prevention of attack power on oneself.
-  # @option params [[Couple(Item, Integer)]] :inventory a list of pairs of items and their respective amounts.
-  # @option params [Integer] :gold the max amount of gold that can be rewarded to the opponent.
-  # @option params [[BattleCommand]] :battle_commands the commands that can be used in battle.
-  # @option params [Hash] :outfit the collection of equippable items currently worn.
-	# @option params [String] :message the monster's battle cry.
-	def initialize(params = {})
-		super(params)
-		@name = params[:name] || "Monster"
-		@message = params[:message] || "!!!"
+  # @param [String] name the name.
+  # @param [Integer] max_hp the greatest amount of health.
+  # @param [Integer] hp the current amount of health.
+  # @param [Integer] attack the strength in battle.
+  # @param [Integer] defense the prevention of attack power on oneself.
+	# @param [Integer] agility the speed in battle.
+  # @param [[Couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
+  # @param [Integer] gold the max amount of gold that can be rewarded to the opponent.
+  # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
+  # @param [Hash] outfit the collection of equippable items currently worn.
+	# @param [String] message the monster's battle cry.
+	def initialize(name: "Monster", max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1, 
+								 inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!")
+		super(name: name, max_hp: max_hp, hp: hp, attack: attack, defense: defense, agility: agility,
+					inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
+		@message = message
 	end
 
 	attr_accessor :message

@@ -39,8 +39,7 @@ RSpec.describe Entity do
                         battle_commands: [
                           Attack.new(name: "Punch"),
                           Attack.new(name: "Kick")
-                        ],
-                        escaped: true)
+                        ])
       expect(hero.name).to eq "Hero"
       expect(hero.max_hp).to eq 50
       expect(hero.hp).to eq 35

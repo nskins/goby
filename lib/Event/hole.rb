@@ -2,10 +2,9 @@ require_relative 'event.rb'
 
 # PRESET DATA
 class Hole < Event
-  def initialize(params = {command: "dig",
-                           max_reward: 20})
-    super(params)
-    @max_reward = params[max_reward] || 20
+  def initialize(max_reward: 20)
+    super(command: "dig")
+    @max_reward = max_reward
     (@max_reward = 1) if (@max_reward < 1)
   end
 

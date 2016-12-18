@@ -2,39 +2,42 @@ require_relative '../util.rb'
 
 class Entity
 
-  # @param [Hash] params the parameters for creating an Entity.
-  # @option params [String] :name the name.
-  # @option params [Integer] :max_hp the greatest amount of health.
-  # @option params [Integer] :hp the current amount of health.
-  # @option params [Integer] :attack the strength in battle.
-  # @option params [Integer] :defense the prevention of attack power on oneself.
-  # @option params [[Couple(Item, Integer)]] :inventory a list of pairs of items and their respective amounts.
-  # @option params [Integer] :gold the currency used for economical transactions.
-  # @option params [[BattleCommand]] :battle_commands the commands that can be used in battle.
-  # @option params [Hash] :outfit the collection of equippable items currently worn.
-  def initialize(params = {})
-    @name = params[:name] || "Entity"
-
-    @max_hp = hp = params[:max_hp] || 1
-    @hp = params[:hp] || hp
-    @attack = params[:attack] || 1
-    @defense = params[:defense] || 1
-    @agility = params[:agility] || 1
-
-    @inventory = params[:inventory] || Array.new
-    @gold = params[:gold] || 0
-
-    @battle_commands = params[:battle_commands] || Array.new
+  # @param [String] name the name.
+  # @param [Integer] max_hp the greatest amount of health.
+  # @param [Integer] hp the current amount of health.
+  # @param [Integer] attack the strength in battle.
+  # @param [Integer] defense the prevention of attack power on oneself.
+  # @param [Integer] agility the speed in battle.
+  # @param [[Couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
+  # @param [Integer] gold the currency used for economical transactions.
+  # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
+  # @param [Hash] outfit the collection of equippable items currently worn.
+  def initialize(name: "Entity", max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1,
+                 inventory: [], gold: 0, battle_commands: [], outfit: {})
+    @name = name
+    @max_hp = max_hp
+    
+    if hp.nil?
+      @hp = @max_hp
+    else
+      @hp = hp
+    end
+    (@max_hp = @hp) if (@hp > @max_hp)
+    
+    @attack = attack
+    @defense = defense
+    @agility = agility
+    @inventory = inventory
+    @gold = gold
+    
+    @battle_commands = battle_commands
     # Maintain sorted battle commands.
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
 
     # See its attr_accessor below.
-    @outfit = Hash.new
-    if params[:outfit]
-      params[:outfit].each do |type,value|
-        value.equip(self)
-      end
-      @outfit = params[:outfit]
+    @outfit = {}
+    outfit.each do |type,value|
+      value.equip(self)
     end
 
     # This should only be switched to true during battle.

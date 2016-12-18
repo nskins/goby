@@ -4,8 +4,8 @@ require_relative '../../Item/shovel.rb'
 
 # PRESET DATA
 class Dan < NPC
-  def initialize(params = { name: "Dan" })
-    super(params)
+  def initialize
+    super(name: "Dan")
   end
 
   def run(player)

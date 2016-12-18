@@ -39,7 +39,6 @@ RSpec.describe Monster do
                           Attack.new(name: "Scratch"),
                           Attack.new(name: "Kick")
                         ],
-                        escaped: true,
                         message: "\"Oh, hi.\"")
       expect(clown.name).to eq "Clown"
       expect(clown.max_hp).to eq 20

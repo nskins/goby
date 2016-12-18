@@ -13,7 +13,6 @@ RSpec.describe NPC do
 
     it "correctly assigns custom parameters" do
       john = NPC.new(name: "John",
-                     command: "open",
                      mode: 1,
                      visible: false)
       expect(john.name).to eq "John"

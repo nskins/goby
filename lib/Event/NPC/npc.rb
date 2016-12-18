@@ -2,13 +2,12 @@ require_relative '../event.rb'
 
 class NPC < Event
 
-  # @param [Hash] params the parameters for creating a NPC.
-  # @option params [String] :name the name.
-  # @option params [Integer] :mode convenient way for a NPC to have multiple actions.
-  # @option params [Boolean] :visible whether the NPC can be seen/activated.
-  def initialize(params = {})
-    super(params)
-    @name = params[:name] || "NPC"
+  # @param [String] name the name.
+  # @param [Integer] mode convenient way for a NPC to have multiple actions.
+  # @param [Boolean] visible whether the NPC can be seen/activated.
+  def initialize(name: "NPC", mode: 0, visible: true)
+    super(mode: mode, visible: visible)
+    @name = name
     @command = "talk"
   end
 

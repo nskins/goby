@@ -3,10 +3,9 @@ require_relative 'event.rb'
 # PRESET DATA
 class Box < Event
 
-  def initialize(params = {})
-    super(params)
-    @command = "open"
-    @gold = params[:gold] || 0
+  def initialize(gold: 0)
+    super(command: "open")
+    @gold = gold
   end
 
   def run(player)
