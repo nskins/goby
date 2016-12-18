@@ -60,6 +60,23 @@ RSpec.describe Entity do
       # cannot be overwritten.
       expect(hero.escaped).to eq false
     end
+    
+    it "assigns default keyword arguments as appropriate" do
+      entity = Entity.new(max_hp: 7,
+                        defense: 9,
+                        gold: 3)
+      expect(entity.name).to eq "Entity"
+      expect(entity.max_hp).to eq 7
+      expect(entity.hp).to eq 7
+      expect(entity.attack).to eq 1
+      expect(entity.defense).to eq 9
+      expect(entity.agility).to eq 1
+      expect(entity.inventory).to eq []
+      expect(entity.gold).to eq 3
+      expect(entity.battle_commands).to eq []
+      # cannot be overwritten.
+      expect(entity.escaped).to eq false
+    end
   end
 
   context "add battle command" do
