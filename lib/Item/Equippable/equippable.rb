@@ -2,20 +2,13 @@ require_relative '../item.rb'
 
 class Equippable < Item
 
-  # @param [Hash] params the parameters for creating an Equippable.
-  # @option params [String] :name the name.
-  # @option params [Integer] :price the cost in a shop.
-  # @option params [Boolean] :consumable determines whether the item is lost when used.
-  # @option params [Hash] :stat_change the change in stats for when the item is equipped.
-  def initialize(params = {})
-    super(params)
-    @name = params[:name] || "Equippable"
-
-    # Equippables are consumed through the entity's equip_item function.
-    if params[:consumable].nil? then @consumable = false
-    else @consumable = params[:consumable] end
-
-    @stat_change = params[:stat_change] || {}
+  # @param [String] name the name.
+  # @param [Integer] price the cost in a shop.
+  # @param [Boolean] consumable upon use, the item is lost when true.
+  # @param [Hash] stat_change the change in stats for when the item is equipped.
+  def initialize(name: "Equippable", price: 0, consumable: false, stat_change: {})
+    super(name: name, price: price, consumable: consumable)
+    @stat_change = stat_change
     @type = :equippable
   end
   

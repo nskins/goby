@@ -3,16 +3,14 @@ require_relative '../../../Battle/BattleCommand/Attack/attack.rb'
 
 class Weapon < Equippable
 
-  # @param [Hash] params the parameters for creating a Weapon.
-  # @option params [String] :name the name.
-  # @option params [Integer] :price the cost in a shop.
-  # @option params [Boolean] :consumable determines whether the item is lost when used.
-  # @option params [Hash] :stat_change the change in stats for when the item is equipped.
-  # @option params [Attack] :attack the attack which is added to the entity's battle commands.
-  def initialize(params = {})
-    super(params)
-    @name = params[:name] || "Weapon"
-    @attack = params[:attack] || nil
+  # @param [String] name the name.
+  # @param [Integer] price the cost in a shop.
+  # @param [Boolean] consumable determines whether the item is lost when used.
+  # @param [Hash] stat_change the change in stats for when the item is equipped.
+  # @param [Attack] attack the attack which is added to the entity's battle commands.
+  def initialize(name: "Weapon", price: 0, consumable: false, stat_change: {}, attack: nil)
+    super(name: name, price: price, consumable: consumable, stat_change: stat_change)
+    @attack = attack
     @type = :weapon
   end
 

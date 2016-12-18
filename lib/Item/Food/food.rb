@@ -2,15 +2,13 @@ require_relative '../item.rb'
 
 class Food < Item
 
-  # @param [Hash] params the parameters for creating a Food.
-  # @option params [String] :name the name.
-  # @option params [Integer] :price the cost in a shop.
-  # @option params [Boolean] :consumable determines whether the food is lost when used.
-  # @option params [Integer] :recovers the amount of HP recovered when used.
-  def initialize(params = {})
-    super(params)
-    @name = params[:name] || "Food"
-    @recovers = params[:recovers] || 0
+  # @param [String] name the name.
+  # @param [Integer] price the cost in a shop.
+  # @param [Boolean] consumable upon use, the item is lost when true.
+  # @param [Integer] recovers the amount of HP recovered when used.
+  def initialize(name: "Food", price: 0, consumable: true, recovers: 0)
+    super(name: name, price: price, consumable: consumable)
+    @recovers = recovers
   end
 
   # Heals the entity.

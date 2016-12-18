@@ -15,8 +15,7 @@ RSpec.describe Shield do
       buckler = Shield.new(name: "Buckler",
                            price: 20,
                            consumable: true,
-                           stat_change: {attack: 2, defense: 2},
-                           type: :helmet)
+                           stat_change: {attack: 2, defense: 2})
       expect(buckler.name).to eq "Buckler"
       expect(buckler.price).to eq 20
       expect(buckler.consumable).to eq true

@@ -1,15 +1,12 @@
 class Item
-
-  # @param [Hash] params the parameters for creating an Item.
-  # @option params [String] :name the name.
-  # @option params [Integer] :price the cost in a shop.
-  # @option params [Boolean] :consumable determines whether the item is lost when used.
-  def initialize(params = {})
-    @name = params[:name] || "Item"
-    @price = params[:price] || 0
-
-    if params[:consumable].nil? then @consumable = true
-    else @consumable = params[:consumable] end
+  
+  # @param [String] name the name.
+  # @param [Integer] price the cost in a shop.
+  # @param [Boolean] consumable upon use, the item is lost when true.
+  def initialize(name: "Item", price: 0, consumable: true)
+    @name = name
+    @price = price
+    @consumable = consumable
   end
 
   # The function that executes when one uses the item.
