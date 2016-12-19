@@ -46,5 +46,6 @@ sed -i '/name/d' lib/main.rb
 sed -i '/max_hp/d' lib/main.rb
 sed -i '/attack/d' lib/main.rb
 sed -i '/battle/d' lib/main.rb
+sed -i '/agility/d' lib/main.rb
 sed -i '/map/d' lib/main.rb
 sed -i '/location/d' lib/main.rb
