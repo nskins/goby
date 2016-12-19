@@ -11,18 +11,18 @@ end
 # Prints the commands that are available everywhere.
 def display_default_commands
   puts "* Default commands:"
-  puts "w (↑);          Move up"
-  puts "a (←);          Move left"
-  puts "s (↓);          Move down"
-  puts "d (→);          Move right"
-  puts "help;           Show the help menu"
-  puts "map;            Print the map"
-  puts "inv;            Check inventory"
-  puts "status;         Show player status (HP, stats, weapons, protection and battle commands)"
-  puts "use [item];     Use the specified item"
+  puts "w (↑)           Move up"
+  puts "a (←)           Move left"
+  puts "s (↓)           Move down"
+  puts "d (→)           Move right"
+  puts "help            Show the help menu"
+  puts "map             Print the map"
+  puts "inv             Check inventory"
+  puts "status          Show player status"
+  puts "use [item]      Use the specified item"
   puts "drop [item]     Drop the specified item"
-  puts "equip [item];   Equip the specified item"
-  puts "unequip [item]; Unequip the specified item"
+  puts "equip [item]    Equip the specified item"
+  puts "unequip [item]  Unequip the specified item"
   print "quit            Quit the game\n\n"
 end
 
@@ -33,27 +33,14 @@ def display_special_commands(player)
   events = player.map.tiles[player.location.first][player.location.second].events
   if (!(events.empty?) && events.any? { |event| event.visible })
 
-    # Use the counter so there are only 4 commands per line.
-    counter = 0
     print "* Special commands: "
     events.each do |event|
-      # Print the corresponding command and increment the counter.
+      # Print the corresponding command.
       if (event.visible)
         print "#{event.command}; "
-        counter += 1
-      end
-
-      # Restart the counter and print a newline.
-      if (counter == 4)
-        counter = 0
-        print "\n"
       end
     end
-
-    print "\n"
-    if (counter != 0)
-      print "\n"
-    end
+    print "\n\n"
 
   end
 end
