@@ -237,13 +237,15 @@ class Player < Entity
     end
 
     if monster.hp <= 0
-      type("You defeated the #{monster.name}\n")
+      type("You defeated the #{monster.name}!\n")
       gold_reward = Random.rand(0..monster.gold)
-          
+    
       if (gold_reward > 0)
-        type("and they dropped #{gold_reward} gold!\n\n")
+        type("It dropped #{gold_reward} gold!\n\n")
         @gold += gold_reward
-      end
+      else
+        print "\n"
+      end    
     end
 
   end

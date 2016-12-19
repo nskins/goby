@@ -2,3 +2,6 @@ language: ruby
 
 rvm:
   - 2.0
+
+notifications:
+  email: false
