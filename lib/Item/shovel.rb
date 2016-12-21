@@ -5,7 +5,7 @@ class Shovel < Item
     super(name: "Shovel", consumable: false)
   end
 
-  def use(entity)
+  def use(user, entity)
     type("\"Type 'dig' to use me when the time arises...\"\n\n")
   end
 end

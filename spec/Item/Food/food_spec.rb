@@ -27,32 +27,15 @@ RSpec.describe Food do
     it "heals the entity's HP in a trivial case" do
       entity = Entity.new(hp: 5, max_hp: 20)
       food = Food.new(recovers: 10)
-      food.use(entity)
+      food.use(entity, entity)
       expect(entity.hp).to eq 15
     end
 
     it "does not heal over the entity's max HP" do
       entity = Entity.new(hp: 15, max_hp: 20)
       food = Food.new(recovers: 10)
-      food.use(entity)
+      food.use(entity, entity)
       expect(entity.hp).to eq 20
-    end
-
-    it "has a dynamic message for when food is eaten" do
-      entity = Entity.new(max_hp: 20, hp: 13)
-      food = Food.new(name: 'Fruit', recovers: 5)
-
-      expected = "#{entity.name} uses Fruit and recovers "\
-        "5 HP!\n\nHP: 18/20\n\n"
-      expect { food.use(entity) }.to output(expected).to_stdout
-
-      expected = "#{entity.name} uses Fruit and recovers "\
-        "2 HP!\n\nHP: 20/20\n\n"
-      expect { food.use(entity) }.to output(expected).to_stdout
-
-      expected = "#{entity.name} uses Fruit and recovers "\
-        "0 HP!\n\nHP: 20/20\n\n"
-      expect { food.use(entity) }.to output(expected).to_stdout
     end
   end
 

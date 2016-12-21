@@ -11,8 +11,9 @@ class Item
 
   # The function that executes when one uses the item.
   #
+  # @param [Entity] user the one using the item.
   # @param [Entity] entity the one on whom the item is used.
-  def use(entity)
+  def use(user, entity)
     puts "Nothing happens.\n\n"
   end
 

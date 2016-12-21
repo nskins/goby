@@ -13,8 +13,9 @@ class Food < Item
 
   # Heals the entity.
   #
+  # @param [Entity] user the one using the food.
   # @param [Entity] entity the one on whom the food is used.
-  def use(entity)
+  def use(user, entity)
     if entity.hp + recovers > entity.max_hp
       this_recover = entity.max_hp - entity.hp
       entity.hp = entity.max_hp
@@ -22,16 +23,17 @@ class Food < Item
       this_recover = @recovers
       entity.hp += @recovers
     end
-    print effects_message(entity, this_recover)
-  end
-
-  # A message displaying how much HP the entity recovers.
-  #
-  # @param [Entity] entity the one on whom the food is used.
-  # @param [Integer] recover the amount of HP that will be recovered.
-  def effects_message(entity, recover)
-    "#{entity.name} uses #{name} and recovers #{recover}"\
-    " HP!\n\nHP: #{entity.hp}/#{entity.max_hp}\n\n"
+    
+    # Helpful output.
+    print "#{user.name} uses #{name}"
+    if (user == entity)
+      print " and "
+    else
+      print " on #{entity.name}!\n#{entity.name} "
+    end
+    print "recovers #{this_recover} HP!\n\n"
+    print "#{entity.name}'s HP: #{entity.hp}/#{entity.max_hp}\n\n"
+    
   end
 
   # The amount of HP that the food recovers.

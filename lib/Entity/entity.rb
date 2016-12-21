@@ -79,6 +79,16 @@ class Entity
 	def choose_attack
 	  return @battle_commands[Random.rand(@battle_commands.length)]
 	end
+  
+  # Determines how the entity should select the item and on whom
+  # during battle (Use command). Return nil on error.
+  #
+  # @return [Couple(Item, Entity)]
+  def choose_item_and_on_whom(enemy)
+    item = @inventory[Random.rand(@inventory.length)].first
+    whom = [self, enemy].sample
+    return Couple.new(item, whom)
+  end
 
   # Equips the specified item to the entity's outfit.
   #
@@ -262,7 +272,7 @@ class Entity
     index = has_item(item)
     if (index != -1)
       actual_item = inventory[index].first
-      actual_item.use(entity)
+      actual_item.use(self, entity)
       remove_item(actual_item) if actual_item.consumable
     else
       print "What?! You don't have THAT!\n\n"

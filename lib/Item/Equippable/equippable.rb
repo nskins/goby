@@ -61,8 +61,9 @@ class Equippable < Item
 
   # The function that executes when one uses the equippable.
   #
+  # @param [Entity] user the one using the item.
   # @param [Entity] entity the one on whom the item is used.
-  def use(entity)
+  def use(user, entity)
     print "Type 'equip #{@name}' to equip this item.\n\n"
   end
 

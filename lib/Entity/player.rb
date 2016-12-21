@@ -65,6 +65,58 @@ class Player < Entity
 
     return @battle_commands[index]
 	end
+  
+  # Determines how the entity should select the item and on whom
+  # during battle (Use command). Return nil on error.
+  #
+  # @return [Couple(Item, Entity)]
+  def choose_item_and_on_whom(enemy)
+    index = -1
+    item = nil
+    
+    # Choose the item to use.
+    while (index == -1)
+      print_inventory
+      puts "Which item would you like to use?"
+      print "(or type 'pass' to forfeit the turn): "
+      input = gets.chomp
+      
+      print "\n"
+    
+      return if (input.casecmp("pass").zero?)
+    
+      index = has_item(input)
+      
+      if (index == -1) 
+        print "What?! You don't have THAT!\n\n"
+      else
+        item = @inventory[index].first
+      end
+    end
+    
+    whom = nil
+    
+    # Choose on whom to use the item.
+    while (!whom)
+      puts "On whom will you use the item (#{@name} or #{enemy.name})?"
+      print "(or type 'pass' to forfeit the turn): "
+      input = gets.chomp
+      
+      print "\n"
+    
+      return if (input.casecmp("pass").zero?)
+    
+      if (input.casecmp(@name).zero?)
+        whom = self
+      elsif (input.casecmp(enemy.name).zero?)
+        whom = enemy
+      else
+        print "What?! Choose either #{@name} or #{enemy.name}!\n\n"
+      end
+    end
+    
+    return Couple.new(item, whom)
+  end
 
   # Sends the player back to a safe location, halves its gold, and restores HP.
   def die
@@ -202,6 +254,13 @@ class Player < Entity
     while hp > 0
       # Both choose an attack.
       player_attack = choose_attack
+      
+      # Prevents the user from using "bad" commands.
+      # Example: "Use" with an empty inventory.
+      while (player_attack.fails(self))
+        player_attack = choose_attack
+      end
+      
       monster_attack = monster.choose_attack
       
       attackers = Array.new

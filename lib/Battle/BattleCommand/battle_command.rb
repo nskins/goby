@@ -15,6 +15,15 @@ class BattleCommand
   def run(user, enemy)
     print "Nothing happens.\n\n"
   end
+  
+  # This method can prevent the user from using this command
+  # based on a defined condition. Override for subclasses.
+  #
+  # @param [Entity] user the one who is using the command.
+  # @return [Boolean] true iff the command cannot be used.
+  def fails(user)
+    return false
+  end
 
   # @param [BattleCommand] rhs the command on the right.
   def ==(rhs)
