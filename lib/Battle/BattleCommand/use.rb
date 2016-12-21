@@ -8,10 +8,10 @@ class Use < BattleCommand
 
   # Uses the specified item on the specified Entity.
   #
-  # @param [Entity] user the one who is using an item.
-  # @param [Entity] specified the enemy in this battle.
-  def run(user, enemy)
-    pair = user.choose_item_and_on_whom(enemy)
+  # @param [Entity] user the one who is using the command.
+  # @param [Entity] entity the one on whom the command is used.
+  def run(user, entity)
+    pair = user.choose_item_and_on_whom(entity)
     return if (!pair)
     user.use_item(pair.first, pair.second)
   end
@@ -20,7 +20,7 @@ class Use < BattleCommand
   #
   # @param [Entity] user the one who is using the command.
   # @return [Boolean] status of the user's inventory.
-  def fails(user)
+  def fails?(user)
     empty = user.inventory.empty?
     if empty
       puts "#{user.name}'s inventory is empty!\n\n"

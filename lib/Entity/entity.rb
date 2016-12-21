@@ -83,7 +83,8 @@ class Entity
   # Determines how the entity should select the item and on whom
   # during battle (Use command). Return nil on error.
   #
-  # @return [Couple(Item, Entity)]
+  # @param [Entity] enemy the opponent in battle.
+  # @return [Couple(Item, Entity)] the item and on whom it is to be used.
   def choose_item_and_on_whom(enemy)
     item = @inventory[Random.rand(@inventory.length)].first
     whom = [self, enemy].sample

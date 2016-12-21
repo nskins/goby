@@ -11,8 +11,8 @@ class BattleCommand
   # Override this function for subclasses.
   #
   # @param [Entity] user the one who is using the command.
-  # @param [Entity] enemy the one on whom the command is used.
-  def run(user, enemy)
+  # @param [Entity] entity the one on whom the command is used.
+  def run(user, entity)
     print "Nothing happens.\n\n"
   end
   
@@ -21,7 +21,7 @@ class BattleCommand
   #
   # @param [Entity] user the one who is using the command.
   # @return [Boolean] true iff the command cannot be used.
-  def fails(user)
+  def fails?(user)
     return false
   end
 
