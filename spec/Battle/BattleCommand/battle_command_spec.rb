@@ -28,6 +28,14 @@ RSpec.describe BattleCommand do
       expect(dance).not_to eq kick
     end
   end
+  
+  context "fails?" do
+    it "returns false for the trivial case" do
+      entity = Entity.new
+      command = BattleCommand.new
+      expect(command.fails?(entity)).to be false
+    end
+  end
 
   context "to_s" do
     it "returns the name of the BattleCommand" do
