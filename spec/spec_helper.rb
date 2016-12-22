@@ -16,6 +16,23 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+# Credit for "discovering" (?) RSpec input:
+# https://gist.github.com/nu7hatch/631329
+module Helpers
+  # Replace standard input with faked one StringIO. 
+  def __stdin(*args)
+    begin
+      $stdin = StringIO.new
+      $stdin.puts(args.shift) until args.empty?
+      $stdin.rewind
+      yield
+    ensure
+      $stdin = STDIN
+    end
+  end
+end
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -61,6 +78,9 @@ RSpec.configure do |config|
     $stderr = original_stderr
     $stdout = original_stdout
   end
+
+  # Allow RSpec tests to access this module.
+  config.include(Helpers)
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.

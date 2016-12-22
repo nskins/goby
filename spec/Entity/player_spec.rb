@@ -103,6 +103,57 @@ RSpec.describe Player do
     end
 
   end
+  
+  context "choose attack" do
+    it "should choose the correct attack based on the input" do
+      charge = BattleCommand.new(name: "Charge")
+      zap = BattleCommand.new(name: "Zap")
+      player = Player.new(battle_commands: [charge, zap])
+      
+      # RSpec input example. Also see spec_helper.rb for __stdin method.
+      __stdin("kick\n", "zap\n") do
+        expect(player.choose_attack.name).to eq "Zap"
+      end
+    end
+  end    
+
+  context "choose item and on whom" do
+    # Define some common variables for these tests.
+    before(:all) do
+      banana = Item.new(name: "Banana")
+      axe = Item.new(name: "Axe")
+      @entity = Player.new(inventory: [Couple.new(banana, 1),
+                                      Couple.new(axe, 3)])
+      @enemy = Entity.new(name: "Enemy")
+    end
+    
+    it "should return correct values based on the input" do  
+      # RSpec input example. Also see spec_helper.rb for __stdin method.
+      __stdin("goulash\n", "axe\n", "bill\n", "enemy\n") do
+        pair = @entity.choose_item_and_on_whom(@enemy)
+        expect(pair.first.name).to eq "Axe"
+        expect(pair.second.name).to eq "Enemy"
+      end
+    end
+    
+    context "should return nil on appropriate input" do
+      it "for item" do
+        # RSpec input example. Also see spec_helper.rb for __stdin method.
+        __stdin("goulash\n", "pass\n") do
+          pair = @entity.choose_item_and_on_whom(@enemy)
+          expect(pair).to be_nil
+        end
+      end
+      
+      it "for whom" do
+        # RSpec input example. Also see spec_helper.rb for __stdin method.
+        __stdin("banana\n", "bill\n", "pass\n") do
+          pair = @entity.choose_item_and_on_whom(@enemy)
+          expect(pair).to be_nil
+        end
+      end
+    end
+  end
 
   context "move to" do
     it "correctly moves the player to a passable tile" do

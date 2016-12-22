@@ -139,6 +139,31 @@ RSpec.describe Entity do
     end
   end
 
+  context "choose attack" do
+    it "randomly selects one of the available commands" do
+      kick = BattleCommand.new(name: "Kick")
+      zap = BattleCommand.new(name: "Zap")
+      entity = Entity.new(battle_commands: [kick, zap])
+      attack = entity.choose_attack
+      expect(attack.name).to eq("Kick").or(eq("Zap"))
+    end
+  end
+
+  context "choose item and on whom" do
+    it "randomly selects both item and on whom" do
+      banana = Item.new(name: "Banana")
+      axe = Item.new(name: "Axe")
+      
+      entity = Entity.new(inventory: [Couple.new(banana, 1),
+                                      Couple.new(axe, 3)])
+      enemy = Entity.new(name: "Enemy")
+      
+      pair = entity.choose_item_and_on_whom(enemy)
+      expect(pair.first.name).to eq("Banana").or(eq("Axe"))
+      expect(pair.second.name).to eq("Entity").or(eq("Enemy"))
+    end
+  end
+
   context "equip item" do
     it "correctly equips the weapon and alters the stats" do
       entity = Entity.new(inventory: [Couple.new(
