@@ -1,17 +1,18 @@
 require_relative 'battle_command.rb'
 
-# PRESET DATA
 class Use < BattleCommand
   def initialize
-    super(name: "Use", description: "    Use an item.\n")
+    super(name: "Use")
   end
 
   # Uses the specified item on the specified Entity.
+  # Note that the enemy is not necessarily on whom the item is used.
   #
   # @param [Entity] user the one who is using the command.
-  # @param [Entity] entity the one on whom the command is used.
-  def run(user, entity)
-    pair = user.choose_item_and_on_whom(entity)
+  # @param [Entity] enemy the one on whom the command is used.
+  def run(user, enemy)
+    # Determine the item and on whom to use the item.
+    pair = user.choose_item_and_on_whom(enemy)
     return if (!pair)
     user.use_item(pair.first, pair.second)
   end

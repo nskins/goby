@@ -48,7 +48,7 @@ class Player < Entity
   # @return [BattleCommand] the chosen battle command.
   def choose_attack
     puts "Choose an action:"
-    print_battle_commands(false)
+    print_battle_commands
 
     input = player_input
     index = has_battle_command(input)
@@ -57,7 +57,7 @@ class Player < Entity
     while (index == -1)
       puts "You don't have '#{input}'"
       puts "Try one of these:"
-      print_battle_commands(false)
+      print_battle_commands
 
       input = player_input
       index = has_battle_command(input)

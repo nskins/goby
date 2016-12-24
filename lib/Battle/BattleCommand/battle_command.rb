@@ -1,10 +1,8 @@
 class BattleCommand
 
   # @param [String] name the name.
-  # @param [String] description a summary/message of its purpose.
-  def initialize(name: "BattleCommand", description: nil)
+  def initialize(name: "BattleCommand")
     @name = name
-    @description = description
   end
 
   # The process that runs when this command is used in battle.
@@ -26,8 +24,9 @@ class BattleCommand
   end
 
   # @param [BattleCommand] rhs the command on the right.
+  # @return [Boolean] true iff the commands are considered equal.
   def ==(rhs)
-    return (@name.casecmp(rhs.name) == 0)
+    return (@name.casecmp(rhs.name).zero?)
   end
 
   # @return [String] the name of the BattleCommand.
@@ -35,6 +34,6 @@ class BattleCommand
     @name
   end
 
-  attr_accessor :name, :description
+  attr_accessor :name
 
 end

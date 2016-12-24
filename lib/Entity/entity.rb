@@ -142,15 +142,11 @@ class Entity
   end
 
   # Prints the available battle commands.
-  #
-  # @param [Boolean] verbose when true, prints the commands' descriptions.
-  def print_battle_commands(verbose)
-    puts "Battle Commands:" if verbose
+  def print_battle_commands
     @battle_commands.each do |command|
       print "❊ #{command.name} \n"
-      print command.description if verbose
     end
-    print "\n" unless verbose
+    print "\n"
   end
 
   # Prints the inventory in a nice format.
@@ -172,41 +168,43 @@ class Entity
 
   # Prints the status in a nice format.
   def print_status
-    puts "HP: #{@hp}/#{@max_hp}"
-    puts "Attack: #{@attack}"
-    puts "Defense: #{@defense}"
-    puts "Agility: #{@agility}"
+    puts "Stats:"
+    puts "* HP: #{@hp}/#{@max_hp}"
+    puts "* Attack: #{@attack}"
+    puts "* Defense: #{@defense}"
+    puts "* Agility: #{@agility}"
     print "\n"
-
-    print "Weapon: "
+    
+    puts "Equipment:"
+    print "* Weapon: "
     if @outfit[:weapon]
       puts "#{@outfit[:weapon].name}"
     else
       puts "none"
     end
 
-    print "Shield: "
+    print "* Shield: "
     if @outfit[:shield]
       puts "#{@outfit[:shield].name}"
     else
       puts "none"
     end
 
-    print "Helmet: "
+    print "* Helmet: "
     if @outfit[:helmet]
       puts "#{@outfit[:helmet].name}"
     else
       puts "none"
     end
 
-    print "Torso: "
+    print "* Torso: "
     if @outfit[:torso]
       puts "#{@outfit[:torso].name}"
     else
       puts "none"
     end
 
-    print "Legs: "
+    print "* Legs: "
     if @outfit[:legs]
       puts "#{@outfit[:legs].name}"
     else
@@ -214,8 +212,8 @@ class Entity
     end
 
     print "\n"
-    print_battle_commands(true)
-    print "\n"
+    puts "Battle Commands:"
+    print_battle_commands
   end
 
   # Removes the battle command, if it exists, from the entity's collection.

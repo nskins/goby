@@ -1,6 +1,5 @@
 # Removes 'Battle' preset data.
 
-rm -f lib/Battle/BattleCommand/escape.rb
 rm -f lib/Battle/BattleCommand/Attack/kick.rb
 rm -f lib/Battle/BattleCommand/Attack/smash.rb
 
