@@ -6,7 +6,9 @@ class Alien < Monster
   def initialize
     super(name: "Alien", max_hp: 30, attack: 6, defense: 2, agility: 2, 
           inventory: [Couple.new(Donut.new, 1)], battle_commands: [Kick.new, Use.new], gold: 20, 
-          message: "\"I come from another world.\"")
+          message: "\"I come from another world.\"",
+          # nil acts as no treasure, so there is a 3/5 chance of no treasure.
+          treasures: [Couple.new(nil, 3), Couple.new(Donut.new, 2)])
   end
   
   def choose_attack

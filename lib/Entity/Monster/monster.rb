@@ -13,13 +13,73 @@ class Monster < Entity
   # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
   # @param [Hash] outfit the collection of equippable items currently worn.
 	# @param [String] message the monster's battle cry.
+	# @param [[Couple(Item, Integer)]] treasures a list of treasures and the likelihood of receiving each.
 	def initialize(name: "Monster", max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1, 
-								 inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!")
+								 inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!",
+								 treasures: [])
 		super(name: name, max_hp: max_hp, hp: hp, attack: attack, defense: defense, agility: agility,
 					inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
 		@message = message
+		@treasures = treasures
+		
+		# Find the total number of treasures in the distribution.
+		@total_treasures = 0
+		@treasures.each do |pair|
+			@total_treasures += pair.second
+		end
 	end
-
-	attr_accessor :message
+	
+	# Choose rewards based on the 'gold' and 'treasures' member variables.
+	#
+	# @return [Couple(Integer, Item)] the gold (first) and the treasure (second).
+	def sample_rewards
+		# Sample a random amount of gold.
+		gold = Random.rand(0..@gold)
+		
+		# Determine which treasure to reward to the victor.
+		treasure = sample_treasures
+		
+		return Couple.new(gold, treasure)
+	end
+	
+	# Provides a deep copy of the monster. This is necessary since
+	# the monster can use up its items in battle.
+	#
+	# @return [Monster] deep copy of the monster.
+	def clone
+		# Create a shallow copy for most of the variables.
+		monster = super
+		
+		# Reset the copy's inventory.
+		monster.inventory = []
+		
+		# Create a deep copy of the inventory.
+		@inventory.each do |pair|
+			monster.inventory << Couple.new(pair.first.clone, pair.second)
+		end
+		
+		return monster
+	end
+	
+	attr_accessor :message, :treasures, :total_treasures
+	
+	private
+	
+		# Chooses a treasure based on the sample distribution.
+		#
+		# @return [Item] the reward for the victor of the battle (or nil - no treasure).
+		def sample_treasures
+			# Choose uniformly from the total given above.
+			index = Random.rand(@total_treasures)
+			
+			# Choose the treasure based on the distribution.
+			total = 0
+			@treasures.each do |pair|
+				total += pair.second
+				if (index < total)
+					return pair.first
+				end
+			end
+		end
 
 end

@@ -298,14 +298,26 @@ class Player < Entity
 
     if monster.hp <= 0
       type("You defeated the #{monster.name}!\n")
-      gold_reward = Random.rand(0..monster.gold)
-    
-      if (gold_reward > 0)
-        type("It dropped #{gold_reward} gold!\n\n")
-        @gold += gold_reward
-      else
-        print "\n"
-      end    
+      
+      # Determine the rewards for defeating the monster.
+      rewards = monster.sample_rewards
+      
+      gold = rewards.first
+      treasure = rewards.second
+      
+      # Output some helpful text and give the rewards to the player.
+      if ((gold > 0) || treasure)
+        type("Rewards:\n")
+        if (gold > 0)
+          type("* #{gold} gold\n")
+          @gold += gold
+        end
+        if (treasure)
+          type("* #{treasure.name}\n")
+          add_item(treasure)
+        end
+      end 
+      print "\n" 
     end
 
   end
@@ -314,10 +326,10 @@ class Player < Entity
 
   private
   
-  def player_first?(monster)
-    sum = monster.agility + agility
-    random_number = Random.rand(0..sum - 1)
-    random_number < agility
-  end
+    def player_first?(monster)
+      sum = monster.agility + agility
+      random_number = Random.rand(0..sum - 1)
+      random_number < agility
+    end
 
 end
