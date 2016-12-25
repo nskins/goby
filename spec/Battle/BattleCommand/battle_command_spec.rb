@@ -13,6 +13,24 @@ RSpec.describe BattleCommand do
       expect(dance.name).to eq "Dance"
     end
   end
+  
+  context "run" do
+    it "prints the default message" do
+      user = Entity.new
+      enemy = Entity.new
+      cmd = BattleCommand.new
+      # Rspec: expect output.
+      expect { cmd.run(user, enemy) }.to output("Nothing happens.\n\n").to_stdout
+    end
+  end
+  
+  context "fails?" do
+    it "returns false for the trivial case" do
+      entity = Entity.new
+      command = BattleCommand.new
+      expect(command.fails?(entity)).to be false
+    end
+  end
 
   context "equality operator" do
     it "returns true for the seemingly trivial case" do
@@ -23,14 +41,6 @@ RSpec.describe BattleCommand do
       dance = BattleCommand.new(name: "Dance")
       kick = BattleCommand.new(name: "Kick")
       expect(dance).not_to eq kick
-    end
-  end
-  
-  context "fails?" do
-    it "returns false for the trivial case" do
-      entity = Entity.new
-      command = BattleCommand.new
-      expect(command.fails?(entity)).to be false
     end
   end
 
