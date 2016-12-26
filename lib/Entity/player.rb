@@ -121,11 +121,17 @@ class Player < Entity
 
   # Sends the player back to a safe location, halves its gold, and restores HP.
   def die
+    sleep(2) unless ENV['TEST']
+    
     # TODO: fix next line. regen_location could be nil or "bad."
     @location = @map.regen_location
+    
     type("After being knocked out in battle, you wake up in #{@map.name}\n")
     type("Looks like you lost some gold...\n\n")
-    sleep(2)
+    
+    sleep(2) unless ENV['TEST']
+    
+    # Reduce gold and heal the player.
     @gold /= 2
     @hp = @max_hp
   end
@@ -247,7 +253,6 @@ class Player < Entity
   # Engages in battle with the specified monster.
   #
   # @param [Monster] monster the opponent of the battle.
-
   def battle(monster)
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
@@ -292,9 +297,7 @@ class Player < Entity
 
     end
 
-    if hp <=0
-      sleep(2); die
-    end
+    die if hp <= 0
 
     if monster.hp <= 0
       type("You defeated the #{monster.name}!\n")

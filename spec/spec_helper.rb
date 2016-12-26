@@ -17,6 +17,10 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+# Set variable to know when testing.
+# Also has boolean value true.
+ENV['TEST'] = 'rspec'
+
 # Credit for "discovering" (?) RSpec input:
 # https://gist.github.com/nu7hatch/631329
 module Helpers

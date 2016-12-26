@@ -154,7 +154,28 @@ RSpec.describe Player do
       end
     end
   end
-
+  
+  context "die" do
+    it "moves the player back to the map's regen location" do
+      @dude.move_down
+      expect(@dude.location).to eq Couple.new(2,1)
+      @dude.die
+      expect(@dude.location).to eq @map.regen_location
+    end
+    
+    it "reduces the player's gold by half" do
+      @dude.gold = 10
+      @dude.die
+      expect(@dude.gold).to eq 5
+    end
+    
+    it "recovers the player's HP to max" do
+      @dude.hp = 0
+      @dude.die
+      expect(@dude.hp).to eq @dude.max_hp
+    end
+  end
+  
   context "move to" do
     it "correctly moves the player to a passable tile" do
       @dude.move_to(Couple.new(2,1))
