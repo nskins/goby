@@ -1,5 +1,4 @@
 require_relative '../../lib/Entity/player.rb'
-require_relative '../../lib/Map/Map/donut_field.rb'
 
 RSpec.describe Player do
 

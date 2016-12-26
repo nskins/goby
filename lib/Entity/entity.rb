@@ -159,7 +159,7 @@ class Entity
       puts "#{@name}'s inventory:"
 
       @inventory.each do |couple|
-        puts couple.first.name + " (#{couple.second})"
+        puts "* #{couple.first.name} (#{couple.second})"
       end
     end
 

@@ -1,5 +1,6 @@
 require_relative 'battle_command.rb'
 
+# Allows an Entity to try to escape from the opponent.
 class Escape < BattleCommand
   def initialize
     super(name: "Escape")
