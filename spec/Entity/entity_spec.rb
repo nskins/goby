@@ -1,6 +1,5 @@
 require_relative '../../lib/Entity/entity.rb'
 require_relative '../../lib/Item/Equippable/Weapon/weapon.rb'
-require_relative '../../lib/Battle/BattleCommand/Attack/kick.rb'
 
 RSpec.describe Entity do
 
