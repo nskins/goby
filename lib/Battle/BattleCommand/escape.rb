@@ -9,11 +9,13 @@ class Escape < BattleCommand
   # Samples a probability to determine if the user will escape from battle.
   #
   # @param [Entity] user the one who is trying to escape.
-  # @param [Entity] enemy the one from whom the user wants to escape.
+  # @param [Entity] monster the one from whom the user wants to escape.
   def run(user, enemy)
+    sum = enemy.agility + user.agility
+    random_number = Random.rand(0..sum - 1)
 
-    # Higher probability of escape when the enemy has low HP.
-    if (Random.rand(0..(enemy.max_hp)) > (enemy.hp - 1))
+    # Higher probability of escape when the enemy has low agility.
+    if (random_number < user.agility)
       user.escaped = true
       type("#{user.name} successfully escapes the clutches of the #{enemy.name}!\n\n")
       return
