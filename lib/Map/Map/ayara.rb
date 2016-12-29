@@ -1,10 +1,11 @@
 require_relative 'map.rb'
 require_relative '../Tile/stone.rb'
 require_relative '../Tile/wall.rb'
+require_relative '../../Event/rest.rb'
 
 class Ayara < Map
   def initialize
-    super(name: "Ayara", regen_location: Couple.new(5,5))
+    super(name: "Ayara", regen_location: Couple.new(11,4))
     
     stone = Stone.new
     wall = Wall.new
@@ -54,5 +55,9 @@ class Ayara < Map
       @tiles[11][x+9] = wall.clone
     end
     
+    @tiles[11][4].description = "This is your house. It's nice and\n"\
+                                "warm. There's a comfy bed inside."
+    @tiles[11][4].events = [Rest.new]
+    @tiles[11][4].graphic = 'Д'
   end
 end

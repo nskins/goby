@@ -5,5 +5,5 @@ require_relative "Map/Map/ayara.rb"
 system("clear")
 
 player = Player.new(map: Ayara.new,
-                    location: Couple.new(5,5))
+                    location: Couple.new(11,4))
 run_driver(player)
