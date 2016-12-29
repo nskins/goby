@@ -145,7 +145,7 @@ class Player < Entity
     y = coordinates.first; x = coordinates.second
 
     # Prevents moving onto nonexistent and impassable tiles.
-    if (!@map.in_bounds(y,x) || (!@map.tiles[y][x].passable))
+    if (!map.in_bounds(y,x) || (!map.tiles[y][x].passable))
       print "You cannot move there!\n\n"
       print_possible_moves(self)
       return
