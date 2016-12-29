@@ -35,12 +35,10 @@ class Player < Entity
       y = location.first; x = location.second
 
       if (map.in_bounds(y,x) && map.tiles[y][x].passable)
-        @map = map
-        @location = location
+        move_to(location, map)
       end
     end
 
-    update_map
   end
 
   # Uses player input to determine the battle command.

@@ -35,12 +35,11 @@ rm -f lib/Map/Tile/wall.rb
 
 rm -f lib/Story/introduction.rb
 
-# Removes content references in 'driver.rb'.
-sed -i '/introduction/d' lib/driver.rb
-
 # Removes content references in 'main.rb'.
+
 sed -i '/Battle/d' lib/main.rb
 sed -i '/Map/d' lib/main.rb
+sed -i '/introduction/d' lib/main.rb
 sed -i '/name/d' lib/main.rb
 sed -i '/max_hp/d' lib/main.rb
 sed -i '/attack/d' lib/main.rb

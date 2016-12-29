@@ -4,6 +4,10 @@ require_relative "Battle/BattleCommand/use.rb"
 require_relative "Battle/BattleCommand/Attack/kick.rb"
 require_relative "Entity/player.rb"
 require_relative "Map/Map/donut_field.rb"
+require_relative "Story/introduction.rb"
+
+system("clear")
+print_introduction
 
 player = Player.new(
                     name: "Player1",
