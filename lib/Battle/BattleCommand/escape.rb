@@ -9,7 +9,7 @@ class Escape < BattleCommand
   # Samples a probability to determine if the user will escape from battle.
   #
   # @param [Entity] user the one who is trying to escape.
-  # @param [Entity] monster the one from whom the user wants to escape.
+  # @param [Entity] enemy the one from whom the user wants to escape.
   def run(user, enemy)
     sum = enemy.agility + user.agility
     random_number = Random.rand(0..sum - 1)
