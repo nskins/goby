@@ -2,6 +2,7 @@ require_relative 'map.rb'
 require_relative '../Tile/stone.rb'
 require_relative '../Tile/wall.rb'
 require_relative '../../Event/rest.rb'
+require_relative '../../Event/NPC/ayara.rb'
 
 class Ayara < Map
   def initialize
@@ -55,9 +56,14 @@ class Ayara < Map
       @tiles[11][x+9] = wall.clone
     end
     
+    # The player's home.
     @tiles[11][4].description = "This is your house. It's nice and\n"\
                                 "warm. There's a comfy bed inside."
     @tiles[11][4].events = [Rest.new]
     @tiles[11][4].graphic = 'Д'
+    
+    # Simple NPC.
+    @tiles[11][5].description = "Your friend Tim is sitting on a bench."
+    @tiles[11][5].events = [Tim.new]
   end
 end
