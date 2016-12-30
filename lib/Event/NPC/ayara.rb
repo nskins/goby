@@ -7,16 +7,14 @@ class Tim < NPC
   end
   
   def run(player)
-    case @mode
-    when 0
+    if (player.has_item(Bucket.new) == -1)
       type("#{@name}: Ah, hello #{player.name}! It seems a bit\n")
       type("chilly out today, huh? I found this\n")
       type("strange device, but I don't need it.\n")
       type("Maybe you could use it?\n\n")
       type("Obtained Bucket!\n\n")
       player.add_item(Bucket.new)
-      @mode = 1
-    when 1
+    else
       type("#{@name}: Did you find out how to use that\n")
       type("strange device? It seems intriguing...\n\n")
     end

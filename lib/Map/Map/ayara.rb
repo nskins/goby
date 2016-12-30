@@ -2,6 +2,7 @@ require_relative 'map.rb'
 require_relative '../Tile/grass.rb'
 require_relative '../Tile/stone.rb'
 require_relative '../Tile/wall.rb'
+require_relative '../../Event/ayara.rb'
 require_relative '../../Event/rest.rb'
 require_relative '../../Event/NPC/ayara.rb'
 require_relative '../../Event/Shop/ayara.rb'
@@ -76,6 +77,25 @@ class Ayara < Map
     @tiles[5][8].events = [FarmersMarket1.new]
     @tiles[6][8].events = [FarmersMarket2.new]
     @tiles[7][8].events = [FarmersMarket3.new]
+    
+    # Southward path from the city square.
+    2.times do |y|
+      @tiles[y+8][6] = stone.clone
+    end
+    
+    # Stone floor for the southern part of the city.
+    2.times do |y|
+      5.times do |x|
+        @tiles[y+10][x+4] = stone.clone
+      end
+    end
+    
+    # Tim's house.
+    @tiles[10][7].description = "This is Tim's house. There are some\n"\
+                                "lights hanging around. One of the\n"\
+                                "windows is completely smashed."
+    @tiles[10][7].events = [TimHouse.new]
+    @tiles[10][7].graphic = 'Д'
     
     # The player's home.
     @tiles[11][4].description = "This is your house. It's nice and\n"\
