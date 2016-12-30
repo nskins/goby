@@ -1,4 +1,5 @@
 require_relative 'map.rb'
+require_relative '../Tile/grass.rb'
 require_relative '../Tile/stone.rb'
 require_relative '../Tile/wall.rb'
 require_relative '../../Event/rest.rb'
@@ -9,6 +10,7 @@ class Ayara < Map
   def initialize
     super(name: "Ayara", regen_location: Couple.new(11,4))
     
+    grass = Grass.new
     stone = Stone.new
     wall = Wall.new
     shop = Tile.new(graphic: '△')
@@ -18,7 +20,7 @@ class Ayara < Map
     13.times do |y|
       @tiles[y] = []
       13.times do |x|
-        @tiles[y][x] = stone.clone
+        @tiles[y][x] = grass.clone
       end
     end
     
@@ -56,6 +58,13 @@ class Ayara < Map
       @tiles[9][x+11] = wall.clone
       @tiles[10][x+10] = wall.clone
       @tiles[11][x+9] = wall.clone
+    end
+    
+    # Stone pathway which marks the city square.
+    3.times do |y|
+      3.times do |x|
+        @tiles[y+5][x+5] = stone.clone
+      end
     end
     
     # Farmer's market - near the city square.
