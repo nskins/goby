@@ -61,6 +61,18 @@ class Ayara < Map
       @tiles[11][x+9] = wall.clone
     end
     
+    # Mayor's house.
+    @tiles[1][6].description = "This is the mayor's house. There's\n"\
+                               "a big sign on the front door that\n"\
+                               "reads: 'NO SOLICITING.'"
+    @tiles[1][6].events = [MayorHouse.new]
+    @tiles[1][6].graphic = 'Ω'
+    
+    # Northward path from the city square.
+    3.times do |y|
+      @tiles[y+2][6] = stone.clone
+    end
+    
     # Stone pathway which marks the city square.
     3.times do |y|
       3.times do |x|

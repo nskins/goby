@@ -1,6 +1,20 @@
 require_relative 'house.rb'
 require_relative '../Item/bucket.rb'
 
+class MayorHouse < House
+  def initialize
+    super(name: "Mayor")
+  end
+  
+  def run(player)
+    super(player)
+    
+    type("#{@name}: What? Who are you?\n")
+    type("SCRAM PUNK!\n\n")
+    print "*SLAM!*\n\n"
+  end
+end
+
 class TimHouse < House
   def initialize
     super(name: "Tim's wife")
