@@ -11,9 +11,9 @@ class Escape < BattleCommand
   # @param [Entity] user the one who is trying to escape.
   # @param [Entity] enemy the one from whom the user wants to escape.
   def run(user, enemy)
-
-    # Higher probability of escape when the enemy has low HP.
-    if (Random.rand(0..(enemy.max_hp)) > (enemy.hp - 1))
+    
+    # Higher probability of escape when the enemy has low agility.
+    if (user.sample_agilities(enemy))
       user.escaped = true
       type("#{user.name} successfully escapes the clutches of the #{enemy.name}!\n\n")
       return

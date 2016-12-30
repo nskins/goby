@@ -63,7 +63,7 @@ class Player < Entity
 
     return @battle_commands[index]
 	end
-  
+
   # Requires input to select item and on whom to use it
   # during battle (Use command). Return nil on error.
   #
@@ -72,39 +72,39 @@ class Player < Entity
   def choose_item_and_on_whom(enemy)
     index = -1
     item = nil
-    
+
     # Choose the item to use.
     while (index == -1)
       print_inventory
       puts "Which item would you like to use?"
       print "(or type 'pass' to forfeit the turn): "
       input = gets.chomp
-      
+
       print "\n"
-    
+
       return if (input.casecmp("pass").zero?)
-    
+
       index = has_item(input)
-      
-      if (index == -1) 
+
+      if (index == -1)
         print "What?! You don't have THAT!\n\n"
       else
         item = @inventory[index].first
       end
     end
-    
+
     whom = nil
-    
+
     # Choose on whom to use the item.
     while (!whom)
       puts "On whom will you use the item (#{@name} or #{enemy.name})?"
       print "(or type 'pass' to forfeit the turn): "
       input = gets.chomp
-      
+
       print "\n"
-    
+
       return if (input.casecmp("pass").zero?)
-    
+
       if (input.casecmp(@name).zero?)
         whom = self
       elsif (input.casecmp(enemy.name).zero?)
@@ -113,22 +113,22 @@ class Player < Entity
         print "What?! Choose either #{@name} or #{enemy.name}!\n\n"
       end
     end
-    
+
     return Couple.new(item, whom)
   end
 
   # Sends the player back to a safe location, halves its gold, and restores HP.
   def die
     sleep(2) unless ENV['TEST']
-    
+
     # TODO: fix next line. regen_location could be nil or "bad."
     @location = @map.regen_location
-    
+
     type("After being knocked out in battle, you wake up in #{@map.name}\n")
     type("Looks like you lost some gold...\n\n")
-    
+
     sleep(2) unless ENV['TEST']
-    
+
     # Reduce gold and heal the player.
     @gold /= 2
     @hp = @max_hp
@@ -212,14 +212,14 @@ class Player < Entity
   # Prints the map in regards to what the player has seen.
   # Additionally, provides current location and the map's name.
   def print_map
-    
+
     # Provide some spacing to center the name.
     (0..(@map.name.length/4)).each do
       print " "
     end
-  
+
     print @map.name + "\n\n"
-    
+
     @map.tiles.each_with_index do |row, r|
       # Provide spacing for the beginning of each row.
       (0..(@map.name.length/2)).each do
@@ -236,14 +236,14 @@ class Player < Entity
       end
 			print "\n"
     end
-    
+
     print "\n"
-    
+
     # Provide some spacing to center the legend.
     (0..(@map.name.length/4)).each do
       print " "
     end
-    
+
     # Prints the legend.
     puts "¶ - #{@name}'s \n       location\n\n"
   end
@@ -258,39 +258,39 @@ class Player < Entity
     while hp > 0
       # Both choose an attack.
       player_attack = choose_attack
-      
+
       # Prevents the user from using "bad" commands.
       # Example: "Use" with an empty inventory.
       while (player_attack.fails?(self))
         player_attack = choose_attack
       end
-      
+
       monster_attack = monster.choose_attack
-      
+
       attackers = Array.new
       attacks = Array.new
-      
-      if player_first?(monster)
+
+      if sample_agilities(monster)
         attackers << self << monster
         attacks << player_attack << monster_attack
       else
         attackers << monster << self
         attacks << monster_attack << player_attack
       end
-      
-      2.times do |i|  
+
+      2.times do |i|
         # The attacker runs its attack on the other attacker.
         attacks[i].run(attackers[i], attackers[(i + 1) % 2])
-        
+
         if (attackers[i].escaped)
           attackers[i].escaped = false
           return
         end
-        
+
         break if monster.hp <= 0 || hp <= 0
-        
+
       end
-        
+
       break if monster.hp <= 0 || hp <= 0
 
     end
@@ -299,13 +299,13 @@ class Player < Entity
 
     if monster.hp <= 0
       type("You defeated the #{monster.name}!\n")
-      
+
       # Determine the rewards for defeating the monster.
       rewards = monster.sample_rewards
-      
+
       gold = rewards.first
       treasure = rewards.second
-      
+
       # Output some helpful text and give the rewards to the player.
       if ((gold > 0) || treasure)
         type("Rewards:\n")
@@ -317,20 +317,18 @@ class Player < Entity
           type("* #{treasure.name}\n")
           add_item(treasure)
         end
-      end 
-      print "\n" 
+      end
+      print "\n"
     end
 
   end
 
   attr_reader :map, :location
 
-  private
-  
-    def player_first?(monster)
-      sum = monster.agility + agility
-      random_number = Random.rand(0..sum - 1)
-      random_number < agility
-    end
+  def sample_agilities(monster)
+    sum = monster.agility + agility
+    random_number = Random.rand(0..sum - 1)
+    random_number < agility
+  end
 
 end
