@@ -37,3 +37,27 @@ class TimHouse < House
     end
   end
 end
+
+class Well < Event
+  def initialize
+    super(command: "fill")
+  end
+  
+  def run(player)
+    if (player.has_item(Bucket.new) != -1)
+      print "Will you fill the Bucket (y/n)?: "
+      input = gets.chomp
+      print "\n"
+      
+      if (input == 'y')
+        puts "You attach the Bucket to the rope and feed it"
+        puts "into the well. You pull the Bucket back up and"
+        print "find that it's now filled with water.\n\n"
+        player.remove_item(Bucket.new)
+        player.add_item(BucketOfWater.new)
+      end
+    else
+      print "You need some type of container!\n\n"
+    end
+  end
+end

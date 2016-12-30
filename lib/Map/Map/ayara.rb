@@ -80,6 +80,12 @@ class Ayara < Map
       end
     end
     
+    # Water well in the middle of the city.
+    @tiles[6][6].description = "This is the center of the city.\n"\
+                               "There's a stone water well here."
+    @tiles[6][6].events = [Well.new]
+    @tiles[6][6].graphic = '◎'
+    
     # Farmer's market - near the city square.
     3.times do |y|
       @tiles[y+5][8] = shop.clone
