@@ -3,6 +3,7 @@ require_relative '../Tile/stone.rb'
 require_relative '../Tile/wall.rb'
 require_relative '../../Event/rest.rb'
 require_relative '../../Event/NPC/ayara.rb'
+require_relative '../../Event/Shop/ayara.rb'
 
 class Ayara < Map
   def initialize
@@ -10,6 +11,7 @@ class Ayara < Map
     
     stone = Stone.new
     wall = Wall.new
+    shop = Tile.new(graphic: '△')
     
     @tiles = []
     
@@ -55,6 +57,16 @@ class Ayara < Map
       @tiles[10][x+10] = wall.clone
       @tiles[11][x+9] = wall.clone
     end
+    
+    # Farmer's market - near the city square.
+    3.times do |y|
+      @tiles[y+5][8] = shop.clone
+      @tiles[y+5][8].description = "This is the farmer's market."
+    end
+    
+    @tiles[5][8].events = [FarmersMarket1.new]
+    @tiles[6][8].events = [FarmersMarket2.new]
+    @tiles[7][8].events = [FarmersMarket3.new]
     
     # The player's home.
     @tiles[11][4].description = "This is your house. It's nice and\n"\
