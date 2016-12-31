@@ -1,5 +1,49 @@
 require_relative 'npc.rb'
+require_relative '../../Item/basketball.rb'
 require_relative '../../Item/bucket.rb'
+
+class Bella < NPC
+  def initialize
+    super(name: "Bella")
+  end
+  
+  def run(player)
+    if (player.has_item(BucketOfWater.new) == -1)
+      type("#{@name}: Oooh.. hello? Please... bring me\n")
+      type("water... I'm dehydrated... ooooohhhhhh.....\n\n")
+    else
+      type("#{@name}: Oooh.. you have water... ??\n")
+      type("May I please have it... (y/n)?: ")
+      input = gets.chomp
+      print "\n"
+      
+      if (input == 'y')
+        type("#{@name}: Quickly, hand it to me....\n\n")
+        sleep(2)
+        type("*glurp glurp glurp*\n\n")
+        sleep(2)
+        type("#{@name}: Oh, thank you so much. I feel\n")
+        type("much better. I'm done with exercise\n")
+        type("for now. You can have my basketball.\n\n")
+        type("Obtained Basketball!\n\n")
+        
+        # Modify items in the player's inventory.
+        player.remove_item(BucketOfWater.new)
+        player.add_item(Bucket.new)
+        player.add_item(Basketball.new)
+        
+        # Remove the event from the map.
+        @visible = false
+        y = player.location.first
+        x = player.location.second
+        player.map.tiles[y][x].description = "You are standing on some grass."
+      else
+        type("#{@name}: Oooh..\n")
+        type("*She rolls over in extreme pain*\n\n")
+      end  
+    end
+  end
+end
 
 class Tim < NPC
   def initialize

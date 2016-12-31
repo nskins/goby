@@ -96,6 +96,11 @@ class Ayara < Map
     @tiles[6][8].events = [FarmersMarket2.new]
     @tiles[7][8].events = [FarmersMarket3.new]
     
+    # Dehydrated NPC.
+    @tiles[8][3].description = "A woman is breathing heavily and lying\n"\
+                               "down on the cold grass."
+    @tiles[8][3].events = [Bella.new]
+    
     # Southward path from the city square.
     2.times do |y|
       @tiles[y+8][6] = stone.clone
