@@ -73,6 +73,12 @@ class Ayara < Map
       @tiles[y+2][6] = stone.clone
     end
     
+    # Eastward and westward paths from the city square.
+    4.times do |x|
+      @tiles[6][x+1] = stone.clone
+      @tiles[6][x+9] = stone.clone
+    end
+    
     # Stone pathway which marks the city square.
     3.times do |y|
       3.times do |x|
