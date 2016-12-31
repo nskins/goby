@@ -1,7 +1,5 @@
 require_relative 'map.rb'
-require_relative '../Tile/grass.rb'
-require_relative '../Tile/stone.rb'
-require_relative '../Tile/wall.rb'
+require_relative '../Tile/standard.rb'
 require_relative '../../Event/ayara.rb'
 require_relative '../../Event/rest.rb'
 require_relative '../../Event/NPC/ayara.rb'
@@ -14,6 +12,8 @@ class Ayara < Map
     grass = Grass.new
     stone = Stone.new
     wall = Wall.new
+    water = Water.new
+    
     shop = Tile.new(graphic: '△')
     
     @tiles = []
@@ -71,6 +71,18 @@ class Ayara < Map
     # Northward path from the city square.
     3.times do |y|
       @tiles[y+2][6] = stone.clone
+    end
+    
+    # Pond.
+    2.times do |y|
+      2.times do |x|
+        @tiles[y+3][x+3] = water.clone
+      end
+    end
+    
+    # Northeast path.
+    3.times do |x|
+      @tiles[3][x+7] = stone.clone
     end
     
     # Eastward and westward paths from the city square.
