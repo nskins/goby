@@ -1,6 +1,7 @@
 require_relative 'map.rb'
 require_relative '../Tile/standard.rb'
 require_relative '../../Event/ayara.rb'
+require_relative '../../Event/pool.rb'
 require_relative '../../Event/rest.rb'
 require_relative '../../Event/NPC/ayara.rb'
 require_relative '../../Event/Shop/ayara.rb'
@@ -78,6 +79,24 @@ class Ayara < Map
       2.times do |x|
         @tiles[y+3][x+3] = water.clone
       end
+    end
+    
+    # Fishing events around the pond.
+    2.times do |y|
+      @tiles[y+3][2].description = "You are standing on the shore of a pond."
+      @tiles[y+3][2].events = [BluegillPool.new]
+      
+      @tiles[y+3][5].description = "You are standing on the shore of a pond."
+      @tiles[y+3][5].events = [BluegillPool.new]
+    end
+    
+    # Fishing events around the pond.
+    2.times do |x|
+      @tiles[2][x+3].description = "You are standing on the shore of a pond."
+      @tiles[2][x+3].events = [BluegillPool.new]
+      
+      @tiles[5][x+3].description = "You are standing on the shore of a pond."
+      @tiles[5][x+3].events = [BluegillPool.new]
     end
     
     # Northeast path.
