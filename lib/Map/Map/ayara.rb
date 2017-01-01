@@ -85,6 +85,12 @@ class Ayara < Map
       @tiles[3][x+7] = stone.clone
     end
     
+    # Fishing shop.
+    @tiles[2][9] = shop.clone
+    @tiles[2][9].description = "There's a small hut selling fishing\n"\
+                               "supplies and raw catches."
+    @tiles[2][9].events = [FishingShop.new]
+    
     # Eastward and westward paths from the city square.
     4.times do |x|
       @tiles[6][x+1] = stone.clone

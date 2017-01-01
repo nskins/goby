@@ -1,4 +1,7 @@
 require_relative 'shop.rb'
+require_relative '../../Item/bait.rb'
+require_relative '../../Item/fishing_pole.rb'
+require_relative '../../Item/Food/fish.rb'
 require_relative '../../Item/Food/fruits.rb'
 require_relative '../../Item/Food/veggies.rb'
 
@@ -20,5 +23,12 @@ class FarmersMarket3 < Shop
   def initialize
     super(name: "the farmer's market",
           items: [Tomato.new, Strawberry.new, Pepper.new])
+  end
+end
+
+class FishingShop < Shop
+  def initialize
+    super(name: "the fishing shop",
+          items: [Snail.new, RawBluegill.new, FishingPole.new])
   end
 end
