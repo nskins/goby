@@ -13,3 +13,10 @@ class Cookable < Item
   
   attr_accessor :cooked
 end
+
+# Cooking failure.
+class BurntFlub < Item
+  def initialize
+    super(name: "Burnt Flub", consumable: false)
+  end
+end

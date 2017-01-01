@@ -3,6 +3,7 @@ require_relative '../Tile/standard.rb'
 require_relative '../../Event/ayara.rb'
 require_relative '../../Event/pool.rb'
 require_relative '../../Event/rest.rb'
+require_relative '../../Event/stove.rb'
 require_relative '../../Event/NPC/ayara.rb'
 require_relative '../../Event/Shop/ayara.rb'
 
@@ -166,7 +167,7 @@ class Ayara < Map
     # The player's home.
     @tiles[11][4].description = "This is your house. It's nice and\n"\
                                 "warm. There's a comfy bed inside."
-    @tiles[11][4].events = [Rest.new]
+    @tiles[11][4].events = [Rest.new, Stove.new]
     @tiles[11][4].graphic = 'Д'
     
     # Simple NPC.
