@@ -15,7 +15,7 @@ end
 class FarmersMarket2 < Shop
   def initialize
     super(name: "the farmer's market",
-          items: [Grape.new, Potato.new, Watermelon.new])
+          items: [Grape.new, Onion.new, Potato.new])
   end
 end
 

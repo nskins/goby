@@ -6,6 +6,12 @@ class Celery < Food
   end
 end
 
+class Onion < Food
+  def initialize
+    super(name: "Onion", price: 3, recovers: 1)
+  end
+end
+
 class Potato < Food
   def initialize
     super(name: "Potato", price: 4, recovers: 2)
