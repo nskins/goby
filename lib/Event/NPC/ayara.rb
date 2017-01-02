@@ -20,7 +20,7 @@ class Bella < NPC
   end
   
   def run(player)
-    if (player.has_item(BucketOfWater.new) == -1)
+    if player.has_item(BucketOfWater.new).nil?
       type("#{@name}: Oooh.. hello? Please... bring me\n")
       type("water... I'm dehydrated... ooooohhhhhh.....\n\n")
     else
@@ -75,7 +75,7 @@ class Tim < NPC
   end
   
   def run(player)
-    if (player.has_item(Bucket.new) == -1)
+    if player.has_item(Bucket.new).nil?
       type("#{@name}: Ah, hello #{player.name}! It seems a bit\n")
       type("chilly out today, huh? I found this\n")
       type("strange device, but I don't need it.\n")

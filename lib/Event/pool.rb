@@ -10,7 +10,7 @@ class Pool < Event
   end
   
   def run(player)
-    if (player.has_item(FishingPole.new) == -1)
+    if player.has_item(FishingPole.new).nil?
       print "In order to fish, you need a Fishing Pole.\n\n"
     else
       baits = find_baits(player)
@@ -24,8 +24,7 @@ class Pool < Event
         print "\nWhich bait will you use?: "
         input = gets.chomp
         index = player.has_item(input)
-        if ((index == -1) ||
-            (!(player.inventory[index].first.is_a? Bait)))
+        if (index || (!(player.inventory[index].first.is_a? Bait)))
           print "What?! You don't have THAT!\n\n"
         else
           bait = player.inventory[index].first

@@ -23,7 +23,7 @@ class TimHouse < House
   def run(player)
     super(player)
     
-    if (player.has_item(Bucket.new) != -1)
+    if player.has_item(Bucket.new)
       type("#{@name}: AHA!!! So yer the one who took mah\n")
       type("watering contraption!? I've every right to report\n")
       type("ye to the authorities! Gimme that!\n\n")
@@ -44,7 +44,7 @@ class Well < Event
   end
   
   def run(player)
-    if (player.has_item(Bucket.new) != -1)
+    if player.has_item(Bucket.new)
       print "Will you fill the Bucket (y/n)?: "
       input = gets.chomp
       print "\n"

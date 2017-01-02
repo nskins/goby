@@ -16,7 +16,7 @@ class Stove < Event
     #       might have that item in inventory.
     
     print "\n"
-    if (index == -1)
+    if !index
       print "What?! You don't have THAT!\n\n"
     elsif (defined?(player.inventory[index].first.cooked).nil?)
       print "You can't cook #{player.inventory[index].first.name}!\n\n"
