@@ -9,7 +9,7 @@ class Hole < Event
   end
 
   def run(player)
-    if (player.has_item("Shovel") != -1)
+    if player.has_item("Shovel")
 
       reward = Random.rand(0..@max_reward)
 
