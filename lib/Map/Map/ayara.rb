@@ -100,6 +100,13 @@ class Ayara < Map
       @tiles[5][x+3].events = [BluegillPool.new]
     end
     
+    # TODO: perfect example of why we need to create deep clone of Tile.
+    #       (it'd better to use the '<<' operator for Array).
+    @tiles[2][4].description = "There's a lady fishing and eating a sandwich."
+    @tiles[2][4].events = [BluegillPool.new, Helen.new]
+    @tiles[4][2].description = "There's a man fishing with immense concentration."
+    @tiles[4][2].events = [BluegillPool.new, Antonio.new]
+    
     # Northeast path.
     3.times do |x|
       @tiles[3][x+7] = stone.clone

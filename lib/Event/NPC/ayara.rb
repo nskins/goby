@@ -2,6 +2,18 @@ require_relative 'npc.rb'
 require_relative '../../Item/basketball.rb'
 require_relative '../../Item/bucket.rb'
 
+class Antonio < NPC
+  def initialize
+    super(name: "Antonio")
+  end
+  
+  def run(player)
+    type("#{@name}: Yes, I've been fishing for many\n")
+    type("years. Stand aside. You're ruining the\n")
+    type("balance of my inner life force.\n\n")
+  end
+end
+
 class Bella < NPC
   def initialize
     super(name: "Bella")
@@ -42,6 +54,18 @@ class Bella < NPC
         type("*She rolls over in extreme pain*\n\n")
       end  
     end
+  end
+end
+
+class Helen < NPC
+  def initialize
+    super(name: "Helen")
+  end
+  
+  def run(player)
+    type("#{@name}: Each type of fish prefers a particular\n")
+    type("type of bait. If one bait doesn't seem to work,\n")
+    type("then try another. You could also just be unlucky...\n\n")
   end
 end
 
