@@ -93,7 +93,7 @@ def interpret_command(command, player)
     # Determine the appropriate command to use.
     if words[0].casecmp("drop").zero?
       index = player.has_item(name)
-      if (index != -1)
+      if index
         # TODO: Perhaps the player should be allowed to specify
         #       how many of the Item to drop.
         item = player.inventory[index].first

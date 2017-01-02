@@ -262,7 +262,7 @@ RSpec.describe Entity do
         BattleCommand.new(name: "Kick"),
         BattleCommand.new(name: "Poke")])
       index = entity.has_battle_command(BattleCommand.new(name: "Chop"))
-      expect(index).to eq -1
+      expect(index).to be_nil
     end
 
     it "correctly indicates a present command for an object argument" do
@@ -278,7 +278,7 @@ RSpec.describe Entity do
         BattleCommand.new(name: "Kick"),
         BattleCommand.new(name: "Poke")])
       index = entity.has_battle_command("Chop")
-      expect(index).to eq -1
+      expect(index).to be_nil
     end
 
     it "correctly indicates a present command for a string argument" do
@@ -296,7 +296,7 @@ RSpec.describe Entity do
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
       index = entity.has_item(Item.new(name: "Banana"))
-      expect(index).to eq -1
+      expect(index).to be_nil
     end
 
     it "correctly indicates a present item for an object argument" do
@@ -312,7 +312,7 @@ RSpec.describe Entity do
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
       index = entity.has_item("Banana")
-      expect(index).to eq -1
+      expect(index).to be_nil
     end
 
     it "correctly indicates a present item for a string argument" do

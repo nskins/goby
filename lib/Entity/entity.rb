@@ -97,7 +97,7 @@ class Entity
   def equip_item(item)
 
     index = has_item(item)
-    if (index != -1)
+    if index
       actual_item = inventory[index].first
 
       # Checks for Equippable without importing the file.
@@ -117,20 +117,20 @@ class Entity
   # Returns the index of the specified command, if it exists.
   #
   # @param [BattleCommand, String] cmd the battle command (or its name).
-  # @return [Integer] the index of an existing command. Otherwise -1.
+  # @return [Integer] the index of an existing command. Otherwise nil.
   def has_battle_command(cmd)
     @battle_commands.each_with_index do |command, index|
       if (command.name.casecmp(cmd.to_s) == 0)
         return index
       end
     end
-    return -1
+    return
   end
 
   # Returns the index of the specified item, if it exists.
   #
   # @param [Item, String] item the item (or its name).
-  # @return [Integer] the index of an existing item. Otherwise -1.
+  # @return [Integer] the index of an existing item. Otherwise nil.
   def has_item(item)
     inventory.each_with_index do |couple, index|
       if (couple.first.name.casecmp(item.to_s) == 0)
@@ -138,7 +138,7 @@ class Entity
       end
     end
 
-    return -1
+    return
   end
 
   # Prints the available battle commands.
@@ -221,9 +221,7 @@ class Entity
   # @param [BattleCommand] command the command being removed.
   def remove_battle_command(command)
     index = has_battle_command(command)
-    if (index >= 0)
-      @battle_commands.delete_at(index)
-    end
+    @battle_commands.delete_at(index) if index
   end
 
   # Removes the item, if it exists, and, at most, the given amount from the inventory.
@@ -269,7 +267,7 @@ class Entity
   # @param [Entity] entity the entity on which to use the item.
   def use_item(item, entity)
     index = has_item(item)
-    if (index != -1)
+    if index
       actual_item = inventory[index].first
       actual_item.use(self, entity)
       remove_item(actual_item) if actual_item.consumable

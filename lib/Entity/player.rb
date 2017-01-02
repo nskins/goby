@@ -52,7 +52,7 @@ class Player < Entity
     index = has_battle_command(input)
 
     #input error loop
-    while (index == -1)
+    while !index
       puts "You don't have '#{input}'"
       puts "Try one of these:"
       print_battle_commands
@@ -70,11 +70,11 @@ class Player < Entity
   # @param [Entity] enemy the opponent in battle.
   # @return [Couple(Item, Entity)] the item and on whom it is to be used.
   def choose_item_and_on_whom(enemy)
-    index = -1
+    index = nil
     item = nil
 
     # Choose the item to use.
-    while (index == -1)
+    while !index
       print_inventory
       puts "Which item would you like to use?"
       print "(or type 'pass' to forfeit the turn): "
@@ -86,7 +86,7 @@ class Player < Entity
 
       index = has_item(input)
 
-      if (index == -1)
+      if !index
         print "What?! You don't have THAT!\n\n"
       else
         item = @inventory[index].first
@@ -96,7 +96,7 @@ class Player < Entity
     whom = nil
 
     # Choose on whom to use the item.
-    while (!whom)
+    while !whom
       puts "On whom will you use the item (#{@name} or #{enemy.name})?"
       print "(or type 'pass' to forfeit the turn): "
       input = gets.chomp

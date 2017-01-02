@@ -16,14 +16,14 @@ class Shop < Event
   # Returns the index of the specified item, if it exists.
   #
   # @param [String] name the item's name.
-  # @return [Integer] the index of an existing item. Otherwise -1.
+  # @return [Integer] the index of an existing item. Otherwise nil.
   def has_item(name)
     @items.each_with_index do |item, index|
       if (item.name.casecmp(name) == 0)
         return index
       end
     end
-    return -1
+    return
   end
 
   # Displays a formatted list of the Shop's items.
@@ -61,7 +61,7 @@ class Shop < Event
         if (name.casecmp("none") == 0)
 
         # Case: The specified item exists in the shop's inventory.
-        elsif (index != -1)
+        elsif index
           item = @items[index]
           print "How many do you want?: "
           amount_to_buy = gets.chomp
@@ -108,7 +108,7 @@ class Shop < Event
           if (name.casecmp("none") == 0)
 
           # Case: The player has a positive number of the specified item.
-          elsif ((index > -1) && (item_count = player.inventory[index].second) > 0)
+          elsif (index && (item_count = player.inventory[index].second) > 0)
             item = player.inventory[index].first
             puts "\nI'll buy that for #{item.price / 2} gold."
             print "How many do you want to sell?: "
