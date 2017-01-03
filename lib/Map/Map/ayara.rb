@@ -180,5 +180,10 @@ class Ayara < Map
     # Simple NPC.
     @tiles[11][5].description = "Your friend Tim is sitting on a bench."
     @tiles[11][5].events = [Tim.new]
+    
+    # Selia's House - Recipe Book.
+    @tiles[11][8].description = "Something smells good around here."
+    @tiles[11][8].events = [SeliaHouse.new]
+    @tiles[11][8].graphic = 'Д'
   end
 end

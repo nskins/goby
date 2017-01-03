@@ -29,9 +29,3 @@ class Pepper < Food
     super(name: "Pepper", price: 8, recovers: 4)
   end
 end
-
-class Asparagus < Food
-  def initialize
-    super(name: "Asparagus", price: 9, recovers: 4)
-  end
-end

@@ -1,5 +1,8 @@
 require_relative 'house.rb'
 require_relative '../Item/bucket.rb'
+require_relative '../Item/recipe_book.rb'
+require_relative '../Item/Food/egg.rb'
+require_relative '../Item/Food/veggies.rb'
 
 class MayorHouse < House
   def initialize
@@ -13,6 +16,53 @@ class MayorHouse < House
     type("SCRAM PUNK!\n\n")
     print "*SLAM!*\n\n"
   end
+end
+
+class SeliaHouse < House
+  def initialize
+    super(name: "Selia")
+  end
+  
+  def run(player)
+    super(player)
+    
+    if player.has_item(RecipeBook.new)
+      type("#{@name}: How's that Recipe Book treating you?\n")
+      type("Learn more recipes and become the greatest chef\n")
+      type("of all time.\n\n")
+    else
+      type("#{@name}: Are you ready to take your cooking\n")
+      type("skills to the next level (y/n)?: ")
+      input = gets.chomp
+      print "\n"
+      
+      if (input == 'y')
+        type("#{@name}: Today, we will learn about recipes!\n")
+        type("Each recipe requires specific ingredients.\n")
+        type("Once you have obtained the appropriate ingredients,\n")
+        type("simply cook the ingredients, and, hopefully, you\n")
+        type("will have the tasty dish appear before your very eyes!\n\n")
+        sleep(2)
+        type("#{@name}: Here. Use this...\n\n")
+        
+        puts "Obtained Recipe Book!\n\n"
+        
+        book = RecipeBook.new
+        s_eggs = Recipe.new(name: "Scrambled Eggs",
+                            ingredients: [Couple.new(Egg.new, 2),
+                                          Couple.new(Onion.new, 1),
+                                          Couple.new(Pepper.new, 1)])
+        book.add_recipe(s_eggs)
+        player.add_item(book)
+        sleep(2)
+        
+        type("#{@name}: I've already included a recipe. Try it out!\n\n")
+      else
+        print "*SLAM!*\n\n"
+      end
+    end
+  end
+  
 end
 
 class TimHouse < House
