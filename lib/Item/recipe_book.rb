@@ -15,6 +15,16 @@ class RecipeBook < Item
     @recipes.sort!{ |x,y| x.name <=> y.name }
   end
   
+  # Returns the index of the recipe. Otherwise nil.
+  #
+  # @param [String] recipe the recipe for which we're searching.
+  def has_recipe(recipe)
+    recipes.each_with_index do |rec, index|
+      return index if rec.name.casecmp(recipe).zero?
+    end
+    return
+  end
+  
   def print_recipes
     if @recipes.empty?
       print "The Recipe Book is empty!\n\n"
@@ -35,9 +45,10 @@ class RecipeBook < Item
 end
 
 class Recipe
-  def initialize(name: "Recipe", ingredients: [])
+  def initialize(name: "Recipe", ingredients: [], product: Food.new)
     @name = name
     @ingredients = ingredients
+    @product = product
   end
   
   # String
@@ -45,4 +56,7 @@ class Recipe
   
   # Array<Couple(Item, Integer)>
   attr_accessor :ingredients
+  
+  # Food
+  attr_accessor :product
 end

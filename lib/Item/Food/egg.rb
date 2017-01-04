@@ -11,3 +11,9 @@ class BoiledEgg < Food
     super(name: "Boiled Egg", price: 3, recovers: 2)
   end
 end
+
+class ScrambledEggs < Food
+  def initialize
+    super(name: "Scrambled Eggs", price: 25, recovers: 12)
+  end
+end
