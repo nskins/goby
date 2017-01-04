@@ -124,7 +124,7 @@ class Player < Entity
     # TODO: fix next line. regen_location could be nil or "bad."
     @location = @map.regen_location
 
-    type("After being knocked out in battle, you wake up in #{@map.name}\n")
+    type("After being knocked out in battle, you wake up in #{@map.name}.\n")
     type("Looks like you lost some gold...\n\n")
 
     sleep(2) unless ENV['TEST']
@@ -162,7 +162,6 @@ class Player < Entity
       monster_outcome = Random.rand(0..99)
 
       if (monster_outcome < 50)
-        system("clear")
         clone = tile.monsters[Random.rand(0..(tile.monsters.size-1))].clone
         battle(clone)
       end
@@ -252,6 +251,7 @@ class Player < Entity
   #
   # @param [Monster] monster the opponent of the battle.
   def battle(monster)
+    system("clear")
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 

@@ -1,8 +1,32 @@
 require_relative 'house.rb'
+require_relative '../Entity/Monster/sensei.rb'
 require_relative '../Item/bucket.rb'
 require_relative '../Item/recipe_book.rb'
 require_relative '../Item/Food/egg.rb'
 require_relative '../Item/Food/veggies.rb'
+
+class Dojo < Event
+  def initialize
+    super(command: "enter")
+    @name = "Sensei"
+  end
+  
+  def run(player)
+    print "#{player.name} enters the Dojo...\n\n"
+    type("#{@name}: Ah, #{player.name}, so good to see you.\n")
+    type("Would you like to train today (y/n)?: ")
+    input = gets.chomp
+    print "\n"
+    
+    if (input == 'y')
+      type("#{@name}: Very well...")
+      sleep(2)
+      player.battle(Sensei.new)
+    end
+  end
+  
+  attr_accessor :name
+end
 
 class MayorHouse < House
   def initialize
