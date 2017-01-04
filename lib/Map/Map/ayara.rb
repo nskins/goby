@@ -143,6 +143,10 @@ class Ayara < Map
     @tiles[6][6].events = [Well.new]
     @tiles[6][6].graphic = '◎'
     
+    # John - wants food.
+    @tiles[5][7].description = "There's a man lounging around here."
+    @tiles[5][7].events = [John.new]
+    
     # Farmer's market - near the city square.
     3.times do |y|
       @tiles[y+5][8] = shop.clone

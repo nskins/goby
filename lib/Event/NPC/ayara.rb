@@ -69,6 +69,55 @@ class Helen < NPC
   end
 end
 
+class John < NPC
+  def initialize
+    super(name: "John")
+    @pairs = [Couple.new(BoiledEgg.new, 8), 
+              Couple.new(Bluegill.new, 6), 
+              Couple.new(ScrambledEggs.new, 50)]
+    @current_index = nil
+  end
+  
+  def run(player)
+    case @mode
+    when 0
+      # Choose a random pair.
+      @current_index = Random.rand(@pairs.size)
+    
+      type("#{@name}: Hello. Could you please bring me\n")
+      type("#{@pairs[@current_index].first.name}? I am very hungry.\n")
+      type("Don't worry.. I will pay you for your services.\n\n")
+      @mode = 1
+    when 1
+      if (player.has_item(@pairs[@current_index].first))
+        type("#{@name}: Ah, yes! #{@pairs[@current_index].first.name}!\n")
+        type("May I have it (y/n)?: ")
+        input = gets.chomp
+        print "\n"
+        
+        if (input == 'y')
+          type("#{@name}: Thank you! Thank you! Here, have this.\n\n")
+          print "Obtained #{@pairs[@current_index].second} gold!\n\n"
+          player.gold += @pairs[@current_index].second
+          player.remove_item(@pairs[@current_index].first)
+          @mode = 0
+        else
+          type("#{@name}: How rude!\n\n")
+        end
+      else
+        type("#{@name}: I'd like #{@pairs[@current_index].first.name}, please!\n\n")
+      end
+    end
+  end
+  
+  # Array<Couple(Food, Integer)>
+  # Type of Food the NPC wants and the reward given.
+  attr_accessor :pairs
+  # Integer
+  # The index of pairs that the NPC currently wants.
+  attr_accessor :current_index
+end
+
 class Tim < NPC
   def initialize
     super(name: "Tim")
