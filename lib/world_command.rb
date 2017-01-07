@@ -33,15 +33,10 @@ def display_special_commands(player)
   events = player.map.tiles[player.location.first][player.location.second].events
   if (!(events.empty?) && events.any? { |event| event.visible })
 
-    print "* Special commands: "
-    events.each do |event|
-      # Print the corresponding command.
-      if (event.visible)
-        print "#{event.command}; "
-      end
-    end
-    print "\n\n"
-
+    print "* Special commands: " + (events.reduce([]) do |commands, event|
+      commands << event.command if event.visible
+      commands
+    end.join(', ')) + "\n\n"
   end
 end
 
