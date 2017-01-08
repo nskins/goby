@@ -104,8 +104,17 @@ class BasketballNet < Event
     end
     
     success = shoot
-    print "\n"
-    print "Great shot!\n\n" if success
+    print "\n" 
+    if success
+      puts "Great shot!"
+      random = Random.rand(3)
+      if random != 0
+        puts "Some gold (#{random}) falls on"
+        puts "the ground! You pick it up."
+        player.gold += random
+      end
+      print "\n"
+    end
     print "Miss!\n\n" unless success
   end
   
