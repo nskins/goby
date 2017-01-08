@@ -149,6 +149,10 @@ class Ayara < Map
       @tiles[y+5][2] = stone.clone
     end
     
+    # Andre - wager in basketball.
+    @tiles[6][2].description = "There's a man playing basketball here."
+    @tiles[6][2].events = [Andre.new]
+    
     # Water well in the middle of the city.
     @tiles[6][6].description = "This is the center of the city.\n"\
                                "There's a stone water well here."

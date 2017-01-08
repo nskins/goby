@@ -2,6 +2,71 @@ require_relative 'npc.rb'
 require_relative '../../Item/basketball.rb'
 require_relative '../../Item/bucket.rb'
 
+class Andre < NPC
+  def initialize
+    super(name: "Andre")
+  end
+  
+  def run(player)
+    if player.has_item(Basketball.new).nil?
+      type("#{@name}: Huh? Come back when you have\n")
+      type("a Basketball, dear child.\n\n")
+      return
+    end
+    
+    type("#{@name}: Each player takes five shots -\n")
+    type("whoever makes more wins. Would you like\n")
+    type("to make a wager (y/n)?: ")
+    input = gets.chomp
+    print "\n"
+    return if input != 'y'
+    
+    puts "Current gold in pouch: #{player.gold}."
+    type("#{@name}: How much will you wager?: ")
+    input = gets.chomp
+    amount = input.to_i
+    print "\n"
+    
+    if (amount < 1)
+      type("#{@name}: You need to choose a positive amount!\n\n")
+      return
+    elsif (amount > player.gold)
+      type("#{@name}: You can't wager more than you have!\n\n")
+      return
+    end
+    
+    type("#{@name}: Good. Let's go!\n\n")
+    
+    # Player shoots.
+    shots_made = 0
+    5.times do
+      success = shoot
+      shots_made += 1 if success
+      print "\n"
+    end
+    
+    # Choose a random number of shots that Andre made.
+    random = Random.rand(6)
+    
+    puts "Andre's score: #{random}."
+    print "Your score: #{shots_made}.\n\n"
+    
+    # Final output and movement of gold.
+    if (random < shots_made)
+      print "You win #{amount} gold!\n\n"
+      player.gold += amount
+    elsif (random > shots_made)
+      print "You lose #{amount} gold...\n\n"
+      player.gold -= amount
+    else
+      print "It's a tie!\n\n"
+    end
+      
+  end
+  
+  include(BBall)
+end
+
 class Antonio < NPC
   def initialize
     super(name: "Antonio")
