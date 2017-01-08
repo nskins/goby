@@ -120,7 +120,7 @@ class Ayara < Map
     
     # Dojo
     @tiles[3][10].description = "This is the dojo, where martial arts\n"\
-                                "students come to hone their abilities"
+                                "students come to hone their abilities."
     @tiles[3][10].events = [Dojo.new]
     @tiles[3][10].graphic = '☖'
     

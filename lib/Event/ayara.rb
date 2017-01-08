@@ -20,7 +20,7 @@ class Dojo < Event
     
     if (input == 'y')
       type("#{@name}: Very well...")
-      sleep(2)
+      sleep(1)
       player.battle(Sensei.new)
     end
   end

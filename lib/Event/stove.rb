@@ -25,7 +25,7 @@ class Stove < Event
         print "What?! You can't cook THAT!\n\n"
         return
       elsif (defined?(player.inventory[item_index].first.cooked).nil?)
-        print "You can't cook #{player.inventory[index].first.name}!\n\n"
+        print "You can't cook #{player.inventory[item_index].first.name}!\n\n"
         return
       end
       
