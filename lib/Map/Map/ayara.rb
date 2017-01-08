@@ -1,6 +1,7 @@
 require_relative 'map.rb'
 require_relative '../Tile/standard.rb'
 require_relative '../../Event/ayara.rb'
+require_relative '../../Event/basketball.rb'
 require_relative '../../Event/pool.rb'
 require_relative '../../Event/rest.rb'
 require_relative '../../Event/stove.rb'
@@ -130,11 +131,22 @@ class Ayara < Map
       @tiles[6][x+9] = stone.clone
     end
     
+    # Basketball nets.
+    net = Tile.new(description: "There's a basketball net here.",
+                   events: [BasketballNet.new], graphic: 'Þ')
+    @tiles[5][1] = net.clone
+    @tiles[7][1] = net.clone
+    
     # Stone pathway which marks the city square.
     3.times do |y|
       3.times do |x|
         @tiles[y+5][x+5] = stone.clone
       end
+    end
+    
+    # More stone for the basketball courts.
+    3.times do |y|
+      @tiles[y+5][2] = stone.clone
     end
     
     # Water well in the middle of the city.
