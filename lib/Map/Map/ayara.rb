@@ -173,6 +173,11 @@ class Ayara < Map
     @tiles[6][8].events = [FarmersMarket2.new]
     @tiles[7][8].events = [FarmersMarket3.new]
     
+    # Exit sign.
+    @tiles[6][12].description = "There's a sign standing up\n"\
+                                "near the exit of the city."
+    @tiles[6][12].events = [ExitSign.new]
+    
     # Dehydrated NPC.
     @tiles[8][3].description = "A woman is breathing heavily and lying\n"\
                                "down on the cold grass."
@@ -189,6 +194,12 @@ class Ayara < Map
         @tiles[y+10][x+4] = stone.clone
       end
     end
+    
+    # Ichiro's house.
+    @tiles[10][5].description = "It's a large colorful house with\n"\
+                                "some strange music playing inside."
+    @tiles[10][5].events = [IchiroHouse.new]
+    @tiles[10][5].graphic = 'Д'
     
     # Tim's house.
     @tiles[10][7].description = "This is Tim's house. There are some\n"\

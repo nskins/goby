@@ -1,4 +1,5 @@
 require_relative 'house.rb'
+require_relative 'sign.rb'
 require_relative '../Entity/Monster/sensei.rb'
 require_relative '../Item/bucket.rb'
 require_relative '../Item/recipe_book.rb'
@@ -26,6 +27,28 @@ class Dojo < Event
   end
   
   attr_accessor :name
+end
+
+class ExitSign < Sign
+  def run(player)
+    super(player)
+    puts "Do not continue forward."
+    print "Construction underway.\n\n"
+  end
+end
+
+class IchiroHouse < House
+  def initialize
+    super(name: "Ichirō")
+  end
+  
+  def run(player)
+    super(player)
+    
+    type("#{@name}: Fishing provides quantity,\n")
+    type("while recipes provide quality.\n")
+    type("You ought remember that!\n\n")
+  end
 end
 
 class MayorHouse < House
