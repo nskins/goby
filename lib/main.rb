@@ -5,7 +5,6 @@ require_relative "Entity/player.rb"
 require_relative "Map/Map/ayara.rb"
 require_relative "Story/intro.rb"
 
-system("clear")
 print_intro
 system("clear")
 

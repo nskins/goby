@@ -1,16 +1,26 @@
 # Goby [![Build Status](https://travis-ci.org/nskins/goby.png)](https://travis-ci.org/nskins/goby)
 
-Goby is a Ruby framework for developing [text](https://en.wikipedia.org/wiki/Text-based_game)-[RPGs](https://en.wikipedia.org/wiki/Role-playing_game). Popular examples of such games are [Zork](https://en.wikipedia.org/wiki/Zork) and [Colossal Cave Adventure](https://en.wikipedia.org/wiki/Colossal_Cave_Adventure). Our purpose is to provide the engine and underlying logic so the user can focus on the fun part: content creation!
+Goby is a Ruby framework for the swift and easy development of [text](https://en.wikipedia.org/wiki/Text-based_game)-[RPGs](https://en.wikipedia.org/wiki/Role-playing_game). Have you ever wanted to write your own text-RPG? Due to recent technological advancements and quality of life improvements, it's now easier than 3.1415. Our primary goal in the development of the Goby framework is to provide a high degree of functionality (utilizing object-oriented design) so that end-users need focus only on content creation! WOOHOO!
 
-## Preset Data
+## Ayara
 
-Play our (short) example game:
+Welcome to the town of Ayara. By default, this preset game has been included in the framework for the following reasons: (1.) to provide example code for end-users who wish to create their own game, (2.) to present the many features and possibilities of the framework, and, lastly, (3.) to show that games built using the Goby framework are quite fun.
+
+In order to begin your adventure, run the following command:
 
 ```ruby lib/main.rb```
 
-Remove the example game (which leaves only the framework):
+Writing your own game? Remove Ayara as follows:
 
-```bash scripts/clear_preset.sh```
+```bash scripts/remove_ayara.sh```
+
+## Contributing
+
+Contributors of all skill levels are welcome. We do our best to identify issues that are suitable for open-source newcomers and veterans alike. Please see the [Issues](https://github.com/nskins/goby/issues) tab or tackle a completely unknown problem or feature! Also, please feel free to reach out to the owner ([nskins@umich.edu](mailto:nskins@umich.edu)) for any questions, comments, etc.
+
+Run the test suite before sending a pull request!:
+
+```rspec ```
 
 ## Documentation
 
@@ -23,11 +33,3 @@ Then run the following command in our project's root directory:
 ```yardoc ```
 
 The doc files will then be available as HTML files in the doc/ directory.
-
-## Contributing
-
-First, ensure that all tests are passing:
-
-```rspec ```
-
-If so, then submit a pull request. Thanks!

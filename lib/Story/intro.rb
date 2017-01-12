@@ -1,4 +1,6 @@
 def print_intro
+  system("clear")
+  
   print "Do you know how to play (y/n)?: "
   input = gets.chomp
   print "\n"

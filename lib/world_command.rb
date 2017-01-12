@@ -23,7 +23,7 @@ def display_default_commands
   puts "    drop [item]        Drop the specified item"
   puts "   equip [item]      Equip the specified item"
   puts "  unequip [item]    Unequip the specified item"
-  print "quit               Quit the game\n\n"
+  print "       quit               Quit the game\n\n"
 end
 
 # Prints the commands that are tile-specific.
