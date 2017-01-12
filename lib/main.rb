@@ -8,9 +8,11 @@ require_relative "Story/intro.rb"
 print_intro
 system("clear")
 
-player = Player.new(map: Ayara.new,
-                    location: Couple.new(11,4),
+player = Player.new(
                     max_hp: 15,
                     attack: 3,
-                    battle_commands: [Punch.new, Use.new])
+                    map: Ayara.new,
+                    location: Couple.new(11,4),
+                    battle_commands: [Punch.new, Use.new]
+                    )
 run_driver(player)
