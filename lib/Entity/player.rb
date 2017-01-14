@@ -145,6 +145,8 @@ class Player < Entity
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
     return if map.nil?
+    
+    system("clear")
 
     y = coordinates.first; x = coordinates.second
 
@@ -243,6 +245,7 @@ class Player < Entity
   # prints a minimap of nearby tiles
   # "nearby" is defined by VIEW_DISTANCE
   def print_minimap
+    print "\n"
     for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
       # skip to next line if out of bounds from above map
       next if y < 0

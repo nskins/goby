@@ -7,9 +7,9 @@ def print_intro
   
   return if input != 'n'
   
-  puts "First things first. Commands are"
-  puts "really helpful sometimes. Some of"
-  print "the important ones are as follows:\n\n"
+  puts "First things first - interaction"
+  puts "is handled by commands. Here are some"
+  print "of the most important ones:\n\n"
   
   sleep(4)
   
@@ -18,7 +18,7 @@ def print_intro
   puts  "a (←) s (↓) d (→)   Movement"
   puts
   puts  "       map          View the map"
-  puts  "      help          See all commands"
+  puts  "      help          See ALL commands"
   puts  "       inv          Check inventory"
   print "   use [item]       Use an item\n\n"
   
