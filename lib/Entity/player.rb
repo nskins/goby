@@ -8,6 +8,11 @@ class Player < Entity
   DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
   DEFAULT_LOCATION = Couple.new(0,0)
 
+  # number of tiles in all directions that are updated
+  # as 'seen' each time the player moves.
+  # used in: update_map, print_minimap
+  VIEW_DISTANCE = 1
+
   # @param [String] name the name.
   # @param [Integer] max_hp the greatest amount of health.
   # @param [Integer] hp the current amount of health.
@@ -146,8 +151,7 @@ class Player < Entity
 
     # Prevents moving onto nonexistent and impassable tiles.
     if (!map.in_bounds(y,x) || (!map.tiles[y][x].passable))
-      print "You cannot move there!\n\n"
-      print_possible_moves(self)
+      describe_tile(self)
       return
     end
 
@@ -198,8 +202,8 @@ class Player < Entity
 
   # Updates the 'seen' attributes of the tiles on the player's current map.
   def update_map
-    for y in (@location.first-1)..(@location.first+1)
-      for x in (@location.second-1)..(@location.second+1)
+    for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
+      for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
         # Prevents operations on nonexistent tiles.
         if (@map.in_bounds(y,x))
           @map.tiles[y][x].seen = true
@@ -226,13 +230,7 @@ class Player < Entity
         print " "
       end
       row.each_with_index do |tile, t|
-        if ((@location.first == r) && (@location.second == t))
-          print "¶ "
-        elsif (!tile.seen)
-          print "  "
-        else
-          print tile.graphic + " "
-        end
+        print_tile(Couple.new(r, t))
       end
 			print "\n"
     end
@@ -246,6 +244,36 @@ class Player < Entity
     
     # Prints the legend.
     puts "¶ - #{@name}'s \n       location\n\n"
+  end
+
+  # prints a minimap of nearby tiles
+  # dimensions specified by VIEW_DISTANCE
+  def print_minimap
+    for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
+      # skip to next line if out of bounds from above map
+      next if y < 0
+      # centers minimap
+      10.times do
+        print " "
+      end
+      for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
+        # Prevents operations on nonexistent tiles.
+        print_tile(Couple.new(y, x)) if (@map.in_bounds(y,x))
+      end
+      # new line if this row is not out of bounds
+      print "\n" if y < @map.tiles.size
+    end
+    print "\n"
+  end
+
+  # prints a tile based on the player's location
+  # @param [Couple] tile is the tile being printed
+  def print_tile(tile)
+    if ((@location.first == tile.first) && (@location.second == tile.second))
+      print "¶ "
+    else
+      print @map.tiles[tile.first][tile.second].to_s
+    end
   end
 
   # Engages in battle with the specified monster.

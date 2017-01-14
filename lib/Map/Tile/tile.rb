@@ -22,6 +22,13 @@ class Tile
     if graphic.nil? then @graphic = default_graphic
     else @graphic = graphic end
   end
+
+  def to_s
+    return "  " if !@seen
+  
+    return @graphic + " "
+  end
+      
   
   attr_accessor :passable, :seen, :description, :events, :monsters, :graphic
   
