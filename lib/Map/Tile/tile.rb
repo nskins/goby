@@ -23,12 +23,13 @@ class Tile
     else @graphic = graphic end
   end
 
+  # Convenient conversion to String.
+  #
+  # @return [String] the string representation.
   def to_s
     return "  " if !@seen
-  
     return @graphic + " "
   end
-      
   
   attr_accessor :passable, :seen, :description, :events, :monsters, :graphic
   

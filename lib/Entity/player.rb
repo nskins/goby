@@ -8,10 +8,9 @@ class Player < Entity
   DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
   DEFAULT_LOCATION = Couple.new(0,0)
 
-  # number of tiles in all directions that are updated
-  # as 'seen' each time the player moves.
+  # distance in each direction that tiles are acted upon
   # used in: update_map, print_minimap
-  VIEW_DISTANCE = 1
+  VIEW_DISTANCE = 2
 
   # @param [String] name the name.
   # @param [Integer] max_hp the greatest amount of health.
@@ -204,13 +203,9 @@ class Player < Entity
   def update_map
     for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
       for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
-        # Prevents operations on nonexistent tiles.
-        if (@map.in_bounds(y,x))
-          @map.tiles[y][x].seen = true
-        end
+        @map.tiles[y][x].seen = true if (@map.in_bounds(y,x))
       end
     end
-
   end
 
   # Prints the map in regards to what the player has seen.
@@ -247,7 +242,7 @@ class Player < Entity
   end
 
   # prints a minimap of nearby tiles
-  # dimensions specified by VIEW_DISTANCE
+  # "nearby" is defined by VIEW_DISTANCE
   def print_minimap
     for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
       # skip to next line if out of bounds from above map
@@ -266,13 +261,14 @@ class Player < Entity
     print "\n"
   end
 
-  # prints a tile based on the player's location
-  # @param [Couple] tile is the tile being printed
-  def print_tile(tile)
-    if ((@location.first == tile.first) && (@location.second == tile.second))
+  # prints the tile based on the player's location
+  #
+  # @param [Couple] coords the y-x coordinates of the tile.
+  def print_tile(coords)
+    if ((@location.first == coords.first) && (@location.second == coords.second))
       print "¶ "
     else
-      print @map.tiles[tile.first][tile.second].to_s
+      print @map.tiles[coords.first][coords.second].to_s
     end
   end
 
