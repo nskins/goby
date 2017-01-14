@@ -148,8 +148,10 @@ def describe_tile(player)
   tile = player.map.tiles[player.location.first][player.location.second]
   events = tile.events
 
+  player.print_minimap
+
   print "#{tile.description}\n\n"
-  print_possible_moves(player)
+  # print_possible_moves(player)
 
   display_special_commands(player)
 end
