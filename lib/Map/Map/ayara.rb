@@ -113,6 +113,10 @@ class Ayara < Map
       @tiles[3][x+7] = stone.clone
     end
     
+    # Paula - teaches about Food.
+    @tiles[3][8].description = "There's a woman wearing a big hat here."
+    @tiles[3][8].events = [Paula.new]
+        
     # Fishing shop.
     @tiles[2][9] = shop.clone
     @tiles[2][9].description = "There's a small hut selling fishing\n"\

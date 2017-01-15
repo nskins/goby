@@ -183,6 +183,17 @@ class John < NPC
   attr_accessor :current_index
 end
 
+class Paula < NPC
+  def initialize
+    super(name: "Paula")
+  end
+  
+  def run(player)
+    type("#{@name}: When you're low on health, eat food!\n")
+    type("It'll make you feel much better, I think.\n\n")
+  end
+end
+
 class Tim < NPC
   def initialize
     super(name: "Tim")
