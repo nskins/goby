@@ -10,20 +10,20 @@ end
 
 # Prints the commands that are available everywhere.
 def display_default_commands
-  puts "* Default commands:"
-  puts "w (↑)           Move up"
-  puts "a (←)           Move left"
-  puts "s (↓)           Move down"
-  puts "d (→)           Move right"
-  puts "help            Show the help menu"
-  puts "map             Print the map"
-  puts "inv             Check inventory"
-  puts "status          Show player status"
-  puts "use [item]      Use the specified item"
-  puts "drop [item]     Drop the specified item"
-  puts "equip [item]    Equip the specified item"
-  puts "unequip [item]  Unequip the specified item"
-  print "quit            Quit the game\n\n"
+  puts "     Command          Purpose"
+  puts
+  puts "      w (↑)"
+  puts "a (←) s (↓) d (→)        Movement"
+  puts
+  puts "        help      Show the help menu"
+  puts "       map       Print the map"
+  puts "        inv         Check inventory"
+  puts "      status         Show player status"
+  puts "    use [item]      Use the specified item"
+  puts "    drop [item]        Drop the specified item"
+  puts "   equip [item]      Equip the specified item"
+  puts "  unequip [item]    Unequip the specified item"
+  print "       quit               Quit the game\n\n"
 end
 
 # Prints the commands that are tile-specific.

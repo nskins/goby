@@ -128,13 +128,18 @@ class Player < Entity
     # TODO: fix next line. regen_location could be nil or "bad."
     @location = @map.regen_location
 
-    type("After being knocked out in battle, you wake up in #{@map.name}\n")
-    type("Looks like you lost some gold...\n\n")
+    type("After being knocked out in battle,\n")
+    type("you wake up in #{@map.name}.\n\n")
+    
+    # Reduce gold if the player has any.
+    if @gold > 0
+      type("Looks like you lost some gold...\n\n")
+      @gold /= 2
+    end
 
     sleep(2) unless ENV['TEST']
 
-    # Reduce gold and heal the player.
-    @gold /= 2
+    # Heal the player.
     @hp = @max_hp
   end
 
@@ -145,6 +150,8 @@ class Player < Entity
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
     return if map.nil?
+    
+    system("clear") unless ENV['TEST']
 
     y = coordinates.first; x = coordinates.second
 
@@ -165,7 +172,6 @@ class Player < Entity
       monster_outcome = Random.rand(0..99)
 
       if (monster_outcome < 50)
-        system("clear")
         clone = tile.monsters[Random.rand(0..(tile.monsters.size-1))].clone
         battle(clone)
       end
@@ -244,6 +250,7 @@ class Player < Entity
   # prints a minimap of nearby tiles
   # "nearby" is defined by VIEW_DISTANCE
   def print_minimap
+    print "\n"
     for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
       # skip to next line if out of bounds from above map
       next if y < 0
@@ -276,6 +283,7 @@ class Player < Entity
   #
   # @param [Monster] monster the opponent of the battle.
   def battle(monster)
+    system("clear") unless ENV['TEST']
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 
