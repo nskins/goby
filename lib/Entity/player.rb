@@ -128,13 +128,18 @@ class Player < Entity
     # TODO: fix next line. regen_location could be nil or "bad."
     @location = @map.regen_location
 
-    type("After being knocked out in battle, you wake up in #{@map.name}.\n")
-    type("Looks like you lost some gold...\n\n")
+    type("After being knocked out in battle,\n")
+    type("you wake up in #{@map.name}.\n\n")
+    
+    # Reduce gold if the player has any.
+    if @gold > 0
+      type("Looks like you lost some gold...\n\n")
+      @gold /= 2
+    end
 
     sleep(2) unless ENV['TEST']
 
-    # Reduce gold and heal the player.
-    @gold /= 2
+    # Heal the player.
     @hp = @max_hp
   end
 
