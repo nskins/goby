@@ -146,7 +146,7 @@ class Player < Entity
     # Prevents operations on nil.
     return if map.nil?
     
-    system("clear")
+    system("clear") unless ENV['TEST']
 
     y = coordinates.first; x = coordinates.second
 
@@ -278,7 +278,7 @@ class Player < Entity
   #
   # @param [Monster] monster the opponent of the battle.
   def battle(monster)
-    system("clear")
+    system("clear") unless ENV['TEST']
     puts "#{monster.message}\n"
     type("You've run into a vicious #{monster.name}!\n\n")
 
