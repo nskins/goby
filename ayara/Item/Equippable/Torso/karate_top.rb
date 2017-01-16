@@ -1,4 +1,4 @@
-require_relative 'torso.rb'
+require_relative '../../../../lib/Item/Equippable/Torso/torso.rb'
 
 class KarateTop < Torso
   def initialize

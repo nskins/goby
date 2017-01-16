@@ -8,13 +8,9 @@ Welcome to the town of Ayara. By default, this preset game has been included in 
 
 In order to begin your adventure, run the following command:
 
-```ruby lib/main.rb```
+```ruby ayara/main.rb```
 
 It is recommended to change your Terminal's text size to about 18 or 20 (Edit -> Preferences).
-
-Writing your own game? Remove Ayara as follows:
-
-```bash scripts/remove_ayara.sh```
 
 ## Contributing
 

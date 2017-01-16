@@ -1,4 +1,4 @@
-require_relative 'map.rb'
+require_relative '../../../lib/Map/Map/map.rb'
 require_relative '../Tile/standard.rb'
 require_relative '../../Event/ayara.rb'
 require_relative '../../Event/basketball.rb'

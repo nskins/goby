@@ -1,4 +1,4 @@
-require_relative 'Food/food.rb'
+require_relative '../../lib/Item/Food/food.rb'
 
 class Cookable < Item
   def initialize(name: "Cookable", price: 0, consumable: false,

@@ -1,4 +1,4 @@
-require_relative 'monster.rb'
+require_relative '../../../lib/Entity/Monster/monster.rb'
 require_relative '../../Battle/BattleCommand/Attack/flying_kick.rb'
 require_relative '../../Battle/BattleCommand/Attack/punch.rb'
 require_relative '../../Item/Equippable/Legs/karate_bottom.rb'

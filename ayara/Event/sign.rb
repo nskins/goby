@@ -1,4 +1,4 @@
-require_relative 'event.rb'
+require_relative '../../lib/Event/event.rb'
 
 class Sign < Event
   def initialize(mode: 0, visible: true)

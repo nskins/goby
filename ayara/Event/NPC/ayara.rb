@@ -1,4 +1,4 @@
-require_relative 'npc.rb'
+require_relative '../../../lib/Event/NPC/npc.rb'
 require_relative '../../Item/basketball.rb'
 require_relative '../../Item/bucket.rb'
 

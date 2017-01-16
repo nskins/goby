@@ -1,4 +1,4 @@
-require_relative 'event.rb'
+require_relative '../../lib/Event/event.rb'
 require_relative '../Item/cookable.rb'
 require_relative '../Item/recipe_book.rb'
 

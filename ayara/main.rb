@@ -1,7 +1,7 @@
-require_relative "driver.rb"
-require_relative "Battle/BattleCommand/use.rb"
+require_relative "../lib/driver.rb"
+require_relative "../lib/Battle/BattleCommand/use.rb"
 require_relative "Battle/BattleCommand/Attack/punch.rb"
-require_relative "Entity/player.rb"
+require_relative "../lib/Entity/player.rb"
 require_relative "Map/Map/ayara.rb"
 require_relative "Story/intro.rb"
 

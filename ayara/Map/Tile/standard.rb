@@ -1,4 +1,4 @@
-require_relative 'tile.rb'
+require_relative '../../../lib/Map/Tile/tile.rb'
 
 class Grass < Tile
   def initialize

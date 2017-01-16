@@ -1,4 +1,4 @@
-require_relative 'attack.rb'
+require_relative '../../../../lib/Battle/BattleCommand/Attack/attack.rb'
 
 class Punch < Attack
   def initialize

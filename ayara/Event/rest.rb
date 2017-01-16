@@ -1,4 +1,4 @@
-require_relative 'event.rb'
+require_relative '../../lib/Event/event.rb'
 
 class Rest < Event
   def initialize

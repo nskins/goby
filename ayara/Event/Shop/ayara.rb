@@ -1,4 +1,4 @@
-require_relative 'shop.rb'
+require_relative '../../../lib/Event/Shop/shop.rb'
 require_relative '../../Item/bait.rb'
 require_relative '../../Item/fishing_pole.rb'
 require_relative '../../Item/Food/egg.rb'

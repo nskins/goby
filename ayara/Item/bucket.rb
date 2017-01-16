@@ -1,4 +1,4 @@
-require_relative 'item.rb'
+require_relative '../../lib/Item/item.rb'
 
 class Bucket < Item
   def initialize

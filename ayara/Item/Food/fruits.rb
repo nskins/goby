@@ -1,4 +1,4 @@
-require_relative 'food.rb'
+require_relative '../../../lib/Item/Food/food.rb'
 
 class Grape < Food
   def initialize

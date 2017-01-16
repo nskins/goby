@@ -1,4 +1,4 @@
-require_relative 'event.rb'
+require_relative '../../lib/Event/event.rb'
 require_relative '../Item/bait.rb'
 require_relative '../Item/fishing_pole.rb'
 

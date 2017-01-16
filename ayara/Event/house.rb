@@ -1,4 +1,4 @@
-require_relative 'event.rb'
+require_relative '../../lib/Event/event.rb'
 
 class House < Event
   def initialize(mode: 0, visible: true, name: "NPC")
