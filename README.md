@@ -22,12 +22,6 @@ Run the test suite before sending a pull request!:
 
 ## Documentation
 
-We use [YARD](https://github.com/lsegal/yard) for documentation. In order to see the doc files, first ensure that YARD is installed:
-
-```gem install yard```
-
-Then run the following command in our project's root directory:
+We use [YARD](https://github.com/lsegal/yard) for documentation. In order to generate the documentation (which will be stored in the doc/ directory), run the following command in the project's root directory:
 
 ```yardoc ```
-
-The doc files will then be available as HTML files in the doc/ directory.
