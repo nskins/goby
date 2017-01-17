@@ -10,7 +10,7 @@ In order to begin your adventure, run the following command:
 
 ```ruby ayara/main.rb```
 
-It is recommended to change your Terminal's text size to about 18 or 20 (Edit -> Preferences).
+It is recommended to change your Terminal's text size to about 18 or 20. On Ubuntu, try Edit -> Preferences. On Mac OS X, use ⌘+ and ⌘-.
 
 ## Contributing
 
