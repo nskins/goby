@@ -1,3 +1,10 @@
+def get_name
+  print "Brave hero, what is thy name?: "
+  input = gets.chomp
+  print "\n"
+  return input
+end
+
 def print_intro
   system("clear")
   
