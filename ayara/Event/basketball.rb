@@ -36,9 +36,17 @@ module BBall
     end
     
     output_thread = Thread.start do  
-      while ((current_position < (board.size - 1)) && (!done))
+      while (current_position < (board.size - 1))
         
         mutex.lock
+        
+        # End the loop once the 
+        # other thread has received input.
+        if done
+          mutex.unlock
+          break
+        end
+        
         if (current_position < (board.size - 1))
           # Move the ball to the next position.
           temp = board[current_position + 1]
