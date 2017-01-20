@@ -16,20 +16,20 @@ class Entity
                  inventory: [], gold: 0, battle_commands: [], outfit: {})
     @name = name
     @max_hp = max_hp
-    
+
     if hp.nil?
       @hp = @max_hp
     else
       @hp = hp
     end
     (@max_hp = @hp) if (@hp > @max_hp)
-    
+
     @attack = attack
     @defense = defense
     @agility = agility
     @inventory = inventory
     @gold = gold
-    
+
     @battle_commands = battle_commands
     # Maintain sorted battle commands.
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
@@ -79,7 +79,7 @@ class Entity
 	def choose_attack
 	  return @battle_commands[Random.rand(@battle_commands.length)]
 	end
-  
+
   # Determines how the entity should select the item and on whom
   # during battle (Use command). Return nil on error.
   #
@@ -174,7 +174,7 @@ class Entity
     puts "* Defense: #{@defense}"
     puts "* Agility: #{@agility}"
     print "\n"
-    
+
     puts "Equipment:"
     print "* Weapon: "
     if @outfit[:weapon]
@@ -212,8 +212,10 @@ class Entity
     end
 
     print "\n"
-    puts "Battle Commands:"
-    print_battle_commands
+    unless @battle_commands.empty?
+      puts "Battle Commands:"
+      print_battle_commands
+    end
   end
 
   # Removes the battle command, if it exists, from the entity's collection.
