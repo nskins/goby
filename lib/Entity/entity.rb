@@ -211,8 +211,8 @@ class Entity
       puts "none"
     end
 
+    print "\n"
     unless @battle_commands.empty?
-      print "\n"
       puts "Battle Commands:"
       print_battle_commands
     end
