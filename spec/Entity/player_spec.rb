@@ -250,5 +250,22 @@ RSpec.describe Player do
       expect(@dude.location).to eq Couple.new(1,0)
     end
   end
+	
+  context "update map" do
+    before(:each) do
+      @line_map = Map.new(tiles: [ [ Tile.new, Tile.new, Tile.new, Tile.new ] ])
+      @player = Player.new(map: @line_map, location: Couple.new(0, 0))
+    end
+
+    it "uses default argument to update tiles" do
+      @player.update_map
+      expect(@line_map.tiles[0][3].seen).to eq false
+    end
+
+    it "uses given argument to update tiles" do
+      @player.update_map(Couple.new(0, 2))
+      expect(@line_map.tiles[0][3].seen).to eq true
+    end
+  end
 
 end
