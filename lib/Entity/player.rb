@@ -206,9 +206,11 @@ class Player < Entity
   end
 
   # Updates the 'seen' attributes of the tiles on the player's current map.
-  def update_map
-    for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
-      for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
+  # 
+  # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map 
+  def update_map(coordinates = @location)
+    for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
+      for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)
         @map.tiles[y][x].seen = true if (@map.in_bounds(y,x))
       end
     end
