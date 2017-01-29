@@ -54,10 +54,10 @@ class Andre < NPC
     # Final output and movement of gold.
     if (random < shots_made)
       print "You win #{amount} gold!\n\n"
-      player.gold += amount
+      player.add_gold(amount)
     elsif (random > shots_made)
       print "You lose #{amount} gold...\n\n"
-      player.gold -= amount
+      player.remove_gold(amount)
     else
       print "It's a tie!\n\n"
     end
@@ -163,7 +163,7 @@ class John < NPC
         if (input == 'y')
           type("#{@name}: Thank you! Thank you! Here, have this.\n\n")
           print "Obtained #{@pairs[@current_index].second} gold!\n\n"
-          player.gold += @pairs[@current_index].second
+          player.add_gold(@pairs[@current_index].second)
           player.remove_item(@pairs[@current_index].first)
           @mode = 0
         else

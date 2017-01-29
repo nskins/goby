@@ -82,7 +82,7 @@ class Shop < Event
 
             # Case: The player specifies a positive amount.
             else
-              player.gold -= total_cost
+              player.remove_gold(total_cost)
               player.add_item(item, amount_to_buy.to_i)
               print "\nThank you for your patronage!\n\n"
             end
@@ -128,7 +128,7 @@ class Shop < Event
 
               # Case: The player specifies a positive amount to sell.
               else
-                player.gold += (item.price / 2) * amount_to_sell.to_i
+                player.add_gold((item.price / 2) * amount_to_sell.to_i)
                 player.remove_item(item, amount_to_sell.to_i)
                 print "\nThank you for your patronage!\n\n"
               end

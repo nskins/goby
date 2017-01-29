@@ -28,7 +28,6 @@ RSpec.describe Player do
       expect(player.gold).to eq 0
       expect(player.outfit).to eq Hash.new
       expect(player.battle_commands).to eq Array.new
-      expect(player.escaped).to eq false
       expect(player.map).to eq Player::DEFAULT_MAP
       expect(player.location).to eq Player::DEFAULT_LOCATION
     end
@@ -68,8 +67,6 @@ RSpec.describe Player do
         BattleCommand.new(name: "Run"),
         BattleCommand.new(name: "Yell")
       ]
-      # cannot be overwritten.
-      expect(hero.escaped).to eq false
       expect(hero.map).to eq @map
       expect(hero.location).to eq Couple.new(1,1)
     end
@@ -163,7 +160,7 @@ RSpec.describe Player do
     end
     
     it "reduces the player's gold by half" do
-      @dude.gold = 10
+      @dude.set_gold(10)
       @dude.die
       expect(@dude.gold).to eq 5
     end

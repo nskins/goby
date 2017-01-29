@@ -119,7 +119,7 @@ class BasketballNet < Event
       if random != 0
         puts "Some gold (#{random}) falls on"
         puts "the ground! You pick it up."
-        player.gold += random
+        player.add_gold(random)
       end
       print "\n"
     end

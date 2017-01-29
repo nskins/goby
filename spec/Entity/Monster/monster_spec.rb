@@ -14,7 +14,6 @@ RSpec.describe Monster do
       expect(monster.gold).to eq 0
       expect(monster.outfit).to eq Hash.new
       expect(monster.battle_commands).to eq Array.new
-      expect(monster.escaped).to eq false
       expect(monster.message).to eq "!!!"
     end
 
@@ -55,8 +54,6 @@ RSpec.describe Monster do
         Attack.new(name: "Kick"),
         Attack.new(name: "Scratch")
       ]
-      # cannot be overwritten.
-      expect(clown.escaped).to eq false
       expect(clown.message).to eq "\"Oh, hi.\""
     end
   end

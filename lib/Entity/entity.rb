@@ -28,7 +28,7 @@ class Entity
     @defense = defense
     @agility = agility
     @inventory = inventory
-    @gold = gold
+    set_gold(gold)
 
     @battle_commands = battle_commands
     # Maintain sorted battle commands.
@@ -52,6 +52,14 @@ class Entity
 
     # Maintain sorted battle commands.
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
+  end
+  
+  # Adds the given amount of gold.
+  #
+  # @param [Integer] gold the amount of gold to add.
+  def add_gold(gold)
+    @gold += gold
+    check_and_set_gold
   end
 
   # Adds the item and the given amount to the inventory.
@@ -226,6 +234,15 @@ class Entity
     @battle_commands.delete_at(index) if index
   end
 
+  # Removes up to the amount of gold given in the argument.
+  # Entity's gold will not be less than zero.
+  #
+  # @param [Integer] gold the amount of gold to remove.
+  def remove_gold(gold)
+    @gold -= gold
+    check_and_set_gold
+  end
+
   # Removes the item, if it exists, and, at most, the given amount from the inventory.
   #
   # @param [Item] item the item being removed.
@@ -245,6 +262,15 @@ class Entity
         return
       end
     end
+  end
+
+  # Sets the Entity's gold to the number in the argument.
+  # Only nonnegative numbers are accepted.
+  #
+  # @param [Integer] gold the amount of gold to set.
+  def set_gold(gold)
+    @gold = gold
+    check_and_set_gold
   end
 
   # Unequips the specified item from the entity's outfit.
@@ -289,18 +315,19 @@ class Entity
   attr_accessor :defense
   attr_accessor :agility
 
-  # The inventory is stored as an array of Couple objects.
-  attr_accessor :inventory
-  attr_accessor :gold
+  attr_reader :inventory
+  attr_reader :gold
 
-  # The outfit is stored as a hash where the key
-  # is the outfit component (weapon, helmet, etc.)
-  # and the value is the associated equipped item.
-  attr_accessor :outfit
+  attr_reader :outfit
 
   attr_reader :battle_commands
 
-  attr_accessor :escaped
+  private
 
+    # Safety function that prevents gold
+    # from decreasing below 0.
+    def check_and_set_gold
+      @gold = 0 if @gold < 0
+    end
 
 end

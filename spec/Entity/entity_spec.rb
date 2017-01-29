@@ -16,7 +16,6 @@ RSpec.describe Entity do
       expect(entity.gold).to eq 0
       expect(entity.battle_commands).to eq Array.new
       expect(entity.outfit).to eq Hash.new
-      expect(entity.escaped).to eq false
     end
 
     it "correctly assigns custom parameters" do
@@ -56,8 +55,6 @@ RSpec.describe Entity do
         Attack.new(name: "Kick"),
         Attack.new(name: "Punch")
       ]
-      # cannot be overwritten.
-      expect(hero.escaped).to eq false
     end
     
     it "assigns default keyword arguments as appropriate" do
@@ -73,8 +70,6 @@ RSpec.describe Entity do
       expect(entity.inventory).to eq []
       expect(entity.gold).to eq 3
       expect(entity.battle_commands).to eq []
-      # cannot be overwritten.
-      expect(entity.escaped).to eq false
     end
   end
 
