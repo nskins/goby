@@ -322,6 +322,8 @@ class Entity
 
   attr_reader :battle_commands
 
+  attr_reader :escaped
+
   private
 
     # Safety function that prevents gold
