@@ -1,3 +1,4 @@
+# coding: utf-8
 # Functions that handle commands on the "world map."
 
 # Prints the default and special (tile-specific) commands.
@@ -88,7 +89,9 @@ def interpret_command(command, player)
     # Determine the appropriate command to use.
     if words[0].casecmp("drop").zero?
       index = player.has_item(name)
-      if index
+      if index && !player.inventory[index].first.disposable
+        print "You cannot drop that item.\n\n"
+      elsif index
         # TODO: Perhaps the player should be allowed to specify
         #       how many of the Item to drop.
         item = player.inventory[index].first
