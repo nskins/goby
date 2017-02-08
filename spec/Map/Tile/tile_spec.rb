@@ -35,5 +35,18 @@ RSpec.describe Tile do
       expect(pond.graphic).to eq '#'
     end
   end
-
+  context "object clone method" do
+    it "makes a deep copy of the object" do
+      tile = Tile.new(description: "This is a test tile", events: [Event.new], monsters: [Monster.new])
+      new_tile = tile.clone
+      
+      new_tile.events.pop
+      new_tile.monsters.pop
+      new_tile.description = "This is the deep-copied clone tile"
+      
+      expect(tile.events.length).not_to eq(0)
+      expect(tile.monsters.length).not_to eq(0)
+      expect(tile.description).not_to eq(new_tile.description)
+    end
+  end
 end
