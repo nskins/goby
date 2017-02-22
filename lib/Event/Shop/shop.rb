@@ -110,7 +110,7 @@ class Shop < Event
           # Case: Item is not disposable
           elsif (index && !player.inventory[index].first.disposable &&
                  player.inventory[index].second > 0)
-            print "\nYou cannot sell that item\n\n"
+            print "\nYou cannot sell that item.\n\n"
 
           # Case: The player has a positive number of the specified item.
           elsif (index && (item_count = player.inventory[index].second) > 0)
