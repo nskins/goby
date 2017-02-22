@@ -38,6 +38,16 @@ RSpec.describe do
         interpret_command("a", @player)
         expect(@player.location).to eq Couple.new(0, 0)
       end
+
+      it "should not drop a non-disposable item" do
+        item = Item.new(name: "Onion", disposable: false)
+        @player.add_item(item)
+        interpret_command("drop onion", @player)
+        expect(@player.has_item(item)).to eq 0
+
+        # Prevent this test from interfering with other tests.
+        @player.remove_item(item)
+      end
     end
     
     context "case-insensitive" do

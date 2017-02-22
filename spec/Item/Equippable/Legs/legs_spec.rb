@@ -8,6 +8,7 @@ RSpec.describe Legs do
       expect(legs.name).to eq "Legs"
       expect(legs.price).to eq 0
       expect(legs.consumable).to eq false
+      expect(legs.disposable).to eq true
       expect(legs.type).to eq :legs
     end
 
@@ -15,10 +16,12 @@ RSpec.describe Legs do
       pants = Legs.new(name: "Pants",
                        price: 20,
                        consumable: true,
+                       disposable: false,
                        stat_change: {attack: 2, defense: 2})
       expect(pants.name).to eq "Pants"
       expect(pants.price).to eq 20
       expect(pants.consumable).to eq true
+      expect(pants.disposable).to eq false
       expect(pants.stat_change[:attack]).to eq 2
       expect(pants.stat_change[:defense]).to eq 2
       # Cannot be overwritten.

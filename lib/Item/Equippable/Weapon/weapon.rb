@@ -8,8 +8,8 @@ class Weapon < Equippable
   # @param [Boolean] consumable determines whether the item is lost when used.
   # @param [Hash] stat_change the change in stats for when the item is equipped.
   # @param [Attack] attack the attack which is added to the entity's battle commands.
-  def initialize(name: "Weapon", price: 0, consumable: false, stat_change: {}, attack: nil)
-    super(name: name, price: price, consumable: consumable, stat_change: stat_change)
+  def initialize(name: "Weapon", price: 0, consumable: false, disposable: true, stat_change: {}, attack: nil)
+    super(name: name, price: price, consumable: consumable, disposable: disposable, stat_change: stat_change)
     @attack = attack
     @type = :weapon
   end

@@ -6,8 +6,8 @@ class Food < Item
   # @param [Integer] price the cost in a shop.
   # @param [Boolean] consumable upon use, the item is lost when true.
   # @param [Integer] recovers the amount of HP recovered when used.
-  def initialize(name: "Food", price: 0, consumable: true, recovers: 0)
-    super(name: name, price: price, consumable: consumable)
+  def initialize(name: "Food", price: 0, consumable: true, disposable: true, recovers: 0)
+    super(name: name, price: price, consumable: consumable, disposable: disposable)
     @recovers = recovers
   end
 
