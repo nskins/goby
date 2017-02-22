@@ -8,6 +8,7 @@ RSpec.describe Food do
       expect(food.name).to eq "Food"
       expect(food.price).to eq 0
       expect(food.consumable).to eq true
+      expect(food.disposable).to eq true
       expect(food.recovers).to eq 0
     end
 
@@ -15,10 +16,12 @@ RSpec.describe Food do
       magic_banana = Food.new(name: "Magic Banana",
                               price: 5,
                               consumable: false,
+                              disposable: false,
                               recovers: 1000)
       expect(magic_banana.name).to eq "Magic Banana"
       expect(magic_banana.price).to eq 5
       expect(magic_banana.consumable).to eq false
+      expect(magic_banana.disposable).to eq false
       expect(magic_banana.recovers).to eq 1000
     end
   end

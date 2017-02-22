@@ -107,6 +107,11 @@ class Shop < Event
           # Case: The player does not want to sell an item.
           if (name.casecmp("none") == 0)
 
+          # Case: Item is not disposable
+          elsif (index && !player.inventory[index].first.disposable &&
+                 player.inventory[index].second > 0)
+            print "\nYou cannot sell that item.\n\n"
+
           # Case: The player has a positive number of the specified item.
           elsif (index && (item_count = player.inventory[index].second) > 0)
             item = player.inventory[index].first

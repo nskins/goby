@@ -8,15 +8,18 @@ RSpec.describe Item do
       expect(item.name).to eq "Item"
       expect(item.price).to eq 0
       expect(item.consumable).to eq true
+      expect(item.disposable).to eq true
     end
 
     it "correctly assigns custom parameters" do
       hammer = Item.new(name: "Hammer",
                         price: 40,
-                        consumable: false)
+                        consumable: false,
+                        disposable: false)
       expect(hammer.name).to eq "Hammer"
       expect(hammer.price).to eq 40
       expect(hammer.consumable).to eq false
+      expect(hammer.disposable).to eq false
     end
   end
 
