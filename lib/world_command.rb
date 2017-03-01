@@ -127,6 +127,8 @@ def interpret_command(command, player)
     player.print_inventory; return
   elsif command.casecmp("status").zero?
     player.print_status; return
+  elsif command.casecmp("save").zero?
+    save_game(player); return
   end
 
   # Other commands.
