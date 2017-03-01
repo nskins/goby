@@ -52,3 +52,15 @@ def save_game(player)
   end
   return
 end
+
+# Reads and check the save file and parses into the player object
+# 
+#
+def load_game
+  begin
+    player = YAML.load_file("player.yaml")
+    return player
+  rescue
+    return nil
+  end
+end
