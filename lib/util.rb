@@ -50,6 +50,7 @@ def save_game(player)
   File.open("player.yaml", "w") do |file|
     file.puts player_data
   end
+  print "Successfully saved the game!\n\n"
   return
 end
 

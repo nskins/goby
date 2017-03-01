@@ -24,6 +24,7 @@ def display_default_commands
   puts "    drop [item]        Drop the specified item"
   puts "   equip [item]      Equip the specified item"
   puts "  unequip [item]    Unequip the specified item"
+  puts "       save              Save the game"
   print "       quit               Quit the game\n\n"
 end
 

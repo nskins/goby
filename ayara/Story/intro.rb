@@ -5,6 +5,17 @@ def get_name
   return input
 end
 
+def load_game?
+  system("clear")
+
+  print "Would you like to load the saved game (y/n)?: "
+  input = gets.chomp
+  print "\n"
+  
+  return true if input == 'y'
+  return false
+end
+
 def print_intro
   system("clear")
   
