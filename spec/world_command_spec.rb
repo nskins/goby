@@ -48,6 +48,11 @@ RSpec.describe do
         # Prevent this test from interfering with other tests.
         @player.remove_item(item)
       end
+
+      it "should correctly create a save file" do
+        interpret_command("save", @player)
+        expect(File.file?("player.yaml")).to eq true
+      end
     end
     
     context "case-insensitive" do
