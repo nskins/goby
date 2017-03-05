@@ -28,6 +28,7 @@ def player_input
       input = gets.chomp
     else
       input = Readline.readline("> ", false)
+      puts "\n"
     end
   rescue Interrupt => e
     puts "The game was interrupted."
