@@ -1,6 +1,6 @@
 def get_name
   print "Brave hero, what is thy name?: "
-  input = gets.chomp
+  input = gets.chomp.downcase
   print "\n"
   return input
 end
@@ -9,7 +9,7 @@ def load_game?
   system("clear")
 
   print "Would you like to load the saved game (y/n)?: "
-  input = gets.chomp
+  input = gets.chomp.downcase
   print "\n"
   
   return true if input == 'y'
@@ -20,7 +20,7 @@ def print_intro
   system("clear")
   
   print "Do you know how to play (y/n)?: "
-  input = gets.chomp
+  input = gets.chomp.downcase
   print "\n"
   
   return if input != 'n'
