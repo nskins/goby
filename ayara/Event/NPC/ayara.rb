@@ -17,13 +17,13 @@ class Andre < NPC
     type("#{@name}: Each player takes five shots -\n")
     type("whoever makes more wins. Would you like\n")
     type("to make a wager (y/n)?: ")
-    input = gets.chomp
+    input = gets.chomp.downcase
     print "\n"
     return if input != 'y'
     
     puts "Current gold in pouch: #{player.gold}."
     type("#{@name}: How much will you wager?: ")
-    input = gets.chomp
+    input = gets.chomp.downcase
     amount = input.to_i
     print "\n"
     
@@ -91,7 +91,7 @@ class Bella < NPC
     else
       type("#{@name}: Oooh.. you have water... ??\n")
       type("May I please have it... (y/n)?: ")
-      input = gets.chomp
+      input = gets.chomp.downcase
       print "\n"
       
       if (input == 'y')
@@ -157,7 +157,7 @@ class John < NPC
       if (player.has_item(@pairs[@current_index].first))
         type("#{@name}: Ah, yes! #{@pairs[@current_index].first.name}!\n")
         type("May I have it (y/n)?: ")
-        input = gets.chomp
+        input = gets.chomp.downcase
         print "\n"
         
         if (input == 'y')

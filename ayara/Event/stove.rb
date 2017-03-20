@@ -11,7 +11,7 @@ class Stove < Event
     puts "You can cook either a single item or a recipe."
     print "What would you like to cook?: "
     
-    input = gets.chomp
+    input = gets.chomp.downcase
     item_index = player.has_item(input)
     book_index = player.has_item(RecipeBook.new)
     recipe_index = player.inventory[book_index].first.has_recipe(input) if book_index
@@ -38,7 +38,7 @@ class Stove < Event
     recipe = player.inventory[book_index].first.recipes[recipe_index] if recipe_index
     
     print "How many?: "
-    input = gets.chomp
+    input = gets.chomp.downcase
     amount = input.to_i
     
     # Error handling for non-positive amount.

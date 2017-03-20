@@ -82,7 +82,7 @@ class Player < Entity
       print_inventory
       puts "Which item would you like to use?"
       print "(or type 'pass' to forfeit the turn): "
-      input = gets.chomp
+      input = gets.chomp.downcase
 
       print "\n"
 
@@ -103,7 +103,7 @@ class Player < Entity
     while !whom
       puts "On whom will you use the item (#{@name} or #{enemy.name})?"
       print "(or type 'pass' to forfeit the turn): "
-      input = gets.chomp
+      input = gets.chomp.downcase
 
       print "\n"
 
