@@ -1,16 +1,17 @@
-require_relative '../item.rb'
+module Equippable
 
-class Equippable < Item
+  # The function that returns the type of the item.
+  # Subclasses must override this function.
+  #
+  def stat_change
+    raise(NotImplementedError, 'An Equippable Item must implement a stat_change Hash')
+  end
 
-  # @param [String] name the name.
-  # @param [Integer] price the cost in a shop.
-  # @param [Boolean] consumable upon use, the item is lost when true.
-  # @param [Boolean] disposable allowed to sell or drop item when true.
-  # @param [Hash] stat_change the change in stats for when the item is equipped.
-  def initialize(name: "Equippable", price: 0, consumable: false, disposable: true, stat_change: {})
-    super(name: name, price: price, consumable: consumable, disposable: disposable)
-    @stat_change = stat_change
-    @type = :equippable
+  # The function that returns the change in stats for when the item is equipped.
+  # Subclasses must override this function.
+  #
+  def type
+    raise(NotImplementedError, 'An Equippable Item must have a type')
   end
   
   # Alters the stats of the entity
@@ -22,13 +23,13 @@ class Equippable < Item
       
     # Alter the stats as appropriate.
     if equipping
-      entity.attack += @stat_change[:attack] if @stat_change[:attack]
-      entity.defense += @stat_change[:defense] if @stat_change[:defense]
-      entity.agility += @stat_change[:agility] if @stat_change[:agility]
+      entity.attack += stat_change[:attack] if stat_change[:attack]
+      entity.defense += stat_change[:defense] if stat_change[:defense]
+      entity.agility += stat_change[:agility] if stat_change[:agility]
     else
-      entity.attack -= @stat_change[:attack] if @stat_change[:attack]
-      entity.defense -= @stat_change[:defense] if @stat_change[:defense]
-      entity.agility -= @stat_change[:agility] if @stat_change[:agility]
+      entity.attack -= stat_change[:attack] if stat_change[:attack]
+      entity.defense -= stat_change[:defense] if stat_change[:defense]
+      entity.agility -= stat_change[:agility] if stat_change[:agility]
     end
     
   end
@@ -68,5 +69,4 @@ class Equippable < Item
     print "Type 'equip #{@name}' to equip this item.\n\n"
   end
 
-  attr_accessor :stat_change, :type
 end

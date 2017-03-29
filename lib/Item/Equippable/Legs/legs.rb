@@ -1,6 +1,8 @@
 require_relative '../equippable.rb'
+require_relative '../../item.rb'
 
-class Legs < Equippable
+class Legs < Item
+	include Equippable
 
   # @param [String] name the name.
   # @param [Integer] price the cost in a shop.
@@ -8,8 +10,10 @@ class Legs < Equippable
   # @param [Boolean] disposable allowed to sell or drop item when true.
   # @param [Hash] stat_change the change in stats for when the item is equipped.
   def initialize(name: "Legs", price: 0, consumable: false, disposable: true, stat_change: {})
-    super(name: name, price: price, consumable: consumable, disposable: disposable, stat_change: stat_change)
+    super(name: name, price: price, consumable: consumable, disposable: disposable)
     @type = :legs
+    @stat_change = stat_change
   end
 
+  attr_reader :type, :stat_change
 end
