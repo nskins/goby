@@ -38,9 +38,9 @@ module Equippable
   #
   # @param [Entity] entity the entity who is equipping the equippable.
   def equip(entity)
-    prev_item = entity.outfit[@type]
+    prev_item = entity.outfit[type]
 
-    entity.outfit[@type] = self
+    entity.outfit[type] = self
     alter_stats(entity, true)
 
     if prev_item
@@ -55,7 +55,7 @@ module Equippable
   #
   # @param [Entity] entity the entity who is unequipping the equippable.
   def unequip(entity)
-    entity.outfit.delete(@type)
+    entity.outfit.delete(type)
     alter_stats(entity, false)
 
     print "#{entity.name} unequips #{@name}!\n\n"
