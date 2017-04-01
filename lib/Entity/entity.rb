@@ -12,8 +12,9 @@ class Entity
   # @param [Integer] gold the currency used for economical transactions.
   # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
   # @param [Hash] outfit the collection of equippable items currently worn.
+  # @param [String] message the entity's battle cry.
   def initialize(name: "Entity", max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1,
-                 inventory: [], gold: 0, battle_commands: [], outfit: {})
+                 inventory: [], gold: 0, battle_commands: [], outfit: {}, message: nil)
     @name = name
     @max_hp = max_hp
 
@@ -39,6 +40,8 @@ class Entity
     outfit.each do |type,value|
       value.equip(self)
     end
+
+    @message = message
 
     # This should only be switched to true during battle.
     @escaped = false
@@ -309,20 +312,8 @@ class Entity
     @name == rhs.name
   end
 
-  attr_accessor :name
-  attr_accessor :max_hp, :hp
-  attr_accessor :attack
-  attr_accessor :defense
-  attr_accessor :agility
-
-  attr_reader :inventory
-  attr_reader :gold
-
-  attr_reader :outfit
-
-  attr_reader :battle_commands
-
-  attr_reader :escaped
+  attr_accessor :agility, :attack, :defense, :hp, :max_hp, :name
+  attr_reader :battle_commands, :escaped, :gold, :inventory, :message, :outfit
 
   private
 

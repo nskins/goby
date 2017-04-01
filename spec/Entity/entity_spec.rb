@@ -16,6 +16,7 @@ RSpec.describe Entity do
       expect(entity.gold).to eq 0
       expect(entity.battle_commands).to eq Array.new
       expect(entity.outfit).to eq Hash.new
+      expect(entity.message). to be_nil
     end
 
     it "correctly assigns custom parameters" do
@@ -37,7 +38,8 @@ RSpec.describe Entity do
                         battle_commands: [
                           Attack.new(name: "Punch"),
                           Attack.new(name: "Kick")
-                        ])
+                        ],
+                        message: "Hello there...")
       expect(hero.name).to eq "Hero"
       expect(hero.max_hp).to eq 50
       expect(hero.hp).to eq 35
@@ -55,6 +57,7 @@ RSpec.describe Entity do
         Attack.new(name: "Kick"),
         Attack.new(name: "Punch")
       ]
+      expect(hero.message).to eq "Hello there..."
     end
     
     it "assigns default keyword arguments as appropriate" do

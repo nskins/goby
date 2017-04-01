@@ -18,8 +18,7 @@ class Monster < Entity
                  inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!",
                  treasures: [])
     super(name: name, max_hp: max_hp, hp: hp, attack: attack, defense: defense, agility: agility,
-          inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
-    @message = message
+          inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit, message: message)
     @treasures = treasures
     
     # Find the total number of treasures in the distribution.
@@ -61,7 +60,7 @@ class Monster < Entity
     return monster
   end
   
-  attr_accessor :message, :treasures, :total_treasures
+  attr_accessor :treasures, :total_treasures
   
   private
   

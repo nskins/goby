@@ -30,6 +30,7 @@ RSpec.describe Player do
       expect(player.battle_commands).to eq Array.new
       expect(player.map).to eq Player::DEFAULT_MAP
       expect(player.location).to eq Player::DEFAULT_LOCATION
+      expect(player.message).to be_nil
     end
 
     it "correctly assigns custom parameters" do
