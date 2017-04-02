@@ -1,0 +1,75 @@
+require_relative '../../lib/Battle/battle.rb'
+require_relative '../../lib/Entity/entity.rb'
+
+RSpec.describe Battle do
+
+  context "constructor" do
+    it "takes two arguments" do
+      expect {Battle.new}.to raise_error(ArgumentError, "wrong number of arguments (0 for 2)")
+
+      fightable_1 = fightable_2 = double
+      battle = Battle.new(fightable_1, fightable_2)
+      expect(battle).to be_a Battle
+    end
+  end
+
+  context "determine_winner" do
+    it "prompts entities to choose an attack" do
+      entity_1 = spy('entity_1', hp: 1, agility: 1)
+  	  entity_2 = spy('entity_2', hp: 1, agility: 1)
+  	  Battle.new(entity_1, entity_2).determine_winner
+
+      expect(entity_1).to have_received(:choose_attack)
+      expect(entity_2).to have_received(:choose_attack)
+    end
+
+    it "returns the entity with positive hp" do
+      entity_1 = Entity.new(name: "Clown",
+                        max_hp: 20,
+                        hp: 15,
+                        attack: 2,
+                        defense: 2,
+                        agility: 4,
+                        outfit: { weapon: Weapon.new(
+                                    attack: Attack.new,
+                                    stat_change: {attack: 3, defense: 1}
+                                  ),
+                                  helmet: Helmet.new(
+                                      stat_change: {attack: 1, defense: 5}
+                                  )
+                                },
+                        battle_commands: [
+                          Attack.new(name: "Scratch"),
+                          Attack.new(name: "Kick")
+                        ])
+
+      entity_2 = Entity.new(name: "Clown",
+                  max_hp: 20,
+                  hp: 15,
+                  attack: 2,
+                  defense: 2,
+                  agility: 4,
+                  outfit: { weapon: Weapon.new(
+                              attack: Attack.new,
+                              stat_change: {attack: 3, defense: 1}
+                            ),
+                            helmet: Helmet.new(
+                                stat_change: {attack: 1, defense: 5}
+                            )
+                          },
+                  battle_commands: [
+                    Attack.new(name: "Scratch"),
+                    Attack.new(name: "Kick")
+                  ])
+
+      battle = Battle.new(entity_1, entity_2)
+      winner = battle.determine_winner
+      expect([entity_1, entity_2].include?(winner)).to be true
+
+      loser = ([entity_1, entity_2] - [winner])[0]
+      expect(winner.hp).to be > 0
+      expect(loser.hp).to be <= 0
+    end
+
+  end
+end
