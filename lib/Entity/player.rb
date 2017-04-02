@@ -130,7 +130,7 @@ class Player < Entity
 
     type("After being knocked out in battle,\n")
     type("you wake up in #{@map.name}.\n\n")
-    
+
     # Reduce gold if the player has any.
     if @gold > 0
       type("Looks like you lost some gold...\n\n")
@@ -150,7 +150,7 @@ class Player < Entity
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
     return if map.nil?
-    
+
     system("clear") unless ENV['TEST']
 
     y = coordinates.first; x = coordinates.second
@@ -206,8 +206,8 @@ class Player < Entity
   end
 
   # Updates the 'seen' attributes of the tiles on the player's current map.
-  # 
-  # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map 
+  #
+  # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map
   def update_map(coordinates = @location)
     for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
       for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)
@@ -279,82 +279,6 @@ class Player < Entity
     else
       print @map.tiles[coords.first][coords.second].to_s
     end
-  end
-
-  # Engages in battle with the specified monster.
-  #
-  # @param [Monster] monster the opponent of the battle.
-  def battle(monster)
-    system("clear") unless ENV['TEST']
-    puts "#{monster.message}\n"
-    type("You've run into a vicious #{monster.name}!\n\n")
-
-    while hp > 0
-      # Both choose an attack.
-      player_attack = choose_attack
-
-      # Prevents the user from using "bad" commands.
-      # Example: "Use" with an empty inventory.
-      while (player_attack.fails?(self))
-        player_attack = choose_attack
-      end
-
-      monster_attack = monster.choose_attack
-
-      attackers = Array.new
-      attacks = Array.new
-
-      if sample_agilities(monster)
-        attackers << self << monster
-        attacks << player_attack << monster_attack
-      else
-        attackers << monster << self
-        attacks << monster_attack << player_attack
-      end
-
-      2.times do |i|
-        # The attacker runs its attack on the other attacker.
-        attacks[i].run(attackers[i], attackers[(i + 1) % 2])
-
-        if (attackers[i].escaped)
-          attackers[i].escaped = false
-          return
-        end
-
-        break if monster.hp <= 0 || hp <= 0
-
-      end
-
-      break if monster.hp <= 0 || hp <= 0
-
-    end
-
-    die if hp <= 0
-
-    if monster.hp <= 0
-      type("You defeated the #{monster.name}!\n")
-
-      # Determine the rewards for defeating the monster.
-      rewards = monster.sample_rewards
-
-      gold = rewards.first
-      treasure = rewards.second
-
-      # Output some helpful text and give the rewards to the player.
-      if ((gold > 0) || treasure)
-        type("Rewards:\n")
-        if (gold > 0)
-          type("* #{gold} gold\n")
-          @gold += gold
-        end
-        if (treasure)
-          type("* #{treasure.name}\n")
-          add_item(treasure)
-        end
-      end
-      print "\n"
-    end
-
   end
 
   attr_reader :map, :location
