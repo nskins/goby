@@ -7,8 +7,8 @@ RSpec.describe Battle do
     it "takes two arguments" do
       expect {Battle.new}.to raise_error(ArgumentError, "wrong number of arguments (0 for 2)")
 
-      fightable_1 = fightable_2 = double
-      battle = Battle.new(fightable_1, fightable_2)
+      entity_1 = entity_2 = double
+      battle = Battle.new(entity_1, entity_2)
       expect(battle).to be_a Battle
     end
   end
