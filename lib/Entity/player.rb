@@ -5,6 +5,8 @@ require_relative '../Map/Tile/tile.rb'
 
 class Player < Entity
 
+  include WorldCommand
+
   DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
   DEFAULT_LOCATION = Couple.new(0,0)
 
