@@ -15,7 +15,7 @@ class NPC < Event
   #
   # @param [Player] player the one speaking to the NPC.
   def run(player)
-    print "Hello!\n\n"
+    print "#{@name}: Hello!\n\n"
   end
 
   attr_accessor :name

@@ -2,6 +2,9 @@ require_relative '../util.rb'
 
 class Entity
 
+  NO_SUCH_ITEM_ERROR = "What?! You don't have THAT!\n\n"
+  NOT_EQUIPPED_ERROR = "You are not equipping THAT!\n\n"
+
   # @param [String] name the name.
   # @param [Integer] max_hp the greatest amount of health.
   # @param [Integer] hp the current amount of health.
@@ -118,7 +121,7 @@ class Entity
         print "#{actual_item.name} cannot be equipped!\n\n"
       end
     else
-      print "What?! You don't have THAT!\n\n"
+      print NO_SUCH_ITEM_ERROR
     end
   end
 
@@ -285,7 +288,7 @@ class Entity
       item.unequip(self)
       add_item(item)
     else
-      print "You are not equipping THAT!\n\n"
+      print NOT_EQUIPPED_ERROR
     end
   end
 
@@ -300,7 +303,7 @@ class Entity
       actual_item.use(self, entity)
       remove_item(actual_item) if actual_item.consumable
     else
-      print "What?! You don't have THAT!\n\n"
+      print NO_SUCH_ITEM_ERROR
     end
   end
 
