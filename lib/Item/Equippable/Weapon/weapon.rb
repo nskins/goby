@@ -1,7 +1,9 @@
 require_relative '../equippable.rb'
+require_relative '../../item.rb'
 require_relative '../../../Battle/BattleCommand/Attack/attack.rb'
 
-class Weapon < Equippable
+class Weapon < Item
+  include Equippable
 
   # @param [String] name the name.
   # @param [Integer] price the cost in a shop.
@@ -10,9 +12,10 @@ class Weapon < Equippable
   # @param [Hash] stat_change the change in stats for when the item is equipped.
   # @param [Attack] attack the attack which is added to the entity's battle commands.
   def initialize(name: "Weapon", price: 0, consumable: false, disposable: true, stat_change: {}, attack: nil)
-    super(name: name, price: price, consumable: consumable, disposable: disposable, stat_change: stat_change)
+    super(name: name, price: price, consumable: consumable, disposable: disposable)
     @attack = attack
     @type = :weapon
+    @stat_change = stat_change
   end
 
   # Equips onto the entity and changes the entity's attributes accordingly.
@@ -48,7 +51,7 @@ class Weapon < Equippable
 
   end
 
+  attr_reader :type, :stat_change
   # An instance of Attack.
   attr_accessor :attack
-
 end
