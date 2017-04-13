@@ -22,7 +22,7 @@ class Pool < Event
           puts "* #{bait.name}"
         end
         print "\nWhich bait will you use?: "
-        input = gets.chomp
+        input = gets.chomp.downcase
         index = player.has_item(input)
         if (!index || (!(player.inventory[index].first.is_a? Bait)))
           print "What?! You don't have THAT!\n\n"

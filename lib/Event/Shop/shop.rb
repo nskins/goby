@@ -44,7 +44,7 @@ class Shop < Event
     puts "Current gold in your pouch: #{player.gold}."
     print "Would you like to buy, sell, or exit?: "
 
-    input = gets.chomp
+    input = gets.chomp.downcase
     print "\n"
 
     while (input.casecmp("exit") != 0)
@@ -54,7 +54,7 @@ class Shop < Event
         print_items
         print "What would you like (or none)?: "
 
-        name = gets.chomp
+        name = gets.chomp.downcase
         index = has_item(name)
 
         # Case: The player does not want to buy an item.
@@ -64,7 +64,7 @@ class Shop < Event
         elsif index
           item = @items[index]
           print "How many do you want?: "
-          amount_to_buy = gets.chomp
+          amount_to_buy = gets.chomp.downcase
           total_cost = amount_to_buy.to_i * item.price
 
           # Case: The player does not have enough gold.
@@ -101,7 +101,7 @@ class Shop < Event
           player.print_inventory
 
           print "What would you like to sell? (or none): "
-          name = gets.chomp
+          name = gets.chomp.downcase
           index = player.has_item(name)
 
           # Case: The player does not want to sell an item.
@@ -117,7 +117,7 @@ class Shop < Event
             item = player.inventory[index].first
             puts "\nI'll buy that for #{item.price / 2} gold."
             print "How many do you want to sell?: "
-            amount_to_sell = gets.chomp
+            amount_to_sell = gets.chomp.downcase
 
             # Case: The player specifies more than the amount in its inventory.
             if (amount_to_sell.to_i > item_count)
@@ -153,7 +153,7 @@ class Shop < Event
       # Greeting for subsequent interactions (following the initial).
       puts "Current gold in your pouch: #{player.gold}."
       print "Would you like to buy, sell, or exit?: "
-      input = gets.chomp
+      input = gets.chomp.downcase
       print "\n"
     end
     print "#{player.name} has left #{@name}.\n\n"

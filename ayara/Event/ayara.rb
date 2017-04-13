@@ -16,7 +16,7 @@ class Dojo < Event
     print "#{player.name} enters the Dojo...\n\n"
     type("#{@name}: Ah, #{player.name}, so good to see you.\n")
     type("Would you like to train today (y/n)?: ")
-    input = gets.chomp
+    input = gets.chomp.downcase
     print "\n"
     
     if (input == 'y')
@@ -80,7 +80,7 @@ class SeliaHouse < House
     else
       type("#{@name}: Are you ready to take your cooking\n")
       type("skills to the next level (y/n)?: ")
-      input = gets.chomp
+      input = gets.chomp.downcase
       print "\n"
       
       if (input == 'y')
@@ -144,7 +144,7 @@ class Well < Event
   def run(player)
     if player.has_item(Bucket.new)
       print "Will you fill the Bucket (y/n)?: "
-      input = gets.chomp
+      input = gets.chomp.downcase
       print "\n"
       
       if (input == 'y')

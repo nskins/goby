@@ -21,7 +21,7 @@ end
 # Simple player input script.
 def player_input
   print "> "
-  input = gets.chomp
+  input = gets.chomp.downcase
   puts "\n"
   return input
 end
