@@ -14,6 +14,8 @@ It is recommended to change your Terminal's text size to about 18 or 20. On Ubun
 
 ## Contributing
 
+**UPDATE (04/13/17): We are currently refactoring the codebase. These changes will provide a more thorough test suite, additional documentation, and guidelines for contributing. Feel free to send a pull request during this time, but note that pull requests will not be merged until the refactor is complete.**
+
 Contributors of all skill levels are welcome. We do our best to identify issues that are suitable for open-source newcomers and veterans alike. Please see the [Issues](https://github.com/nskins/goby/issues) tab or tackle a completely unknown problem or feature! Also, please feel free to reach out to the owner ([nskins@umich.edu](mailto:nskins@umich.edu)) for any questions, comments, etc.
 
 Run the test suite before sending a pull request!:
