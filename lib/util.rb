@@ -1,4 +1,5 @@
 require 'yaml'
+require 'readline'
 
 # Stores a pair of values.
 class Couple
@@ -20,9 +21,23 @@ end
 
 # Simple player input script.
 def player_input
-  print "> "
-  input = gets.chomp
-  puts "\n"
+
+  begin
+    # When using Readline, rspec actually prompts the user for input, freezing the tests.
+    if(ENV['TEST'] == 'rspec') 
+      input = gets.chomp
+    else
+      input = Readline.readline("> ", false)
+      puts "\n"
+    end
+  rescue Interrupt => e
+    puts "The game was interrupted."
+  end
+  
+  if ((input.size > 1) and (input != Readline::HISTORY.to_a[-1]))
+    Readline::HISTORY.push(input)
+  end
+
   return input
 end
 
