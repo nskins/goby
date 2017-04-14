@@ -13,7 +13,7 @@ class BattleCommand
   def run(user, entity)
     print "Nothing happens.\n\n"
   end
-  
+
   # This method can prevent the user from using this command
   # based on a defined condition. Override for subclasses.
   #

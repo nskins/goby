@@ -53,7 +53,7 @@ class Entity
     # Maintain sorted battle commands.
     @battle_commands.sort!{ |x,y| x.name <=> y.name }
   end
-  
+
   # Adds the given amount of gold.
   #
   # @param [Integer] gold the amount of gold to add.
@@ -78,6 +78,80 @@ class Entity
 
     # If not already in the inventory, push a Couple.
     @inventory.push(Couple.new(item, amount))
+  end
+
+  # Engages in battle with the specified opponent.
+  #
+  # @param [opponent] the opponent of the battle.
+  def battle(opponent)
+    system("clear") unless ENV['TEST']
+    puts "#{opponent.message}\n"
+    type("You've run into a vicious #{opponent.name}!\n\n")
+
+    while hp > 0 && opponent.hp > 0
+      # Both choose an attack.
+      player_attack = choose_attack
+
+      # Prevents the user from using "bad" commands.
+      # Example: "Use" with an empty inventory.
+      while (player_attack.fails?(self))
+        player_attack = choose_attack
+      end
+
+      opponent_attack = opponent.choose_attack
+
+      attackers = Array.new
+      attacks = Array.new
+
+      if sample_agilities(opponent)
+        attackers << self << opponent
+        attacks << player_attack << opponent_attack
+      else
+        attackers << opponent << self
+        attacks << opponent_attack << player_attack
+      end
+
+      2.times do |i|
+        # The attacker runs its attack on the other attacker.
+        attacks[i].run(attackers[i], attackers[(i + 1) % 2])
+
+        if (attackers[i].escaped)
+          attackers[i].escaped = false
+          return
+        end
+
+        break if opponent.hp <= 0 || hp <= 0
+
+      end
+
+    end
+
+    die if hp <= 0
+
+    if opponent.hp <= 0
+      type("You defeated the #{opponent.name}!\n")
+
+      # Determine the rewards for defeating the opponent.
+      rewards = opponent.sample_rewards
+
+      gold = rewards.first
+      treasure = rewards.second
+
+      # Output some helpful text and give the rewards to the player.
+      if ((gold > 0) || treasure)
+        type("Rewards:\n")
+        if (gold > 0)
+          type("* #{gold} gold\n")
+          @gold += gold
+        end
+        if (treasure)
+          type("* #{treasure.name}\n")
+          add_item(treasure)
+        end
+      end
+      print "\n"
+    end
+
   end
 
   # Determines how the entity should select an attack in battle.
