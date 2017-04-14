@@ -93,7 +93,7 @@ class Player < Entity
       index = has_item(input)
 
       if !index
-        print "What?! You don't have THAT!\n\n"
+        print NO_SUCH_ITEM_ERROR
       else
         item = @inventory[index].first
       end

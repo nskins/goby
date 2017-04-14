@@ -121,12 +121,6 @@ RSpec.describe do
         interpret_command("drop onion", @player)
         expect(@player.has_item("Onion")).to eq 1
       end
-
-      # TODO: Fix.
-      it "should correctly create a save file" do
-        interpret_command("save", @player)
-        expect(File.file?("player.yaml")).to eq true
-      end
     end
     
     context "case-insensitive" do

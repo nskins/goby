@@ -125,7 +125,7 @@ a (←) s (↓) d (→)       Movement
     elsif command.casecmp("status").zero?
       player.print_status; return
     elsif command.casecmp("save").zero?
-      save_game(player); return
+      save_game(player, "player.yaml"); return
     end
 
     # Other commands.

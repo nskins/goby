@@ -10,7 +10,7 @@ include Driver
 
 # Load the game.
 if File.file?("player.yaml") && load_game?
-  player = load_game
+  player = load_game("player.yaml")
   system("clear")
   describe_tile(player)
 else

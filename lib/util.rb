@@ -19,22 +19,19 @@ class Couple
   attr_accessor :first, :second
 end
 
-# Simple player input script.
+# Simple player input script. Maintains command history for
+# commands longer than one character.
 def player_input
 
   begin
     # When using Readline, rspec actually prompts the user for input, freezing the tests.
-    if(ENV['TEST'] == 'rspec') 
-      input = gets.chomp
-    else
-      input = Readline.readline("> ", false)
-      puts "\n"
-    end
+    input = (ENV['TEST'] == 'rspec') ? gets.chomp : Readline.readline("> ", false)
+    print "\n"
   rescue Interrupt => e
     puts "The game was interrupted."
   end
   
-  if ((input.size > 1) and (input != Readline::HISTORY.to_a[-1]))
+  if (input.size > 1 and input != Readline::HISTORY.to_a[-1])
     Readline::HISTORY.push(input)
   end
 
@@ -46,10 +43,8 @@ end
 # @param [String] message the message to type out.
 def type(message)
   # Processing not required for testing.
-  if ENV['TEST']
-    print message; return
-  end
-  
+  (print message; return) if ENV['TEST']
+
   # Sleep between printing of each char.
   message.split("").each do |i|
     sleep(0.015)
@@ -60,9 +55,9 @@ end
 # Serializes the player object into a YAML file and saves it
 # 
 # @param [Player] player the player object to be saved
-def save_game(player)
+def save_game(player, filename)
   player_data = YAML::dump(player)
-  File.open("player.yaml", "w") do |file|
+  File.open(filename, "w") do |file|
     file.puts player_data
   end
   print "Successfully saved the game!\n\n"
@@ -72,9 +67,9 @@ end
 # Reads and check the save file and parses into the player object
 # 
 #
-def load_game
+def load_game(filename)
   begin
-    player = YAML.load_file("player.yaml")
+    player = YAML.load_file(filename)
     return player
   rescue
     return nil
