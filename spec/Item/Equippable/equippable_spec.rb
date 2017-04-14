@@ -2,44 +2,34 @@ require_relative '../../../lib/Item/Equippable/equippable.rb'
 
 RSpec.describe Equippable do
 
-  context "constructor" do
-    it "has the correct default parameters" do
-      equ = Equippable.new
-      expect(equ.name).to eq "Equippable"
-      expect(equ.price).to eq 0
-      expect(equ.consumable).to eq false
-      expect(equ.disposable).to eq true
-      expect(equ.type).to eq :equippable
+  before do
+    @equippable = double
+    class << @equippable
+      include Equippable
+    end
+  end
+
+  context "placeholder methods" do
+    it "forces :stat_change to be implemented" do
+      expect {@equippable.stat_change}.to raise_error(NotImplementedError, 'An Equippable Item must implement a stat_change Hash')
     end
 
-    it "correctly assigns custom parameters" do
-      big_hat = Equippable.new(name: "Big Hat",
-                               price: 20,
-                               consumable: true,
-                               disposable: false,
-                               stat_change: {attack: 2, defense: 2, agility: 2})
-      expect(big_hat.name).to eq "Big Hat"
-      expect(big_hat.price).to eq 20
-      expect(big_hat.consumable).to eq true
-      expect(big_hat.disposable).to eq false
-      expect(big_hat.stat_change[:attack]).to eq 2
-      expect(big_hat.stat_change[:defense]).to eq 2
-      expect(big_hat.stat_change[:agility]).to eq 2
-      # Cannot be overwritten.
-      expect(big_hat.type).to eq :equippable
+    it "forces :type to be implemented" do
+      expect {@equippable.type}. to raise_error(NotImplementedError, 'An Equippable Item must have a type')
     end
   end
 
   context "alter stats" do
     it "changes the entity's stats in the trivial case" do
       entity = Entity.new
-      equ = Equippable.new(stat_change: {attack: 2, defense: 3, agility: 4})
-      equ.alter_stats(entity, true)
+      allow(@equippable).to receive(:stat_change) {{attack: 2, defense: 3, agility: 4}}
+
+      @equippable.alter_stats(entity, true)
       expect(entity.attack).to eq 3
       expect(entity.defense).to eq 4
       expect(entity.agility).to eq 5
-      
-      equ.alter_stats(entity, false)
+ 
+      @equippable.alter_stats(entity, false)
       expect(entity.attack).to eq 1
       expect(entity.defense).to eq 1
       expect(entity.agility).to eq 1
