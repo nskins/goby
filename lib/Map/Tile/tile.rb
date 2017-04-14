@@ -17,18 +17,14 @@ class Tile
     @description = description
     @events = events
     @monsters = monsters
-    
-    # Note: better solution in Haskell.
-    if graphic.nil? then @graphic = default_graphic
-    else @graphic = graphic end
+    @graphic = graphic.nil? ? default_graphic : graphic
   end
 
   # Convenient conversion to String.
   #
   # @return [String] the string representation.
   def to_s
-    return "  " if !@seen
-    return @graphic + " "
+    return @seen ? @graphic + " " : "  "
   end
 
   # Create deep copy of Tile
