@@ -11,7 +11,15 @@ RSpec.describe Item do
       expect(item.disposable).to eq true
     end
 
-    it "correctly assigns custom parameters" do
+    it "correctly assigns some custom parameters" do
+      book = Item.new(name: "Book", disposable: false)
+      expect(book.name).to eq "Book"
+      expect(book.price).to eq 0
+      expect(book.consumable).to eq true
+      expect(book.disposable).to eq false
+    end
+
+    it "correctly assigns all custom parameters" do
       hammer = Item.new(name: "Hammer",
                         price: 40,
                         consumable: false,
@@ -20,6 +28,15 @@ RSpec.describe Item do
       expect(hammer.price).to eq 40
       expect(hammer.consumable).to eq false
       expect(hammer.disposable).to eq false
+    end
+  end
+
+  context "use" do
+    it "prints the default string for the base item" do
+      item = Item.new
+      user = Entity.new(name: "User") # who uses the item.
+      whom = Entity.new(name: "Whom") # on whom the item is used.
+      expect { item.use(user, whom) }.to output(Item::DEFAULT_USE_TEXT).to_stdout
     end
   end
 

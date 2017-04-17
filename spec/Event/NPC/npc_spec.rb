@@ -22,4 +22,12 @@ RSpec.describe NPC do
     end
   end
 
+  context "use" do
+    it "prints the default text for the default NPC" do
+      npc = NPC.new
+      entity = Entity.new
+      expect { npc.run(entity) }.to output("NPC: Hello!\n\n").to_stdout
+    end
+  end
+
 end

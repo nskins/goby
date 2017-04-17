@@ -20,4 +20,12 @@ RSpec.describe Event do
     end
   end
 
+  context "run" do
+    it "prints the default run text for a default event" do
+      event = Event.new
+      entity = Entity.new
+      expect { event.run(entity) }.to output(Event::DEFAULT_RUN_TEXT).to_stdout
+    end
+  end
+
 end

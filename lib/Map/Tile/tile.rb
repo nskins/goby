@@ -43,8 +43,7 @@ class Tile
   
     # Returns the default graphic by considering passable.
     def default_graphic
-      return DEFAULT_PASSABLE if @passable
-      return DEFAULT_IMPASSABLE
+      return @passable ? DEFAULT_PASSABLE : DEFAULT_IMPASSABLE
     end
     
 end
