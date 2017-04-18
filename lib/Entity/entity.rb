@@ -325,7 +325,7 @@ class Entity
 
   attr_reader :battle_commands
 
-  attr_reader :escaped
+  attr_accessor :escaped
 
   private
 

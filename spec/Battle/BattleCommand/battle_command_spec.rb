@@ -20,7 +20,7 @@ RSpec.describe BattleCommand do
       enemy = Entity.new
       cmd = BattleCommand.new
       # Rspec: expect output.
-      expect { cmd.run(user, enemy) }.to output("Nothing happens.\n\n").to_stdout
+      expect { cmd.run(user, enemy) }.to output(BattleCommand::NO_ACTION).to_stdout
     end
   end
   

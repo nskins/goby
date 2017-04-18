@@ -17,7 +17,7 @@ class Use < BattleCommand
     return if (!pair)
     user.use_item(pair.first, pair.second)
   end
-  
+
   # Returns true iff the user's inventory is empty.
   #
   # @param [Entity] user the one who is using the command.

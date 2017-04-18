@@ -9,4 +9,15 @@ RSpec.describe Escape do
     end
   end
 
+  context "run" do
+    # The purpose of this test is to run the code without error.
+    it "should return a usable result" do
+      player = Player.new
+      monster = Monster.new
+      escape = Escape.new
+      escape.run(player, monster)
+      expect(player.escaped).to_not be nil
+    end
+  end
+
 end
