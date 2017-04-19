@@ -94,6 +94,20 @@ RSpec.describe Entity do
     end
   end
 
+  context "add gold" do
+    it "properly adds the appropriate amount of gold" do
+      entity = Entity.new
+      entity.add_gold(30)
+      expect(entity.gold).to eq 30
+    end
+
+    it "prevents gold < 0" do
+      entity = Entity.new
+      entity.add_gold(-30)
+      expect(entity.gold).to be_zero
+    end
+  end
+
   context "add item" do
     it "properly adds an item in a trivial case" do
       entity = Entity.new
@@ -249,6 +263,13 @@ RSpec.describe Entity do
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first.name).to eq "Hammer"
     end
+
+    it "prints an error message for an unequippable item" do
+      entity = Entity.new(inventory: [Couple.new(Item.new, 1)])
+      expect { entity.equip_item("Item") }.to output(
+        "Item cannot be equipped!\n\n"
+      ).to_stdout
+    end
   end
 
   context "has battle command" do
@@ -319,6 +340,68 @@ RSpec.describe Entity do
     end
   end
 
+  context "print battle commands" do
+    it "should print only a newline when there are no battle commands" do
+      entity = Entity.new
+      expect { entity.print_battle_commands }.to output("\n").to_stdout
+    end
+
+    it "should print each battle command in a list" do
+      kick = Attack.new(name: "Kick")
+      entity = Entity.new(battle_commands: [kick, Use.new, Escape.new])
+      expect { entity.print_battle_commands }.to output(
+        "❊ Escape\n❊ Kick\n❊ Use\n\n"
+      ).to_stdout
+    end
+  end
+
+  context "print inventory" do
+    it "should print the inventory is empty when it is" do
+      entity = Entity.new
+      expect { entity.print_inventory }.to output(
+        "Current gold in pouch: 0.\n\nEntity's inventory is empty!\n\n"
+      ).to_stdout
+    end
+
+    it "should print the complete inventory when not empty" do
+      apple = Item.new(name: "Apple")
+      banana = Item.new(name: "Banana")
+      entity = Entity.new(gold: 33, inventory: [
+        Couple.new(apple, 1), Couple.new(banana, 2)] )
+      expect { entity.print_inventory }.to output(
+        "Current gold in pouch: 33.\n\nEntity's inventory:\n"\
+        "* Apple (1)\n* Banana (2)\n\n"
+      ).to_stdout
+    end
+  end
+
+  context "print status" do
+    it "prints all of the entity's information" do
+      entity = Entity.new(max_hp: 50, hp: 30, attack: 5, 
+                          defense: 3, agility: 4,
+                          outfit: { helmet: Helmet.new,
+                                    legs: Legs.new,
+                                    shield: Shield.new,
+                                    torso: Torso.new,
+                                    weapon: Weapon.new },
+                          battle_commands: [Escape.new])
+      expect { entity.print_status }.to output(
+        "Stats:\n* HP: 30/50\n* Attack: 5\n* Defense: 3\n* Agility: 4\n\n"\
+        "Equipment:\n* Weapon: Weapon\n* Shield: Shield\n* Helmet: Helmet\n"\
+        "* Torso: Torso\n* Legs: Legs\n\nBattle Commands:\n❊ Escape\n\n"
+      ).to_stdout
+    end
+    
+    it "prints the appropriate info for the default Entity" do
+      entity = Entity.new
+      expect { entity.print_status }.to output(
+      "Stats:\n* HP: 1/1\n* Attack: 1\n* Defense: 1\n* Agility: 1\n\n"\
+      "Equipment:\n* Weapon: none\n* Shield: none\n* Helmet: none\n"\
+      "* Torso: none\n* Legs: none\n\n"
+      ).to_stdout
+    end
+  end
+
   context "remove battle command" do
     it "has no effect when no such command is present" do
       entity = Entity.new
@@ -332,6 +415,20 @@ RSpec.describe Entity do
       entity.add_battle_command(Attack.new(name: "Kick"))
       entity.remove_battle_command(Attack.new(name: "Kick"))
       expect(entity.battle_commands.length).to eq 0
+    end
+  end
+
+  context "remove gold" do
+    it "should remove the given amount of gold" do
+      entity = Entity.new(gold: 50)
+      entity.remove_gold(20)
+      expect(entity.gold).to eq 30
+    end
+
+    it "should prevent gold < 0" do
+      entity = Entity.new(gold: 5)
+      entity.remove_gold(10)
+      expect(entity.gold).to be_zero
     end
   end
 
@@ -368,6 +465,20 @@ RSpec.describe Entity do
       expect(entity.inventory.length).to eq 2
       expect(entity.inventory[0].first.name).to eq "Apple"
       expect(entity.inventory[1].first.name).to eq "Orange"
+    end
+  end
+
+  context "set gold" do
+    it "should set the gold to the given amount" do
+      entity = Entity.new(gold: 10)
+      entity.set_gold(15)
+      expect(entity.gold).to eq 15
+    end
+
+    it "should prevent gold < 0" do
+      entity = Entity.new(gold: 5)
+      entity.set_gold(-10)
+      expect(entity.gold).to be_zero
     end
   end
 
@@ -417,6 +528,20 @@ RSpec.describe Entity do
       expect(entity.hp).to eq 15
       expect(entity.inventory[0].first).to eq Food.new
       expect(entity.inventory[0].second).to eq 2
+    end
+  end
+
+  context "equality operator" do
+    it "returns true for the trivial case" do
+      entity1 = Entity.new
+      entity2 = Entity.new
+      expect(entity1).to eq entity2
+    end
+
+    it "returns false for Entities with different names" do
+      bob = Entity.new(name: "Bob")
+      marge = Entity.new(name: "Marge")
+      expect(bob).not_to eq marge
     end
   end
 

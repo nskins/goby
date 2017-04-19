@@ -19,13 +19,10 @@ class Entity
                  inventory: [], gold: 0, battle_commands: [], outfit: {})
     @name = name
     @max_hp = max_hp
+    @hp = hp.nil? ? max_hp : hp
 
-    if hp.nil?
-      @hp = @max_hp
-    else
-      @hp = hp
-    end
-    (@max_hp = @hp) if (@hp > @max_hp)
+    # Prevent HP > max HP.
+    @max_hp = @hp if @hp > @max_hp
 
     @attack = attack
     @defense = defense
@@ -155,7 +152,7 @@ class Entity
   # Prints the available battle commands.
   def print_battle_commands
     @battle_commands.each do |command|
-      print "❊ #{command.name} \n"
+      print "❊ #{command.name}\n"
     end
     print "\n"
   end
