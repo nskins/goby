@@ -1,4 +1,4 @@
-# Goby [![Build Status](https://travis-ci.org/nskins/goby.png)](https://travis-ci.org/nskins/goby)
+# Goby [![Build Status](https://travis-ci.org/nskins/goby.png)](https://travis-ci.org/nskins/goby) [![Coverage Status](https://coveralls.io/repos/github/nskins/goby/badge.svg?branch=coveralls)](https://coveralls.io/github/nskins/goby?branch=coveralls)
 
 Goby is a Ruby framework for the swift and easy development of [text](https://en.wikipedia.org/wiki/Text-based_game)-[RPGs](https://en.wikipedia.org/wiki/Role-playing_game). Have you ever wanted to write your own text-RPG? Due to recent technological advancements and quality of life improvements, it's now easier than 3.1415. Our primary goal in the development of the Goby framework is to provide a high degree of functionality (utilizing object-oriented design) so that end-users need focus only on content creation! WOOHOO!
 
