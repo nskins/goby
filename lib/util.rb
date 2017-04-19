@@ -20,20 +20,23 @@ class Couple
 end
 
 # Simple player input script.
-def player_input
+#
+# @param [Boolean] return_string mark true if input is either 'y' or 'n' and a response should be returned.
+# @param [String] prompt the prompt for the user to input information (defaults as '> ').
+def player_input(return_string: false, prompt: '> ')
 
   begin
     # When using Readline, rspec actually prompts the user for input, freezing the tests.
-    if(ENV['TEST'] == 'rspec') 
+    if(ENV['TEST'] == 'rspec')
       input = gets.chomp
     else
-      input = Readline.readline("> ", false)
+      input = Readline.readline(prompt, false)
       puts "\n"
     end
   rescue Interrupt => e
     puts "The game was interrupted."
   end
-  
+
   if ((input.size > 1) and (input != Readline::HISTORY.to_a[-1]))
     Readline::HISTORY.push(input)
   end
@@ -49,7 +52,7 @@ def type(message)
   if ENV['TEST']
     print message; return
   end
-  
+
   # Sleep between printing of each char.
   message.split("").each do |i|
     sleep(0.015)
@@ -58,7 +61,7 @@ def type(message)
 end
 
 # Serializes the player object into a YAML file and saves it
-# 
+#
 # @param [Player] player the player object to be saved
 def save_game(player)
   player_data = YAML::dump(player)
@@ -70,7 +73,7 @@ def save_game(player)
 end
 
 # Reads and check the save file and parses into the player object
-# 
+#
 #
 def load_game
   begin
