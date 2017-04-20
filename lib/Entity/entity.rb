@@ -128,9 +128,7 @@ class Entity
   # @return [Integer] the index of an existing command. Otherwise nil.
   def has_battle_command(cmd)
     @battle_commands.each_with_index do |command, index|
-      if (command.name.casecmp(cmd.to_s) == 0)
-        return index
-      end
+      return index if command.name.casecmp(cmd.to_s).zero?
     end
     return
   end
@@ -141,18 +139,15 @@ class Entity
   # @return [Integer] the index of an existing item. Otherwise nil.
   def has_item(item)
     inventory.each_with_index do |couple, index|
-      if (couple.first.name.casecmp(item.to_s) == 0)
-        return index
-      end
+      return index if couple.first.name.casecmp(item.to_s).zero?
     end
-
     return
   end
 
   # Prints the available battle commands.
   def print_battle_commands
     @battle_commands.each do |command|
-      print "❊ #{command.name}\n"
+      print "❊ #{command.name}\n" 
     end
     print "\n"
   end
@@ -161,20 +156,17 @@ class Entity
   def print_inventory
     print "Current gold in pouch: #{@gold}.\n\n"
 
-    if (@inventory.empty?)
-      puts "#{@name}'s inventory is empty!"
-    else
-      puts "#{@name}'s inventory:"
+    (print "#{@name}'s inventory is empty!\n\n"; return) if (@inventory.empty?)
 
-      @inventory.each do |couple|
-        puts "* #{couple.first.name} (#{couple.second})"
-      end
+    puts "#{@name}'s inventory:"
+    @inventory.each do |couple|
+      puts "* #{couple.first.name} (#{couple.second})"
     end
-
     print "\n"
   end
 
   # Prints the status in a nice format.
+  # TODO: encapsulate print_stats and print_equipment in own functions.
   def print_status
     puts "Stats:"
     puts "* HP: #{@hp}/#{@max_hp}"
@@ -185,44 +177,24 @@ class Entity
 
     puts "Equipment:"
     print "* Weapon: "
-    if @outfit[:weapon]
-      puts "#{@outfit[:weapon].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:weapon] ? "#{@outfit[:weapon].name}" : "none"
 
     print "* Shield: "
-    if @outfit[:shield]
-      puts "#{@outfit[:shield].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:shield] ? "#{@outfit[:shield].name}" : "none"
 
     print "* Helmet: "
-    if @outfit[:helmet]
-      puts "#{@outfit[:helmet].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:helmet] ? "#{@outfit[:helmet].name}" : "none"
 
     print "* Torso: "
-    if @outfit[:torso]
-      puts "#{@outfit[:torso].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:torso] ? "#{@outfit[:torso].name}" : "none"
 
     print "* Legs: "
-    if @outfit[:legs]
-      puts "#{@outfit[:legs].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:legs] ? "#{@outfit[:legs].name}" : "none"
 
     print "\n"
+
     unless @battle_commands.empty?
-      puts "Battle Commands:"
-      print_battle_commands
+      puts "Battle Commands:"; print_battle_commands
     end
   end
 
@@ -255,9 +227,7 @@ class Entity
         couple.second -= amount
 
         # Delete the item if the amount becomes non-positive.
-        if (couple.second <= 0)
-          @inventory.delete_at(index)
-        end
+        @inventory.delete_at(index) if couple.second <= 0
 
         return
       end
@@ -277,7 +247,7 @@ class Entity
   #
   # @param [Item, String] item the item (or its name) to unequip.
   def unequip_item(item)
-    pair = @outfit.detect { |type, value| value.name.casecmp(item.to_s) == 0 }
+    pair = @outfit.detect { |type, value| value.name.casecmp(item.to_s).zero? }
     if pair
       # On a successful find, the "detect" method always returns
       # an array of length 2; thus, the following line should not fail.
