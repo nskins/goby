@@ -83,8 +83,6 @@ class Player < Entity
       puts "Which item would you like to use?"
       input = player_input prompt: "(or type 'pass' to forfeit the turn): "
 
-      print "\n"
-
       return if (input.casecmp("pass").zero?)
 
       index = has_item(input)
@@ -102,8 +100,6 @@ class Player < Entity
     while !whom
       puts "On whom will you use the item (#{@name} or #{enemy.name})?"
       input = player_input prompt: "(or type 'pass' to forfeit the turn): "
-
-      print "\n"
 
       return if (input.casecmp("pass").zero?)
 
