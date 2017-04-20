@@ -1,7 +1,7 @@
 require_relative '../event.rb'
 
 class Shop < Event
-  
+
   # @param [String] name the name.
   # @param [Integer] mode convenient way for a shop to have multiple actions.
   # @param [Boolean] visible whether the shop can be seen/activated.
@@ -42,19 +42,16 @@ class Shop < Event
     # Initial greeting.
     puts "Welcome to #{@name}."
     puts "Current gold in your pouch: #{player.gold}."
-    print "Would you like to buy, sell, or exit?: "
 
-    input = gets.chomp
-    print "\n"
+    input = player_input prompt: "Would you like to buy, sell, or exit?: "
 
     while (input.casecmp("exit") != 0)
 
       if (input.casecmp("buy") == 0)
         print "Please take a look at my wares.\n\n"
         print_items
-        print "What would you like (or none)?: "
 
-        name = gets.chomp
+        name = player_input prompt: "What would you like (or none)?: ", doublespace: false
         index = has_item(name)
 
         # Case: The player does not want to buy an item.
@@ -63,8 +60,7 @@ class Shop < Event
         # Case: The specified item exists in the shop's inventory.
         elsif index
           item = @items[index]
-          print "How many do you want?: "
-          amount_to_buy = gets.chomp
+          amount_to_buy = player_input prompt: "How many do you want?: ", doublespace: false
           total_cost = amount_to_buy.to_i * item.price
 
           # Case: The player does not have enough gold.
@@ -100,8 +96,7 @@ class Shop < Event
           puts "Your inventory:"
           player.print_inventory
 
-          print "What would you like to sell? (or none): "
-          name = gets.chomp
+          name = player_input prompt: "What would you like to sell? (or none): ", doublespace: false
           index = player.has_item(name)
 
           # Case: The player does not want to sell an item.
@@ -116,8 +111,7 @@ class Shop < Event
           elsif (index && (item_count = player.inventory[index].second) > 0)
             item = player.inventory[index].first
             puts "\nI'll buy that for #{item.price / 2} gold."
-            print "How many do you want to sell?: "
-            amount_to_sell = gets.chomp
+            amount_to_sell = player_input prompt: "How many do you want to sell?: ", doublespace: false
 
             # Case: The player specifies more than the amount in its inventory.
             if (amount_to_sell.to_i > item_count)
@@ -152,9 +146,7 @@ class Shop < Event
 
       # Greeting for subsequent interactions (following the initial).
       puts "Current gold in your pouch: #{player.gold}."
-      print "Would you like to buy, sell, or exit?: "
-      input = gets.chomp
-      print "\n"
+      input = player_input prompt: "Would you like to buy, sell, or exit?: "
     end
     print "#{player.name} has left #{@name}.\n\n"
   end
