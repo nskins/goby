@@ -1,6 +1,6 @@
 RSpec.describe do
-  
-  context "add to history" do 
+
+  context "add to history" do
     context "distinct commands" do
       it "should correctly add all commands to the history" do
         Readline::HISTORY.pop until Readline::HISTORY.size <= 0
@@ -25,7 +25,7 @@ RSpec.describe do
     context "sequentially repeated commands" do
       it "should correctly add only the distinct commands to the history" do
         Readline::HISTORY.pop until Readline::HISTORY.size <= 0
-        
+
         __stdin("kick\n") do
             player_input
         end
@@ -74,4 +74,39 @@ RSpec.describe do
     end
   end
 
+  context "increasing player_input versatility" do
+    context "handling lowercase functionality" do
+      it "should maintain case of input if no arguments are given" do
+        inputs = ["KicK\n", "uSe\n", "INV\n"]
+        Readline::HISTORY.pop until Readline::HISTORY.size <= 0
+
+        inputs.each do |i|
+          __stdin(i) { player_input }
+        end
+
+        expect(Readline::HISTORY.size).to eq 3
+        i = 0
+        expect(Readline::HISTORY.all? do |input|
+          input == inputs[i]
+          i += 1
+        end).to eq true
+      end
+
+      it "returns lowercase input in lowercase is marked as true" do
+        inputs = ["KicK\n", "uSe\n", "INV\n"]
+        Readline::HISTORY.pop until Readline::HISTORY.size <= 0
+
+        inputs.each do |i|
+          __stdin(i) { player_input lowercase: true }
+        end
+
+        expect(Readline::HISTORY.size).to eq 3
+        i = 0
+        expect(Readline::HISTORY.all? do |input|
+          input == inputs[i].downcase
+          i += 1
+        end).to eq true
+      end
+    end
+  end
 end

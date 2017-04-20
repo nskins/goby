@@ -21,9 +21,9 @@ end
 
 # Simple player input script.
 #
-# @param [Boolean] return_string mark true if input is either 'y' or 'n' and a response should be returned.
+# @param [Boolean] return_string mark true if response should be returned lowercase.
 # @param [String] prompt the prompt for the user to input information (defaults as '> ').
-def player_input(return_string: false, prompt: '> ')
+def player_input(lowercase: false, prompt: '> ')
 
   begin
     # When using Readline, rspec actually prompts the user for input, freezing the tests.
@@ -41,7 +41,7 @@ def player_input(return_string: false, prompt: '> ')
     Readline::HISTORY.push(input)
   end
 
-  return input
+  return lowercase ? input.downcase : input
 end
 
 # Prints text as if it were being typed.
