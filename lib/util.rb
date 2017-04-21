@@ -28,14 +28,9 @@ def player_input(lowercase: true, prompt: '', doublespace: true)
 
   begin
     # When using Readline, rspec actually prompts the user for input, freezing the tests.
-    if(ENV['TEST'] == 'rspec')
-      print prompt
-      input = gets.chomp
-      puts "\n" if doublespace
-    else
-      input = Readline.readline(prompt, false)
-      puts "\n" if doublespace
-    end
+    print prompt
+    input = (ENV['TEST'] == 'rspec') ? gets.chomp : Readline.readline('', false)
+    puts "\n" if doublespace
   rescue Interrupt => e
     puts "The game was interrupted."
   end
