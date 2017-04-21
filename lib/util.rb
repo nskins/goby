@@ -21,15 +21,17 @@ end
 
 # Simple player input script.
 #
-# @param [Boolean] return_string mark true if response should be returned lowercase.
-# @param [String] prompt the prompt for the user to input information (defaults as '> ').
+# @param [Boolean] lowercase mark true if response should be returned lowercase.
+# @param [String] prompt the prompt for the user to input information.
 # @param [Boolean] doublespace mark false if extra space should not be printed after input.
-def player_input(lowercase: false, prompt: '> ', doublespace: true)
+def player_input(lowercase: true, prompt: '', doublespace: true)
 
   begin
     # When using Readline, rspec actually prompts the user for input, freezing the tests.
     if(ENV['TEST'] == 'rspec')
+      print prompt
       input = gets.chomp
+      puts "\n" if doublespace
     else
       input = Readline.readline(prompt, false)
       puts "\n" if doublespace
