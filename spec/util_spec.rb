@@ -76,12 +76,12 @@ RSpec.describe do
 
   context "increasing player_input versatility" do
     context "handling lowercase functionality" do
-      it "should maintain case of input if no arguments are given" do
+      it "should maintain case of input if lowercase is marked as false" do
         inputs = ["KicK\n", "uSe\n", "INV\n"]
         Readline::HISTORY.pop until Readline::HISTORY.size <= 0
 
         inputs.each do |i|
-          __stdin(i) { player_input }
+          __stdin(i) { player_input lowercase: false }
         end
 
         expect(Readline::HISTORY.size).to eq 3
@@ -92,12 +92,12 @@ RSpec.describe do
         end).to eq true
       end
 
-      it "returns lowercase input in lowercase is marked as true" do
+      it "returns lowercase input as default" do
         inputs = ["KicK\n", "uSe\n", "INV\n"]
         Readline::HISTORY.pop until Readline::HISTORY.size <= 0
 
         inputs.each do |i|
-          __stdin(i) { player_input lowercase: true }
+          __stdin(i) { player_input }
         end
 
         expect(Readline::HISTORY.size).to eq 3
@@ -106,6 +106,24 @@ RSpec.describe do
           input == inputs[i].downcase
           i += 1
         end).to eq true
+      end
+    end
+
+    context "output is determined by given params" do
+      it "prints an empty string and extra space by default" do
+        expect{ __stdin('test') {player_input} }.to output("\n").to_stdout
+      end
+
+      it "prints the correct prompt when given an argument" do
+        expect{ __stdin('test') {player_input prompt: '> '} }.to output("> \n").to_stdout
+      end
+
+      it "does not print the newline if doublespace is marked as false" do
+        expect{ __stdin('test') {player_input doublespace: false} }.to output('').to_stdout
+      end
+
+      it "prints custom prompt and doesn't print the newline if doublespace is marked as false" do
+        expect{ __stdin('test') {player_input doublespace: false, prompt: 'testing: '} }.to output("testing: ").to_stdout
       end
     end
   end
