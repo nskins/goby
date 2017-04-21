@@ -11,21 +11,20 @@ class Dojo < Event
     super(command: "enter")
     @name = "Sensei"
   end
-  
+
   def run(player)
     print "#{player.name} enters the Dojo...\n\n"
     type("#{@name}: Ah, #{player.name}, so good to see you.\n")
     type("Would you like to train today (y/n)?: ")
-    input = gets.chomp
-    print "\n"
-    
+    input = player_input
+
     if (input == 'y')
       type("#{@name}: Very well...")
       sleep(1)
       player.battle(Sensei.new)
     end
   end
-  
+
   attr_accessor :name
 end
 
@@ -41,10 +40,10 @@ class IchiroHouse < House
   def initialize
     super(name: "Ichirō")
   end
-  
+
   def run(player)
     super(player)
-    
+
     type("#{@name}: Fishing provides quantity,\n")
     type("while recipes provide quality.\n")
     type("You ought remember that!\n\n")
@@ -55,10 +54,10 @@ class MayorHouse < House
   def initialize
     super(name: "Mayor")
   end
-  
+
   def run(player)
     super(player)
-    
+
     type("#{@name}: What? Who are you?\n")
     type("SCRAM PUNK!\n\n")
     print "*SLAM!*\n\n"
@@ -69,10 +68,10 @@ class SeliaHouse < House
   def initialize
     super(name: "Selia")
   end
-  
+
   def run(player)
     super(player)
-    
+
     if player.has_item(RecipeBook.new)
       type("#{@name}: How's that Recipe Book treating you?\n")
       type("Learn more recipes and become the greatest chef\n")
@@ -80,9 +79,8 @@ class SeliaHouse < House
     else
       type("#{@name}: Are you ready to take your cooking\n")
       type("skills to the next level (y/n)?: ")
-      input = gets.chomp
-      print "\n"
-      
+      input = player_input
+
       if (input == 'y')
         type("#{@name}: Today, we will learn about recipes!\n")
         type("Each recipe requires specific ingredients.\n")
@@ -91,9 +89,9 @@ class SeliaHouse < House
         type("will have the tasty dish appear before your very eyes!\n\n")
         sleep(2)
         type("#{@name}: Here. Use this...\n\n")
-        
+
         puts "Obtained Recipe Book!\n\n"
-        
+
         book = RecipeBook.new
         s_eggs = Recipe.new(name: "Scrambled Eggs",
                             ingredients: [Couple.new(Egg.new, 2),
@@ -103,29 +101,29 @@ class SeliaHouse < House
         book.add_recipe(s_eggs)
         player.add_item(book)
         sleep(2)
-        
+
         type("#{@name}: I've already included a recipe. Try it out!\n\n")
       else
         print "*SLAM!*\n\n"
       end
     end
   end
-  
+
 end
 
 class TimHouse < House
   def initialize
     super(name: "Tim's wife")
   end
-  
+
   def run(player)
     super(player)
-    
+
     if player.has_item(Bucket.new)
       type("#{@name}: AHA!!! So yer the one who took mah\n")
       type("watering contraption!? I've every right to report\n")
       type("ye to the authorities! Gimme that!\n\n")
-      
+
       type("The Bucket is snatched away!\n\n")
       player.remove_item(Bucket.new)
     else
@@ -140,13 +138,11 @@ class Well < Event
   def initialize
     super(command: "fill")
   end
-  
+
   def run(player)
     if player.has_item(Bucket.new)
-      print "Will you fill the Bucket (y/n)?: "
-      input = gets.chomp
-      print "\n"
-      
+      input = player_input prompt: "Will you fill the Bucket (y/n)?: "
+
       if (input == 'y')
         puts "You attach the Bucket to the rope and feed it"
         puts "into the well. You pull the Bucket back up and"

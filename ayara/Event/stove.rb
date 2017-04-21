@@ -6,19 +6,17 @@ class Stove < Event
   def initialize
     super(command: "cook")
   end
-  
+
   def run(player)
     puts "You can cook either a single item or a recipe."
-    print "What would you like to cook?: "
-    
-    input = gets.chomp
+
+    input = player_input prompt: "What would you like to cook?: "
     item_index = player.has_item(input)
     book_index = player.has_item(RecipeBook.new)
     recipe_index = player.inventory[book_index].first.has_recipe(input) if book_index
-    print "\n"
-    
+
     recipe = nil
-    
+
     # Error handling for bad input.
     if !recipe_index
       if !item_index
@@ -28,25 +26,24 @@ class Stove < Event
         print "You can't cook #{player.inventory[item_index].first.name}!\n\n"
         return
       end
-      
+
       # Construct a recipe.
       recipe = Recipe.new(ingredients: [Couple.new(player.inventory[item_index].first, 1)],
                           product: player.inventory[item_index].first.cooked)
     end
-    
+
     # Use the recipe found in the Recipe Book.
     recipe = player.inventory[book_index].first.recipes[recipe_index] if recipe_index
-    
-    print "How many?: "
-    input = gets.chomp
+
+    input = player_input prompt: "How many?: ", doublespace: false
     amount = input.to_i
-    
+
     # Error handling for non-positive amount.
     if (amount <= 0)
       print "\nYou must choose a positive amount!\n\n"
       return
     end
-      
+
     if (!has_enough_ingredients?(player, recipe, amount))
       print "\nYou don't have enough ingredients!\n\n"
     else
@@ -61,16 +58,16 @@ class Stove < Event
       puts "\nResults:"
       puts "* #{recipe.product.name} (#{success})"
       print "* Burnt Flub (#{failure})\n\n"
-      
+
       # Add and remove items as appropriate.
       player.add_item(recipe.product, success) if (success > 0)
       player.add_item(BurntFlub.new, failure) if (failure > 0)
       remove_ingredients(player, recipe, amount)
     end
   end
-  
+
   private
-  
+
     # Returns true iff the player has enough ingredients.
     def has_enough_ingredients?(player, recipe, amount)
       recipe.ingredients.each do |ing|
@@ -80,8 +77,8 @@ class Stove < Event
       end
       return true
     end
-    
-    # Removes each ingredient by the appropriate 
+
+    # Removes each ingredient by the appropriate
     # amount called for in the recipe.
     def remove_ingredients(player, recipe, amount)
       recipe.ingredients.each do |ing|
