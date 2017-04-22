@@ -222,18 +222,15 @@ class Player < Entity
   # Additionally, provides current location and the map's name.
   def print_map
 
-    # Provide some spacing to center the name.
-    (0..(@map.name.length/4)).each do
-      print " "
-    end
+    # Provide some spacing from the edge of the terminal.
+    3.times { print " " };
 
     print @map.name + "\n\n"
 
     @map.tiles.each_with_index do |row, r|
       # Provide spacing for the beginning of each row.
-      (0..(@map.name.length/2)).each do
-        print " "
-      end
+      2.times { print " " }
+
       row.each_with_index do |tile, t|
         print_tile(Couple.new(r, t))
       end
@@ -243,12 +240,10 @@ class Player < Entity
     print "\n"
 
     # Provide some spacing to center the legend.
-    (0..(@map.name.length/4)).each do
-      print " "
-    end
+    3.times { print " " }
 
     # Prints the legend.
-    puts "¶ - #{@name}'s \n       location\n\n"
+    print "¶ - #{@name}'s\n       location\n\n"
   end
 
   # prints a minimap of nearby tiles
@@ -259,9 +254,7 @@ class Player < Entity
       # skip to next line if out of bounds from above map
       next if y < 0
       # centers minimap
-      10.times do
-        print " "
-      end
+      10.times { print " " }
       for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
         # Prevents operations on nonexistent tiles.
         print_tile(Couple.new(y, x)) if (@map.in_bounds(y,x))
@@ -343,11 +336,12 @@ class Player < Entity
       treasure = rewards.second
 
       # Output some helpful text and give the rewards to the player.
+      # TODO: print_rewards?
       if ((gold > 0) || treasure)
         type("Rewards:\n")
         if (gold > 0)
           type("* #{gold} gold\n")
-          @gold += gold
+          @gold += gold # TODO: fix: use #add_gold.
         end
         if (treasure)
           type("* #{treasure.name}\n")

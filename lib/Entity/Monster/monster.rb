@@ -69,9 +69,12 @@ class Monster < Entity
     #
     # @return [Item] the reward for the victor of the battle (or nil - no treasure).
     def sample_treasures
+      # Return nil for no treasures.
+      return if @total_treasures.zero?
+
       # Choose uniformly from the total given above.
       index = Random.rand(@total_treasures)
-      
+
       # Choose the treasure based on the distribution.
       total = 0
       @treasures.each do |pair|
