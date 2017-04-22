@@ -147,6 +147,40 @@ RSpec.describe Entity do
     end
   end
 
+  context "add rewards" do
+    before(:each) do
+      @entity = Entity.new
+    end
+
+    it "should give the player the appropriate amount of gold" do
+      @entity.add_rewards(5, nil)
+      expect(@entity.gold).to eq 5
+      expect(@entity.inventory.size).to be_zero
+    end
+
+    it "should give the player the appropriate treasure item" do
+      @entity.add_rewards(0, Item.new)
+      expect(@entity.gold).to be_zero
+      expect(@entity.inventory).to eq [Couple.new(Item.new, 1)]
+    end
+
+    it "should give the player both the gold and the treasure item" do
+      @entity.add_rewards(5, Item.new)
+      expect(@entity.gold).to eq 5
+      expect(@entity.inventory).to eq [Couple.new(Item.new, 1)]
+    end
+
+    it "should not output anything for no rewards" do
+      expect { @entity.add_rewards(0, nil) }.not_to output.to_stdout
+    end
+
+    it "should output both of the rewards" do
+      expect { @entity.add_rewards(5, Item.new) }.to output(
+        "Rewards:\n* 5 gold\n* Item\n\n"
+      ).to_stdout
+    end
+  end
+
   context "choose attack" do
     it "randomly selects one of the available commands" do
       kick = BattleCommand.new(name: "Kick")
@@ -169,6 +203,22 @@ RSpec.describe Entity do
       pair = entity.choose_item_and_on_whom(enemy)
       expect(pair.first.name).to eq("Banana").or(eq("Axe"))
       expect(pair.second.name).to eq("Entity").or(eq("Enemy"))
+    end
+  end
+
+  context "clear inventory" do
+    it "has no effect on an empty inventory" do
+      entity = Entity.new
+      entity.clear_inventory
+      expect(entity.inventory.size).to be_zero
+    end
+
+    it "removes all items from a non-empty inventory" do
+      entity = Entity.new(inventory: [Couple.new(Item.new, 4),
+                                      Couple.new(Item.new(name: "Apple"), 3),
+                                      Couple.new(Item.new(name: "Orange"), 7)])
+      entity.clear_inventory
+      expect(entity.inventory.size).to be_zero
     end
   end
 

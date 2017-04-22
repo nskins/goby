@@ -80,6 +80,25 @@ class Entity
     @inventory.push(Couple.new(item, amount))
   end
 
+  # Adds the specified gold and treasure item to the inventory.
+  #
+  # @param [Integer] gold the amount of gold.
+  # @param [Item] treasure the treasure item.
+  def add_rewards(gold, treasure)
+    if ((gold > 0) || treasure)
+      type("Rewards:\n")
+      if (gold > 0)
+        type("* #{gold} gold\n")
+        add_gold(gold)
+      end
+      if (treasure)
+        type("* #{treasure.name}\n")
+        add_item(treasure)
+      end
+    print "\n"
+    end
+  end
+
   # Determines how the entity should select an attack in battle.
   # Override this method for control over this functionality.
   #
@@ -97,6 +116,13 @@ class Entity
     item = @inventory[Random.rand(@inventory.length)].first
     whom = [self, enemy].sample
     return Couple.new(item, whom)
+  end
+
+  # Removes all items from the entity's inventory.
+  def clear_inventory
+    while @inventory.size.nonzero?
+      @inventory.pop
+    end
   end
 
   # Equips the specified item to the entity's outfit.
@@ -194,7 +220,8 @@ class Entity
     print "\n"
 
     unless @battle_commands.empty?
-      puts "Battle Commands:"; print_battle_commands
+      puts "Battle Commands:"
+      print_battle_commands
     end
   end
 
@@ -285,7 +312,7 @@ class Entity
   attr_accessor :defense
   attr_accessor :agility
 
-  attr_reader :inventory
+  attr_accessor :inventory
   attr_reader :gold
 
   attr_reader :outfit

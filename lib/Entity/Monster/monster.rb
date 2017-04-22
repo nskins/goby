@@ -1,7 +1,7 @@
 require_relative "../entity.rb"
 
 class Monster < Entity
-  
+
   # @param [String] name the name.
   # @param [Integer] max_hp the greatest amount of health.
   # @param [Integer] hp the current amount of health.
@@ -21,27 +21,27 @@ class Monster < Entity
           inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
     @message = message
     @treasures = treasures
-    
+
     # Find the total number of treasures in the distribution.
     @total_treasures = 0
     @treasures.each do |pair|
       @total_treasures += pair.second
     end
   end
-  
+
   # Choose rewards based on the 'gold' and 'treasures' member variables.
   #
   # @return [Couple(Integer, Item)] the gold (first) and the treasure (second).
   def sample_rewards
     # Sample a random amount of gold.
     gold = Random.rand(0..@gold)
-    
+
     # Determine which treasure to reward the victor.
     treasure = sample_treasures
-    
+
     return Couple.new(gold, treasure)
   end
-  
+
   # Provides a deep copy of the monster. This is necessary since
   # the monster can use up its items in battle.
   #
@@ -49,22 +49,22 @@ class Monster < Entity
   def clone
     # Create a shallow copy for most of the variables.
     monster = super
-    
+
     # Reset the copy's inventory.
     monster.inventory = []
-    
+
     # Create a deep copy of the inventory.
     @inventory.each do |pair|
       monster.inventory << Couple.new(pair.first.clone, pair.second)
     end
-    
+
     return monster
   end
-  
+
   attr_accessor :message, :treasures, :total_treasures
-  
+
   private
-  
+
     # Chooses a treasure based on the sample distribution.
     #
     # @return [Item] the reward for the victor of the battle (or nil - no treasure).
@@ -79,10 +79,8 @@ class Monster < Entity
       total = 0
       @treasures.each do |pair|
         total += pair.second
-        if index < total
-          return pair.first
-        end
+        return pair.first if index < total
       end
     end
-    
+
 end

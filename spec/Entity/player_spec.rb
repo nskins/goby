@@ -14,9 +14,11 @@ RSpec.describe Player do
   end
 
   before(:each) do
-    @dude = Player.new(attack: 10, battle_commands: [Attack.new(strength: 20)], 
+    @dude = Player.new(attack: 10, agility: 10000,
+                       battle_commands: [Attack.new(strength: 20), Escape.new, Use.new], 
                        map: @map, location: @center)
-    @slime = Monster.new(battle_commands: [Attack.new(success_rate: 0)] )
+    @slime = Monster.new(battle_commands: [Attack.new(success_rate: 0)],
+                         gold: 5000, treasures: [Couple.new(Item.new, 1)])
     @newb = Player.new(battle_commands: [Attack.new(success_rate: 0)],
                        gold: 50, map: @map, location: @center)
     @dragon = Monster.new(attack: 50, battle_commands: [Attack.new(strength: 50)] )
@@ -322,7 +324,15 @@ RSpec.describe Player do
   # TODO: may need to expose more line coverage in these tests.
   context "battle" do
     it "should allow the player to win in this example" do
-      __stdin("attack\n") do
+      __stdin("use\nattack\n") do
+        @dude.battle(@slime)
+      end
+      expect(@dude.inventory.size).to eq 1
+    end
+
+    it "should allow the player to escape in this example" do
+      # Could theoretically fail, but with very low probability.
+      __stdin("escape\nescape\nescape\n") do
         @dude.battle(@slime)
       end
     end
@@ -337,5 +347,4 @@ RSpec.describe Player do
       expect(@newb.location).to eq Couple.new(1,1)
     end
   end
-
 end

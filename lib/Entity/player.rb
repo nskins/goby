@@ -327,28 +327,14 @@ class Player < Entity
     die if hp <= 0
 
     if monster.hp <= 0
-      type("You defeated the #{monster.name}!\n")
+      type("You defeated the #{monster.name}!\n\n")
 
       # Determine the rewards for defeating the monster.
       rewards = monster.sample_rewards
-
       gold = rewards.first
       treasure = rewards.second
 
-      # Output some helpful text and give the rewards to the player.
-      # TODO: print_rewards?
-      if ((gold > 0) || treasure)
-        type("Rewards:\n")
-        if (gold > 0)
-          type("* #{gold} gold\n")
-          @gold += gold # TODO: fix: use #add_gold.
-        end
-        if (treasure)
-          type("* #{treasure.name}\n")
-          add_item(treasure)
-        end
-      end
-      print "\n"
+      add_rewards(gold, treasure)
     end
 
   end
