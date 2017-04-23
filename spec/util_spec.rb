@@ -96,5 +96,10 @@ RSpec.describe do
       expect(player2.hp).to eq 3
       File.delete("test.yaml")
     end
+
+    it "should return nil if no such file exists" do
+      player = load_game("test.yaml")
+      expect(player).to be_nil
+    end
   end
 end

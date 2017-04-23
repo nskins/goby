@@ -170,14 +170,11 @@ class Player < Entity
     update_map
 
     if !(tile.monsters.empty?)
-      # 50% chance of monster appearing
-      monster_outcome = Random.rand(0..99)
-
-      if (monster_outcome < 50)
+      # 50% chance to encounter monster.
+      if [true, false].sample
         clone = tile.monsters[Random.rand(0..(tile.monsters.size-1))].clone
         battle(clone)
       end
-
     end
 
     describe_tile(self)

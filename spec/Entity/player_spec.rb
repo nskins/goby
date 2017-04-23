@@ -8,6 +8,8 @@ RSpec.describe Player do
                             [ Tile.new, Tile.new, Tile.new ],
                             [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ] ],
                    regen_location: Couple.new(1,1))
+    @monster_map = Map.new(tiles: [ [ Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)]) ]) ] ],
+                           regen_location: Couple.new(0,0))
     @center = @map.regen_location
     @passable = Tile::DEFAULT_PASSABLE
     @impassable = Tile::DEFAULT_IMPASSABLE
@@ -198,6 +200,15 @@ RSpec.describe Player do
       @dude.move_to(Couple.new(3,3))
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq @center
+    end
+
+    it "should (eventually) encounter a monster and do battle" do
+      # High probability for encountering a monster at least once.
+      20.times do
+        __stdin("attack\n") do
+          @dude.move_to(Couple.new(0,0), @monster_map)
+        end
+      end
     end
   end
 

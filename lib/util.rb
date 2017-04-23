@@ -23,14 +23,10 @@ end
 # commands longer than one character.
 def player_input
 
-  begin
-    # When using Readline, rspec actually prompts the user for input, freezing the tests.
-    input = (ENV['TEST'] == 'rspec') ? gets.chomp : Readline.readline("> ", false)
-    print "\n"
-  rescue Interrupt => e
-    puts "The game was interrupted."
-  end
-  
+  # When using Readline, rspec actually prompts the user for input, freezing the tests.
+  input = (ENV['TEST'] == 'rspec') ? gets.chomp : Readline.readline("> ", false)
+  print "\n"
+
   if (input.size > 1 and input != Readline::HISTORY.to_a[-1])
     Readline::HISTORY.push(input)
   end
@@ -42,12 +38,13 @@ end
 #
 # @param [String] message the message to type out.
 def type(message)
-  # Processing not required for testing.
-  (print message; return) if ENV['TEST']
+
+  # Amount of time to sleep between printing character.
+  time = ENV['TEST'] ? 0 : 0.015
 
   # Sleep between printing of each char.
   message.split("").each do |i|
-    sleep(0.015)
+    sleep(time) if time.nonzero?
     print i
   end
 end
