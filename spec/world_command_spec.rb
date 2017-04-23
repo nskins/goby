@@ -19,7 +19,9 @@ RSpec.describe do
     @player = Player.new(max_hp: 10,
                          hp: 3,
                          inventory: [ Couple.new(Food.new(name: "Banana", recovers: 5), 1),
-                                      Couple.new(Food.new(name: "Onion", disposable: false), 1) ],
+                                      Couple.new(Food.new(name: "Onion", disposable: false), 1),
+                                      Couple.new(Item.new(name: "Big Book of Stuff"), 1),
+                                      Couple.new(Helmet.new, 1) ],
                          map: @map,
                          location: Couple.new(0, 0))
   end
@@ -83,7 +85,7 @@ RSpec.describe do
   # TODO: test the input of all possible commands.
   # TODO: test use/drop/equip/unequip multi-word items.
   context "interpret command" do
-    
+
     context "lowercase" do
       it "should correctly move the player around" do
         interpret_command("s", @player)
@@ -101,6 +103,63 @@ RSpec.describe do
           WorldCommand::DEFAULT_COMMANDS).to_stdout
       end
 
+      it "should print the map" do
+        interpret_command("map", @player)
+        # TODO: expect the map output.
+      end
+
+      it "should print the inventory" do
+        interpret_command("inv", @player)
+        # TODO: expect the inventory output.
+      end
+
+      it "should print the status" do
+        interpret_command("status", @player)
+        # TODO: expect the status output.
+      end
+
+      it "should save the game" do
+        # Rename the original file.
+        random_string = "n483oR38Avdis3"
+        File.rename("player.yaml", random_string) if File.exists?("player.yaml")
+
+        interpret_command("save", @player)
+        expect(File.exists?("player.yaml")).to be true
+        File.delete("player.yaml")
+
+        # Return the original data to the file.
+        File.rename(random_string, "player.yaml") if File.exists?(random_string)
+      end
+
+      it "should drop a disposable item" do
+        interpret_command("drop banana", @player)
+        expect(@player.has_item("Banana")).to be_nil
+      end
+
+      it "should drop the item composed of multiple words" do
+        interpret_command("drop big book of stuff", @player)
+        expect(@player.has_item("Big Book of Stuff")).to be_nil
+      end
+
+      it "should not drop a non-disposable item" do
+        interpret_command("drop onion", @player)
+        expect(@player.has_item("Onion")).to eq 1
+      end
+
+      it "should print error text for dropping nonexistent item" do
+        expect { interpret_command("drop orange", @player) }.to output(
+          WorldCommand::NO_ITEM_DROP_ERROR).to_stdout
+      end
+
+      it "should equip and unequip the specified item" do
+        interpret_command("equip helmet", @player)
+        expect(@player.has_item("Helmet")).to be_nil
+        expect(@player.outfit[:helmet]).to eq Helmet.new
+        interpret_command("unequip helmet", @player)
+        expect(@player.has_item("Helmet")).not_to be_nil
+        expect(@player.outfit[:helmet]).to be_nil
+      end
+
       it "should use the specified item" do
         interpret_command("use banana", @player)
         expect(@player.has_item("Banana")).to be_nil
@@ -112,17 +171,14 @@ RSpec.describe do
           Entity::NO_SUCH_ITEM_ERROR).to_stdout
       end
 
-      it "should drop a disposable item" do
-        interpret_command("drop banana", @player)
-        expect(@player.has_item("Banana")).to be_nil
+      it "should run the event on the tile" do
+        @player.move_right
+        expect { interpret_command("talk\n", @player) }.to output(
+          "NPC: Hello!\n\n").to_stdout
       end
 
-      it "should not drop a non-disposable item" do
-        interpret_command("drop onion", @player)
-        expect(@player.has_item("Onion")).to eq 1
-      end
     end
-    
+
     context "case-insensitive" do
       it "should correctly move the player around" do
         interpret_command("S", @player)
@@ -135,7 +191,7 @@ RSpec.describe do
         expect(@player.location).to eq Couple.new(0, 0)
       end
     end
-    
+
   end
 
 end

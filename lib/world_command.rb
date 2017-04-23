@@ -25,6 +25,8 @@ a (←) s (↓) d (→)       Movement
   # String literal for the special commands header.
   SPECIAL_COMMANDS_HEADER = "* Special commands: "
 
+  NO_ITEM_DROP_ERROR = "You can't drop what you don't have!\n\n"
+
   # Prints the commands that are available everywhere.
   def display_default_commands
     print DEFAULT_COMMANDS
@@ -94,7 +96,7 @@ a (←) s (↓) d (→)       Movement
           player.remove_item(item, 1)
           print "You have dropped #{item}.\n\n"
         else
-          print "You can't drop what you don't have!\n\n"
+          print NO_ITEM_DROP_ERROR
         end
         return
       elsif words[0].casecmp("equip").zero?
