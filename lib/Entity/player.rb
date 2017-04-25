@@ -3,11 +3,16 @@ require_relative '../world_command.rb'
 require_relative '../Map/Map/map.rb'
 require_relative '../Map/Tile/tile.rb'
 
+# Extends upon Entity by providing a location in the
+# form of a Map and a pair of y-x coordinates. Overrides
+# some methods to accept input during battle.
 class Player < Entity
 
   include WorldCommand
 
+  # Default map when no "good" map & location specified.
   DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
+  # Default location when no "good" map & location specified.
   DEFAULT_LOCATION = Couple.new(0,0)
 
   # distance in each direction that tiles are acted upon
@@ -43,6 +48,69 @@ class Player < Entity
       if (map.in_bounds(y,x) && map.tiles[y][x].passable)
         move_to(location, map)
       end
+    end
+
+  end
+
+  # Engages in battle with the specified monster.
+  #
+  # @param [Monster] monster the opponent of the battle.
+  def battle(monster)
+    system("clear") unless ENV['TEST']
+    puts "#{monster.message}\n"
+    type("You've run into a vicious #{monster.name}!\n\n")
+
+    while hp > 0
+      # Both choose an attack.
+      player_attack = choose_attack
+
+      # Prevents the user from using "bad" commands.
+      # Example: "Use" with an empty inventory.
+      while (player_attack.fails?(self))
+        player_attack = choose_attack
+      end
+
+      monster_attack = monster.choose_attack
+
+      attackers = Array.new
+      attacks = Array.new
+
+      if sample_agilities(monster)
+        attackers << self << monster
+        attacks << player_attack << monster_attack
+      else
+        attackers << monster << self
+        attacks << monster_attack << player_attack
+      end
+
+      2.times do |i|
+        # The attacker runs its attack on the other attacker.
+        attacks[i].run(attackers[i], attackers[(i + 1) % 2])
+
+        if (attackers[i].escaped)
+          attackers[i].escaped = false
+          return
+        end
+
+        break if monster.hp <= 0 || hp <= 0
+
+      end
+
+      break if monster.hp <= 0 || hp <= 0
+
+    end
+
+    die if hp <= 0
+
+    if monster.hp <= 0
+      type("You defeated the #{monster.name}!\n\n")
+
+      # Determine the rewards for defeating the monster.
+      rewards = monster.sample_rewards
+      gold = rewards.first
+      treasure = rewards.second
+
+      add_rewards(gold, treasure)
     end
 
   end
@@ -123,7 +191,8 @@ class Player < Entity
     return Couple.new(item, whom)
   end
 
-  # Sends the player back to a safe location, halves its gold, and restores HP.
+  # Sends the player back to a safe location, 
+  # halves its gold, and restores HP.
   def die
     sleep(2) unless ENV['TEST']
 
@@ -145,9 +214,27 @@ class Player < Entity
     @hp = @max_hp
   end
 
+  # Moves the player down. Increases 'y' coordinate by 1.
+  def move_down
+    down_tile = Couple.new(@location.first + 1, @location.second)
+    move_to(down_tile)
+  end
+
+  # Moves the player left. Decreases 'x' coordinate by 1.
+  def move_left
+    left_tile = Couple.new(@location.first, @location.second - 1)
+    move_to(left_tile)
+  end
+
+  # Moves the player right. Increases 'x' coordinate by 1.
+  def move_right
+    right_tile = Couple.new(@location.first, @location.second + 1)
+    move_to(right_tile)
+  end
+
   # Safe setter function for location and map.
   #
-  # @param [Couple(Integer,Integer)] coordinates the new location.
+  # @param [Couple(Integer, Integer)] coordinates the new location.
   # @param [Map] map the (possibly) new map.
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
@@ -186,35 +273,6 @@ class Player < Entity
     move_to(up_tile)
   end
 
-  # Moves the player right. Increases 'x' coordinate by 1.
-  def move_right
-    right_tile = Couple.new(@location.first, @location.second + 1)
-    move_to(right_tile)
-  end
-
-  # Moves the player down. Increases 'y' coordinate by 1.
-  def move_down
-    down_tile = Couple.new(@location.first + 1, @location.second)
-    move_to(down_tile)
-  end
-
-  # Moves the player left. Decreases 'x' coordinate by 1.
-  def move_left
-    left_tile = Couple.new(@location.first, @location.second - 1)
-    move_to(left_tile)
-  end
-
-  # Updates the 'seen' attributes of the tiles on the player's current map.
-  # 
-  # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map 
-  def update_map(coordinates = @location)
-    for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
-      for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)
-        @map.tiles[y][x].seen = true if (@map.in_bounds(y,x))
-      end
-    end
-  end
-
   # Prints the map in regards to what the player has seen.
   # Additionally, provides current location and the map's name.
   def print_map
@@ -243,8 +301,7 @@ class Player < Entity
     print "¶ - #{@name}'s\n       location\n\n"
   end
 
-  # prints a minimap of nearby tiles
-  # "nearby" is defined by VIEW_DISTANCE
+  # Prints a minimap of nearby tiles (using VIEW_DISTANCE).
   def print_minimap
     print "\n"
     for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
@@ -262,9 +319,9 @@ class Player < Entity
     print "\n"
   end
 
-  # prints the tile based on the player's location
+  # Prints the tile based on the player's location.
   #
-  # @param [Couple] coords the y-x coordinates of the tile.
+  # @param [Couple(Integer, Integer)] coords the y-x coordinates of the tile.
   def print_tile(coords)
     if ((@location.first == coords.first) && (@location.second == coords.second))
       print "¶ "
@@ -273,75 +330,26 @@ class Player < Entity
     end
   end
 
-  # Engages in battle with the specified monster.
+  # Uses the agility levels of the player and monster to determine who should go first.
   #
-  # @param [Monster] monster the opponent of the battle.
-  def battle(monster)
-    system("clear") unless ENV['TEST']
-    puts "#{monster.message}\n"
-    type("You've run into a vicious #{monster.name}!\n\n")
+  # @param [Monster] monster the opponent with whom the player is competing.
+  # @return [Boolean] true when player should go first. Otherwise, false.
+  def sample_agilities(monster)
+    sum = monster.agility + agility
+    Random.rand(sum) < agility
+  end
 
-    while hp > 0
-      # Both choose an attack.
-      player_attack = choose_attack
-
-      # Prevents the user from using "bad" commands.
-      # Example: "Use" with an empty inventory.
-      while (player_attack.fails?(self))
-        player_attack = choose_attack
+  # Updates the 'seen' attributes of the tiles on the player's current map.
+  # 
+  # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map 
+  def update_map(coordinates = @location)
+    for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
+      for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)
+        @map.tiles[y][x].seen = true if (@map.in_bounds(y,x))
       end
-
-      monster_attack = monster.choose_attack
-
-      attackers = Array.new
-      attacks = Array.new
-
-      if sample_agilities(monster)
-        attackers << self << monster
-        attacks << player_attack << monster_attack
-      else
-        attackers << monster << self
-        attacks << monster_attack << player_attack
-      end
-
-      2.times do |i|
-        # The attacker runs its attack on the other attacker.
-        attacks[i].run(attackers[i], attackers[(i + 1) % 2])
-
-        if (attackers[i].escaped)
-          attackers[i].escaped = false
-          return
-        end
-
-        break if monster.hp <= 0 || hp <= 0
-
-      end
-
-      break if monster.hp <= 0 || hp <= 0
-
     end
-
-    die if hp <= 0
-
-    if monster.hp <= 0
-      type("You defeated the #{monster.name}!\n\n")
-
-      # Determine the rewards for defeating the monster.
-      rewards = monster.sample_rewards
-      gold = rewards.first
-      treasure = rewards.second
-
-      add_rewards(gold, treasure)
-    end
-
   end
 
   attr_reader :map, :location
-
-  def sample_agilities(monster)
-    sum = monster.agility + agility
-    random_number = Random.rand(0..sum - 1)
-    random_number < agility
-  end
 
 end

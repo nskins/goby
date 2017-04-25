@@ -1,4 +1,3 @@
-# coding: utf-8
 # Functions that handle commands on the "world map."
 module WorldCommand
 
@@ -24,7 +23,7 @@ a (←) s (↓) d (→)       Movement
 
   # String literal for the special commands header.
   SPECIAL_COMMANDS_HEADER = "* Special commands: "
-
+  # Message for when the player tries to drop a non-existent item.
   NO_ITEM_DROP_ERROR = "You can't drop what you don't have!\n\n"
 
   # Prints the commands that are available everywhere.

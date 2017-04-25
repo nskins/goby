@@ -2,6 +2,7 @@ require_relative '../equippable.rb'
 require_relative '../../item.rb'
 require_relative '../../../Battle/BattleCommand/Attack/attack.rb'
 
+# Can be worn in the Player's outfit.
 class Weapon < Item
   include Equippable
 

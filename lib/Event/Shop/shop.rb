@@ -1,9 +1,13 @@
 require_relative '../event.rb'
 
+# Allows a player to buy and sell Items.
 class Shop < Event
 
+  # Message for when the shop has nothing to sell.
   NO_ITEMS_MESSAGE = "Sorry, we're out of stock right now!\n\n"
+  # Message for when the player has nothing to sell.
   NOTHING_TO_SELL = "You have nothing to sell!\n\n"
+  # Introductory greeting at the shop.
   WARES_MESSAGE = "Please take a look at my wares.\n\n"
 
   # @param [String] name the name.

@@ -1,5 +1,6 @@
 require_relative "world_command.rb"
 
+# Provides method(s) for running the main game loop.
 module Driver
 
   include WorldCommand

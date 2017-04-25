@@ -1,8 +1,12 @@
 require_relative '../util.rb'
 
+# Provides the ability to fight, equip/unequip weapons & armor,
+# and carry items & gold.
 class Entity
 
+  # Error when the entity specifies a non-existent item.
   NO_SUCH_ITEM_ERROR = "What?! You don't have THAT!\n\n"
+  # Error when the entity specifies an item not equipped.
   NOT_EQUIPPED_ERROR = "You are not equipping THAT!\n\n"
 
   # @param [String] name the name.
@@ -87,11 +91,11 @@ class Entity
   def add_rewards(gold, treasure)
     if ((gold > 0) || treasure)
       type("Rewards:\n")
-      if (gold > 0)
+      if gold > 0
         type("* #{gold} gold\n")
         add_gold(gold)
       end
-      if (treasure)
+      if treasure
         type("* #{treasure.name}\n")
         add_item(treasure)
       end
@@ -182,7 +186,10 @@ class Entity
   def print_inventory
     print "Current gold in pouch: #{@gold}.\n\n"
 
-    (print "#{@name}'s inventory is empty!\n\n"; return) if (@inventory.empty?)
+    if @inventory.empty?
+      print "#{@name}'s inventory is empty!\n\n"
+      return
+    end
 
     puts "#{@name}'s inventory:"
     @inventory.each do |couple|
@@ -227,7 +234,7 @@ class Entity
 
   # Removes the battle command, if it exists, from the entity's collection.
   #
-  # @param [BattleCommand] command the command being removed.
+  # @param [BattleCommand, String] command the command being removed.
   def remove_battle_command(command)
     index = has_battle_command(command)
     @battle_commands.delete_at(index) if index

@@ -1,5 +1,6 @@
 require_relative '../battle_command.rb'
 
+# Simple physical attack.
 class Attack < BattleCommand
 
   # @param [String] name the name.
@@ -9,6 +10,30 @@ class Attack < BattleCommand
     super(name: name)
     @strength = strength
     @success_rate = success_rate
+  end
+
+  # Determine how much damage this attack will do on the enemy.
+  #
+  # @param [Entity] user the one using the attack.
+  # @param [Entity] enemy the one on whom the attack is used.
+  # @return [Integer] the amount of damage to inflict on the enemy.
+  def calculate_damage(user, enemy)
+
+    # RANDOMIZE ATTACK
+    inflict = Random.rand(0.05..0.15).round(2)
+    multiplier = 1
+
+    if enemy.defense > user.attack
+      multiplier = 1 - ((enemy.defense * 0.1) - (user.attack * inflict))
+
+      # Prevent a negative multiplier.
+      multiplier = 0 if multiplier < 0
+
+    else
+      multiplier = 1 + ((user.attack * inflict) - (enemy.defense * 0.1))
+    end
+
+    return (@strength * multiplier).round(0)
   end
 
   # Inflicts damage on the enemy and prints output.
@@ -34,30 +59,6 @@ class Attack < BattleCommand
       type("#{user.name} tries to use #{@name}, but it fails.\n\n")
     end
 
-  end
-
-  # Determine how much damage this attack will do on the enemy.
-  #
-  # @param [Entity] user the one using the attack.
-  # @param [Entity] enemy the one on whom the attack is used.
-  # @return [Integer] the amount of damage to inflict on the enemy.
-  def calculate_damage(user, enemy)
-
-    # RANDOMIZE ATTACK
-    inflict = Random.rand(0.05..0.15).round(2)
-    multiplier = 1
-
-    if enemy.defense > user.attack
-      multiplier = 1 - ((enemy.defense * 0.1) - (user.attack * inflict))
-
-      # Prevent a negative multiplier.
-      multiplier = 0 if multiplier < 0
-
-    else
-      multiplier = 1 + ((user.attack * inflict) - (enemy.defense * 0.1))
-    end
-
-    return (@strength * multiplier).round(0)
   end
 
   attr_accessor :strength, :success_rate

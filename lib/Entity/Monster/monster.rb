@@ -1,5 +1,6 @@
 require_relative "../entity.rb"
 
+# An Entity controlled by the CPU. Used for battle against Players.
 class Monster < Entity
 
   # @param [String] name the name.
@@ -29,19 +30,6 @@ class Monster < Entity
     end
   end
 
-  # Choose rewards based on the 'gold' and 'treasures' member variables.
-  #
-  # @return [Couple(Integer, Item)] the gold (first) and the treasure (second).
-  def sample_rewards
-    # Sample a random amount of gold.
-    gold = Random.rand(0..@gold)
-
-    # Determine which treasure to reward the victor.
-    treasure = sample_treasures
-
-    return Couple.new(gold, treasure)
-  end
-
   # Provides a deep copy of the monster. This is necessary since
   # the monster can use up its items in battle.
   #
@@ -59,6 +47,19 @@ class Monster < Entity
     end
 
     return monster
+  end
+
+  # Choose rewards based on the 'gold' and 'treasures' member variables.
+  #
+  # @return [Couple(Integer, Item)] the gold (first) and the treasure (second).
+  def sample_rewards
+    # Sample a random amount of gold.
+    gold = Random.rand(0..@gold)
+
+    # Determine which treasure to reward the victor.
+    treasure = sample_treasures
+
+    return Couple.new(gold, treasure)
   end
 
   attr_accessor :message, :treasures, :total_treasures

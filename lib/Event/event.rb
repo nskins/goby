@@ -1,17 +1,15 @@
+# A Player can interact with these on the Map.
 class Event
 
+  # The default text for when the event doesn't do anything.
   DEFAULT_RUN_TEXT = "Nothing happens.\n\n"
 
   # @param [String] command the command to activate the event.
   # @param [Integer] mode convenient way for an event to have multiple actions.
-  # @param [Boolean] visible whether the event can be seen/activated.
+  # @param [Boolean] visible true when the event can be seen/activated.
   def initialize(command: "event", mode: 0, visible: true)
     @command = command
-
-    # Can be used in a case statement in run for different outcomes.
     @mode = mode
-
-    # The event can only be activated when this is true.
     @visible = visible
   end
 

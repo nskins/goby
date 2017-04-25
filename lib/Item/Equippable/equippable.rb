@@ -1,3 +1,4 @@
+# Provides methods for equipping & unequipping an Item.
 module Equippable
 
   # The function that returns the type of the item.
@@ -22,6 +23,7 @@ module Equippable
   def alter_stats(entity, equipping)
       
     # Alter the stats as appropriate.
+    # TODO: this can be simplified by creating entity.stats hash..?
     if equipping
       entity.attack += stat_change[:attack] if stat_change[:attack]
       entity.defense += stat_change[:defense] if stat_change[:defense]

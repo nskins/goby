@@ -3,7 +3,9 @@ require_relative 'battle_command.rb'
 # Allows an Entity to try to escape from the opponent.
 class Escape < BattleCommand
 
+  # Text for successful escape.
   SUCCESS = "Successful escape!\n\n"
+  # Text for failed escape.
   FAILURE = "Unable to escape!\n\n"
 
   # Initializes the Escape command.

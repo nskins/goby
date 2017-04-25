@@ -1,3 +1,5 @@
+# Describes a single location on a Map. Can have Events and Monsters.
+# Provides variables that control its graphical representation on the Map.
 class Tile
   
   # Default graphic for passable tiles.
@@ -20,14 +22,7 @@ class Tile
     @graphic = graphic.nil? ? default_graphic : graphic
   end
 
-  # Convenient conversion to String.
-  #
-  # @return [String] the string representation.
-  def to_s
-    return @seen ? @graphic + " " : "  "
-  end
-
-  # Create deep copy of Tile
+  # Create deep copy of Tile.
   #
   # @return Tile a new Tile object 
   def clone
@@ -35,6 +30,13 @@ class Tile
     serialized_tile = Marshal.dump(self)
     new_tile = Marshal.load(serialized_tile)
     return new_tile           
+  end
+
+  # Convenient conversion to String.
+  #
+  # @return [String] the string representation.
+  def to_s
+    return @seen ? @graphic + " " : "  "
   end
   
   attr_accessor :passable, :seen, :description, :events, :monsters, :graphic

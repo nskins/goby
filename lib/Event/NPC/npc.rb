@@ -1,5 +1,7 @@
 require_relative '../event.rb'
 
+# A non-player character with whom the player can interact.
+# Always activated with the 'talk' command.
 class NPC < Event
 
   # @param [String] name the name.
