@@ -17,6 +17,9 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'coveralls'
+Coveralls.wear!
+
 # Set variable to know when testing.
 # Also has boolean value true.
 ENV['TEST'] = 'rspec'

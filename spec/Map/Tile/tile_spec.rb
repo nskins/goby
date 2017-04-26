@@ -12,12 +12,17 @@ RSpec.describe Tile do
       expect(tile.description).to eq ""
       expect(tile.events).to eq []
       expect(tile.monsters).to eq []
-      expect(tile.graphic).to eq "·"
+      expect(tile.graphic).to eq Tile::DEFAULT_PASSABLE
     end
-    
+
     it "correctly assigns default graphic for non-passable tiles" do
       tile = Tile.new(passable:false)
-      expect(tile.graphic).to eq "■"
+      expect(tile.graphic).to eq Tile::DEFAULT_IMPASSABLE
+    end
+
+    it "correctly overrides the default passable graphic" do
+      tile = Tile.new(graphic: '$')
+      expect(tile.graphic).to eq '$'
     end
 
     it "correctly assigns custom parameters" do
@@ -35,8 +40,21 @@ RSpec.describe Tile do
       expect(pond.graphic).to eq '#'
     end
   end
-  context "object clone method" do
-    it "makes a deep copy of the object" do
+
+  context "to s" do
+    it "should return two spaces when unseen" do
+      tile = Tile.new(seen: false, graphic: '$')
+      expect(tile.to_s).to eq "  "
+    end
+
+    it "should return the graphic & one space when seen" do
+      tile = Tile.new(seen: true, graphic: '$')
+      expect(tile.to_s).to eq "$ "
+    end
+  end
+
+  context "clone" do
+    it "should make a deep copy of the tile" do
       tile = Tile.new(description: "This is a test tile", events: [Event.new], monsters: [Monster.new])
       new_tile = tile.clone
       

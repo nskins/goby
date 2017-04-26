@@ -1,12 +1,14 @@
-# Goby [![Build Status](https://travis-ci.org/nskins/goby.png)](https://travis-ci.org/nskins/goby)
+# Goby [![Build Status](https://travis-ci.org/nskins/goby.png)](https://travis-ci.org/nskins/goby) [![Coverage Status](https://coveralls.io/repos/github/nskins/goby/badge.svg?branch=coveralls)](https://coveralls.io/github/nskins/goby?branch=coveralls)
 
-Goby is a Ruby framework for the swift and easy development of [text](https://en.wikipedia.org/wiki/Text-based_game)-[RPGs](https://en.wikipedia.org/wiki/Role-playing_game). Have you ever wanted to write your own text-RPG? Due to recent technological advancements and quality of life improvements, it's now easier than 3.1415. Our primary goal in the development of the Goby framework is to provide a high degree of functionality (utilizing object-oriented design) so that end-users need focus only on content creation! WOOHOO!
+Goby is a Ruby framework for creating [text](https://en.wikipedia.org/wiki/Text-based_game) [RPGs](https://en.wikipedia.org/wiki/Role-playing_game). In the past 30+ years, the fine and respectable craft of text RPG development has been forgotten in favor of flashing lights and CGI cutscenes; however, there was once a time when the video game experience meant more than Dynamic Super Resolution™. I know that's hard to believe.
+
+Our purpose is to provide the highest degree of functionality, utilizing object-oriented design principles, so that users spend the majority of their time on the *fun* part of video game development: content creation! 
 
 ## Ayara
 
-Welcome to the town of Ayara. By default, this preset game has been included in the framework for the following reasons: (1.) to provide example code for end-users who wish to create their own game, (2.) to present the many features and possibilities of the framework, and, lastly, (3.) to show that games built using the Goby framework are quite fun.
+Ayara is the preset game included with the framework. By playing Ayara, you'll encounter some of the features and possibilities of the framework. In addition, Ayara provides sample code for users to get started creating their own game. We hope you enjoy! If there's anything you find strange, please feel free to submit an issue!
 
-In order to begin your adventure, run the following command:
+Run the following command to begin your adventure:
 
 ```ruby ayara/main.rb```
 
@@ -14,13 +16,7 @@ It is recommended to change your Terminal's text size to about 18 or 20. On Ubun
 
 ## Contributing
 
-**UPDATE (04/13/17): We are currently refactoring the codebase. These changes will provide a more thorough test suite, additional documentation, and guidelines for contributing. Feel free to send a pull request during this time, but note that pull requests will not be merged until the refactor is complete.**
-
-Contributors of all skill levels are welcome. We do our best to identify issues that are suitable for open-source newcomers and veterans alike. Please see the [Issues](https://github.com/nskins/goby/issues) tab or tackle a completely unknown problem or feature! Also, please feel free to reach out to the owner ([nskins@umich.edu](mailto:nskins@umich.edu)) for any questions, comments, etc.
-
-Run the test suite before sending a pull request!:
-
-```rspec ```
+Thank you for your interest in contributing! Please read our [guidelines](https://github.com/nskins/goby/blob/master/CONTRIBUTING.md) before sending a pull request.
 
 ## Documentation
 

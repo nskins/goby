@@ -8,11 +8,23 @@ RSpec.describe Player do
                             [ Tile.new, Tile.new, Tile.new ],
                             [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ] ],
                    regen_location: Couple.new(1,1))
+    @monster_map = Map.new(tiles: [ [ Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)]) ]) ] ],
+                           regen_location: Couple.new(0,0))
     @center = @map.regen_location
+    @passable = Tile::DEFAULT_PASSABLE
+    @impassable = Tile::DEFAULT_IMPASSABLE
   end
 
   before(:each) do
-    @dude = Player.new(map: @map, location: @center)
+    @dude = Player.new(attack: 10, agility: 10000,
+                       battle_commands: [Attack.new(strength: 20), Escape.new, Use.new], 
+                       map: @map, location: @center)
+    @slime = Monster.new(battle_commands: [Attack.new(success_rate: 0)],
+                         gold: 5000, treasures: [Couple.new(Item.new, 1)])
+    @newb = Player.new(battle_commands: [Attack.new(success_rate: 0)],
+                       gold: 50, map: @map, location: @center)
+    @dragon = Monster.new(attack: 50, agility: 10000, 
+                          battle_commands: [Attack.new(strength: 50)] )
   end
 
   context "constructor" do
@@ -190,6 +202,15 @@ RSpec.describe Player do
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq @center
     end
+
+    it "should (eventually) encounter a monster and do battle" do
+      # High probability for encountering a monster at least once.
+      20.times do
+        __stdin("attack\n") do
+          @dude.move_to(Couple.new(0,0), @monster_map)
+        end
+      end
+    end
   end
 
   context "move up" do
@@ -265,4 +286,75 @@ RSpec.describe Player do
     end
   end
 
+  context "print map" do
+    it "should display as appropriate" do
+      edge_row = "#{@impassable} #{@passable} #{@impassable} \n"
+      middle_row = "#{@passable} ¶ #{@passable} \n"
+
+      expect { @dude.print_map }.to output(
+        "   Map\n\n"\
+        "  #{edge_row}"\
+        "  #{middle_row}"\
+        "  #{edge_row}"\
+        "\n"\
+        "   ¶ - #{@dude.name}'s\n"\
+        "       location\n\n" 
+      ).to_stdout
+    end
+  end
+
+  context "print minimap" do
+    it "should display as appropriate" do
+      edge_row = "#{@impassable} #{@passable} #{@impassable} \n"
+      middle_row = "#{@passable} ¶ #{@passable} \n"
+
+      expect { @dude.print_minimap }.to output(
+        "\n"\
+        "          #{edge_row}"\
+        "          #{middle_row}"\
+        "          #{edge_row}"\
+        "          \n"
+      ).to_stdout
+    end
+  end
+
+  context "print tile" do
+    it "should display the marker on the player's location" do
+      expect { @dude.print_tile(@dude.location) }.to output("¶ ").to_stdout
+    end
+
+    it "should display the graphic of the tile elsewhere" do
+      expect { @dude.print_tile(Couple.new(0,0)) }.to output(
+         "#{@impassable} "
+      ).to_stdout
+      expect { @dude.print_tile(Couple.new(0,1)) }.to output(
+        "#{@passable} "
+        ).to_stdout
+    end
+  end
+
+  context "battle" do
+    it "should allow the player to win in this example" do
+      __stdin("use\nattack\n") do
+        @dude.battle(@slime)
+      end
+      expect(@dude.inventory.size).to eq 1
+    end
+
+    it "should allow the player to escape in this example" do
+      # Could theoretically fail, but with very low probability.
+      __stdin("escape\nescape\nescape\n") do
+        @dude.battle(@slime)
+      end
+    end
+
+    it "should allow the monster to win in this example" do
+      __stdin("attack\n") do
+        @newb.battle(@dragon)
+      end
+      # Newb should die and go to respawn location.
+      expect(@newb.gold).to eq 25
+      expect(@newb.location).to eq Couple.new(1,1)
+    end
+  end
 end

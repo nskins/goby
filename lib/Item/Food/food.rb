@@ -1,5 +1,6 @@
 require_relative '../item.rb'
 
+# Recovers HP when used.
 class Food < Item
 
   # @param [String] name the name.

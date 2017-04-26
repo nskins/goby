@@ -5,9 +5,12 @@ require_relative "../lib/Entity/player.rb"
 require_relative "Map/Map/ayara.rb"
 require_relative "Story/intro.rb"
 
+# TODO: Place Main in a module?
+include Driver
+
 # Load the game.
 if File.file?("player.yaml") && load_game?
-  player = load_game
+  player = load_game("player.yaml")
   system("clear")
   describe_tile(player)
 else

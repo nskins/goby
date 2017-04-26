@@ -1,6 +1,7 @@
 require_relative '../equippable.rb'
 require_relative '../../item.rb'
 
+# Can be worn in the Player's outfit.
 class Torso < Item
 	include Equippable
 

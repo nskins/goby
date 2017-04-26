@@ -2,6 +2,13 @@ require_relative 'battle_command.rb'
 
 # Allows an Entity to try to escape from the opponent.
 class Escape < BattleCommand
+
+  # Text for successful escape.
+  SUCCESS = "Successful escape!\n\n"
+  # Text for failed escape.
+  FAILURE = "Unable to escape!\n\n"
+
+  # Initializes the Escape command.
   def initialize
     super(name: "Escape")
   end
@@ -15,13 +22,13 @@ class Escape < BattleCommand
     # Higher probability of escape when the enemy has low agility.
     if (user.sample_agilities(enemy))
       user.escaped = true
-      type("#{user.name} successfully escapes the clutches of the #{enemy.name}!\n\n")
+      type(SUCCESS)
       return
     end
 
     # Should already be false.
     user.escaped = false
-    type("#{user.name} is cornered!\n\n")
+    type(FAILURE)
   end
 
 end

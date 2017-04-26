@@ -2,8 +2,22 @@ require_relative 'battle_command.rb'
 
 # Allows an Entity to use an Item in battle.
 class Use < BattleCommand
+
+  # Initializes the Use command.
   def initialize
     super(name: "Use")
+  end
+
+  # Returns true iff the user's inventory is empty.
+  #
+  # @param [Entity] user the one who is using the command.
+  # @return [Boolean] status of the user's inventory.
+  def fails?(user)
+    empty = user.inventory.empty?
+    if empty
+      print "#{user.name}'s inventory is empty!\n\n"
+    end
+    return empty
   end
 
   # Uses the specified Item on the specified Entity.
@@ -16,18 +30,6 @@ class Use < BattleCommand
     pair = user.choose_item_and_on_whom(enemy)
     return if (!pair)
     user.use_item(pair.first, pair.second)
-  end
-  
-  # Returns true iff the user's inventory is empty.
-  #
-  # @param [Entity] user the one who is using the command.
-  # @return [Boolean] status of the user's inventory.
-  def fails?(user)
-    empty = user.inventory.empty?
-    if empty
-      print "#{user.name}'s inventory is empty!\n\n"
-    end
-    return empty
   end
 
 end

@@ -15,6 +15,7 @@ RSpec.describe Monster do
       expect(monster.outfit).to eq Hash.new
       expect(monster.battle_commands).to eq Array.new
       expect(monster.message).to eq "!!!"
+      expect(monster.treasures).to eq Array.new
     end
 
     it "correctly assigns custom parameters" do
@@ -38,7 +39,9 @@ RSpec.describe Monster do
                           Attack.new(name: "Scratch"),
                           Attack.new(name: "Kick")
                         ],
-                        message: "\"Oh, hi.\"")
+                        message: "\"Oh, hi.\"",
+                        treasures: [Couple.new(Item.new, 1),
+                                    Couple.new(nil, 3)])
       expect(clown.name).to eq "Clown"
       expect(clown.max_hp).to eq 20
       expect(clown.hp).to eq 15
@@ -55,6 +58,28 @@ RSpec.describe Monster do
         Attack.new(name: "Scratch")
       ]
       expect(clown.message).to eq "\"Oh, hi.\""
+      expect(clown.treasures).to eq [Couple.new(Item.new, 1),
+                                     Couple.new(nil, 3)]
+      expect(clown.total_treasures).to eq 4
+    end
+  end
+
+  context "clone" do
+    before(:each) do
+      @monster = Monster.new(inventory: [Couple.new(Item.new, 1)])
+      @clone = @monster.clone
+    end
+
+    it "should leave the original's inventory the same" do
+      @clone.use_item("Item", @clone)
+      expect(@monster.inventory.size).to eq 1
+      expect(@clone.inventory.size).to be_zero
+    end
+
+    it "should leave the clone's inventory the same" do
+      @monster.use_item("Item", @monster)
+      expect(@monster.inventory.size).to be_zero
+      expect(@clone.inventory.size).to eq 1
     end
   end
 

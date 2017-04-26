@@ -1,5 +1,7 @@
 require_relative '../event.rb'
 
+# A non-player character with whom the player can interact.
+# Always activated with the 'talk' command.
 class NPC < Event
 
   # @param [String] name the name.
@@ -15,7 +17,7 @@ class NPC < Event
   #
   # @param [Player] player the one speaking to the NPC.
   def run(player)
-    puts "Hello!"
+    print "#{@name}: Hello!\n\n"
   end
 
   attr_accessor :name

@@ -1,6 +1,13 @@
 require_relative '../util.rb'
 
+# Provides the ability to fight, equip/unequip weapons & armor,
+# and carry items & gold.
 class Entity
+
+  # Error when the entity specifies a non-existent item.
+  NO_SUCH_ITEM_ERROR = "What?! You don't have THAT!\n\n"
+  # Error when the entity specifies an item not equipped.
+  NOT_EQUIPPED_ERROR = "You are not equipping THAT!\n\n"
 
   # @param [String] name the name.
   # @param [Integer] max_hp the greatest amount of health.
@@ -16,13 +23,10 @@ class Entity
                  inventory: [], gold: 0, battle_commands: [], outfit: {})
     @name = name
     @max_hp = max_hp
+    @hp = hp.nil? ? max_hp : hp
 
-    if hp.nil?
-      @hp = @max_hp
-    else
-      @hp = hp
-    end
-    (@max_hp = @hp) if (@hp > @max_hp)
+    # Prevent HP > max HP.
+    @max_hp = @hp if @hp > @max_hp
 
     @attack = attack
     @defense = defense
@@ -80,6 +84,25 @@ class Entity
     @inventory.push(Couple.new(item, amount))
   end
 
+  # Adds the specified gold and treasure item to the inventory.
+  #
+  # @param [Integer] gold the amount of gold.
+  # @param [Item] treasure the treasure item.
+  def add_rewards(gold, treasure)
+    if ((gold > 0) || treasure)
+      type("Rewards:\n")
+      if gold > 0
+        type("* #{gold} gold\n")
+        add_gold(gold)
+      end
+      if treasure
+        type("* #{treasure.name}\n")
+        add_item(treasure)
+      end
+    print "\n"
+    end
+  end
+
   # Determines how the entity should select an attack in battle.
   # Override this method for control over this functionality.
   #
@@ -97,6 +120,13 @@ class Entity
     item = @inventory[Random.rand(@inventory.length)].first
     whom = [self, enemy].sample
     return Couple.new(item, whom)
+  end
+
+  # Removes all items from the entity's inventory.
+  def clear_inventory
+    while @inventory.size.nonzero?
+      @inventory.pop
+    end
   end
 
   # Equips the specified item to the entity's outfit.
@@ -118,7 +148,7 @@ class Entity
         print "#{actual_item.name} cannot be equipped!\n\n"
       end
     else
-      print "What?! You don't have THAT!\n\n"
+      print NO_SUCH_ITEM_ERROR
     end
   end
 
@@ -128,9 +158,7 @@ class Entity
   # @return [Integer] the index of an existing command. Otherwise nil.
   def has_battle_command(cmd)
     @battle_commands.each_with_index do |command, index|
-      if (command.name.casecmp(cmd.to_s) == 0)
-        return index
-      end
+      return index if command.name.casecmp(cmd.to_s).zero?
     end
     return
   end
@@ -141,18 +169,15 @@ class Entity
   # @return [Integer] the index of an existing item. Otherwise nil.
   def has_item(item)
     inventory.each_with_index do |couple, index|
-      if (couple.first.name.casecmp(item.to_s) == 0)
-        return index
-      end
+      return index if couple.first.name.casecmp(item.to_s).zero?
     end
-
     return
   end
 
   # Prints the available battle commands.
   def print_battle_commands
     @battle_commands.each do |command|
-      print "❊ #{command.name} \n"
+      print "❊ #{command.name}\n" 
     end
     print "\n"
   end
@@ -161,20 +186,20 @@ class Entity
   def print_inventory
     print "Current gold in pouch: #{@gold}.\n\n"
 
-    if (@inventory.empty?)
-      puts "#{@name}'s inventory is empty!"
-    else
-      puts "#{@name}'s inventory:"
-
-      @inventory.each do |couple|
-        puts "* #{couple.first.name} (#{couple.second})"
-      end
+    if @inventory.empty?
+      print "#{@name}'s inventory is empty!\n\n"
+      return
     end
 
+    puts "#{@name}'s inventory:"
+    @inventory.each do |couple|
+      puts "* #{couple.first.name} (#{couple.second})"
+    end
     print "\n"
   end
 
   # Prints the status in a nice format.
+  # TODO: encapsulate print_stats and print_equipment in own functions.
   def print_status
     puts "Stats:"
     puts "* HP: #{@hp}/#{@max_hp}"
@@ -185,41 +210,22 @@ class Entity
 
     puts "Equipment:"
     print "* Weapon: "
-    if @outfit[:weapon]
-      puts "#{@outfit[:weapon].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:weapon] ? "#{@outfit[:weapon].name}" : "none"
 
     print "* Shield: "
-    if @outfit[:shield]
-      puts "#{@outfit[:shield].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:shield] ? "#{@outfit[:shield].name}" : "none"
 
     print "* Helmet: "
-    if @outfit[:helmet]
-      puts "#{@outfit[:helmet].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:helmet] ? "#{@outfit[:helmet].name}" : "none"
 
     print "* Torso: "
-    if @outfit[:torso]
-      puts "#{@outfit[:torso].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:torso] ? "#{@outfit[:torso].name}" : "none"
 
     print "* Legs: "
-    if @outfit[:legs]
-      puts "#{@outfit[:legs].name}"
-    else
-      puts "none"
-    end
+    puts @outfit[:legs] ? "#{@outfit[:legs].name}" : "none"
 
     print "\n"
+
     unless @battle_commands.empty?
       puts "Battle Commands:"
       print_battle_commands
@@ -228,7 +234,7 @@ class Entity
 
   # Removes the battle command, if it exists, from the entity's collection.
   #
-  # @param [BattleCommand] command the command being removed.
+  # @param [BattleCommand, String] command the command being removed.
   def remove_battle_command(command)
     index = has_battle_command(command)
     @battle_commands.delete_at(index) if index
@@ -255,9 +261,7 @@ class Entity
         couple.second -= amount
 
         # Delete the item if the amount becomes non-positive.
-        if (couple.second <= 0)
-          @inventory.delete_at(index)
-        end
+        @inventory.delete_at(index) if couple.second <= 0
 
         return
       end
@@ -277,7 +281,7 @@ class Entity
   #
   # @param [Item, String] item the item (or its name) to unequip.
   def unequip_item(item)
-    pair = @outfit.detect { |type, value| value.name.casecmp(item.to_s) == 0 }
+    pair = @outfit.detect { |type, value| value.name.casecmp(item.to_s).zero? }
     if pair
       # On a successful find, the "detect" method always returns
       # an array of length 2; thus, the following line should not fail.
@@ -285,7 +289,7 @@ class Entity
       item.unequip(self)
       add_item(item)
     else
-      print "You are not equipping THAT!\n\n"
+      print NOT_EQUIPPED_ERROR
     end
   end
 
@@ -300,7 +304,7 @@ class Entity
       actual_item.use(self, entity)
       remove_item(actual_item) if actual_item.consumable
     else
-      print "What?! You don't have THAT!\n\n"
+      print NO_SUCH_ITEM_ERROR
     end
   end
 
@@ -315,14 +319,14 @@ class Entity
   attr_accessor :defense
   attr_accessor :agility
 
-  attr_reader :inventory
+  attr_accessor :inventory
   attr_reader :gold
 
   attr_reader :outfit
 
   attr_reader :battle_commands
 
-  attr_reader :escaped
+  attr_accessor :escaped
 
   private
 

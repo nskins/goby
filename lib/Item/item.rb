@@ -1,5 +1,10 @@
+# Can be used by an Entity in order to trigger anything specified.
+# Placed into the Entity's inventory.
 class Item
-  
+
+  # Default text when the Item doesn't do anything.
+  DEFAULT_USE_TEXT = "Nothing happens.\n\n"
+
   # @param [String] name the name.
   # @param [Integer] price the cost in a shop.
   # @param [Boolean] consumable upon use, the item is lost when true.
@@ -16,12 +21,12 @@ class Item
   # @param [Entity] user the one using the item.
   # @param [Entity] entity the one on whom the item is used.
   def use(user, entity)
-    puts "Nothing happens.\n\n"
+    print DEFAULT_USE_TEXT
   end
 
   # @param [Item] rhs the item on the right.
   def ==(rhs)
-    return (@name.casecmp(rhs.name) == 0)
+    return @name.casecmp(rhs.name).zero?
   end
 
   # @return [String] the name of the Item.

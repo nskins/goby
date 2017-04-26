@@ -2,11 +2,12 @@ require_relative '../../../lib/Item/Equippable/equippable.rb'
 
 RSpec.describe Equippable do
 
-  before do
+  before (:all) do
     @equippable = double
     class << @equippable
       include Equippable
     end
+    @entity = Entity.new
   end
 
   context "placeholder methods" do
@@ -21,18 +22,17 @@ RSpec.describe Equippable do
 
   context "alter stats" do
     it "changes the entity's stats in the trivial case" do
-      entity = Entity.new
       allow(@equippable).to receive(:stat_change) {{attack: 2, defense: 3, agility: 4}}
 
-      @equippable.alter_stats(entity, true)
-      expect(entity.attack).to eq 3
-      expect(entity.defense).to eq 4
-      expect(entity.agility).to eq 5
+      @equippable.alter_stats(@entity, true)
+      expect(@entity.attack).to eq 3
+      expect(@entity.defense).to eq 4
+      expect(@entity.agility).to eq 5
  
-      @equippable.alter_stats(entity, false)
-      expect(entity.attack).to eq 1
-      expect(entity.defense).to eq 1
-      expect(entity.agility).to eq 1
+      @equippable.alter_stats(@entity, false)
+      expect(@entity.attack).to eq 1
+      expect(@entity.defense).to eq 1
+      expect(@entity.agility).to eq 1
     end
   end
 
