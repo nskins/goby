@@ -151,10 +151,7 @@ class Player < Entity
     while !index
       print_inventory
       puts "Which item would you like to use?"
-      print "(or type 'pass' to forfeit the turn): "
-      input = gets.chomp
-
-      print "\n"
+      input = player_input prompt: "(or type 'pass' to forfeit the turn): "
 
       return if (input.casecmp("pass").zero?)
 
@@ -172,10 +169,7 @@ class Player < Entity
     # Choose on whom to use the item.
     while !whom
       puts "On whom will you use the item (#{@name} or #{enemy.name})?"
-      print "(or type 'pass' to forfeit the turn): "
-      input = gets.chomp
-
-      print "\n"
+      input = player_input prompt: "(or type 'pass' to forfeit the turn): "
 
       return if (input.casecmp("pass").zero?)
 
@@ -201,7 +195,7 @@ class Player < Entity
 
     type("After being knocked out in battle,\n")
     type("you wake up in #{@map.name}.\n\n")
-    
+
     # Reduce gold if the player has any.
     if @gold > 0
       type("Looks like you lost some gold...\n\n")
@@ -239,7 +233,7 @@ class Player < Entity
   def move_to(coordinates, map = @map)
     # Prevents operations on nil.
     return if map.nil?
-    
+
     system("clear") unless ENV['TEST']
 
     y = coordinates.first; x = coordinates.second

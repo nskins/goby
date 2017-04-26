@@ -30,7 +30,7 @@ class Shop < Event
     return if @items.empty?
 
     print "What would you like (or none)?: "
-    name = gets.chomp
+    name = player_input
     index = has_item(name)
 
     # The player does not want to buy an item.
@@ -44,7 +44,7 @@ class Shop < Event
     # The specified item exists in the shop's inventory.
     item = @items[index]
     print "How many do you want?: "
-    amount_to_buy = gets.chomp
+    amount_to_buy = player_input
     total_cost = amount_to_buy.to_i * item.price
     print "\n"
 
@@ -84,7 +84,7 @@ class Shop < Event
   def print_gold_and_greeting(player)
     puts "Current gold in your pouch: #{player.gold}."
     print "Would you like to buy, sell, or exit?: "
-    input = gets.chomp
+    input = player_input doublespace: false
     print "\n"
     return input
   end
@@ -144,7 +144,7 @@ class Shop < Event
     player.print_inventory
 
     print "What would you like to sell? (or none): "
-    input = gets.chomp
+    input = player_input
     index = player.has_item(input)
     print "\n"
 
@@ -166,7 +166,7 @@ class Shop < Event
 
     puts "I'll buy that for #{purchase_price(item)} gold."
     print "How many do you want to sell?: "
-    amount_to_sell = gets.chomp.to_i
+    amount_to_sell = player_input.to_i
     print "\n"
 
     if amount_to_sell > item_count # more than in the inventory.
