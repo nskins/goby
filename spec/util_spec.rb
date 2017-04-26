@@ -1,6 +1,6 @@
 RSpec.describe do
-  
-  context "add to history" do 
+
+  context "add to history" do
     context "distinct commands" do
       it "should correctly add all commands to the history" do
         Readline::HISTORY.pop until Readline::HISTORY.size <= 0
@@ -25,7 +25,7 @@ RSpec.describe do
     context "sequentially repeated commands" do
       it "should correctly add only the distinct commands to the history" do
         Readline::HISTORY.pop until Readline::HISTORY.size <= 0
-        
+
         __stdin("kick\n") do
             player_input
         end
@@ -74,4 +74,57 @@ RSpec.describe do
     end
   end
 
+  context "increasing player_input versatility" do
+    context "handling lowercase functionality" do
+      it "should maintain case of input if lowercase is marked as false" do
+        inputs = ["KicK\n", "uSe\n", "INV\n"]
+        Readline::HISTORY.pop until Readline::HISTORY.size <= 0
+
+        inputs.each do |i|
+          __stdin(i) { player_input lowercase: false }
+        end
+
+        expect(Readline::HISTORY.size).to eq 3
+        i = 0
+        expect(Readline::HISTORY.all? do |input|
+          input == inputs[i]
+          i += 1
+        end).to eq true
+      end
+
+      it "returns lowercase input as default" do
+        inputs = ["KicK\n", "uSe\n", "INV\n"]
+        Readline::HISTORY.pop until Readline::HISTORY.size <= 0
+
+        inputs.each do |i|
+          __stdin(i) { player_input }
+        end
+
+        expect(Readline::HISTORY.size).to eq 3
+        i = 0
+        expect(Readline::HISTORY.all? do |input|
+          input == inputs[i].downcase
+          i += 1
+        end).to eq true
+      end
+    end
+
+    context "output is determined by given params" do
+      it "prints an empty string and extra space by default" do
+        expect{ __stdin('test') {player_input} }.to output("\n").to_stdout
+      end
+
+      it "prints the correct prompt when given an argument" do
+        expect{ __stdin('test') {player_input prompt: '> '} }.to output("> \n").to_stdout
+      end
+
+      it "does not print the newline if doublespace is marked as false" do
+        expect{ __stdin('test') {player_input doublespace: false} }.to output('').to_stdout
+      end
+
+      it "prints custom prompt and doesn't print the newline if doublespace is marked as false" do
+        expect{ __stdin('test') {player_input doublespace: false, prompt: 'testing: '} }.to output("testing: ").to_stdout
+      end
+    end
+  end
 end

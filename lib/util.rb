@@ -20,25 +20,26 @@ class Couple
 end
 
 # Simple player input script.
-def player_input
+#
+# @param [Boolean] lowercase mark true if response should be returned lowercase.
+# @param [String] prompt the prompt for the user to input information.
+# @param [Boolean] doublespace mark false if extra space should not be printed after input.
+def player_input(lowercase: true, prompt: '', doublespace: true)
 
   begin
     # When using Readline, rspec actually prompts the user for input, freezing the tests.
-    if(ENV['TEST'] == 'rspec') 
-      input = gets.chomp
-    else
-      input = Readline.readline("> ", false)
-      puts "\n"
-    end
+    print prompt
+    input = (ENV['TEST'] == 'rspec') ? gets.chomp : Readline.readline('', false)
+    puts "\n" if doublespace
   rescue Interrupt => e
     puts "The game was interrupted."
   end
-  
+
   if ((input.size > 1) and (input != Readline::HISTORY.to_a[-1]))
     Readline::HISTORY.push(input)
   end
 
-  return input
+  return lowercase ? input.downcase : input
 end
 
 # Prints text as if it were being typed.
@@ -49,7 +50,7 @@ def type(message)
   if ENV['TEST']
     print message; return
   end
-  
+
   # Sleep between printing of each char.
   message.split("").each do |i|
     sleep(0.015)
@@ -58,7 +59,7 @@ def type(message)
 end
 
 # Serializes the player object into a YAML file and saves it
-# 
+#
 # @param [Player] player the player object to be saved
 def save_game(player)
   player_data = YAML::dump(player)
@@ -70,7 +71,7 @@ def save_game(player)
 end
 
 # Reads and check the save file and parses into the player object
-# 
+#
 #
 def load_game
   begin

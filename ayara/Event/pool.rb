@@ -8,7 +8,7 @@ class Pool < Event
     @command = "fish"
     @fish = fish
   end
-  
+
   def run(player)
     if player.has_item(FishingPole.new).nil?
       print "In order to fish, you need a Fishing Pole.\n\n"
@@ -21,8 +21,7 @@ class Pool < Event
         baits.each do |bait|
           puts "* #{bait.name}"
         end
-        print "\nWhich bait will you use?: "
-        input = gets.chomp
+        input = player_input prompt: "\nWhich bait will you use?: ", doublespace: false
         index = player.has_item(input)
         if (!index || (!(player.inventory[index].first.is_a? Bait)))
           print "What?! You don't have THAT!\n\n"
@@ -41,11 +40,11 @@ class Pool < Event
       end
     end
   end
-  
+
   attr_accessor :fish
-  
+
   private
-    
+
     def find_baits(player)
       baits = []
       player.inventory.each do |item|
@@ -55,7 +54,7 @@ class Pool < Event
       end
       return baits
     end
-    
+
 end
 
 # Subclasses
