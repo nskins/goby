@@ -23,7 +23,8 @@ RSpec.describe Player do
                          gold: 5000, treasures: [Couple.new(Item.new, 1)])
     @newb = Player.new(battle_commands: [Attack.new(success_rate: 0)],
                        gold: 50, map: @map, location: @center)
-    @dragon = Monster.new(attack: 50, battle_commands: [Attack.new(strength: 50)] )
+    @dragon = Monster.new(attack: 50, agility: 10000, 
+                          battle_commands: [Attack.new(strength: 50)] )
   end
 
   context "constructor" do
@@ -332,7 +333,6 @@ RSpec.describe Player do
     end
   end
 
-  # TODO: may need to expose more line coverage in these tests.
   context "battle" do
     it "should allow the player to win in this example" do
       __stdin("use\nattack\n") do
@@ -349,7 +349,6 @@ RSpec.describe Player do
     end
 
     it "should allow the monster to win in this example" do
-      @newb.move_to(Couple.new(1,0))
       __stdin("attack\n") do
         @newb.battle(@dragon)
       end
