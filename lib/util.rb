@@ -26,14 +26,10 @@ end
 # @param [Boolean] doublespace mark false if extra space should not be printed after input.
 def player_input(lowercase: true, prompt: '', doublespace: true)
 
-  begin
-    # When using Readline, rspec actually prompts the user for input, freezing the tests.
-    print prompt
-    input = (ENV['TEST'] == 'rspec') ? gets.chomp : Readline.readline('', false)
-    puts "\n" if doublespace
-  rescue Interrupt => e
-    puts "The game was interrupted."
-  end
+  # When using Readline, rspec actually prompts the user for input, freezing the tests.
+  print prompt
+  input = (ENV['TEST'] == 'rspec') ? gets.chomp : Readline.readline('', false)
+  puts "\n" if doublespace
 
   if ((input.size > 1) and (input != Readline::HISTORY.to_a[-1]))
     Readline::HISTORY.push(input)
