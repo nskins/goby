@@ -1,6 +1,8 @@
 # Contributing
 
-Thank you for your interest in contributing! Please follow these guidelines to ease the process of merging your contribution.
+Thank you for your interest in contributing! Contributors of all skill levels are welcome. We do our best to identify issues that are suitable for open-source newcomers and veterans alike. Please see the [Issues](https://github.com/nskins/goby/issues) tab or tackle a completely unknown problem or feature! Also, please feel free to reach out to the owner ([nskins@umich.edu](mailto:nskins@umich.edu)) for any questions, comments, etc.
+
+Please follow these guidelines to ease the process of merging your contribution.
 
 ## Code Style
 
