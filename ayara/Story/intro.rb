@@ -1,22 +1,22 @@
+require_relative '../../lib/extension.rb'
+
 def get_name
-  input = player_input prompt: "Brave hero, what is thy name?: "
-  return input
+  print "Brave hero, what is thy name?: "
+  return player_input(lowercase: false)
 end
 
 def load_game?
   system("clear")
 
-  input = player_input prompt: "Would you like to load the saved game (y/n)?: "
-
-  input == 'y' ? true : false
+  print "Would you like to load the saved game?: "
+  return player_input.is_positive?
 end
 
 def print_intro
   system("clear")
 
-  input = player_input prompt: "Do you know how to play (y/n)?: "
-  
-  return if input != 'n'
+  print "Do you know how to play?: "
+  return if !player_input.is_negative?
 
   puts "First things first - interaction"
   puts "is handled by commands. Here are some"

@@ -1,3 +1,5 @@
+require 'set'
+
 # Provides additional methods for String.
 class String
 

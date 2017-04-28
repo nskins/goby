@@ -1,6 +1,7 @@
-require_relative '../../../lib/Event/NPC/npc.rb'
 require_relative '../../Item/basketball.rb'
 require_relative '../../Item/bucket.rb'
+require_relative '../../../lib/extension.rb'
+require_relative '../../../lib/Event/NPC/npc.rb'
 
 class Andre < NPC
   def initialize
@@ -16,9 +17,8 @@ class Andre < NPC
 
     type("#{@name}: Each player takes five shots -\n")
     type("whoever makes more wins. Would you like\n")
-    type("to make a wager (y/n)?: ")
-    input = player_input
-    return if input != 'y'
+    type("to make a wager?: ")
+    return if !player_input.is_positive?
 
     puts "Current gold in pouch: #{player.gold}."
     type("#{@name}: How much will you wager?: ")
@@ -88,10 +88,9 @@ class Bella < NPC
       type("water... I'm dehydrated... ooooohhhhhh.....\n\n")
     else
       type("#{@name}: Oooh.. you have water... ??\n")
-      type("May I please have it... (y/n)?: ")
-      input = player_input
+      type("May I please have it...?: ")
 
-      if (input == 'y')
+      if player_input.is_positive?
         type("#{@name}: Quickly, hand it to me....\n\n")
         sleep(2)
         type("*glurp glurp glurp*\n\n")
@@ -153,10 +152,10 @@ class John < NPC
     when 1
       if (player.has_item(@pairs[@current_index].first))
         type("#{@name}: Ah, yes! #{@pairs[@current_index].first.name}!\n")
-        type("May I have it (y/n)?: ")
+        type("May I have it?: ")
         input = player_input
 
-        if (input == 'y')
+        if player_input.is_positive?
           type("#{@name}: Thank you! Thank you! Here, have this.\n\n")
           print "Obtained #{@pairs[@current_index].second} gold!\n\n"
           player.add_gold(@pairs[@current_index].second)

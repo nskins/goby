@@ -5,6 +5,7 @@ require_relative '../Item/bucket.rb'
 require_relative '../Item/recipe_book.rb'
 require_relative '../Item/Food/egg.rb'
 require_relative '../Item/Food/veggies.rb'
+require_relative '../../lib/extension.rb'
 
 class Dojo < Event
   def initialize
@@ -15,10 +16,9 @@ class Dojo < Event
   def run(player)
     print "#{player.name} enters the Dojo...\n\n"
     type("#{@name}: Ah, #{player.name}, so good to see you.\n")
-    type("Would you like to train today (y/n)?: ")
-    input = player_input
+    type("Would you like to train today?: ")
 
-    if (input == 'y')
+    if player_input.is_positive?
       type("#{@name}: Very well...")
       sleep(1)
       player.battle(Sensei.new)
@@ -78,10 +78,9 @@ class SeliaHouse < House
       type("of all time.\n\n")
     else
       type("#{@name}: Are you ready to take your cooking\n")
-      type("skills to the next level (y/n)?: ")
-      input = player_input
+      type("skills to the next level?: ")
 
-      if (input == 'y')
+      if player_input.is_positive?
         type("#{@name}: Today, we will learn about recipes!\n")
         type("Each recipe requires specific ingredients.\n")
         type("Once you have obtained the appropriate ingredients,\n")
@@ -141,9 +140,9 @@ class Well < Event
 
   def run(player)
     if player.has_item(Bucket.new)
-      input = player_input prompt: "Will you fill the Bucket (y/n)?: "
+      print "Will you fill the Bucket?: "
 
-      if (input == 'y')
+      if player_input.is_positive?
         puts "You attach the Bucket to the rope and feed it"
         puts "into the well. You pull the Bucket back up and"
         print "find that it's now filled with water.\n\n"
