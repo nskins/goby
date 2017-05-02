@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    goby (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -38,10 +43,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 1.14)
   coveralls
+  goby!
   rake
   rspec (~> 3.0)
   rspec-mocks
 
 BUNDLED WITH
-   1.13.7
+   1.14.6
