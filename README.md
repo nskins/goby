@@ -4,15 +4,23 @@ Goby is a Ruby framework for creating [text](https://en.wikipedia.org/wiki/Text-
 
 Text RPG development is a relatively fast and simple process. That's why our mission is to provide the highest degree of functionality, utilizing object-oriented design principles, so that users spend the majority of their time on the *fun* part of video game development: content creation! 
 
-## Ayara
+## Getting Started
 
-Ayara is the preset game included with the framework. By playing Ayara, you'll encounter some of the features and possibilities of the framework. In addition, Ayara provides sample code for users to get started creating their own game. We hope you enjoy! If there's anything you find strange, please feel free to submit an issue!
+Tutorials and examples are **coming soon**. Complete documentation is available. In order to start using Goby in your application, follow these instructions:
 
-Run the following command to begin your adventure:
+Add this line to your application's Gemfile:
 
-```ruby ayara/main.rb```
+```ruby
+gem 'goby'
+```
 
-It is recommended to change your Terminal's text size to about 18 or 20. On Ubuntu, try Edit -> Preferences. On Mac OS X, use ⌘+ and ⌘-.
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install goby
 
 ## Contributing
 
