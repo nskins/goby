@@ -1,7 +1,8 @@
+sudo: false
 language: ruby
-
 rvm:
-  - 2.0
+  - 2.4.0
+before_install: gem install bundler -v 1.14.6
 
 notifications:
   email: false
