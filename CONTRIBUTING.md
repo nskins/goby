@@ -10,7 +10,7 @@ Blank lines should contain no spaces. Use standard functions in Ruby to the best
 
 ## Testing
 
-Writing test cases is very important and should be done first. All features/bugs must include test(s) verifying their correctness. Aim to cover as many lines of your implementation as possible. There are examples showing how to [provide input](https://github.com/nskins/goby/blob/master/spec/util_spec.rb) and [expect output](https://github.com/nskins/goby/blob/master/spec/Event/event_spec.rb). Organize the tests in the same way as the many existing tests:
+Writing test cases is very important and should be done first. All features/bugs must include test(s) verifying their correctness. Aim to cover as many lines of your implementation as possible. There are examples showing how to [provide input](https://github.com/nskins/goby/blob/master/spec/goby/util_spec.rb) and [expect output](https://github.com/nskins/goby/blob/master/spec/goby/event/event_spec.rb). Organize the tests in the same way as the many existing tests:
 
 ```ruby
 Rspec.describe Class do
