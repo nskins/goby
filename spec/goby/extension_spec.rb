@@ -35,3 +35,39 @@ RSpec.describe String do
   end
 
 end
+
+RSpec.describe Integer do
+
+  context "is positive?" do
+    it "returns true for an integer value that is greater than zero" do
+      expect(0.positive?).to be false
+      expect(1.positive?).to be true
+      expect(-1.positive?).to be false
+    end
+  end
+
+  context "is nonpositive?" do
+    it "returns true for an integer value less than or equal to zero" do
+      expect(0.nonpositive?).to be true
+      expect(1.nonpositive?).to be false
+      expect(-1.nonpositive?).to be true
+    end
+  end
+
+  context "is negative?" do
+    it "returns true for an integer value less than zero" do
+      expect(0.negative?).to be false
+      expect(1.negative?).to be false
+      expect(-1.negative?).to be true
+    end
+  end
+
+  context "is nonnegative?" do
+    it "returns true for an integer value greater than or equal to zero" do
+      expect(0.nonnegative?).to be true
+      expect(1.nonnegative?).to be true
+      expect(-1.nonnegative?).to be false
+    end
+  end
+
+end

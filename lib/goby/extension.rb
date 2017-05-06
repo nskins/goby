@@ -19,3 +19,27 @@ class String
   end
 
 end
+
+class Integer
+
+  # Returns true if the integer is a positive number.
+  def positive?
+    return self > 0
+  end
+
+  # Returns true if the integer is not a positive number.
+  def nonpositive?
+    return self <= 0
+  end
+
+  # Returns true if the integer is a negative number.
+  def negative?
+    return self < 0
+  end
+
+  # Returns true if the integer is not a negative number.
+  def nonnegative?
+    return self >= 0
+  end
+
+end

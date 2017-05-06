@@ -29,7 +29,7 @@ module Goby
         multiplier = 1 - ((enemy.defense * 0.1) - (user.attack * inflict))
 
         # Prevent a negative multiplier.
-        multiplier = 0 if multiplier < 0
+        multiplier = 0 if multiplier.negative?
 
       else
         multiplier = 1 + ((user.attack * inflict) - (enemy.defense * 0.1))
@@ -51,7 +51,7 @@ module Goby
         enemy.hp -= damage
 
         # Prevent HP < 0.
-        enemy.hp = 0 if enemy.hp < 0
+        enemy.hp = 0 if enemy.hp.negative?
 
         type("#{user.name} uses #{@name}!\n\n")
         type("#{enemy.name} takes #{original_enemy_hp - enemy.hp} damage!\n")

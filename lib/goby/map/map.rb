@@ -19,7 +19,7 @@ module Goby
     # @param [Integer] x the x-coordinate.
     # @return [Boolean] the existence of the tile.
     def in_bounds(y, x)
-      return (y >= 0 && y < @tiles.length && x >= 0 && x < @tiles[y].length)
+      return (y.nonnegative? && y < @tiles.length && x.nonnegative? && x < @tiles[y].length)
     end
 
     # Prints the map in a nice format.

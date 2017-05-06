@@ -59,7 +59,7 @@ module Goby
       puts "#{monster.message}\n"
       type("You've run into a vicious #{monster.name}!\n\n")
 
-      while hp > 0
+      while hp.positive?
         # Both choose an attack.
         player_attack = choose_attack
 
@@ -91,17 +91,17 @@ module Goby
             return
           end
 
-          break if monster.hp <= 0 || hp <= 0
+          break if monster.hp.nonpositive? || hp.nonpositive?
 
         end
 
-        break if monster.hp <= 0 || hp <= 0
+        break if monster.hp.nonpositive? || hp.nonpositive?
 
       end
 
-      die if hp <= 0
+      die if hp.nonpositive?
 
-      if monster.hp <= 0
+      if monster.hp.nonpositive?
         type("You defeated the #{monster.name}!\n\n")
 
         # Determine the rewards for defeating the monster.
@@ -196,7 +196,7 @@ module Goby
       type("you wake up in #{@map.name}.\n\n")
 
       # Reduce gold if the player has any.
-      if @gold > 0
+      if @gold.positive?
         type("Looks like you lost some gold...\n\n")
         @gold /= 2
       end
@@ -299,7 +299,7 @@ module Goby
       print "\n"
       for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
         # skip to next line if out of bounds from above map
-        next if y < 0
+        next if y.negative?
         # centers minimap
         10.times { print " " }
         for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)

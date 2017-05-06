@@ -91,9 +91,9 @@ module Goby
     # @param [Integer] gold the amount of gold.
     # @param [Item] treasure the treasure item.
     def add_rewards(gold, treasure)
-      if ((gold > 0) || treasure)
+      if ((gold.positive?) || treasure)
         type("Rewards:\n")
-        if gold > 0
+        if gold.positive?
           type("* #{gold} gold\n")
           add_gold(gold)
         end
@@ -263,7 +263,7 @@ module Goby
           couple.second -= amount
 
           # Delete the item if the amount becomes non-positive.
-          @inventory.delete_at(index) if couple.second <= 0
+          @inventory.delete_at(index) if couple.second.nonpositive?
 
           return
         end
@@ -335,7 +335,7 @@ module Goby
       # Safety function that prevents gold
       # from decreasing below 0.
       def check_and_set_gold
-        @gold = 0 if @gold < 0
+        @gold = 0 if @gold.negative?
       end
 
   end
