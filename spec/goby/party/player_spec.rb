@@ -17,13 +17,13 @@ RSpec.describe Player do
 
   before(:each) do
     @dude = Player.new(attack: 10, agility: 10000,
-                       battle_commands: [Attack.new(strength: 20), Escape.new, Use.new], 
+                       battle_commands: [Attack.new(strength: 20), Escape.new, Use.new],
                        map: @map, location: @center)
     @slime = Monster.new(battle_commands: [Attack.new(success_rate: 0)],
                          gold: 5000, treasures: [Couple.new(Item.new, 1)])
     @newb = Player.new(battle_commands: [Attack.new(success_rate: 0)],
                        gold: 50, map: @map, location: @center)
-    @dragon = Monster.new(attack: 50, agility: 10000, 
+    @dragon = Monster.new(attack: 50, agility: 10000,
                           battle_commands: [Attack.new(strength: 50)] )
   end
 
@@ -111,19 +111,19 @@ RSpec.describe Player do
     end
 
   end
-  
+
   context "choose attack" do
     it "should choose the correct attack based on the input" do
       charge = BattleCommand.new(name: "Charge")
       zap = BattleCommand.new(name: "Zap")
       player = Player.new(battle_commands: [charge, zap])
-      
+
       # RSpec input example. Also see spec_helper.rb for __stdin method.
       __stdin("kick\n", "zap\n") do
         expect(player.choose_attack.name).to eq "Zap"
       end
     end
-  end    
+  end
 
   context "choose item and on whom" do
     # Define some common variables for these tests.
@@ -134,8 +134,8 @@ RSpec.describe Player do
                                       Couple.new(axe, 3)])
       @enemy = Entity.new(name: "Enemy")
     end
-    
-    it "should return correct values based on the input" do  
+
+    it "should return correct values based on the input" do
       # RSpec input example. Also see spec_helper.rb for __stdin method.
       __stdin("goulash\n", "axe\n", "bill\n", "enemy\n") do
         pair = @entity.choose_item_and_on_whom(@enemy)
@@ -143,7 +143,7 @@ RSpec.describe Player do
         expect(pair.second.name).to eq "Enemy"
       end
     end
-    
+
     context "should return nil on appropriate input" do
       it "for item" do
         # RSpec input example. Also see spec_helper.rb for __stdin method.
@@ -152,7 +152,7 @@ RSpec.describe Player do
           expect(pair).to be_nil
         end
       end
-      
+
       it "for whom" do
         # RSpec input example. Also see spec_helper.rb for __stdin method.
         __stdin("banana\n", "bill\n", "pass\n") do
@@ -162,7 +162,7 @@ RSpec.describe Player do
       end
     end
   end
-  
+
   context "die" do
     it "moves the player back to the map's regen location" do
       @dude.move_down
@@ -170,20 +170,20 @@ RSpec.describe Player do
       @dude.die
       expect(@dude.location).to eq @map.regen_location
     end
-    
+
     it "reduces the player's gold by half" do
       @dude.set_gold(10)
       @dude.die
       expect(@dude.gold).to eq 5
     end
-    
+
     it "recovers the player's HP to max" do
       @dude.hp = 0
       @dude.die
       expect(@dude.hp).to eq @dude.max_hp
     end
   end
-  
+
   context "move to" do
     it "correctly moves the player to a passable tile" do
       @dude.move_to(Couple.new(2,1))
@@ -268,7 +268,7 @@ RSpec.describe Player do
       expect(@dude.location).to eq Couple.new(1,0)
     end
   end
-	
+
   context "update map" do
     before(:each) do
       @line_map = Map.new(tiles: [ [ Tile.new, Tile.new, Tile.new, Tile.new ] ])
@@ -298,7 +298,7 @@ RSpec.describe Player do
         "  #{edge_row}"\
         "\n"\
         "   ¶ - #{@dude.name}'s\n"\
-        "       location\n\n" 
+        "       location\n\n"
       ).to_stdout
     end
   end

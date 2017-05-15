@@ -2,9 +2,8 @@ require 'goby'
 
 module Goby
 
-  # Extends upon Entity by providing a location in the
-  # form of a Map and a pair of y-x coordinates. Overrides
-  # some methods to accept input during battle.
+  # Extends upon Entity by overriding some
+  # methods to accept input during battle.
   class Player < Entity
 
     include WorldCommand
@@ -184,7 +183,7 @@ module Goby
       return Couple.new(item, whom)
     end
 
-    # Sends the player back to a safe location, 
+    # Sends the player back to a safe location,
     # halves its gold, and restores HP.
     def die
       sleep(2) unless ENV['TEST']
@@ -333,8 +332,8 @@ module Goby
     end
 
     # Updates the 'seen' attributes of the tiles on the player's current map.
-    # 
-    # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map 
+    #
+    # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map
     def update_map(coordinates = @location)
       for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
         for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)

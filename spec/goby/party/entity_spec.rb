@@ -55,7 +55,7 @@ RSpec.describe Entity do
         Attack.new(name: "Punch")
       ]
     end
-    
+
     it "assigns default keyword arguments as appropriate" do
       entity = Entity.new(max_hp: 7,
                         defense: 9,
@@ -194,11 +194,11 @@ RSpec.describe Entity do
     it "randomly selects both item and on whom" do
       banana = Item.new(name: "Banana")
       axe = Item.new(name: "Axe")
-      
+
       entity = Entity.new(inventory: [Couple.new(banana, 1),
                                       Couple.new(axe, 3)])
       enemy = Entity.new(name: "Enemy")
-      
+
       pair = entity.choose_item_and_on_whom(enemy)
       expect(pair.first.name).to eq("Banana").or(eq("Axe"))
       expect(pair.second.name).to eq("Entity").or(eq("Enemy"))
@@ -426,7 +426,7 @@ RSpec.describe Entity do
 
   context "print status" do
     it "prints all of the entity's information" do
-      entity = Entity.new(max_hp: 50, hp: 30, attack: 5, 
+      entity = Entity.new(max_hp: 50, hp: 30, attack: 5,
                           defense: 3, agility: 4,
                           outfit: { helmet: Helmet.new,
                                     legs: Legs.new,
@@ -440,7 +440,7 @@ RSpec.describe Entity do
         "* Torso: Torso\n* Legs: Legs\n\nBattle Commands:\n❊ Escape\n\n"
       ).to_stdout
     end
-    
+
     it "prints the appropriate info for the default Entity" do
       entity = Entity.new
       expect { entity.print_status }.to output(

@@ -19,9 +19,10 @@ require 'goby/battle/use'
 require 'goby/map/map'
 require 'goby/map/tile'
 
-require 'goby/entity/entity'
-require 'goby/entity/monster'
-require 'goby/entity/player'
+require 'goby/party/entity'
+require 'goby/party/monster'
+require 'goby/party/party'
+require 'goby/party/player'
 
 require 'goby/event/event'
 require 'goby/event/npc'

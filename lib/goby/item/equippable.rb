@@ -16,14 +16,14 @@ module Goby
     def type
       raise(NotImplementedError, 'An Equippable Item must have a type')
     end
-    
+
     # Alters the stats of the entity
     #
     # @param [Entity] entity the entity equipping/unequipping the item.
     # @param [Boolean] equipping flag for when the item is being equipped or unequipped.
     # @todo ensure stats cannot go below zero (but does it matter..?).
     def alter_stats(entity, equipping)
-        
+
       # Alter the stats as appropriate.
       # TODO: this can be simplified by creating entity.stats hash..?
       if equipping
@@ -35,7 +35,7 @@ module Goby
         entity.defense -= stat_change[:defense] if stat_change[:defense]
         entity.agility -= stat_change[:agility] if stat_change[:agility]
       end
-      
+
     end
 
     # Equips onto the entity and changes the entity's attributes accordingly.
@@ -65,11 +65,11 @@ module Goby
       print "#{entity.name} unequips #{@name}!\n\n"
     end
 
-    # The function that executes when one uses the equippable.
+    # The function that executes when a party uses the item.
     #
-    # @param [Entity] user the one using the item.
+    # @param [Party] party the party using the item.
     # @param [Entity] entity the one on whom the item is used.
-    def use(user, entity)
+    def use(party, entity)
       print "Type 'equip #{@name}' to equip this item.\n\n"
     end
 

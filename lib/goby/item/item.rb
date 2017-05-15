@@ -18,11 +18,11 @@ module Goby
       @disposable = disposable
     end
 
-    # The function that executes when one uses the item.
+    # The function that executes when a party uses the item.
     #
-    # @param [Entity] user the one using the item.
+    # @param [Party] party the party using the item.
     # @param [Entity] entity the one on whom the item is used.
-    def use(user, entity)
+    def use(party, entity)
       print DEFAULT_USE_TEXT
     end
 
