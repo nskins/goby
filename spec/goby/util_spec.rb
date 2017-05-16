@@ -32,7 +32,7 @@ RSpec.describe do
       expect(couple1).to_not eq couple2
     end
   end
-  
+
   context "player input" do
     before (:each) { Readline::HISTORY.pop until Readline::HISTORY.size <= 0 }
 
@@ -42,7 +42,7 @@ RSpec.describe do
         expect(input).to eq "kick"
       end
     end
-    
+
     it "should correctly add distinct commands to the history" do
       __stdin("kick\n") { player_input }
       __stdin("use\n") { player_input }
@@ -51,7 +51,7 @@ RSpec.describe do
       expect(Readline::HISTORY.size).to eq 3
       expect(Readline::HISTORY[-1]).to eq "inv"
     end
-    
+
     it "should not add repeated commands to the history" do
       __stdin("kick\n") { player_input }
       __stdin("kick\n") { player_input }
@@ -71,43 +71,8 @@ RSpec.describe do
 
       expect(Readline::HISTORY.size).to eq 0
     end
-  end
 
-  context "type" do
-    it "should print the given message" do
-      expect { type("HELLO") }.to output("HELLO").to_stdout
-    end
-  end
-
-  context "save game" do
-    it "should create the appropriate file" do
-      player = Player.new
-      save_game(player, "test.yaml")
-      expect(File.file?("test.yaml")).to eq true
-      File.delete("test.yaml")
-    end
-  end
-
-  context "load game" do
-    it "should load the player's information" do
-      player1 = Player.new(name: "Nicholas", max_hp: 5, hp: 3)
-      save_game(player1, "test.yaml")
-      player2 = load_game("test.yaml")
-      expect(player2.name).to eq "Nicholas"
-      expect(player2.max_hp).to eq 5
-      expect(player2.hp).to eq 3
-      File.delete("test.yaml")
-    end
-
-    it "should return nil if no such file exists" do
-      player = load_game("test.yaml")
-      expect(player).to be_nil
-    end
-  end
-
-  context "increasing player_input versatility" do
-    context "handling lowercase functionality" do
-      it "should maintain case of input if lowercase is marked as false" do
+    it "should maintain case of input if lowercase is marked as false" do
         inputs = ["KicK\n", "uSe\n", "INV\n"]
         Readline::HISTORY.pop until Readline::HISTORY.size <= 0
 
@@ -138,10 +103,8 @@ RSpec.describe do
           i += 1
         end).to eq true
       end
-    end
 
-    context "output is determined by given params" do
-      it "prints an empty string and extra space by default" do
+    it "prints an empty string and extra space by default" do
         expect{ __stdin('test') {player_input} }.to output("\n").to_stdout
       end
 
@@ -156,6 +119,37 @@ RSpec.describe do
       it "prints custom prompt and doesn't print the newline if doublespace is marked as false" do
         expect{ __stdin('test') {player_input doublespace: false, prompt: 'testing: '} }.to output("testing: ").to_stdout
       end
+  end
+
+  context "type" do
+    it "should print the given message" do
+      expect { type("HELLO") }.to output("HELLO").to_stdout
     end
   end
+
+  context "save game" do
+    it "should create the appropriate file" do
+      party = Party.new
+      save_game(party, "test.yaml")
+      expect(File.file?("test.yaml")).to eq true
+      File.delete("test.yaml")
+    end
+  end
+
+  context "load game" do
+    it "should load the party's information" do
+      party1 = Party.new(gold: 15, members: [Entity.new])
+      save_game(party1, "test.yaml")
+      party2 = load_game("test.yaml")
+      expect(party2.gold).to eq 15
+      expect(party2.members[0].name).to eq "Entity"
+      File.delete("test.yaml")
+    end
+
+    it "should return nil if no such file exists" do
+      party = load_game("test.yaml")
+      expect(party).to be_nil
+    end
+  end
+
 end

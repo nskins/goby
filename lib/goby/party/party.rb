@@ -18,7 +18,7 @@ module Goby
     # Used in: update_map, print_minimap.
     VIEW_DISTANCE = 2
 
-    # @param [Array(Entity)] members the entities in this party.
+    # @param [[Entity]] members the entities in this party.
     # @param [Map] map the map on which the party is located.
     # @param [Couple(Integer, Integer)] location the 2D index of the map (the exact tile).
     def initialize(members: [], gold: 0, inventory: [],

@@ -17,11 +17,11 @@ RSpec.describe Shop do
   end
 
   before (:each) do
-    # player1 doesn't have any gold.
-    @player1 = Player.new(inventory: [Couple.new(@apple, 3),
+    # party1 doesn't have any gold.
+    @party1 = Party.new(inventory: [Couple.new(@apple, 3),
                                       Couple.new(@banana, 1)] )
-    # player2 has nothing in the inventory.
-    @player2 = Player.new(gold: 50)
+    # party2 has nothing in the inventory.
+    @party2 = Party.new(gold: 50)
   end
 
   context "constructor" do
@@ -44,43 +44,43 @@ RSpec.describe Shop do
 
   context "buy" do
     it "should print an error message when the shop has nothing to sell" do
-      expect { @shop.buy(@player2) }.to output(Shop::NO_ITEMS_MESSAGE).to_stdout
+      expect { @shop.buy(@party2) }.to output(Shop::NO_ITEMS_MESSAGE).to_stdout
     end
 
-    it "should return if the player doesn't want to buy anything" do
+    it "should return if the party doesn't want to buy anything" do
       __stdin("none\n") do
-        @tool_shop.buy(@player2)
-        expect(@player2.inventory.empty?).to be true
+        @tool_shop.buy(@party2)
+        expect(@party2.inventory.empty?).to be true
       end
     end
 
-    it "should return if the player specifies a non-existent item" do
+    it "should return if the party specifies a non-existent item" do
       __stdin("pencil\n") do
-        @tool_shop.buy(@player2)
-        expect(@player2.inventory.empty?).to be true
+        @tool_shop.buy(@party2)
+        expect(@party2.inventory.empty?).to be true
       end
     end
 
-    it "should prevent the player from buying more than (s)he has in gold" do
+    it "should prevent the party from buying more than (s)he has in gold" do
       __stdin("fork\n5\n") do
-        @tool_shop.buy(@player2)
-        expect(@player2.inventory.empty?).to be true
+        @tool_shop.buy(@party2)
+        expect(@party2.inventory.empty?).to be true
       end
     end
 
-    it "should prevent the player from buying a non-positive amount" do
+    it "should prevent the party from buying a non-positive amount" do
       __stdin("fork\n0\n") do
-        @tool_shop.buy(@player2)
-        expect(@player2.inventory.empty?).to be true
+        @tool_shop.buy(@party2)
+        expect(@party2.inventory.empty?).to be true
       end
     end
 
-    it "should sell the item to the player for a sensible purchase" do
+    it "should sell the item to the party for a sensible purchase" do
       __stdin("fork\n2\n") do
-        @tool_shop.buy(@player2)
-        expect(@player2.inventory.empty?).to be false
-        expect(@player2.gold).to be 26
-        expect(@player2.has_item("Fork")).to eq 0
+        @tool_shop.buy(@party2)
+        expect(@party2.inventory.empty?).to be false
+        expect(@party2.gold).to be 26
+        expect(@party2.has_item("Fork")).to eq 0
       end
     end
   end
@@ -89,7 +89,7 @@ RSpec.describe Shop do
     it "returns nil when no such item is available" do
       expect(@shop.has_item("Basket")).to be_nil
     end
-    
+
     it "returns the index of the item when available" do
       expect(@tool_shop.has_item("Basket")).to be_zero
       expect(@tool_shop.has_item("Knife")).to eq 1
@@ -101,7 +101,7 @@ RSpec.describe Shop do
   context "print gold and greeting" do
     it "prints the appropriate output" do
       __stdin("exit\n") do
-        expect { @shop.print_gold_and_greeting(@player2) }.to output(
+        expect { @shop.print_gold_and_greeting(@party2) }.to output(
           "Current gold in your pouch: 50.\n"\
           "Would you like to buy, sell, or exit?: \n"\
         ).to_stdout
@@ -110,7 +110,7 @@ RSpec.describe Shop do
 
     it "returns the input (w/o newline)" do
       __stdin("buy\n") do
-        expect(@shop.print_gold_and_greeting(@player2)).to eq "buy"
+        expect(@shop.print_gold_and_greeting(@party2)).to eq "buy"
       end
     end
   end
@@ -132,76 +132,76 @@ RSpec.describe Shop do
   end
 
   context "run" do
-    it "should allow the player to buy an item" do
+    it "should allow the party to buy an item" do
       __stdin("buy\nknife\n3\nexit\n") do
-        @tool_shop.run(@player2)
-        expect(@player2.gold).to eq 20
-        expect(@player2.inventory.size).to eq 1
+        @tool_shop.run(@party2)
+        expect(@party2.gold).to eq 20
+        expect(@party2.inventory.size).to eq 1
       end
     end
 
-    it "should allow the player to sell an item" do
+    it "should allow the party to sell an item" do
       __stdin("sell\napple\n3\nexit\n") do
-        @tool_shop.run(@player1)
-        expect(@player1.gold).to eq 3
-        expect(@player1.inventory.size).to eq 1
+        @tool_shop.run(@party1)
+        expect(@party1.gold).to eq 3
+        expect(@party1.inventory.size).to eq 1
       end
     end
 
-    it "should allow the player to leave immediately" do
+    it "should allow the party to leave immediately" do
       __stdin("exit\n") do
-        @tool_shop.run(@player1)
-        expect(@player1.gold).to be_zero
-        expect(@player1.inventory.size).to eq 2
+        @tool_shop.run(@party1)
+        expect(@party1.gold).to be_zero
+        expect(@party1.inventory.size).to eq 2
       end
     end
   end
 
   context "sell" do
-    it "should print an error message when the player has nothing to sell" do
-      expect { @tool_shop.sell(@player2) }.to output(Shop::NOTHING_TO_SELL).to_stdout
+    it "should print an error message when the party has nothing to sell" do
+      expect { @tool_shop.sell(@party2) }.to output(Shop::NOTHING_TO_SELL).to_stdout
     end
 
-    it "should return if the player doesn't want to sell anything" do
+    it "should return if the party doesn't want to sell anything" do
       __stdin("none\n") do
-        @tool_shop.sell(@player1)
-        expect(@player1.gold).to be_zero
+        @tool_shop.sell(@party1)
+        expect(@party1.gold).to be_zero
       end
     end
 
-    it "should return if the player tries to sell a non-existent item" do
+    it "should return if the party tries to sell a non-existent item" do
       __stdin("object\n") do
-        @tool_shop.sell(@player1)
-        expect(@player1.gold).to be_zero
+        @tool_shop.sell(@party1)
+        expect(@party1.gold).to be_zero
       end
     end
 
-    it "should return if the player tries to sell a non-disposable item" do
+    it "should return if the party tries to sell a non-disposable item" do
       __stdin("banana\n") do
-        @tool_shop.sell(@player1)
-        expect(@player1.gold).to be_zero
+        @tool_shop.sell(@party1)
+        expect(@party1.gold).to be_zero
       end
     end
 
-    it "should prevent the player from selling more than (s)he has" do
+    it "should prevent the party from selling more than (s)he has" do
       __stdin("apple\n4\n") do
-        @tool_shop.sell(@player1)
-        expect(@player1.gold).to be_zero
+        @tool_shop.sell(@party1)
+        expect(@party1.gold).to be_zero
       end
     end
 
-    it "should prevent the player from selling a non-positive amount" do
+    it "should prevent the party from selling a non-positive amount" do
       __stdin("apple\n0\n") do
-        @tool_shop.sell(@player1)
-        expect(@player1.gold).to be_zero
+        @tool_shop.sell(@party1)
+        expect(@party1.gold).to be_zero
       end
     end
 
     it "should purchase the item for a sensible sale" do
       __stdin("apple\n3\n") do
-        @tool_shop.sell(@player1)
-        expect(@player1.gold).to be 3
-        expect(@player1.inventory.size).to be 1
+        @tool_shop.sell(@party1)
+        expect(@party1.gold).to be 3
+        expect(@party1.inventory.size).to be 1
       end
     end
   end

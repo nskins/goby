@@ -23,7 +23,7 @@ module Goby
 
   # Simple player input script.
   #
-  # @param [Boolean] lowercase mark true if response should be returned lowercase.
+  # @param [Boolean] lowercase mark true if input should be returned lowercase.
   # @param [String] prompt the prompt for the user to input information.
   # @param [Boolean] doublespace mark false if extra space should not be printed after input.
   def player_input(lowercase: true, prompt: '', doublespace: true)
@@ -55,27 +55,27 @@ module Goby
     end
   end
 
-  # Serializes the player object into a YAML file and saves it
+  # Serializes the party object into a YAML file and saves it
   #
-  # @param [Player] player the player object to be saved.
+  # @param [Party] party the party object to be saved.
   # @param [String] filename the name under which to save the file.
-  def save_game(player, filename)
-    player_data = YAML::dump(player)
+  def save_game(party, filename)
+    party_data = YAML::dump(party)
     File.open(filename, "w") do |file|
-      file.puts player_data
+      file.puts party_data
     end
     print "Successfully saved the game!\n\n"
     return
   end
 
-  # Reads and check the save file and parses into the player object
+  # Reads and check the save file and parses into the party object.
   #
   # @param [String] filename the file containing the save data.
-  # @return [Player] the player corresponding to the save data.
+  # @return [Party] the party corresponding to the save data.
   def load_game(filename)
     begin
-      player = YAML.load_file(filename)
-      return player
+      party = YAML.load_file(filename)
+      return party
     rescue
       return nil
     end

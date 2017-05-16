@@ -2,7 +2,7 @@ require 'goby'
 
 module Goby
 
-  # A non-player character with whom the player can interact.
+  # A non-player character with whom the party can interact.
   # Always activated with the 'talk' command.
   class NPC < Event
 
@@ -15,10 +15,10 @@ module Goby
       @command = "talk"
     end
 
-    # The function that runs when the player speaks to the NPC.
+    # The function that runs when the party speaks to the NPC.
     #
-    # @param [Player] player the one speaking to the NPC.
-    def run(player)
+    # @param [Party] party the one speaking to the NPC.
+    def run(party)
       print "#{@name}: Hello!\n\n"
     end
 

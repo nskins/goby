@@ -2,12 +2,12 @@ require 'goby'
 
 module Goby
 
-  # Allows a player to buy and sell Items.
+  # Allows a party to buy and sell Items.
   class Shop < Event
 
     # Message for when the shop has nothing to sell.
     NO_ITEMS_MESSAGE = "Sorry, we're out of stock right now!\n\n"
-    # Message for when the player has nothing to sell.
+    # Message for when the party has nothing to sell.
     NOTHING_TO_SELL = "You have nothing to sell!\n\n"
     # Introductory greeting at the shop.
     WARES_MESSAGE = "Please take a look at my wares.\n\n"
@@ -25,8 +25,8 @@ module Goby
 
     # The chain of events for buying an item (w/ error checking).
     #
-    # @param [Player] player the player trying to buy an item.
-    def buy(player)
+    # @param [Party] party the party trying to buy an item.
+    def buy(party)
 
       print_items
       return if @items.empty?
@@ -35,7 +35,7 @@ module Goby
       name = player_input
       index = has_item(name)
 
-      # The player does not want to buy an item.
+      # The party does not want to buy an item.
       return if name.casecmp("none").zero?
 
       if index.nil? # non-existent item.
@@ -50,9 +50,9 @@ module Goby
       total_cost = amount_to_buy.to_i * item.price
       print "\n"
 
-      if total_cost > player.gold # not enough gold.
+      if total_cost > party.gold # not enough gold.
         puts "You don't have enough gold!"
-        print "You only have #{player.gold}, but you need #{total_cost}!\n\n"
+        print "You only have #{party.gold}, but you need #{total_cost}!\n\n"
         return
       elsif amount_to_buy.to_i < 1 # non-positive amount.
         puts "Is this some kind of joke?"
@@ -60,9 +60,9 @@ module Goby
         return
       end
 
-      # The player specifies a positive amount.
-      player.remove_gold(total_cost)
-      player.add_item(item, amount_to_buy.to_i)
+      # The party specifies a positive amount.
+      party.remove_gold(total_cost)
+      party.add_item(item, amount_to_buy.to_i)
       print "Thank you for your patronage!\n\n"
 
     end
@@ -78,13 +78,13 @@ module Goby
       return
     end
 
-    # Displays the player's current amount of gold
+    # Displays the party's current amount of gold
     # and a greeting. Inquires about next action.
     #
-    # @param [Player] player the player interacting with the shop.
-    # @return [String] the player's input.
-    def print_gold_and_greeting(player)
-      puts "Current gold in your pouch: #{player.gold}."
+    # @param [Party] party the party interacting with the shop.
+    # @return [String] the party's input.
+    def print_gold_and_greeting(party)
+      puts "Current gold in your pouch: #{party.gold}."
       print "Would you like to buy, sell, or exit?: "
       input = player_input doublespace: false
       print "\n"
@@ -113,44 +113,44 @@ module Goby
 
     # The default shop experience.
     #
-    # @param [Player] player the player interacting with the shop.
-    def run(player)
+    # @param [Party] party the party interacting with the shop.
+    def run(party)
 
       # Initial greeting.
       puts "Welcome to #{@name}."
-      input = print_gold_and_greeting(player)
+      input = print_gold_and_greeting(party)
 
       while input.casecmp("exit").nonzero?
         if input.casecmp("buy").zero?
-          buy(player)
+          buy(party)
         elsif input.casecmp("sell").zero?
-          sell(player)
+          sell(party)
         end
-        input = print_gold_and_greeting(player)
+        input = print_gold_and_greeting(party)
       end
 
-      print "#{player.name} has left #{@name}.\n\n"
+      print "The party has left #{@name}.\n\n"
     end
 
     # The chain of events for selling an item (w/ error checking).
     #
-    # @param [Player] player the player trying to sell an item.
-    def sell(player)
+    # @param [Party] party the party trying to sell an item.
+    def sell(party)
 
-      # The player has nothing to sell.
-      if player.inventory.empty?
+      # The party has nothing to sell.
+      if party.inventory.empty?
         print NOTHING_TO_SELL
         return
       end
 
-      player.print_inventory
+      party.print_inventory
 
       print "What would you like to sell? (or none): "
       input = player_input
-      index = player.has_item(input)
+      index = party.has_item(input)
       print "\n"
 
-      # The player does not want to sell an item.
+      # The party does not want to sell an item.
       return if input.casecmp("none").zero?
 
       if index.nil? # non-existent item.
@@ -158,8 +158,8 @@ module Goby
         return
       end
 
-      item = player.inventory[index].first
-      item_count = player.inventory[index].second
+      item = party.inventory[index].first
+      item_count = party.inventory[index].second
 
       unless item.disposable # non-disposable item (cannot sell/drop).
         print "You cannot sell that item.\n\n"
@@ -180,8 +180,8 @@ module Goby
         return
       end
 
-      player.add_gold(purchase_price(item) * amount_to_sell)
-      player.remove_item(item, amount_to_sell)
+      party.add_gold(purchase_price(item) * amount_to_sell)
+      party.remove_item(item, amount_to_sell)
       print "Thank you for your patronage!\n\n"
 
     end

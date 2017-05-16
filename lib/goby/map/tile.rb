@@ -9,7 +9,7 @@ module Goby
     # Default graphic for impassable tiles.
     DEFAULT_IMPASSABLE = "■"
 
-    # @param [Boolean] passable if true, the player can move here.
+    # @param [Boolean] passable if true, the party can move here.
     # @param [Boolean] seen if true, it will be printed on the map.
     # @param [String] description a summary/message of the contents.
     # @param [[Event]] events the events found on this tile.
@@ -26,12 +26,12 @@ module Goby
 
     # Create deep copy of Tile.
     #
-    # @return Tile a new Tile object 
+    # @return Tile a new Tile object
     def clone
       # First serialize the object, and then deserialize that into a new ruby object
       serialized_tile = Marshal.dump(self)
       new_tile = Marshal.load(serialized_tile)
-      return new_tile           
+      return new_tile
     end
 
     # Convenient conversion to String.

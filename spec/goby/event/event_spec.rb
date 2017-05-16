@@ -1,7 +1,7 @@
 require 'goby'
 
 RSpec.describe Event do
-  
+
   context "constructor" do
     it "has the correct default parameters" do
       event = Event.new
@@ -23,8 +23,8 @@ RSpec.describe Event do
   context "run" do
     it "prints the default run text for a default event" do
       event = Event.new
-      entity = Entity.new
-      expect { event.run(entity) }.to output(Event::DEFAULT_RUN_TEXT).to_stdout
+      party = Party.new
+      expect { event.run(party) }.to output(Event::DEFAULT_RUN_TEXT).to_stdout
     end
   end
 

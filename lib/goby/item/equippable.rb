@@ -17,7 +17,7 @@ module Goby
       raise(NotImplementedError, 'An Equippable Item must have a type')
     end
 
-    # Alters the stats of the entity
+    # Alters the stats of the entity.
     #
     # @param [Entity] entity the entity equipping/unequipping the item.
     # @param [Boolean] equipping flag for when the item is being equipped or unequipped.

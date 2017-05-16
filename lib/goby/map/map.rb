@@ -1,6 +1,6 @@
 module Goby
 
-  # A 2D arrangement of Tiles. The Player can move around on it.
+  # A 2D arrangement of Tiles. The Party can move around on it.
   class Map
 
     # @param [String] name the name.

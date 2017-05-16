@@ -1,6 +1,6 @@
 module Goby
 
-  # A Player can interact with these on the Map.
+  # A Party can interact with these on the Map.
   class Event
 
     # The default text for when the event doesn't do anything.
@@ -15,11 +15,11 @@ module Goby
       @visible = visible
     end
 
-    # The function that runs when the player activates the event.
+    # The function that runs when the party activates the event.
     # Override this function for subclasses.
     #
-    # @param [Player] player the one activating the event.
-    def run(player)
+    # @param [Party] party the one activating the event.
+    def run(party)
       print DEFAULT_RUN_TEXT
     end
 
