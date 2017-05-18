@@ -200,15 +200,19 @@ module Goby
       print "\n"
     end
 
-    # Prints the status in a nice format.
-    # TODO: encapsulate print_stats and print_equipment in own functions.
-    def print_status
-      puts "Stats:"
+    def print_stats
       puts "* HP: #{@hp}/#{@max_hp}"
       puts "* Attack: #{@attack}"
       puts "* Defense: #{@defense}"
       puts "* Agility: #{@agility}"
       print "\n"
+    end
+
+    # Prints the status in a nice format.
+    # TODO: encapsulate print_stats and print_equipment in own functions.
+    def print_status
+      puts "Stats:"
+      print_stats
 
       puts "Equipment:"
       print "* Weapon: "

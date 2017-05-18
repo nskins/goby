@@ -13,9 +13,11 @@ module Goby
     DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
     # Default location when no "good" map & location specified.
     DEFAULT_LOCATION = Couple.new(0,0)
-
+    # Error when the party specifies a non-existent item.
+    NO_SUCH_ITEM_ERROR = "What?! You don't have THAT!\n\n"
+    # Error when the party specifies an item not equipped.
+    NOT_EQUIPPED_ERROR = "You are not equipping THAT!\n\n"
     # Distance in each direction that tiles are acted upon.
-    # Used in: update_map, print_minimap.
     VIEW_DISTANCE = 2
 
     # @param [[Entity]] members the entities in this party.
@@ -94,6 +96,30 @@ module Goby
       end
     end
 
+    # Equips the specified item to the entity's outfit.
+    #
+    # @param [Item, String] item the item (or its name) to equip.
+    # @param [Entity] entity the entity who's equipping the item.
+    def equip_item(item, entity)
+
+      index = has_item(item)
+      if index
+        actual_item = inventory[index].first
+
+        # Checks for Equippable without importing the file.
+        if (defined? actual_item.equip)
+          actual_item.equip(entity)
+
+          # Equipping the item will always remove it from the entity's inventory.
+          remove_item(actual_item)
+        else
+          print "#{actual_item.name} cannot be equipped!\n\n"
+        end
+      else
+        print NO_SUCH_ITEM_ERROR
+      end
+    end
+
     # Returns the index of the specified item, if it exists.
     #
     # @param [Item, String] item the item (or its name).
@@ -114,6 +140,24 @@ module Goby
         return index if mem.name.casecmp(member.to_s).zero?
       end
       return
+    end
+
+    # Moves the party down. Increases 'y' coordinate by 1.
+    def move_down
+      down_tile = Couple.new(@location.first + 1, @location.second)
+      move_to(down_tile)
+    end
+
+    # Moves the party left. Decreases 'x' coordinate by 1.
+    def move_left
+      left_tile = Couple.new(@location.first, @location.second - 1)
+      move_to(left_tile)
+    end
+
+    # Moves the party right. Increases 'x' coordinate by 1.
+    def move_right
+      right_tile = Couple.new(@location.first, @location.second + 1)
+      move_to(right_tile)
     end
 
     # Safe setter function for location and map.
@@ -149,6 +193,12 @@ module Goby
       end
 
       describe_tile(self)
+    end
+
+    # Moves the party up. Decreases 'y' coordinate by 1.
+    def move_up
+      up_tile = Couple.new(@location.first - 1, @location.second)
+      move_to(up_tile)
     end
 
     # Prints the inventory in a nice format.
@@ -213,6 +263,14 @@ module Goby
       print "\n"
     end
 
+    # Prints the stats of each party member.
+    def print_status
+      @members.each do |member|
+        puts "#{member.name}:"
+        member.print_stats
+      end
+    end
+
     # Prints the tile based on the party's location.
     #
     # @param [Couple(Integer, Integer)] coords the y-x coordinates of the tile.
@@ -268,6 +326,23 @@ module Goby
     def set_gold(gold)
       @gold = gold
       check_and_set_gold
+    end
+
+    # Unequips the specified item from the entity's outfit.
+    #
+    # @param [Item, String] item the item (or its name) to unequip.
+    # @param [Entity] entity the entity who's unequipping the item.
+    def unequip_item(item, entity)
+      pair = entity.outfit.detect { |type, value| value.name.casecmp(item.to_s).zero? }
+      if pair
+        # On a successful find, the "detect" method always returns
+        # an array of length 2; thus, the following line should not fail.
+        item = pair[1]
+        item.unequip(entity)
+        add_item(item)
+      else
+        print NOT_EQUIPPED_ERROR
+      end
     end
 
     # Updates the 'seen' attributes of the tiles on the party's current map.

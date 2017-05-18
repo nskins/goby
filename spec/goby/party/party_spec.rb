@@ -173,15 +173,15 @@ RSpec.describe Party do
   context "battle" do
     it "should allow the player to win in this example" do
       __stdin("use\nattack\n") do
-        # @dude.battle(@slime)
+        # @beatles.battle(@slime)
       end
-      # expect(@dude.inventory.size).to eq 1
+      # expect(@beatles.inventory.size).to eq 1
     end
 
     it "should allow the player to escape in this example" do
       # Could theoretically fail, but with very low probability.
       __stdin("escape\nescape\nescape\n") do
-        # @dude.battle(@slime)
+        # @beatles.battle(@slime)
       end
     end
 
@@ -242,6 +242,48 @@ RSpec.describe Party do
     end
   end
 
+  context "move down" do
+    it "correctly moves the player to a passable tile" do
+      @beatles.move_down
+      expect(@beatles.map).to eq @liverpool
+      expect(@beatles.location).to eq Couple.new(2,1)
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @beatles.move_down; @beatles.move_down
+      expect(@beatles.map).to eq @liverpool
+      expect(@beatles.location).to eq Couple.new(2,1)
+    end
+  end
+
+  context "move left" do
+    it "correctly moves the player to a passable tile" do
+      @beatles.move_left
+      expect(@beatles.map).to eq @liverpool
+      expect(@beatles.location).to eq Couple.new(1,0)
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @beatles.move_left; @beatles.move_left
+      expect(@beatles.map).to eq @liverpool
+      expect(@beatles.location).to eq Couple.new(1,0)
+    end
+  end
+
+  context "move right" do
+    it "correctly moves the player to a passable tile" do
+      @beatles.move_right
+      expect(@beatles.map).to eq @liverpool
+      expect(@beatles.location).to eq Couple.new(1,2)
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @beatles.move_right; @beatles.move_right
+      expect(@beatles.map).to eq @liverpool
+      expect(@beatles.location).to eq Couple.new(1,2)
+    end
+  end
+
   context "move to" do
     it "correctly moves the party to a passable tile" do
       @beatles.move_to(Couple.new(2,1))
@@ -269,6 +311,20 @@ RSpec.describe Party do
           # @beatles.move_to(Couple.new(0,0), @monster_map)
         end
       end
+    end
+  end
+
+  context "move up" do
+    it "correctly moves the player to a passable tile" do
+      @beatles.move_up
+      expect(@beatles.map).to eq @liverpool
+      expect(@beatles.location).to eq Couple.new(0,1)
+    end
+
+    it "prevents the player from moving on a nonexistent tile" do
+      @beatles.move_up; @beatles.move_up
+      expect(@beatles.map).to eq @liverpool
+      expect(@beatles.location).to eq Couple.new(0,1)
     end
   end
 
