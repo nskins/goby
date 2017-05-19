@@ -59,7 +59,7 @@ module Goby
       # Maintain sorted battle commands.
       @battle_commands.sort!{ |x,y| x.name <=> y.name }
     end
-    
+
     # Adds the given amount of gold.
     #
     # @param [Integer] gold the amount of gold to add.
@@ -179,7 +179,7 @@ module Goby
     # Prints the available battle commands.
     def print_battle_commands
       @battle_commands.each do |command|
-        print "❊ #{command.name}\n" 
+        print "❊ #{command.name}\n"
       end
       print "\n"
     end

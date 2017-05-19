@@ -1,39 +1,18 @@
 require 'goby'
 
-RSpec.describe String do
-
-  context "is positive?" do
-    it "returns true for a positive string" do
-      expect("y".is_positive?).to be true
-      expect("yes".is_positive?).to be true
-      expect("yeah".is_positive?).to be true
-      expect("ok".is_positive?).to be true
+RSpec.describe Array do
+  context "nonempty?" do
+    it "returns true when the array contains elements" do
+      expect([1].nonempty?).to be true
+      expect(["Hello"].nonempty?).to be true
+      expect([false, false].nonempty?).to be true
     end
 
-    it "returns false for a non-positive string" do
-      expect("maybe".is_positive?).to be false
-      expect("whatever".is_positive?).to be false
-      expect("no".is_positive?).to be false
-      expect("nah".is_positive?).to be false
+    it "returns false when the array contains no elements" do
+      expect([].nonempty?).to be false
+      expect(Array.new.nonempty?).to be false
     end
   end
-
-  context "is negative?" do
-    it "returns true for a negative string" do
-      expect("n".is_negative?).to be true
-      expect("no".is_negative?).to be true
-      expect("nah".is_negative?).to be true
-      expect("nope".is_negative?).to be true
-    end
-
-    it "returns false for a non-negative string" do
-      expect("maybe".is_negative?).to be false
-      expect("whatever".is_negative?).to be false
-      expect("sure".is_negative?).to be false
-      expect("okey dokey".is_negative?).to be false
-    end
-  end
-
 end
 
 RSpec.describe Integer do
@@ -67,6 +46,42 @@ RSpec.describe Integer do
       expect(0.nonnegative?).to be true
       expect(1.nonnegative?).to be true
       expect(-1.nonnegative?).to be false
+    end
+  end
+
+end
+
+RSpec.describe String do
+
+  context "is positive?" do
+    it "returns true for a positive string" do
+      expect("y".is_positive?).to be true
+      expect("yes".is_positive?).to be true
+      expect("yeah".is_positive?).to be true
+      expect("ok".is_positive?).to be true
+    end
+
+    it "returns false for a non-positive string" do
+      expect("maybe".is_positive?).to be false
+      expect("whatever".is_positive?).to be false
+      expect("no".is_positive?).to be false
+      expect("nah".is_positive?).to be false
+    end
+  end
+
+  context "is negative?" do
+    it "returns true for a negative string" do
+      expect("n".is_negative?).to be true
+      expect("no".is_negative?).to be true
+      expect("nah".is_negative?).to be true
+      expect("nope".is_negative?).to be true
+    end
+
+    it "returns false for a non-negative string" do
+      expect("maybe".is_negative?).to be false
+      expect("whatever".is_negative?).to be false
+      expect("sure".is_negative?).to be false
+      expect("okey dokey".is_negative?).to be false
     end
   end
 

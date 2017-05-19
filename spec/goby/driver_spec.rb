@@ -8,7 +8,7 @@ RSpec.describe do
     @player = Player.new
   end
 
-  # Success for each of these tests mean 
+  # Success for each of these tests mean
   # that run_driver exits without error.
   context "run driver" do
     it "should exit on 'quit'" do

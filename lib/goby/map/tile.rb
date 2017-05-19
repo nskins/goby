@@ -26,12 +26,12 @@ module Goby
 
     # Create deep copy of Tile.
     #
-    # @return Tile a new Tile object 
+    # @return Tile a new Tile object
     def clone
       # First serialize the object, and then deserialize that into a new ruby object
       serialized_tile = Marshal.dump(self)
       new_tile = Marshal.load(serialized_tile)
-      return new_tile           
+      return new_tile
     end
 
     # Convenient conversion to String.

@@ -89,7 +89,7 @@ RSpec.describe Shop do
     it "returns nil when no such item is available" do
       expect(@shop.has_item("Basket")).to be_nil
     end
-    
+
     it "returns the index of the item when available" do
       expect(@tool_shop.has_item("Basket")).to be_zero
       expect(@tool_shop.has_item("Knife")).to eq 1

@@ -4,7 +4,7 @@ module Goby
   module WorldCommand
 
     # String literal providing default commands.
-    DEFAULT_COMMANDS = 
+    DEFAULT_COMMANDS =
   %{     Command          Purpose
 
         w (↑)
@@ -38,7 +38,7 @@ module Goby
     # @param [Player] player the player who wants to see the special commands.
     def display_special_commands(player)
       events = player.map.tiles[player.location.first][player.location.second].events
-      if (!(events.empty?) && events.any? { |event| event.visible })
+      if events.nonempty? && events.any? { |event| event.visible }
 
         print SPECIAL_COMMANDS_HEADER + (events.reduce([]) do |commands, event|
           commands << event.command if event.visible

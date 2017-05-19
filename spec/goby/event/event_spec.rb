@@ -1,7 +1,7 @@
 require 'goby'
 
 RSpec.describe Event do
-  
+
   context "constructor" do
     it "has the correct default parameters" do
       event = Event.new

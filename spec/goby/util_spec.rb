@@ -32,7 +32,7 @@ RSpec.describe do
       expect(couple1).to_not eq couple2
     end
   end
-  
+
   context "player input" do
     before (:each) { Readline::HISTORY.pop until Readline::HISTORY.size <= 0 }
 
@@ -42,7 +42,7 @@ RSpec.describe do
         expect(input).to eq "kick"
       end
     end
-    
+
     it "should correctly add distinct commands to the history" do
       __stdin("kick\n") { player_input }
       __stdin("use\n") { player_input }
@@ -51,7 +51,7 @@ RSpec.describe do
       expect(Readline::HISTORY.size).to eq 3
       expect(Readline::HISTORY[-1]).to eq "inv"
     end
-    
+
     it "should not add repeated commands to the history" do
       __stdin("kick\n") { player_input }
       __stdin("kick\n") { player_input }

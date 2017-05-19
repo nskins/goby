@@ -27,7 +27,7 @@ ENV['TEST'] = 'rspec'
 # Credit for "discovering" (?) RSpec input:
 # https://gist.github.com/nu7hatch/631329
 module Helpers
-  # Replace standard input with faked one StringIO. 
+  # Replace standard input with faked one StringIO.
   def __stdin(*args)
     begin
       $stdin = StringIO.new

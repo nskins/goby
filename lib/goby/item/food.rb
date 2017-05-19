@@ -27,7 +27,7 @@ module Goby
         this_recover = @recovers
         entity.hp += @recovers
       end
-      
+
       # Helpful output.
       print "#{user.name} uses #{name}"
       if (user == entity)
@@ -37,7 +37,7 @@ module Goby
       end
       print "recovers #{this_recover} HP!\n\n"
       print "#{entity.name}'s HP: #{entity.hp}/#{entity.max_hp}\n\n"
-      
+
     end
 
     # The amount of HP that the food recovers.

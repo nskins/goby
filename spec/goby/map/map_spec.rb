@@ -23,7 +23,7 @@ RSpec.describe Map do
       expect(@lake.regen_location).to eq Couple.new(0,1)
     end
   end
-  
+
   context "to_s" do
     it "should display a simple map" do
       expect(@lake.to_s).to eq("· ■ \n")

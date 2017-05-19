@@ -5,13 +5,13 @@ RSpec.describe do
   include WorldCommand
 
   before(:each) do
-    @map = Map.new(tiles: [ [ Tile.new, 
+    @map = Map.new(tiles: [ [ Tile.new,
                               Tile.new(events: [NPC.new]),
                               Tile.new(events: [Event.new(visible: false)]) ],
-                            [ Tile.new(events: [Shop.new, NPC.new]), 
+                            [ Tile.new(events: [Shop.new, NPC.new]),
                               Tile.new(events: [Event.new(visible: false), Shop.new, NPC.new]) ] ],
                       regen_location: Couple.new(0,0))
-    
+
     @player = Player.new(max_hp: 10,
                          hp: 3,
                          inventory: [ Couple.new(Food.new(name: "Banana", recovers: 5), 1),
@@ -68,14 +68,14 @@ RSpec.describe do
     it "should print the default commands and the special commands" do
       @player.move_right
       expect { help(@player) }.to output(
-        WorldCommand::DEFAULT_COMMANDS + WorldCommand::SPECIAL_COMMANDS_HEADER + 
+        WorldCommand::DEFAULT_COMMANDS + WorldCommand::SPECIAL_COMMANDS_HEADER +
         "talk\n\n").to_stdout
     end
   end
 
   # TODO: tests for describe_tile
   context "describe tile" do
-    
+
   end
 
   # TODO: test the input of all possible commands.

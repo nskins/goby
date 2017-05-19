@@ -13,7 +13,7 @@ RSpec.describe Goby::BattleCommand do
       expect(dance.name).to eq "Dance"
     end
   end
-  
+
   context "run" do
     it "prints the default message" do
       user = Entity.new
@@ -23,7 +23,7 @@ RSpec.describe Goby::BattleCommand do
       expect { cmd.run(user, enemy) }.to output(Goby::BattleCommand::NO_ACTION).to_stdout
     end
   end
-  
+
   context "fails?" do
     it "returns false for the trivial case" do
       entity = Entity.new

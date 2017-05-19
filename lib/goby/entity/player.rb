@@ -184,7 +184,7 @@ module Goby
       return Couple.new(item, whom)
     end
 
-    # Sends the player back to a safe location, 
+    # Sends the player back to a safe location,
     # halves its gold, and restores HP.
     def die
       sleep(2) unless ENV['TEST']
@@ -249,7 +249,7 @@ module Goby
 
       update_map
 
-      if !(tile.monsters.empty?)
+      unless tile.monsters.empty?
         # 50% chance to encounter monster.
         if [true, false].sample
           clone = tile.monsters[Random.rand(0..(tile.monsters.size-1))].clone
@@ -333,8 +333,8 @@ module Goby
     end
 
     # Updates the 'seen' attributes of the tiles on the player's current map.
-    # 
-    # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map 
+    #
+    # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map
     def update_map(coordinates = @location)
       for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
         for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)

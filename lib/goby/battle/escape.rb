@@ -20,7 +20,7 @@ module Goby
     # @param [Entity] user the one who is trying to escape.
     # @param [Entity] enemy the one from whom the user wants to escape.
     def run(user, enemy)
-      
+
       # Higher probability of escape when the enemy has low agility.
       if (user.sample_agilities(enemy))
         user.escaped = true

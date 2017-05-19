@@ -28,7 +28,7 @@ RSpec.describe Equippable do
       expect(@entity.attack).to eq 3
       expect(@entity.defense).to eq 4
       expect(@entity.agility).to eq 5
- 
+
       @equippable.alter_stats(@entity, false)
       expect(@entity.attack).to eq 1
       expect(@entity.defense).to eq 1
