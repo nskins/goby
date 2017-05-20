@@ -2,8 +2,6 @@ require 'goby'
 
 RSpec.describe do
 
-  include Driver
-
   before(:all) do
     @player = Player.new
   end
