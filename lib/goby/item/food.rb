@@ -20,12 +20,12 @@ module Goby
     # @param [Entity] user the one using the food.
     # @param [Entity] entity the one on whom the food is used.
     def use(user, entity)
-      if entity.hp + recovers > entity.max_hp
-        this_recover = entity.max_hp - entity.hp
-        entity.hp = entity.max_hp
+      if entity.stats[:hp] + recovers > entity.stats[:max_hp]
+        this_recover = entity.stats[:max_hp] - entity.stats[:hp]
+        entity.stats[:hp] = entity.stats[:max_hp]
       else
         this_recover = @recovers
-        entity.hp += @recovers
+        entity.stats[:hp] += @recovers
       end
 
       # Helpful output.
@@ -36,7 +36,7 @@ module Goby
         print " on #{entity.name}!\n#{entity.name} "
       end
       print "recovers #{this_recover} HP!\n\n"
-      print "#{entity.name}'s HP: #{entity.hp}/#{entity.max_hp}\n\n"
+      print "#{entity.name}'s HP: #{entity.stats[:hp]}/#{entity.stats[:max_hp]}\n\n"
 
     end
 

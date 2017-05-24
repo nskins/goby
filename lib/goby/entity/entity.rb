@@ -12,27 +12,14 @@ module Goby
     NOT_EQUIPPED_ERROR = "You are not equipping THAT!\n\n"
 
     # @param [String] name the name.
-    # @param [Integer] max_hp the greatest amount of health.
-    # @param [Integer] hp the current amount of health.
-    # @param [Integer] attack the strength in battle.
-    # @param [Integer] defense the prevention of attack power on oneself.
-    # @param [Integer] agility the speed in battle.
+    # @param [Hash] stats hash of stats
     # @param [[Couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
     # @param [Integer] gold the currency used for economical transactions.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
-    def initialize(name: "Entity", max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1,
-                   inventory: [], gold: 0, battle_commands: [], outfit: {})
+    def initialize(name: "Entity", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {})
       @name = name
-      @max_hp = max_hp
-      @hp = hp.nil? ? max_hp : hp
-
-      # Prevent HP > max HP.
-      @max_hp = @hp if @hp > @max_hp
-
-      @attack = attack
-      @defense = defense
-      @agility = agility
+      @stats = set_stats(stats)
       @inventory = inventory
       set_gold(gold)
 
@@ -204,10 +191,10 @@ module Goby
     # TODO: encapsulate print_stats and print_equipment in own functions.
     def print_status
       puts "Stats:"
-      puts "* HP: #{@hp}/#{@max_hp}"
-      puts "* Attack: #{@attack}"
-      puts "* Defense: #{@defense}"
-      puts "* Agility: #{@agility}"
+      puts "* HP: #{@stats[:hp]}/#{@stats[:max_hp]}"
+      puts "* Attack: #{@stats[:attack]}"
+      puts "* Defense: #{@stats[:defense]}"
+      puts "* Agility: #{@stats[:agility]}"
       print "\n"
 
       puts "Equipment:"
@@ -316,10 +303,8 @@ module Goby
     end
 
     attr_accessor :name
-    attr_accessor :max_hp, :hp
-    attr_accessor :attack
-    attr_accessor :defense
-    attr_accessor :agility
+
+    attr_accessor :stats
 
     attr_accessor :inventory
     attr_reader :gold
@@ -336,6 +321,16 @@ module Goby
       # from decreasing below 0.
       def check_and_set_gold
         @gold = 0 if @gold.negative?
+      end
+
+      def set_stats(passed_in_stats)
+        stats = {max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1}.merge(passed_in_stats)
+
+        # Set hp to max_hp if hp not specified
+        stats[:hp] = stats[:hp] || stats[:max_hp]
+        # Prevent HP > max HP.
+        stats[:max_hp] = stats[:hp] if stats[:hp] > stats[:max_hp]
+        stats
       end
 
   end

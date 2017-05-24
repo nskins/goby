@@ -16,14 +16,14 @@ RSpec.describe Player do
   end
 
   before(:each) do
-    @dude = Player.new(attack: 10, agility: 10000,
+    @dude = Player.new(stats: { attack: 10, agility: 10000 },
                        battle_commands: [Attack.new(strength: 20), Escape.new, Use.new],
                        map: @map, location: @center)
     @slime = Monster.new(battle_commands: [Attack.new(success_rate: 0)],
                          gold: 5000, treasures: [Couple.new(Item.new, 1)])
     @newb = Player.new(battle_commands: [Attack.new(success_rate: 0)],
                        gold: 50, map: @map, location: @center)
-    @dragon = Monster.new(attack: 50, agility: 10000,
+    @dragon = Monster.new(stats: { attack: 50, agility: 10000 },
                           battle_commands: [Attack.new(strength: 50)] )
   end
 
@@ -31,11 +31,11 @@ RSpec.describe Player do
     it "has the correct default parameters" do
       player = Player.new
       expect(player.name).to eq "Player"
-      expect(player.max_hp).to eq 1
-      expect(player.hp).to eq 1
-      expect(player.attack). to eq 1
-      expect(player.defense).to eq 1
-      expect(player.agility).to eq 1
+      expect(player.stats[:max_hp]).to eq 1
+      expect(player.stats[:hp]).to eq 1
+      expect(player.stats[:attack]). to eq 1
+      expect(player.stats[:defense]).to eq 1
+      expect(player.stats[:agility]).to eq 1
       expect(player.inventory).to eq Array.new
       expect(player.gold).to eq 0
       expect(player.outfit).to eq Hash.new
@@ -46,11 +46,11 @@ RSpec.describe Player do
 
     it "correctly assigns custom parameters" do
       hero = Player.new(name: "Hero",
-                        max_hp: 50,
-                        hp: 35,
-                        attack: 12,
-                        defense: 4,
-                        agility: 9,
+                        stats: { max_hp: 50,
+                                 hp: 35,
+                                 attack: 12,
+                                 defense: 4,
+                                 agility: 9 },
                         inventory: [Couple.new(Item.new, 1)],
                         gold: 10,
                         outfit: { weapon: Weapon.new(
@@ -65,11 +65,11 @@ RSpec.describe Player do
                         map: @map,
                         location: Couple.new(1,1))
       expect(hero.name).to eq "Hero"
-      expect(hero.max_hp).to eq 50
-      expect(hero.hp).to eq 35
-      expect(hero.attack).to eq 16
-      expect(hero.defense).to eq 10
-      expect(hero.agility).to eq 9
+      expect(hero.stats[:max_hp]).to eq 50
+      expect(hero.stats[:hp]).to eq 35
+      expect(hero.stats[:attack]).to eq 16
+      expect(hero.stats[:defense]).to eq 10
+      expect(hero.stats[:agility]).to eq 9
       expect(hero.inventory).to eq [Couple.new(Item.new, 1)]
       expect(hero.gold).to eq 10
       expect(hero.outfit[:weapon]).to eq Weapon.new
@@ -178,9 +178,9 @@ RSpec.describe Player do
     end
 
     it "recovers the player's HP to max" do
-      @dude.hp = 0
+      @dude.stats[:hp] = 0
       @dude.die
-      expect(@dude.hp).to eq @dude.max_hp
+      expect(@dude.stats[:hp]).to eq @dude.stats[:max_hp]
     end
   end
 

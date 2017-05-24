@@ -19,22 +19,17 @@ module Goby
     VIEW_DISTANCE = 2
 
     # @param [String] name the name.
-    # @param [Integer] max_hp the greatest amount of health.
-    # @param [Integer] hp the current amount of health.
-    # @param [Integer] attack the strength in battle.
-    # @param [Integer] defense the prevention of attack power on oneself.
-    # @param [Integer] agility the speed in battle.
+    # @param [Hash] stats hash of stats
     # @param [[Couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
     # @param [Integer] gold the currency used for economical transactions.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
     # @param [Map] map the map on which the player is located.
     # @param [Couple(Integer,Integer)] location the 2D index of the map (the exact tile).
-    def initialize(name: "Player", max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1,
+    def initialize(name: "Player", stats: {max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1},
                    inventory: [], gold: 0, battle_commands: [], outfit: {}, map: DEFAULT_MAP,
                    location: DEFAULT_LOCATION)
-      super(name: name, max_hp: max_hp, hp: hp, attack: attack, defense: defense, agility: agility,
-            inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
+      super(name: name, stats: stats, inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
 
       @map = DEFAULT_MAP
       @location = DEFAULT_LOCATION
@@ -59,7 +54,7 @@ module Goby
       puts "#{monster.message}\n"
       type("You've run into a vicious #{monster.name}!\n\n")
 
-      while hp.positive?
+      while stats[:hp].positive?
         # Both choose an attack.
         player_attack = choose_attack
 
@@ -91,17 +86,17 @@ module Goby
             return
           end
 
-          break if monster.hp.nonpositive? || hp.nonpositive?
+          break if monster.stats[:hp].nonpositive? || stats[:hp].nonpositive?
 
         end
 
-        break if monster.hp.nonpositive? || hp.nonpositive?
+        break if monster.stats[:hp].nonpositive? || stats[:hp].nonpositive?
 
       end
 
-      die if hp.nonpositive?
+      die if stats[:hp].nonpositive?
 
-      if monster.hp.nonpositive?
+      if monster.stats[:hp].nonpositive?
         type("You defeated the #{monster.name}!\n\n")
 
         # Determine the rewards for defeating the monster.
@@ -204,7 +199,7 @@ module Goby
       sleep(2) unless ENV['TEST']
 
       # Heal the player.
-      @hp = @max_hp
+      @stats[:hp] = @stats[:max_hp]
     end
 
     # Moves the player down. Increases 'y' coordinate by 1.
@@ -328,8 +323,8 @@ module Goby
     # @param [Monster] monster the opponent with whom the player is competing.
     # @return [Boolean] true when player should go first. Otherwise, false.
     def sample_agilities(monster)
-      sum = monster.agility + agility
-      Random.rand(sum) < agility
+      sum = monster.stats[:agility] + stats[:agility]
+      Random.rand(sum) < stats[:agility]
     end
 
     # Updates the 'seen' attributes of the tiles on the player's current map.

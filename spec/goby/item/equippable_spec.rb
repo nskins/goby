@@ -25,14 +25,14 @@ RSpec.describe Equippable do
       allow(@equippable).to receive(:stat_change) {{attack: 2, defense: 3, agility: 4}}
 
       @equippable.alter_stats(@entity, true)
-      expect(@entity.attack).to eq 3
-      expect(@entity.defense).to eq 4
-      expect(@entity.agility).to eq 5
+      expect(@entity.stats[:attack]).to eq 3
+      expect(@entity.stats[:defense]).to eq 4
+      expect(@entity.stats[:agility]).to eq 5
 
       @equippable.alter_stats(@entity, false)
-      expect(@entity.attack).to eq 1
-      expect(@entity.defense).to eq 1
-      expect(@entity.agility).to eq 1
+      expect(@entity.stats[:attack]).to eq 1
+      expect(@entity.stats[:defense]).to eq 1
+      expect(@entity.stats[:agility]).to eq 1
     end
   end
 

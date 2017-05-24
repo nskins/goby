@@ -6,11 +6,12 @@ RSpec.describe Entity do
     it "has the correct default parameters" do
       entity = Entity.new
       expect(entity.name).to eq "Entity"
-      expect(entity.max_hp).to eq 1
-      expect(entity.hp).to eq 1
-      expect(entity.attack). to eq 1
-      expect(entity.defense).to eq 1
-      expect(entity.agility).to eq 1
+      stats = entity.stats
+      expect(stats[:max_hp]).to eq 1
+      expect(stats[:hp]).to eq 1
+      expect(stats[:attack]). to eq 1
+      expect(stats[:defense]).to eq 1
+      expect(stats[:agility]).to eq 1
       expect(entity.inventory).to eq Array.new
       expect(entity.gold).to eq 0
       expect(entity.battle_commands).to eq Array.new
@@ -19,11 +20,11 @@ RSpec.describe Entity do
 
     it "correctly assigns custom parameters" do
       hero = Entity.new(name: "Hero",
-                        max_hp: 50,
-                        hp: 35,
-                        attack: 12,
-                        defense: 4,
-                        agility: 9,
+                        stats: { max_hp: 50,
+                                hp: 35,
+                                attack: 12,
+                                defense: 4,
+                                agility: 9 },
                         inventory: [Couple.new(Item.new, 1)],
                         gold: 10,
                         outfit: { weapon: Weapon.new(
@@ -38,12 +39,13 @@ RSpec.describe Entity do
                           Attack.new(name: "Kick")
                         ])
       expect(hero.name).to eq "Hero"
-      expect(hero.max_hp).to eq 50
-      expect(hero.hp).to eq 35
+      stats = hero.stats
+      expect(stats[:max_hp]).to eq 50
+      expect(stats[:hp]).to eq 35
       # Attack & defense increase due to the equipped items.
-      expect(hero.attack).to eq 16
-      expect(hero.defense).to eq 10
-      expect(hero.agility).to eq 13
+      expect(stats[:attack]).to eq 16
+      expect(stats[:defense]).to eq 10
+      expect(stats[:agility]).to eq 13
       expect(hero.inventory).to eq [Couple.new(Item.new, 1)]
       expect(hero.gold).to eq 10
       expect(hero.outfit[:weapon]).to eq Weapon.new
@@ -57,15 +59,16 @@ RSpec.describe Entity do
     end
 
     it "assigns default keyword arguments as appropriate" do
-      entity = Entity.new(max_hp: 7,
-                        defense: 9,
+      entity = Entity.new(stats: { max_hp: 7,
+                        defense: 9 },
                         gold: 3)
       expect(entity.name).to eq "Entity"
-      expect(entity.max_hp).to eq 7
-      expect(entity.hp).to eq 7
-      expect(entity.attack).to eq 1
-      expect(entity.defense).to eq 9
-      expect(entity.agility).to eq 1
+      stats = entity.stats
+      expect(stats[:max_hp]).to eq 7
+      expect(stats[:hp]).to eq 7
+      expect(stats[:attack]).to eq 1
+      expect(stats[:defense]).to eq 9
+      expect(stats[:agility]).to eq 1
       expect(entity.inventory).to eq []
       expect(entity.gold).to eq 3
       expect(entity.battle_commands).to eq []
@@ -228,7 +231,7 @@ RSpec.describe Entity do
                                                    attack: Attack.new), 1)])
       entity.equip_item("Weapon")
       expect(entity.outfit[:weapon]).to eq Weapon.new
-      expect(entity.attack).to eq 4
+      expect(entity.stats[:attack]).to eq 4
       expect(entity.battle_commands).to eq [Attack.new]
     end
 
@@ -237,7 +240,7 @@ RSpec.describe Entity do
                                         Helmet.new(stat_change: { defense: 3 } ), 1)])
       entity.equip_item("Helmet")
       expect(entity.outfit[:helmet]).to eq Helmet.new
-      expect(entity.defense).to eq 4
+      expect(entity.stats[:defense]).to eq 4
     end
 
     it "correctly equips the shield and alters the stats" do
@@ -246,8 +249,8 @@ RSpec.describe Entity do
                                                                   agility: 2 } ), 1)])
       entity.equip_item("Shield")
       expect(entity.outfit[:shield]).to eq Shield.new
-      expect(entity.defense).to eq 4
-      expect(entity.agility).to eq 3
+      expect(entity.stats[:defense]).to eq 4
+      expect(entity.stats[:agility]).to eq 3
     end
 
     it "correctly equips the legs and alters the stats" do
@@ -255,7 +258,7 @@ RSpec.describe Entity do
                                         Legs.new(stat_change: { defense: 3 } ), 1)])
       entity.equip_item("Legs")
       expect(entity.outfit[:legs]).to eq Legs.new
-      expect(entity.defense).to eq 4
+      expect(entity.stats[:defense]).to eq 4
     end
 
     it "correctly equips the torso and alters the stats" do
@@ -263,7 +266,7 @@ RSpec.describe Entity do
                                         Torso.new(stat_change: { defense: 3 } ), 1)])
       entity.equip_item("Torso")
       expect(entity.outfit[:torso]).to eq Torso.new
-      expect(entity.defense).to eq 4
+      expect(entity.stats[:defense]).to eq 4
     end
 
     it "does not equip anything for an absent item" do
@@ -295,18 +298,19 @@ RSpec.describe Entity do
                                                                   agility: 7 },
                                                    attack: Attack.new(name: "Stab")), 1)])
       entity.equip_item("Hammer")
-      expect(entity.attack).to eq 4
-      expect(entity.defense).to eq 3
-      expect(entity.agility).to eq 5
+      stats = entity.stats
+      expect(stats[:attack]).to eq 4
+      expect(stats[:defense]).to eq 3
+      expect(stats[:agility]).to eq 5
       expect(entity.outfit[:weapon].name).to eq "Hammer"
       expect(entity.battle_commands).to eq [Attack.new(name: "Bash")]
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first.name).to eq "Knife"
 
       entity.equip_item("Knife")
-      expect(entity.attack).to eq 6
-      expect(entity.defense).to eq 4
-      expect(entity.agility).to eq 8
+      expect(stats[:attack]).to eq 6
+      expect(stats[:defense]).to eq 4
+      expect(stats[:agility]).to eq 8
       expect(entity.outfit[:weapon].name).to eq "Knife"
       expect(entity.battle_commands).to eq [Attack.new(name: "Stab")]
       expect(entity.inventory.length).to eq 1
@@ -426,8 +430,11 @@ RSpec.describe Entity do
 
   context "print status" do
     it "prints all of the entity's information" do
-      entity = Entity.new(max_hp: 50, hp: 30, attack: 5,
-                          defense: 3, agility: 4,
+      entity = Entity.new(stats: { max_hp: 50,
+                                   hp: 30,
+                                   attack: 5,
+                                   defense: 3,
+                                   agility: 4 },
                           outfit: { helmet: Helmet.new,
                                     legs: Legs.new,
                                     shield: Shield.new,
@@ -541,7 +548,7 @@ RSpec.describe Entity do
       expect(entity.inventory[0].first).to eq Weapon.new
       expect(entity.inventory[0].second).to eq 1
       expect(entity.battle_commands).to be_empty
-      expect(entity.agility).to eq 1
+      expect(entity.stats[:agility]).to eq 1
     end
 
     it "does not result in error when unequipping the same item twice" do
@@ -562,19 +569,19 @@ RSpec.describe Entity do
 
   context "use item" do
     it "correctly uses a present item for an object argument" do
-      entity = Entity.new(max_hp: 20, hp: 10,
+      entity = Entity.new(stats: { max_hp: 20, hp: 10 },
                           inventory: [Couple.new(Food.new(recovers: 5), 3)])
       entity.use_item(Food.new, entity)
-      expect(entity.hp).to eq 15
+      expect(entity.stats[:hp]).to eq 15
       expect(entity.inventory[0].first).to eq Food.new
       expect(entity.inventory[0].second).to eq 2
     end
 
     it "correctly uses a present item for a string argument" do
-      entity = Entity.new(max_hp: 20, hp: 10,
+      entity = Entity.new(stats: { max_hp: 20, hp: 10 },
                           inventory: [Couple.new(Food.new(recovers: 5), 3)])
       entity.use_item("Food", entity)
-      expect(entity.hp).to eq 15
+      expect(entity.stats[:hp]).to eq 15
       expect(entity.inventory[0].first).to eq Food.new
       expect(entity.inventory[0].second).to eq 2
     end

@@ -25,15 +25,11 @@ module Goby
     def alter_stats(entity, equipping)
 
       # Alter the stats as appropriate.
-      # TODO: this can be simplified by creating entity.stats hash..?
+      stats = entity.stats
       if equipping
-        entity.attack += stat_change[:attack] if stat_change[:attack]
-        entity.defense += stat_change[:defense] if stat_change[:defense]
-        entity.agility += stat_change[:agility] if stat_change[:agility]
+        adjust_stats_with_operator(stats, :+)
       else
-        entity.attack -= stat_change[:attack] if stat_change[:attack]
-        entity.defense -= stat_change[:defense] if stat_change[:defense]
-        entity.agility -= stat_change[:agility] if stat_change[:agility]
+        adjust_stats_with_operator(stats, :-)
       end
 
     end
@@ -72,6 +68,14 @@ module Goby
     def use(user, entity)
       print "Type 'equip #{@name}' to equip this item.\n\n"
     end
+
+    private
+
+      def adjust_stats_with_operator(stats, operator)
+        [:attack, :defense, :agility].each do |stat|
+          stats[stat]= stats[stat].send(operator, stat_change[stat]) if stat_change[stat]
+        end
+      end
 
   end
 

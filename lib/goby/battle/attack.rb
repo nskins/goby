@@ -25,14 +25,14 @@ module Goby
       inflict = Random.rand(0.05..0.15).round(2)
       multiplier = 1
 
-      if enemy.defense > user.attack
-        multiplier = 1 - ((enemy.defense * 0.1) - (user.attack * inflict))
+      if enemy.stats[:defense] > user.stats[:attack]
+        multiplier = 1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * inflict))
 
         # Prevent a negative multiplier.
         multiplier = 0 if multiplier.negative?
 
       else
-        multiplier = 1 + ((user.attack * inflict) - (enemy.defense * 0.1))
+        multiplier = 1 + ((user.stats[:attack] * inflict) - (enemy.stats[:defense] * 0.1))
       end
 
       return (@strength * multiplier).round(0)
@@ -46,16 +46,16 @@ module Goby
       if (Random.rand(100) < @success_rate)
 
         # Damage the enemy.
-        original_enemy_hp = enemy.hp
+        original_enemy_hp = enemy.stats[:hp]
         damage = calculate_damage(user, enemy)
-        enemy.hp -= damage
+        enemy.stats[:hp] -= damage
 
         # Prevent HP < 0.
-        enemy.hp = 0 if enemy.hp.negative?
+        enemy.stats[:hp] = 0 if enemy.stats[:hp].negative?
 
         type("#{user.name} uses #{@name}!\n\n")
-        type("#{enemy.name} takes #{original_enemy_hp - enemy.hp} damage!\n")
-        type("#{enemy.name}'s HP: #{original_enemy_hp} -> #{enemy.hp}\n\n")
+        type("#{enemy.name} takes #{original_enemy_hp - enemy.stats[:hp]} damage!\n")
+        type("#{enemy.name}'s HP: #{original_enemy_hp} -> #{enemy.stats[:hp]}\n\n")
 
       else
         type("#{user.name} tries to use #{@name}, but it fails.\n\n")

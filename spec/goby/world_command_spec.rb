@@ -12,8 +12,7 @@ RSpec.describe do
                               Tile.new(events: [Event.new(visible: false), Shop.new, NPC.new]) ] ],
                       regen_location: Couple.new(0,0))
 
-    @player = Player.new(max_hp: 10,
-                         hp: 3,
+    @player = Player.new(stats: { max_hp: 10, hp: 3 },
                          inventory: [ Couple.new(Food.new(name: "Banana", recovers: 5), 1),
                                       Couple.new(Food.new(name: "Onion", disposable: false), 1),
                                       Couple.new(Item.new(name: "Big Book of Stuff"), 1),
@@ -159,7 +158,7 @@ RSpec.describe do
       it "should use the specified item" do
         interpret_command("use banana", @player)
         expect(@player.has_item("Banana")).to be_nil
-        expect(@player.hp).to eq 8
+        expect(@player.stats[:hp]).to eq 8
       end
 
       it "should print error text for using nonexistent item" do
