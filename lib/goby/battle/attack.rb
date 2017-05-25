@@ -48,10 +48,8 @@ module Goby
         # Damage the enemy.
         original_enemy_hp = enemy.stats[:hp]
         damage = calculate_damage(user, enemy)
-        enemy.stats[:hp] -= damage
-
-        # Prevent HP < 0.
-        enemy.stats[:hp] = 0 if enemy.stats[:hp].negative?
+        old_hp = enemy.stats[:hp]
+        enemy.set_stats(hp: old_hp - damage)
 
         type("#{user.name} uses #{@name}!\n\n")
         type("#{enemy.name} takes #{original_enemy_hp - enemy.stats[:hp]} damage!\n")

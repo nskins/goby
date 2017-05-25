@@ -53,7 +53,7 @@ RSpec.describe Goby::Attack do
     end
 
     it "prevents the enemy's HP from falling below 0" do
-      @user.stats[:attack] = 1000
+      @user.set_stats(attack: 100)
       @attack.run(@user, @enemy)
       expect(@enemy.stats[:hp]).to be_zero
     end
@@ -82,7 +82,7 @@ RSpec.describe Goby::Attack do
     end
 
     it "defaults to 0 when the defense is very high" do
-      @enemy.stats[:defense] = 100
+      @enemy.set_stats(defense: 100)
       damage = @attack.calculate_damage(@user, @enemy)
       expect(damage).to be_zero
     end

@@ -25,11 +25,10 @@ module Goby
     def alter_stats(entity, equipping)
 
       # Alter the stats as appropriate.
-      stats = entity.stats
       if equipping
-        adjust_stats_with_operator(stats, :+)
+        adjust_stats_with_operator(entity, :+)
       else
-        adjust_stats_with_operator(stats, :-)
+        adjust_stats_with_operator(entity, :-)
       end
 
     end
@@ -71,10 +70,13 @@ module Goby
 
     private
 
-      def adjust_stats_with_operator(stats, operator)
-        [:attack, :defense, :agility].each do |stat|
-          stats[stat]= stats[stat].send(operator, stat_change[stat]) if stat_change[stat]
+      #Increase or decrease stats if there is a corresponding stat change from item
+      def adjust_stats_with_operator(entity, operator)
+        stats_to_change = entity.stats.dup
+        [:attack, :defense, :agility, :max_hp].each do |stat|
+          stats_to_change[stat]= stats_to_change[stat].send(operator, stat_change[stat]) if stat_change[stat]
         end
+        entity.set_stats(stats_to_change)
       end
 
   end

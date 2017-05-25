@@ -10,6 +10,8 @@ module Goby
     NO_SUCH_ITEM_ERROR = "What?! You don't have THAT!\n\n"
     # Error when the entity specifies an item not equipped.
     NOT_EQUIPPED_ERROR = "You are not equipping THAT!\n\n"
+    # Error when set_stats called with non-numberic values.
+    SET_STATS_ERROR = "That cannot be done. All stats must be a number\n\n"
 
     # @param [String] name the name.
     # @param [Hash] stats hash of stats
@@ -302,9 +304,41 @@ module Goby
       @name == rhs.name
     end
 
-    attr_accessor :name
+    # Sets stats
+    #
+    # @param [Hash] key value pairs of stats
+    def set_stats(passed_in_stats)
+      current_stats = @stats || { max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1 }
+      constructed_stats = current_stats.merge(passed_in_stats)
 
-    attr_accessor :stats
+      # Set hp to max_hp if hp not specified
+      constructed_stats[:hp] = constructed_stats[:hp] || constructed_stats[:max_hp]
+      # Prevent HP > max HP.
+      constructed_stats[:max_hp] = constructed_stats[:hp] if constructed_stats[:hp] > constructed_stats[:max_hp]
+      #ensure all stats are numbers
+      if constructed_stats.values.any? {|value| !value.is_a?(Integer)}
+        print SET_STATS_ERROR
+        return
+      end
+      #ensure hp is at least 0
+      constructed_stats[:hp] = constructed_stats[:hp] > 0 ? constructed_stats[:hp] : 0
+      #ensure all other stats >= 0
+      constructed_stats.each do |key,value|
+        if [:max_hp, :attack, :defense, :agility].include?(key)
+          constructed_stats[key] = value.negative? ? 1 : value
+        end
+      end
+
+      @stats = constructed_stats
+    end
+
+    def stats
+      # attr_reader makes sure stats cannot be set via stats=
+      # freeze makes sure that stats []= cannot be used
+      @stats.freeze
+    end
+
+    attr_accessor :name
 
     attr_accessor :inventory
     attr_reader :gold
@@ -321,16 +355,6 @@ module Goby
       # from decreasing below 0.
       def check_and_set_gold
         @gold = 0 if @gold.negative?
-      end
-
-      def set_stats(passed_in_stats)
-        stats = {max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1}.merge(passed_in_stats)
-
-        # Set hp to max_hp if hp not specified
-        stats[:hp] = stats[:hp] || stats[:max_hp]
-        # Prevent HP > max HP.
-        stats[:max_hp] = stats[:hp] if stats[:hp] > stats[:max_hp]
-        stats
       end
 
   end

@@ -26,8 +26,7 @@ module Goby
     # @param [Hash] outfit the collection of equippable items currently worn.
     # @param [Map] map the map on which the player is located.
     # @param [Couple(Integer,Integer)] location the 2D index of the map (the exact tile).
-    def initialize(name: "Player", stats: {max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1},
-                   inventory: [], gold: 0, battle_commands: [], outfit: {}, map: DEFAULT_MAP,
+    def initialize(name: "Player", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {}, map: DEFAULT_MAP,
                    location: DEFAULT_LOCATION)
       super(name: name, stats: stats, inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
 
@@ -199,7 +198,7 @@ module Goby
       sleep(2) unless ENV['TEST']
 
       # Heal the player.
-      @stats[:hp] = @stats[:max_hp]
+      set_stats(hp: @stats[:max_hp])
     end
 
     # Moves the player down. Increases 'y' coordinate by 1.

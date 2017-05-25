@@ -178,7 +178,7 @@ RSpec.describe Player do
     end
 
     it "recovers the player's HP to max" do
-      @dude.stats[:hp] = 0
+      @dude.set_stats(hp: 0)
       @dude.die
       expect(@dude.stats[:hp]).to eq @dude.stats[:max_hp]
     end

@@ -308,6 +308,7 @@ RSpec.describe Entity do
       expect(entity.inventory[0].first.name).to eq "Knife"
 
       entity.equip_item("Knife")
+      stats = entity.stats
       expect(stats[:attack]).to eq 6
       expect(stats[:defense]).to eq 4
       expect(stats[:agility]).to eq 8
@@ -598,6 +599,99 @@ RSpec.describe Entity do
       bob = Entity.new(name: "Bob")
       marge = Entity.new(name: "Marge")
       expect(bob).not_to eq marge
+    end
+  end
+
+  context "set stats" do
+    it "changes an entities stats" do
+      entity = Entity.new(stats: { max_hp: 2, hp: 1, attack: 1, defense: 1, agility: 1 })
+
+      entity.set_stats({ max_hp: 3, hp: 3, attack: 2, defense: 3, agility: 4 })
+
+      stats = entity.stats
+      expect(stats[:max_hp]).to eq 3
+      expect(stats[:hp]).to eq 3
+      expect(stats[:attack]).to eq 2
+      expect(stats[:defense]).to eq 3
+      expect(stats[:agility]).to eq 4
+    end
+
+    it "only changes specified stats" do
+      entity = Entity.new(stats: { max_hp: 2, hp: 2, attack: 1, defense: 4, agility: 4 })
+
+      entity.set_stats({ attack: 2 })
+
+      stats = entity.stats
+      expect(stats[:max_hp]).to eq 2
+      expect(stats[:hp]).to eq 2
+      expect(stats[:attack]).to eq 2
+      expect(stats[:defense]).to eq 4
+      expect(stats[:agility]).to eq 4
+    end
+
+    it "does not allow hp to be above max_hp and sets to the greater of the two" do
+      entity = Entity.new
+
+      entity.set_stats({ max_hp: 2, hp: 3 })
+
+      stats = entity.stats
+      expect(stats[:max_hp]).to eq 3
+      expect(stats[:hp]).to eq 3
+    end
+
+    it "sets hp to max_hp if hp is passed in as nil" do
+      entity = Entity.new
+
+      entity.set_stats({ max_hp: 2, hp: nil })
+
+      stats = entity.stats
+      expect(stats[:max_hp]).to eq 2
+      expect(stats[:hp]).to eq 2
+    end
+
+    it "non hp values cannot go below 1" do
+      entity = Entity.new(stats: { max_hp: 2, attack: 1, defense: 1, agility: 1 })
+
+      entity.set_stats({ max_hp: -1, hp: -1, attack: -1, defense: -1, agility: -1 })
+
+      stats = entity.stats
+      expect(stats[:max_hp]).to eq 1
+      expect(stats[:attack]).to eq 1
+      expect(stats[:defense]).to eq 1
+      expect(stats[:agility]).to eq 1
+    end
+
+    it "hp cannot go below 0" do
+      entity = Entity.new(stats: {hp: 3})
+
+      entity.set_stats({hp: -1})
+
+      stats = entity.stats
+      expect(stats[:hp]).to eq 0
+    end
+
+    it "prints error if non numberic values passed in" do
+      entity = Entity.new(stats: { attack: 11 })
+      allow(entity).to receive(:print)
+
+      entity.set_stats({ attack: "foo" })
+
+      expect(entity).to have_received(:print).with(Entity::SET_STATS_ERROR)
+      expect(entity.stats[:attack]).to eq 11
+    end
+
+    it "only allows stats to be changed by calling set_stats" do
+      entity = Entity.new(stats: { attack: 11 })
+
+      expect do
+        entity.stats = {attack: 9}
+      end.to raise_exception
+
+      expect do
+        entity.stats[:attack] = 9
+      end.to raise_exception
+
+      expect(entity.stats[:attack]).to eq 11
     end
   end
 

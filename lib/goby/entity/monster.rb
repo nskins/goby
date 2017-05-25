@@ -13,8 +13,7 @@ module Goby
     # @param [Hash] outfit the coolection of equippable items currently worn.
     # @param [String] message the monster's battle cry.
     # @param [[Couple(Item, Integer)]] treasures an array of treasures and the likelihood of receiving each.
-    def initialize(name: "Monster", stats: {max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1},
-                   inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!",
+    def initialize(name: "Monster", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!",
                    treasures: [])
       super(name: name, stats: stats, inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
       @message = message
