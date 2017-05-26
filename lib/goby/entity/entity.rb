@@ -10,8 +10,6 @@ module Goby
     NO_SUCH_ITEM_ERROR = "What?! You don't have THAT!\n\n"
     # Error when the entity specifies an item not equipped.
     NOT_EQUIPPED_ERROR = "You are not equipping THAT!\n\n"
-    # Error when set_stats called with non-numberic values.
-    SET_STATS_ERROR = "That cannot be done. All stats must be a number\n\n"
 
     # @param [String] name the name.
     # @param [Hash] stats hash of stats
@@ -306,7 +304,7 @@ module Goby
 
     # Sets stats
     #
-    # @param [Hash] key value pairs of stats
+    # @param [Hash] passed_in_stats value pairs of stats
     def set_stats(passed_in_stats)
       current_stats = @stats || { max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1 }
       constructed_stats = current_stats.merge(passed_in_stats)
@@ -315,14 +313,9 @@ module Goby
       constructed_stats[:hp] = constructed_stats[:hp] || constructed_stats[:max_hp]
       # Prevent HP > max HP.
       constructed_stats[:max_hp] = constructed_stats[:hp] if constructed_stats[:hp] > constructed_stats[:max_hp]
-      #ensure all stats are numbers
-      if constructed_stats.values.any? {|value| !value.is_a?(Integer)}
-        print SET_STATS_ERROR
-        return
-      end
       #ensure hp is at least 0
       constructed_stats[:hp] = constructed_stats[:hp] > 0 ? constructed_stats[:hp] : 0
-      #ensure all other stats >= 0
+      #ensure all other stats > 0
       constructed_stats.each do |key,value|
         if [:max_hp, :attack, :defense, :agility].include?(key)
           constructed_stats[key] = value.negative? ? 1 : value
@@ -332,6 +325,9 @@ module Goby
       @stats = constructed_stats
     end
 
+    # getter for stats
+    #
+    # @return [Object]
     def stats
       # attr_reader makes sure stats cannot be set via stats=
       # freeze makes sure that stats []= cannot be used

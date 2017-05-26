@@ -23,14 +23,24 @@ module Goby
     # @param [Boolean] equipping flag for when the item is being equipped or unequipped.
     # @todo ensure stats cannot go below zero (but does it matter..?).
     def alter_stats(entity, equipping)
-
-      # Alter the stats as appropriate.
+      stats_to_change = entity.stats.dup
+      affected_stats = [:attack, :defense, :agility, :max_hp]
       if equipping
-        adjust_stats_with_operator(entity, :+)
+        operator = :+
       else
-        adjust_stats_with_operator(entity, :-)
+        operator = :-
+        stat_change[:hp] = stat_change[:max_hp]
+        affected_stats << :hp
       end
 
+      affected_stats.each do |stat|
+        stats_to_change[stat]= stats_to_change[stat].send(operator, stat_change[stat]) if stat_change[stat]
+      end
+      #do not kill entity by unequipping
+      if stats_to_change[:hp] < 1
+        stats_to_change[:hp] = 1
+      end
+      entity.set_stats(stats_to_change)
     end
 
     # Equips onto the entity and changes the entity's attributes accordingly.
@@ -67,17 +77,6 @@ module Goby
     def use(user, entity)
       print "Type 'equip #{@name}' to equip this item.\n\n"
     end
-
-    private
-
-      #Increase or decrease stats if there is a corresponding stat change from item
-      def adjust_stats_with_operator(entity, operator)
-        stats_to_change = entity.stats.dup
-        [:attack, :defense, :agility, :max_hp].each do |stat|
-          stats_to_change[stat]= stats_to_change[stat].send(operator, stat_change[stat]) if stat_change[stat]
-        end
-        entity.set_stats(stats_to_change)
-      end
 
   end
 

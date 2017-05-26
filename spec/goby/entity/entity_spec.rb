@@ -670,13 +670,11 @@ RSpec.describe Entity do
       expect(stats[:hp]).to eq 0
     end
 
-    it "prints error if non numberic values passed in" do
+    it "raises error if non-numeric passed in" do
       entity = Entity.new(stats: { attack: 11 })
-      allow(entity).to receive(:print)
 
-      entity.set_stats({ attack: "foo" })
+      expect{ entity.set_stats({ attack: "foo" }) }.to raise_error
 
-      expect(entity).to have_received(:print).with(Entity::SET_STATS_ERROR)
       expect(entity.stats[:attack]).to eq 11
     end
 
