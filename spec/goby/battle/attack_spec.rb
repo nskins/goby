@@ -3,8 +3,8 @@ require 'goby'
 RSpec.describe Goby::Attack do
 
   before(:each) do
-    @user = Player.new(max_hp: 50, attack: 6, defense: 4)
-    @enemy = Monster.new(max_hp: 30, attack: 3, defense: 2)
+    @user = Player.new(stats: { max_hp: 50, attack: 6, defense: 4 })
+    @enemy = Monster.new(stats: {max_hp: 30, attack: 3, defense: 2})
     @attack = Attack.new(strength: 5)
     @cry = Attack.new(name: "Cry", success_rate: 0)
   end
@@ -49,18 +49,18 @@ RSpec.describe Goby::Attack do
   context "run" do
     it "does the appropriate amount of damage for attack > defense" do
       @attack.run(@user, @enemy)
-      expect(@enemy.hp).to be_between(21, 24)
+      expect(@enemy.stats[:hp]).to be_between(21, 24)
     end
 
     it "prevents the enemy's HP from falling below 0" do
-      @user.attack = 1000
+      @user.set_stats(attack: 100)
       @attack.run(@user, @enemy)
-      expect(@enemy.hp).to be_zero
+      expect(@enemy.stats[:hp]).to be_zero
     end
 
     it "does the appropriate amount of damage for defense > attack" do
       @attack.run(@enemy, @user)
-      expect(@user.hp).to be_between(45, 46)
+      expect(@user.stats[:hp]).to be_between(45, 46)
     end
 
     it "prints an appropriate message for a failed attack" do
@@ -82,7 +82,7 @@ RSpec.describe Goby::Attack do
     end
 
     it "defaults to 0 when the defense is very high" do
-      @enemy.defense = 100
+      @enemy.set_stats(defense: 100)
       damage = @attack.calculate_damage(@user, @enemy)
       expect(damage).to be_zero
     end

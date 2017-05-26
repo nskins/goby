@@ -90,12 +90,13 @@ RSpec.describe do
 
   context "load game" do
     it "should load the player's information" do
-      player1 = Player.new(name: "Nicholas", max_hp: 5, hp: 3)
+      player1 = Player.new(name: "Nicholas",
+                           stats: { max_hp: 5, hp: 3 })
       save_game(player1, "test.yaml")
       player2 = load_game("test.yaml")
       expect(player2.name).to eq "Nicholas"
-      expect(player2.max_hp).to eq 5
-      expect(player2.hp).to eq 3
+      expect(player2.stats[:max_hp]).to eq 5
+      expect(player2.stats[:hp]).to eq 3
       File.delete("test.yaml")
     end
 

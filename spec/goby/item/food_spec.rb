@@ -29,23 +29,24 @@ RSpec.describe Food do
 
   context "use" do
     it "heals the entity's HP in a trivial case" do
-      entity = Entity.new(hp: 5, max_hp: 20)
+      entity = Entity.new(stats: { hp: 5, max_hp: 20 })
       @magic_banana.use(entity, entity)
-      expect(entity.hp).to eq 15
+      expect(entity.stats[:hp]).to eq 15
     end
 
     it "does not heal over the entity's max HP" do
-      entity = Entity.new(hp: 15, max_hp: 20)
+      entity = Entity.new(stats: { hp: 15, max_hp: 20 })
       @magic_banana.use(entity, entity)
-      expect(entity.hp).to eq 20
+      expect(entity.stats[:hp]).to eq 20
     end
   end
 
   it "heals another entity's HP as appropriate" do
     bob = Entity.new(name: "Bob")
-    marge = Entity.new(name: "Marge", hp: 5, max_hp: 20)
+    marge = Entity.new(name: "Marge",
+                       stats: { hp: 5, max_hp: 20 })
     @magic_banana.use(bob, marge)
-    expect(marge.hp).to eq 15
+    expect(marge.stats[:hp]).to eq 15
   end
 
 end

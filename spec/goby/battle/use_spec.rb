@@ -14,7 +14,8 @@ RSpec.describe Use do
 
   context "run" do
     before(:each) do
-      @player = Player.new(max_hp: 10, hp: 3, battle_commands: [@use],
+      @player = Player.new(stats: { max_hp: 10, hp: 3 },
+                           battle_commands: [@use],
                            inventory: [Couple.new(Food.new(recovers: 5), 1)])
       @monster = Monster.new
     end
@@ -23,7 +24,7 @@ RSpec.describe Use do
       # RSpec input example. Also see spec_helper.rb for __stdin method.
       __stdin("food\n", "player\n") do
         @use.run(@player, @monster)
-        expect(@player.hp).to eq 8
+        expect(@player.stats[:hp]).to eq 8
         expect(@player.inventory.empty?).to be true
       end
     end
