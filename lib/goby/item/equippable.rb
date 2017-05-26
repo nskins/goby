@@ -25,12 +25,8 @@ module Goby
     def alter_stats(entity, equipping)
       stats_to_change = entity.stats.dup
       affected_stats = [:attack, :defense, :agility, :max_hp]
-      if equipping
-        operator = :+
-      else
-        operator = :-
-      end
 
+      operator = equipping ? :+ : :-
       affected_stats.each do |stat|
         stats_to_change[stat]= stats_to_change[stat].send(operator, stat_change[stat]) if stat_change[stat]
       end

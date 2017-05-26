@@ -13,13 +13,18 @@ module Goby
 
     # @param [String] name the name.
     # @param [Hash] stats hash of stats
+    # @option stats [Integer] :max_hp maximum health points. Set to be positive.
+    # @option stats [Integer] :hp current health points. Set to be nonnegative.
+    # @option stats [Integer] :attack strength in battle. Set to be positive.
+    # @option stats [Integer] :defense protection from attacks. Set to be positive.
+    # @option stats [Integer] :agility speed of commands in battle. Set to be positive.
     # @param [[Couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
     # @param [Integer] gold the currency used for economical transactions.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
     def initialize(name: "Entity", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {})
       @name = name
-      @stats = set_stats(stats)
+      set_stats(stats)
       @inventory = inventory
       set_gold(gold)
 
@@ -266,6 +271,43 @@ module Goby
       check_and_set_gold
     end
 
+    # Sets stats
+    #
+    # @param [Hash] passed_in_stats value pairs of stats
+    # @option passed_in_stats [Integer] :max_hp maximum health points. Set to be positive.
+    # @option passed_in_stats [Integer] :hp current health points. Set to be nonnegative.
+    # @option passed_in_stats [Integer] :attack strength in battle. Set to be positive.
+    # @option passed_in_stats [Integer] :defense protection from attacks. Set to be positive.
+    # @option passed_in_stats [Integer] :agility speed of commands in battle. Set to be positive.
+    def set_stats(passed_in_stats)
+      current_stats = @stats || { max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1 }
+      constructed_stats = current_stats.merge(passed_in_stats)
+
+      # Set hp to max_hp if hp not specified
+      constructed_stats[:hp] = constructed_stats[:hp] || constructed_stats[:max_hp]
+      # hp should not be greater than max_hp
+      constructed_stats[:hp] = [constructed_stats[:hp], constructed_stats[:max_hp]].min
+      #ensure hp is at least 0
+      constructed_stats[:hp] = constructed_stats[:hp] > 0 ? constructed_stats[:hp] : 0
+      #ensure all other stats > 0
+      constructed_stats.each do |key,value|
+        if [:max_hp, :attack, :defense, :agility].include?(key)
+          constructed_stats[key] = value.nonpositive? ? 1 : value
+        end
+      end
+
+      @stats = constructed_stats
+    end
+
+    # getter for stats
+    #
+    # @return [Object]
+    def stats
+      # attr_reader makes sure stats cannot be set via stats=
+      # freeze makes sure that stats []= cannot be used
+      @stats.freeze
+    end
+
     # Unequips the specified item from the entity's outfit.
     #
     # @param [Item, String] item the item (or its name) to unequip.
@@ -300,38 +342,6 @@ module Goby
     # @param [Entity] rhs the entity on the right.
     def ==(rhs)
       @name == rhs.name
-    end
-
-    # Sets stats
-    #
-    # @param [Hash] passed_in_stats value pairs of stats
-    def set_stats(passed_in_stats)
-      current_stats = @stats || { max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1 }
-      constructed_stats = current_stats.merge(passed_in_stats)
-
-      # Set hp to max_hp if hp not specified
-      constructed_stats[:hp] = constructed_stats[:hp] || constructed_stats[:max_hp]
-      # hp should not be greater than max_hp
-      constructed_stats[:hp] = [constructed_stats[:hp], constructed_stats[:max_hp]].min
-      #ensure hp is at least 0
-      constructed_stats[:hp] = constructed_stats[:hp] > 0 ? constructed_stats[:hp] : 0
-      #ensure all other stats > 0
-      constructed_stats.each do |key,value|
-        if [:max_hp, :attack, :defense, :agility].include?(key)
-          constructed_stats[key] = value.negative? ? 1 : value
-        end
-      end
-
-      @stats = constructed_stats
-    end
-
-    # getter for stats
-    #
-    # @return [Object]
-    def stats
-      # attr_reader makes sure stats cannot be set via stats=
-      # freeze makes sure that stats []= cannot be used
-      @stats.freeze
     end
 
     attr_accessor :name

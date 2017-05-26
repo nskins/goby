@@ -617,12 +617,12 @@ RSpec.describe Entity do
     end
 
     it "only changes specified stats" do
-      entity = Entity.new(stats: { max_hp: 2, hp: 2, attack: 1, defense: 4, agility: 4 })
+      entity = Entity.new(stats: { max_hp: 4, hp: 2, attack: 1, defense: 4, agility: 4 })
 
-      entity.set_stats({ attack: 2 })
+      entity.set_stats({ max_hp: 3, attack: 2 })
 
       stats = entity.stats
-      expect(stats[:max_hp]).to eq 2
+      expect(stats[:max_hp]).to eq 3
       expect(stats[:hp]).to eq 2
       expect(stats[:attack]).to eq 2
       expect(stats[:defense]).to eq 4
@@ -650,9 +650,9 @@ RSpec.describe Entity do
     end
 
     it "non hp values cannot go below 1" do
-      entity = Entity.new(stats: { max_hp: 2, attack: 1, defense: 1, agility: 1 })
+      entity = Entity.new(stats: { max_hp: 2, attack: 3, defense: 2, agility: 3 })
 
-      entity.set_stats({ max_hp: -1, hp: -1, attack: -1, defense: -1, agility: -1 })
+      entity.set_stats({ max_hp: 0, attack: 0, defense: 0, agility: 0 })
 
       stats = entity.stats
       expect(stats[:max_hp]).to eq 1
