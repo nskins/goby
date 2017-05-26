@@ -56,17 +56,10 @@ RSpec.describe Equippable do
       expect(@entity.stats[:hp]).to eq 1
     end
 
-    it "does not kill an entity by unequipping" do
-      @entity.set_stats({ hp: 3, max_hp: 5 })
-      initial_stat_stub = { max_hp: 4 }
-      altered_stat_stub = { max_hp: 4, hp: 4 }
-      allow(initial_stat_stub).to receive(:[]=)
-      allow(@equippable).to receive(:stat_change).and_return(initial_stat_stub,
-                                                             initial_stat_stub,
-                                                             altered_stat_stub)
-
+    it "automatically decreases hp to match max_hp" do
+      @entity.set_stats({ max_hp: 3, hp: 2 })
       @equippable.alter_stats(@entity, false)
-      expect(initial_stat_stub).to have_received(:[]=).with(:hp, 4)
+      expect(@entity.stats[:max_hp]).to eq 1
       expect(@entity.stats[:hp]).to eq 1
     end
   end

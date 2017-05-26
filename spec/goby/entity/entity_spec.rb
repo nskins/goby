@@ -629,20 +629,20 @@ RSpec.describe Entity do
       expect(stats[:agility]).to eq 4
     end
 
-    it "does not allow hp to be above max_hp and sets to the greater of the two" do
-      entity = Entity.new
-
-      entity.set_stats({ max_hp: 2, hp: 3 })
-
-      stats = entity.stats
-      expect(stats[:max_hp]).to eq 3
-      expect(stats[:hp]).to eq 3
-    end
-
     it "sets hp to max_hp if hp is passed in as nil" do
       entity = Entity.new
 
       entity.set_stats({ max_hp: 2, hp: nil })
+
+      stats = entity.stats
+      expect(stats[:max_hp]).to eq 2
+      expect(stats[:hp]).to eq 2
+    end
+
+    it "hp cannot be more than max hp" do
+      entity = Entity.new
+
+      entity.set_stats({ max_hp: 2, hp: 3 })
 
       stats = entity.stats
       expect(stats[:max_hp]).to eq 2

@@ -311,8 +311,8 @@ module Goby
 
       # Set hp to max_hp if hp not specified
       constructed_stats[:hp] = constructed_stats[:hp] || constructed_stats[:max_hp]
-      # Prevent HP > max HP.
-      constructed_stats[:max_hp] = constructed_stats[:hp] if constructed_stats[:hp] > constructed_stats[:max_hp]
+      # hp should not be greater than max_hp
+      constructed_stats[:hp] = [constructed_stats[:hp], constructed_stats[:max_hp]].min
       #ensure hp is at least 0
       constructed_stats[:hp] = constructed_stats[:hp] > 0 ? constructed_stats[:hp] : 0
       #ensure all other stats > 0

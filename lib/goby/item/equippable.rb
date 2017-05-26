@@ -29,18 +29,18 @@ module Goby
         operator = :+
       else
         operator = :-
-        stat_change[:hp] = stat_change[:max_hp]
-        affected_stats << :hp
       end
 
       affected_stats.each do |stat|
         stats_to_change[stat]= stats_to_change[stat].send(operator, stat_change[stat]) if stat_change[stat]
       end
-      #do not kill entity by unequipping
-      if stats_to_change[:hp] < 1
-        stats_to_change[:hp] = 1
-      end
+
       entity.set_stats(stats_to_change)
+
+      #do not kill entity by unequipping
+      if entity.stats[:hp] < 1
+        entity.set_stats(hp: 1)
+      end
     end
 
     # Equips onto the entity and changes the entity's attributes accordingly.
