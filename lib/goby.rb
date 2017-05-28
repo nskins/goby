@@ -6,6 +6,9 @@ end
 
 # Import order matters.
 
+require 'i18n'
+I18n.load_path = Dir["#{File.expand_path(File.dirname(__FILE__))}/goby/config/locales/*.yml"]
+
 require 'goby/extension'
 require 'goby/util'
 require 'goby/world_command'
