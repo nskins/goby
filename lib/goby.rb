@@ -1,9 +1,4 @@
 # Main module of the framework.
-module Goby
-  # Version of the framework.
-  VERSION = "0.1.0"
-end
-
 # Import order matters.
 
 require 'i18n'
