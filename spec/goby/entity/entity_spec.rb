@@ -155,30 +155,77 @@ RSpec.describe Entity do
     end
 
     it "should give the player the appropriate amount of gold" do
-      @entity.add_rewards(5, nil)
+      @entity.add_loot(5, nil)
       expect(@entity.gold).to eq 5
       expect(@entity.inventory.size).to be_zero
     end
 
     it "should give the player the appropriate treasure item" do
-      @entity.add_rewards(0, Item.new)
+      @entity.add_loot(0, [Item.new])
       expect(@entity.gold).to be_zero
       expect(@entity.inventory).to eq [Couple.new(Item.new, 1)]
     end
 
-    it "should give the player both the gold and the treasure item" do
-      @entity.add_rewards(5, Item.new)
+    it "should give the player both the gold and all the treasures" do
+      @entity.add_loot(5, [Item.new, Helmet.new, Food.new])
       expect(@entity.gold).to eq 5
-      expect(@entity.inventory).to eq [Couple.new(Item.new, 1)]
+      expect(@entity.inventory.size).to eq 3
+      expect(@entity.inventory[0].first).to eq Item.new
+      expect(@entity.inventory[1].first).to eq Helmet.new
+      expect(@entity.inventory[2].first).to eq Food.new
+    end
+
+    it "should not give the player the nil treasure" do
+      @entity.add_loot(0, [Food.new, nil])
+      expect(@entity.inventory.size).to eq 1
+      expect(@entity.inventory[0].first).to eq Food.new
     end
 
     it "should not output anything for no rewards" do
-      expect { @entity.add_rewards(0, nil) }.not_to output.to_stdout
+      expect { @entity.add_loot(0, nil) }.to output(
+        "Loot: nothing!\n\n"
+      ).to_stdout
+    end
+
+    it "should not output anything for empty treasures" do
+      expect { @entity.add_loot(0, []) }.to output(
+        "Loot: nothing!\n\n"
+      ).to_stdout
+    end
+
+    it "should not output anything for only nil treasures" do
+      expect { @entity.add_loot(0, [nil, nil] )}.to output(
+        "Loot: nothing!\n\n"
+      ).to_stdout
+    end
+
+    it "should output only the gold" do
+      expect { @entity.add_loot(3, nil) }.to output(
+        "Loot: \n* 3 gold\n\n"
+      ).to_stdout
+    end
+
+    it "should output only the treasures" do
+      expect { @entity.add_loot(0, [Item.new, Food.new]) }.to output(
+        "Loot: \n* Item\n* Food\n\n"
+      ).to_stdout
     end
 
     it "should output both of the rewards" do
-      expect { @entity.add_rewards(5, Item.new) }.to output(
-        "Rewards:\n* 5 gold\n* Item\n\n"
+      expect { @entity.add_loot(5, [Item.new]) }.to output(
+        "Loot: \n* 5 gold\n* Item\n\n"
+      ).to_stdout
+    end
+
+    it "should output all of the rewards" do
+      expect { @entity.add_loot(7, [Item.new, Helmet.new, Food.new]) }.to output(
+        "Loot: \n* 7 gold\n* Item\n* Helmet\n* Food\n\n"
+      ).to_stdout
+    end
+
+    it "should not output the nil treasure" do
+      expect { @entity.add_loot(0, [Item.new, nil, Food.new]) }.to output(
+        "Loot: \n* Item\n* Food\n\n"
       ).to_stdout
     end
   end

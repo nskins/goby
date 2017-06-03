@@ -78,22 +78,29 @@ module Goby
       @inventory.push(Couple.new(item, amount))
     end
 
-    # Adds the specified gold and treasure item to the inventory.
+    # Adds the specified gold and treasures to the inventory.
     #
     # @param [Integer] gold the amount of gold.
-    # @param [Item] treasure the treasure item.
-    def add_rewards(gold, treasure)
-      if ((gold.positive?) || treasure)
-        type("Rewards:\n")
+    # @param [[Item]] treasures the list of treasures.
+    def add_loot(gold, treasures)
+      type("Loot: ")
+      if ((gold.positive?) || (treasures && treasures.any?))
+        print "\n"
         if gold.positive?
           type("* #{gold} gold\n")
           add_gold(gold)
         end
-        if treasure
-          type("* #{treasure.name}\n")
-          add_item(treasure)
+        if treasures && treasures.any?
+          treasures.each do |treasure|
+            unless treasure.nil?
+              type("* #{treasure.name}\n")
+              add_item(treasure)
+            end
+          end
         end
-      print "\n"
+        print "\n"
+      else
+        type("nothing!\n\n")
       end
     end
 

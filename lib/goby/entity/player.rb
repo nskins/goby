@@ -103,7 +103,7 @@ module Goby
         gold = rewards.first
         treasure = rewards.second
 
-        add_rewards(gold, treasure)
+        add_loot(gold, [treasure])
       end
 
     end
