@@ -24,6 +24,7 @@ require 'goby/entity/monster'
 require 'goby/entity/player'
 
 require 'goby/event/event'
+require 'goby/event/chest'
 require 'goby/event/npc'
 require 'goby/event/shop'
 
