@@ -25,6 +25,9 @@ RSpec.describe Player do
                        gold: 50, map: @map, location: @center)
     @dragon = Monster.new(stats: { attack: 50, agility: 10000 },
                           battle_commands: [Attack.new(strength: 50)] )
+    @chest_map = Map.new(name: "Chest Map",
+                         tiles: [ [ Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])] ],
+                         regen_location: Couple.new(0,0))
   end
 
   context "constructor" do
@@ -201,6 +204,19 @@ RSpec.describe Player do
       @dude.move_to(Couple.new(3,3))
       expect(@dude.map).to eq @map
       expect(@dude.location).to eq @center
+    end
+
+    it "saves the information from previous maps" do
+      @dude.move_to(Couple.new(0,0), @chest_map)
+      interpret_command("open", @dude)
+      expect(@dude.gold).to eq 5
+      @dude.move_to(Couple.new(1,1), Map.new)
+      @dude.move_to(Couple.new(0,0), Map.new(name: "Chest Map"))
+      interpret_command("open", @dude)
+      expect(@dude.gold).to eq 5
+      @dude.move_right
+      interpret_command("open", @dude)
+      expect(@dude.gold).to eq 10
     end
 
     it "should (eventually) encounter a monster and do battle" do
