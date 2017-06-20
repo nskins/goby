@@ -6,10 +6,11 @@ module Goby
     # @param [String] name the name.
     # @param [[Tile]] tiles the content of the map.
     # @param [Couple(Integer, Integer)] regen_location respawn-on-death coordinates.
-    def initialize(name: "Map", tiles: [[Tile.new]], regen_location: Couple.new(0,0))
+    def initialize(name: "Map", tiles: [[Tile.new]], regen_location: Couple.new(0,0), music: nil)
       @name = name
       @tiles = tiles
       @regen_location = regen_location
+      @music = music
     end
 
     # Returns true when @tiles[y][x] is an existing index of @tiles.
@@ -39,7 +40,7 @@ module Goby
       return @name == rhs.name
     end
 
-    attr_accessor :name, :tiles, :regen_location
+    attr_accessor :name, :tiles, :regen_location, :music
 
   end
 

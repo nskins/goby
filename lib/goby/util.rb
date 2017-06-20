@@ -81,4 +81,23 @@ module Goby
     end
   end
 
+  # Starts playing the music from the specified file.
+  # This has only been tested on Ubuntu w/ .mid files.
+  #
+  # @param [String] filename the file containing the music.
+  def play_music(filename)
+    if (filename != $music_file)
+      stop_music
+      $music_pid = Process.spawn("timidity #{filename}", :out=>"/dev/null")
+      $music_file = filename
+    end
+  end
+
+  # If any music is playing, kills that process.
+  def stop_music
+    Process.kill("SIGKILL", $music_pid) if $music_pid
+    $music_pid = nil
+    $music_file = nil
+  end
+
 end
