@@ -88,15 +88,26 @@ module Goby
   def play_music(filename)
     if (filename != $music_file)
       stop_music
-      $music_pid = Process.spawn("timidity #{filename}", :out=>"/dev/null")
       $music_file = filename
+
+      # This thread loops the music until one calls #stop_music.
+      $music_thr = Thread.new {
+        while (true)
+          $music_pid = Process.spawn("timidity #{filename}", :out=>"/dev/null")
+          Process.wait($music_pid)
+        end
+      }
     end
   end
 
-  # If any music is playing, kills that process.
+  # Kills the music process and the looping thread.
   def stop_music
     Process.kill("SIGKILL", $music_pid) if $music_pid
     $music_pid = nil
+
+    $music_thr.kill if $music_thr
+    $music_thr = nil
+
     $music_file = nil
   end
 
