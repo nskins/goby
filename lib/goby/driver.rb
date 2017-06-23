@@ -2,6 +2,7 @@ require 'goby'
 
 module Goby
 
+  include Music
   include WorldCommand
 
   # Runs the main game loop.

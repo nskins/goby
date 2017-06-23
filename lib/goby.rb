@@ -9,6 +9,7 @@ end
 require 'goby/extension'
 require 'goby/util'
 require 'goby/world_command'
+require 'goby/music'
 require 'goby/driver'
 
 require 'goby/battle/battle_command'
