@@ -5,11 +5,9 @@ RSpec.describe Player do
   before(:all) do
     # Constructs a map in the shape of a plus sign.
     @map = Map.new(tiles: [ [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ],
-                            [ Tile.new, Tile.new, Tile.new ],
+                            [ Tile.new, Tile.new, Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)]) ]) ],
                             [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ] ],
                    regen_location: Couple.new(1,1))
-    @monster_map = Map.new(tiles: [ [ Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)]) ]) ] ],
-                           regen_location: Couple.new(0,0))
     @center = @map.regen_location
     @passable = Tile::DEFAULT_PASSABLE
     @impassable = Tile::DEFAULT_IMPASSABLE
@@ -218,15 +216,6 @@ RSpec.describe Player do
       interpret_command("open", @dude)
       expect(@dude.gold).to eq 10
     end
-
-    it "should (eventually) encounter a monster and do battle" do
-      # High probability for encountering a monster at least once.
-      20.times do
-        __stdin("attack\n") do
-          @dude.move_to(Couple.new(0,0), @monster_map)
-        end
-      end
-    end
   end
 
   context "move up" do
@@ -245,15 +234,22 @@ RSpec.describe Player do
 
   context "move right" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_right
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq Couple.new(1,2)
+      20.times do
+        __stdin("Attack\n") do
+          @dude.move_right
+          expect(@dude.map).to eq @map
+          expect(@dude.location).to eq Couple.new(1,2)
+          @dude.move_left
+        end
+      end
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_right; @dude.move_right
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq Couple.new(1,2)
+      __stdin("Attack\n") do
+        @dude.move_right; @dude.move_right
+        expect(@dude.map).to eq @map
+        expect(@dude.location).to eq Couple.new(1,2)
+      end
     end
   end
 

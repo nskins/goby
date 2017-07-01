@@ -1,11 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'goby'
 
 Gem::Specification.new do |spec|
   spec.name          = "goby"
-  spec.version       = Goby::VERSION
+  spec.version       = "0.1.0"
   spec.authors       = ["Nicholas Skinsacos"]
   spec.email         = ["nskins@umich.edu"]
 

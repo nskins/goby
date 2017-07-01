@@ -1,14 +1,9 @@
-# Main module of the framework.
-module Goby
-  # Version of the framework.
-  VERSION = "0.1.0"
-end
-
 # Import order matters.
 
 require 'goby/extension'
 require 'goby/util'
 require 'goby/world_command'
+require 'goby/music'
 require 'goby/driver'
 
 require 'goby/battle/battle_command'
