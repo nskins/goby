@@ -33,8 +33,8 @@ module Goby
         # This thread loops the music until one calls #stop_music.
         @@thread = Thread.new {
           while (true)
+            Process.wait(@@pid) if @@pid
             @@pid = Process.spawn("#{@@program} #{filename}", :out=>"/dev/null")
-            Process.wait(@@pid)
           end
         }
       end
