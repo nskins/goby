@@ -4,15 +4,18 @@ module Goby
   module Scaffold
 
     # Simple starter project w/o testing.
-    def self.simple
+    #
+    # @param [String] project the project name.
+    def self.simple(project)
 
-      # TODO: detect existence of src folder.
+      # TODO: detect existence of project folder.
 
       # Make the directory structure.
+      Dir.mkdir project
       dirs = [ '', 'battle', 'entity',
                'event', 'item', 'map' ]
       dirs.each do |dir|
-        Dir.mkdir "src/#{dir}"
+        Dir.mkdir "#{project}/src/#{dir}"
       end
 
       # Create the source files.
@@ -20,7 +23,7 @@ module Goby
       files = { '.gitignore': '../gitignore',
                 'src/main.rb': 'main.rb' }
       files.each do |dest, source|
-        File.open(dest.to_s, 'w') do |w|
+        File.open("#{project}/#{dest.to_s}", 'w') do |w|
           w.write(File.read "#{gem_location}/res/scaffold/simple/#{source}")
         end
       end

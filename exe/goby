@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 require 'goby'
-Goby::Scaffold::simple
+Goby::Scaffold::simple "goby-project"
