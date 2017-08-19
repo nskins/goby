@@ -1,20 +1,17 @@
 require 'goby'
-require 'optparse'
 
 include Goby
 
 require_relative 'map/farm.rb'
 
-# Command-line arguments.
-options = {}
-OptionParser.new do |opts|
-  # Specify whether or not to play background music.
-  opts.on("-m", "--[no-]music", "Run music") do |v|
-    options[:music] = v
-    Music::set_playback(v)
-  end
-end.parse!
+# Set this to true in order to use BGM.
+Music::set_playback(false)
 
+# By default, we've included no music files.
+# The Music module also includes a function
+# to change the music-playing program.
+
+# Clear the terminal.
 system("clear")
 
 # Allow the player to load an existing game.
