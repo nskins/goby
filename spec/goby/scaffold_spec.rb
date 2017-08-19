@@ -17,7 +17,7 @@ RSpec.describe Scaffold do
       end
 
       # Ensure all of the files exist.
-      [ '.gitignore', 'src/main.rb' ].each do |file|
+      [ '.gitignore', 'src/main.rb', 'src/map/farm.rb' ].each do |file|
         expect(File.exist? "#{project}/#{file}").to be true
       end
 

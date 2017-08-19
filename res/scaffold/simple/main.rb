@@ -1,6 +1,9 @@
 require 'goby'
 require 'optparse'
+
 include Goby
+
+require_relative 'map/farm.rb'
 
 # Command-line arguments.
 options = {}
@@ -30,7 +33,7 @@ if player.nil?
   # Use the Player constructor to set the
   # initial Map, (y,x) location, stats,
   # gold, inventory, and more.
-  player = Player.new(gold: 1)
+  player = Player.new(map: Farm.new, location: Couple.new(2,2))
 
 end
 

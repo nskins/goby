@@ -21,7 +21,8 @@ module Goby
       # Create the source files.
       gem_location = %x[gem which goby].chomp "/lib/goby.rb\n"
       files = { '.gitignore': '../gitignore',
-                'src/main.rb': 'main.rb' }
+                'src/main.rb': 'main.rb',
+                'src/map/farm.rb': 'farm.rb' }
       files.each do |dest, source|
         File.open("#{project}/#{dest.to_s}", 'w') do |w|
           w.write(File.read "#{gem_location}/res/scaffold/simple/#{source}")
