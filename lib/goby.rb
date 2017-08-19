@@ -1,5 +1,6 @@
 # Import order matters.
 
+require 'goby/scaffold'
 require 'goby/extension'
 require 'goby/util'
 require 'goby/world_command'

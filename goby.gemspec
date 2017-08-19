@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/nskins/goby"
   spec.license       = "MIT"
 
-  spec.files = Dir["{lib}/**/*", "LICENSE", "README.md" ]
+  spec.files = Dir["{exe}/**/*", "{lib}/**/*", "{res}/**/*", "LICENSE", "README.md" ]
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
