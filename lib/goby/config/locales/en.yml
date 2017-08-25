@@ -1,0 +1,6 @@
+en:
+  goby:
+    entity:
+      errors:
+        no_such_item: "What?! You don't have THAT!"
+        item_not_equipped: "You are not equipping THAT!"

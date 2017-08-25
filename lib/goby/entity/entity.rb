@@ -7,9 +7,9 @@ module Goby
   class Entity
 
     # Error when the entity specifies a non-existent item.
-    NO_SUCH_ITEM_ERROR = "What?! You don't have THAT!\n\n"
+    NO_SUCH_ITEM_ERROR = I18n.t('goby.entity.errors.no_such_item')
     # Error when the entity specifies an item not equipped.
-    NOT_EQUIPPED_ERROR = "You are not equipping THAT!\n\n"
+    NOT_EQUIPPED_ERROR = I18n.t('goby.entity.errors.item_not_equipped')
 
     # @param [String] name the name.
     # @param [Hash] stats hash of stats

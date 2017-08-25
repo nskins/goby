@@ -1,3 +1,9 @@
+# Main module of the framework.
+# Import order matters.
+
+require 'i18n'
+I18n.load_path = Dir["#{File.expand_path(File.dirname(__FILE__))}/goby/config/locales/*.yml"]
+
 # Import order matters.
 
 require 'goby/scaffold'
