@@ -4,9 +4,13 @@
 require 'i18n'
 I18n.load_path = Dir["#{File.expand_path(File.dirname(__FILE__))}/goby/config/locales/*.yml"]
 
+# Import order matters.
+
+require 'goby/scaffold'
 require 'goby/extension'
 require 'goby/util'
 require 'goby/world_command'
+require 'goby/music'
 require 'goby/driver'
 
 require 'goby/battle/battle_command'
@@ -22,6 +26,7 @@ require 'goby/entity/monster'
 require 'goby/entity/player'
 
 require 'goby/event/event'
+require 'goby/event/chest'
 require 'goby/event/npc'
 require 'goby/event/shop'
 

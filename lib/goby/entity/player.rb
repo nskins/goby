@@ -26,23 +26,24 @@ module Goby
     # @param [Hash] outfit the collection of equippable items currently worn.
     # @param [Map] map the map on which the player is located.
     # @param [Couple(Integer,Integer)] location the 2D index of the map (the exact tile).
-    def initialize(name: "Player", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {}, map: DEFAULT_MAP,
-                   location: DEFAULT_LOCATION)
+    def initialize(name: "Player", stats: {}, inventory: [], gold: 0, battle_commands: [],
+                   outfit: {}, map: nil, location: nil)
       super(name: name, stats: stats, inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
-
-      @map = DEFAULT_MAP
-      @location = DEFAULT_LOCATION
+      @saved_maps = Hash.new
 
       # Ensure that the map and the location are valid.
+      new_map = DEFAULT_MAP
+      new_location = DEFAULT_LOCATION
       if (map && location)
-
         y = location.first; x = location.second
-
         if (map.in_bounds(y,x) && map.tiles[y][x].passable)
-          move_to(location, map)
+          new_map = map
+          new_location = location
         end
       end
 
+      move_to(new_location, new_map)
+      @saved_maps = Hash.new
     end
 
     # Engages in battle with the specified monster.
@@ -103,7 +104,7 @@ module Goby
         gold = rewards.first
         treasure = rewards.second
 
-        add_rewards(gold, treasure)
+        add_loot(gold, [treasure])
       end
 
     end
@@ -231,13 +232,16 @@ module Goby
 
       y = coordinates.first; x = coordinates.second
 
+      # Save the map.
+      @saved_maps[@map.name] = @map if @map
+
       # Prevents moving onto nonexistent and impassable tiles.
       if (!map.in_bounds(y,x) || (!map.tiles[y][x].passable))
         describe_tile(self)
         return
       end
 
-      @map = map
+      @map = @saved_maps[map.name] ? @saved_maps[map.name] : map
       @location = coordinates
       tile = @map.tiles[y][x]
 
@@ -337,7 +341,7 @@ module Goby
       end
     end
 
-    attr_reader :map, :location
+    attr_reader :map, :location, :saved_maps
 
   end
 

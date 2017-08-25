@@ -20,6 +20,8 @@
 require 'coveralls'
 Coveralls.wear!
 
+require 'goby'
+
 # Set variable to know when testing.
 # Also has boolean value true.
 ENV['TEST'] = 'rspec'
