@@ -25,7 +25,7 @@ RSpec.describe Monster do
                                    attack: 2,
                                    defense: 2,
                                    agility: 4 },
-                        inventory: [Couple.new(Item.new, 1)],
+                        inventory: [Couple[Item.new, 1]],
                         gold: 10,
                         outfit: { weapon: Weapon.new(
                                     attack: Attack.new,
@@ -40,15 +40,15 @@ RSpec.describe Monster do
                           Attack.new(name: "Kick")
                         ],
                         message: "\"Oh, hi.\"",
-                        treasures: [Couple.new(Item.new, 1),
-                                    Couple.new(nil, 3)])
+                        treasures: [Couple[Item.new, 1],
+                                    Couple[nil, 3]])
       expect(clown.name).to eq "Clown"
       expect(clown.stats[:max_hp]).to eq 20
       expect(clown.stats[:hp]).to eq 15
       expect(clown.stats[:attack]).to eq 6
       expect(clown.stats[:defense]).to eq 8
       expect(clown.stats[:agility]).to eq 4
-      expect(clown.inventory).to eq [Couple.new(Item.new, 1)]
+      expect(clown.inventory).to eq [Couple[Item.new, 1]]
       expect(clown.gold).to eq 10
       expect(clown.outfit[:weapon]).to eq Weapon.new
       expect(clown.outfit[:helmet]).to eq Helmet.new
@@ -58,15 +58,15 @@ RSpec.describe Monster do
         Attack.new(name: "Scratch")
       ]
       expect(clown.message).to eq "\"Oh, hi.\""
-      expect(clown.treasures).to eq [Couple.new(Item.new, 1),
-                                     Couple.new(nil, 3)]
+      expect(clown.treasures).to eq [Couple[Item.new, 1],
+                                     Couple[nil, 3]]
       expect(clown.total_treasures).to eq 4
     end
   end
 
   context "clone" do
     before(:each) do
-      @monster = Monster.new(inventory: [Couple.new(Item.new, 1)])
+      @monster = Monster.new(inventory: [Couple[Item.new, 1]])
       @clone = @monster.clone
     end
 

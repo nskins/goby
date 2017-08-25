@@ -6,6 +6,14 @@ module Goby
   # Stores a pair of values.
   class Couple
 
+    #Syntactic sugar to create a couple using Couple[a, b]
+    #
+    # @param [Object] first the first object in the pair.
+    # @param [Object] second the second object in the pair.
+    def self.[](a, b)
+      Couple.new(a, b)
+    end
+
     # @param [Object] first the first object in the pair.
     # @param [Object] second the second object in the pair.
     def initialize(first, second)

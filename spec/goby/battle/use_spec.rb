@@ -16,7 +16,7 @@ RSpec.describe Use do
     before(:each) do
       @player = Player.new(stats: { max_hp: 10, hp: 3 },
                            battle_commands: [@use],
-                           inventory: [Couple.new(Food.new(recovers: 5), 1)])
+                           inventory: [Couple[Food.new(recovers: 5), 1]])
       @monster = Monster.new
     end
 

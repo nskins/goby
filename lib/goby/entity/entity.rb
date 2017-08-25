@@ -75,7 +75,7 @@ module Goby
       end
 
       # If not already in the inventory, push a Couple.
-      @inventory.push(Couple.new(item, amount))
+      @inventory.push(Couple[item, amount])
     end
 
     # Adds the specified gold and treasures to the inventory.
@@ -120,7 +120,7 @@ module Goby
     def choose_item_and_on_whom(enemy)
       item = @inventory[Random.rand(@inventory.length)].first
       whom = [self, enemy].sample
-      return Couple.new(item, whom)
+      return Couple[item, whom]
     end
 
     # Removes all items from the entity's inventory.

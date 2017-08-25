@@ -39,7 +39,7 @@ module Goby
 
       # Create a deep copy of the inventory.
       @inventory.each do |pair|
-        monster.inventory << Couple.new(pair.first.clone, pair.second)
+        monster.inventory << Couple[pair.first.clone, pair.second]
       end
 
       return monster
@@ -55,7 +55,7 @@ module Goby
       # Determine which treasure to reward the victor.
       treasure = sample_treasures
 
-      return Couple.new(gold, treasure)
+      return Couple[gold, treasure]
     end
 
     attr_accessor :message, :treasures, :total_treasures

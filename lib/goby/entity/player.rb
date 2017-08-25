@@ -12,7 +12,7 @@ module Goby
     # Default map when no "good" map & location specified.
     DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
     # Default location when no "good" map & location specified.
-    DEFAULT_LOCATION = Couple.new(0,0)
+    DEFAULT_LOCATION = Couple[0,0]
 
     # distance in each direction that tiles are acted upon
     # used in: update_map, print_minimap
@@ -176,7 +176,7 @@ module Goby
         end
       end
 
-      return Couple.new(item, whom)
+      return Couple[item, whom]
     end
 
     # Sends the player back to a safe location,
@@ -204,19 +204,19 @@ module Goby
 
     # Moves the player down. Increases 'y' coordinate by 1.
     def move_down
-      down_tile = Couple.new(@location.first + 1, @location.second)
+      down_tile = Couple[@location.first + 1, @location.second]
       move_to(down_tile)
     end
 
     # Moves the player left. Decreases 'x' coordinate by 1.
     def move_left
-      left_tile = Couple.new(@location.first, @location.second - 1)
+      left_tile = Couple[@location.first, @location.second - 1]
       move_to(left_tile)
     end
 
     # Moves the player right. Increases 'x' coordinate by 1.
     def move_right
-      right_tile = Couple.new(@location.first, @location.second + 1)
+      right_tile = Couple[@location.first, @location.second + 1]
       move_to(right_tile)
     end
 
@@ -260,7 +260,7 @@ module Goby
 
     # Moves the player up. Decreases 'y' coordinate by 1.
     def move_up
-      up_tile = Couple.new(@location.first - 1, @location.second)
+      up_tile = Couple[@location.first - 1, @location.second]
       move_to(up_tile)
     end
 
@@ -278,7 +278,7 @@ module Goby
         2.times { print " " }
 
         row.each_with_index do |tile, t|
-          print_tile(Couple.new(r, t))
+          print_tile(Couple[r, t])
         end
   			print "\n"
       end
@@ -302,7 +302,7 @@ module Goby
         10.times { print " " }
         for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
           # Prevents operations on nonexistent tiles.
-          print_tile(Couple.new(y, x)) if (@map.in_bounds(y,x))
+          print_tile(Couple[y, x]) if (@map.in_bounds(y,x))
         end
         # new line if this row is not out of bounds
         print "\n" if y < @map.tiles.size

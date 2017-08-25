@@ -6,7 +6,7 @@ module Goby
     # @param [String] name the name.
     # @param [[Tile]] tiles the content of the map.
     # @param [Couple(Integer, Integer)] regen_location respawn-on-death coordinates.
-    def initialize(name: "Map", tiles: [[Tile.new]], regen_location: Couple.new(0,0), music: nil)
+    def initialize(name: "Map", tiles: [[Tile.new]], regen_location: Couple[0,0], music: nil)
       @name = name
       @tiles = tiles
       @regen_location = regen_location
