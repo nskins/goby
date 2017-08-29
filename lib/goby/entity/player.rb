@@ -12,7 +12,7 @@ module Goby
     # Default map when no "good" map & location specified.
     DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
     # Default location when no "good" map & location specified.
-    DEFAULT_LOCATION = Couple[0,0]
+    DEFAULT_LOCATION = C[0,0]
 
     # distance in each direction that tiles are acted upon
     # used in: update_map, print_minimap
@@ -20,12 +20,12 @@ module Goby
 
     # @param [String] name the name.
     # @param [Hash] stats hash of stats
-    # @param [[Couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
+    # @param [[couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
     # @param [Integer] gold the currency used for economical transactions.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
     # @param [Map] map the map on which the player is located.
-    # @param [Couple(Integer,Integer)] location the 2D index of the map (the exact tile).
+    # @param [couple(Integer,Integer)] location the 2D index of the map (the exact tile).
     def initialize(name: "Player", stats: {}, inventory: [], gold: 0, battle_commands: [],
                    outfit: {}, map: nil, location: nil)
       super(name: name, stats: stats, inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
@@ -136,7 +136,7 @@ module Goby
     # during battle (Use command). Return nil on error.
     #
     # @param [Entity] enemy the opponent in battle.
-    # @return [Couple(Item, Entity)] the item and on whom it is to be used.
+    # @return [couple(Item, Entity)] the item and on whom it is to be used.
     def choose_item_and_on_whom(enemy)
       index = nil
       item = nil
@@ -176,7 +176,7 @@ module Goby
         end
       end
 
-      return Couple[item, whom]
+      return C[item, whom]
     end
 
     # Sends the player back to a safe location,
@@ -204,25 +204,25 @@ module Goby
 
     # Moves the player down. Increases 'y' coordinate by 1.
     def move_down
-      down_tile = Couple[@location.first + 1, @location.second]
+      down_tile = C[@location.first + 1, @location.second]
       move_to(down_tile)
     end
 
     # Moves the player left. Decreases 'x' coordinate by 1.
     def move_left
-      left_tile = Couple[@location.first, @location.second - 1]
+      left_tile = C[@location.first, @location.second - 1]
       move_to(left_tile)
     end
 
     # Moves the player right. Increases 'x' coordinate by 1.
     def move_right
-      right_tile = Couple[@location.first, @location.second + 1]
+      right_tile = C[@location.first, @location.second + 1]
       move_to(right_tile)
     end
 
     # Safe setter function for location and map.
     #
-    # @param [Couple(Integer, Integer)] coordinates the new location.
+    # @param [couple(Integer, Integer)] coordinates the new location.
     # @param [Map] map the (possibly) new map.
     def move_to(coordinates, map = @map)
       # Prevents operations on nil.
@@ -260,7 +260,7 @@ module Goby
 
     # Moves the player up. Decreases 'y' coordinate by 1.
     def move_up
-      up_tile = Couple[@location.first - 1, @location.second]
+      up_tile = C[@location.first - 1, @location.second]
       move_to(up_tile)
     end
 
@@ -278,7 +278,7 @@ module Goby
         2.times { print " " }
 
         row.each_with_index do |tile, t|
-          print_tile(Couple[r, t])
+          print_tile(C[r, t])
         end
   			print "\n"
       end
@@ -302,7 +302,7 @@ module Goby
         10.times { print " " }
         for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
           # Prevents operations on nonexistent tiles.
-          print_tile(Couple[y, x]) if (@map.in_bounds(y,x))
+          print_tile(C[y, x]) if (@map.in_bounds(y,x))
         end
         # new line if this row is not out of bounds
         print "\n" if y < @map.tiles.size
@@ -312,7 +312,7 @@ module Goby
 
     # Prints the tile based on the player's location.
     #
-    # @param [Couple(Integer, Integer)] coords the y-x coordinates of the tile.
+    # @param [couple(Integer, Integer)] coords the y-x coordinates of the tile.
     def print_tile(coords)
       if ((@location.first == coords.first) && (@location.second == coords.second))
         print "¶ "
@@ -332,7 +332,7 @@ module Goby
 
     # Updates the 'seen' attributes of the tiles on the player's current map.
     #
-    # @param [Couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map
+    # @param [couple(Integer, Integer)] coordinates to update seen attribute for tiles on the map
     def update_map(coordinates = @location)
       for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
         for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)

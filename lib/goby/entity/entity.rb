@@ -18,7 +18,7 @@ module Goby
     # @option stats [Integer] :attack strength in battle. Set to be positive.
     # @option stats [Integer] :defense protection from attacks. Set to be positive.
     # @option stats [Integer] :agility speed of commands in battle. Set to be positive.
-    # @param [[Couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
+    # @param [[couple(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
     # @param [Integer] gold the currency used for economical transactions.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
@@ -74,8 +74,8 @@ module Goby
         end
       end
 
-      # If not already in the inventory, push a Couple.
-      @inventory.push(Couple[item, amount])
+      # If not already in the inventory, push a couple.
+      @inventory.push(C[item, amount])
     end
 
     # Adds the specified gold and treasures to the inventory.
@@ -116,11 +116,11 @@ module Goby
     # during battle (Use command). Return nil on error.
     #
     # @param [Entity] enemy the opponent in battle.
-    # @return [Couple(Item, Entity)] the item and on whom it is to be used.
+    # @return [couple(Item, Entity)] the item and on whom it is to be used.
     def choose_item_and_on_whom(enemy)
       item = @inventory[Random.rand(@inventory.length)].first
       whom = [self, enemy].sample
-      return Couple[item, whom]
+      return C[item, whom]
     end
 
     # Removes all items from the entity's inventory.

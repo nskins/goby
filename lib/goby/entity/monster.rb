@@ -7,12 +7,12 @@ module Goby
 
     # @param [String] name the name.
     # @param [Hash] stats hash of stats
-    # @param [[Couple(Item, Integer)]] inventory an array of pairs of items and their respective amounts.
+    # @param [[couple(Item, Integer)]] inventory an array of pairs of items and their respective amounts.
     # @param [Integer] gold the max amount of gold that can be rewarded to the opponent.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the coolection of equippable items currently worn.
     # @param [String] message the monster's battle cry.
-    # @param [[Couple(Item, Integer)]] treasures an array of treasures and the likelihood of receiving each.
+    # @param [[couple(Item, Integer)]] treasures an array of treasures and the likelihood of receiving each.
     def initialize(name: "Monster", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!",
                    treasures: [])
       super(name: name, stats: stats, inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
@@ -39,7 +39,7 @@ module Goby
 
       # Create a deep copy of the inventory.
       @inventory.each do |pair|
-        monster.inventory << Couple[pair.first.clone, pair.second]
+        monster.inventory << C[pair.first.clone, pair.second]
       end
 
       return monster
@@ -47,7 +47,7 @@ module Goby
 
     # Choose rewards based on the 'gold' and 'treasures' member variables.
     #
-    # @return [Couple(Integer, Item)] the gold (first) and the treasure (second).
+    # @return [couple(Integer, Item)] the gold (first) and the treasure (second).
     def sample_rewards
       # Sample a random amount of gold.
       gold = Random.rand(0..@gold)
@@ -55,7 +55,7 @@ module Goby
       # Determine which treasure to reward the victor.
       treasure = sample_treasures
 
-      return Couple[gold, treasure]
+      return C[gold, treasure]
     end
 
     attr_accessor :message, :treasures, :total_treasures
