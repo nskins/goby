@@ -1,10 +1,10 @@
 require 'goby'
 
 RSpec.describe Entity do
+  let(:entity) { Entity.new }
 
   context "constructor" do
     it "has the correct default parameters" do
-      entity = Entity.new
       expect(entity.name).to eq "Entity"
       stats = entity.stats
       expect(stats[:max_hp]).to eq 1
@@ -77,14 +77,12 @@ RSpec.describe Entity do
 
   context "add battle command" do
     it "properly adds the command in a trivial case" do
-      entity = Entity.new
       entity.add_battle_command(BattleCommand.new)
       expect(entity.battle_commands.length).to eq 1
       expect(entity.battle_commands).to eq [BattleCommand.new]
     end
 
     it "maintains the sorted invariant for a more complex case" do
-      entity = Entity.new
       entity.add_battle_command(BattleCommand.new(name: "Kick"))
       entity.add_battle_command(BattleCommand.new(name: "Chop"))
       entity.add_battle_command(BattleCommand.new(name: "Grab"))
@@ -98,13 +96,11 @@ RSpec.describe Entity do
 
   context "add gold" do
     it "properly adds the appropriate amount of gold" do
-      entity = Entity.new
       entity.add_gold(30)
       expect(entity.gold).to eq 30
     end
 
     it "prevents gold < 0" do
-      entity = Entity.new
       entity.add_gold(-30)
       expect(entity.gold).to be_zero
     end
@@ -112,7 +108,6 @@ RSpec.describe Entity do
 
   context "add item" do
     it "properly adds an item in a trivial case" do
-      entity = Entity.new
       entity.add_item(Item.new)
       expect(entity.inventory.length).to eq 1
       expect(entity.inventory[0].first).to eq Item.new
@@ -120,7 +115,6 @@ RSpec.describe Entity do
     end
 
     it "properly adds the same item to the same slot" do
-      entity = Entity.new
       entity.add_item(Item.new, 2)
       expect(entity.inventory[0].second).to eq 2
 
@@ -130,7 +124,6 @@ RSpec.describe Entity do
     end
 
     it "handles multiple items being added in succession" do
-      entity = Entity.new
       entity.add_item(Item.new, 3)
       entity.add_item(Item.new(name: "Apple"), 2)
       entity.add_item(Item.new(name: "Orange"), 4)
@@ -150,81 +143,77 @@ RSpec.describe Entity do
   end
 
   context "add rewards" do
-    before(:each) do
-      @entity = Entity.new
-    end
-
     it "should give the player the appropriate amount of gold" do
-      @entity.add_loot(5, nil)
-      expect(@entity.gold).to eq 5
-      expect(@entity.inventory.size).to be_zero
+      entity.add_loot(5, nil)
+      expect(entity.gold).to eq 5
+      expect(entity.inventory.size).to be_zero
     end
 
     it "should give the player the appropriate treasure item" do
-      @entity.add_loot(0, [Item.new])
-      expect(@entity.gold).to be_zero
-      expect(@entity.inventory).to eq [Couple.new(Item.new, 1)]
+      entity.add_loot(0, [Item.new])
+      expect(entity.gold).to be_zero
+      expect(entity.inventory).to eq [Couple.new(Item.new, 1)]
     end
 
     it "should give the player both the gold and all the treasures" do
-      @entity.add_loot(5, [Item.new, Helmet.new, Food.new])
-      expect(@entity.gold).to eq 5
-      expect(@entity.inventory.size).to eq 3
-      expect(@entity.inventory[0].first).to eq Item.new
-      expect(@entity.inventory[1].first).to eq Helmet.new
-      expect(@entity.inventory[2].first).to eq Food.new
+      entity.add_loot(5, [Item.new, Helmet.new, Food.new])
+      expect(entity.gold).to eq 5
+      expect(entity.inventory.size).to eq 3
+      expect(entity.inventory[0].first).to eq Item.new
+      expect(entity.inventory[1].first).to eq Helmet.new
+      expect(entity.inventory[2].first).to eq Food.new
     end
 
     it "should not give the player the nil treasure" do
-      @entity.add_loot(0, [Food.new, nil])
-      expect(@entity.inventory.size).to eq 1
-      expect(@entity.inventory[0].first).to eq Food.new
+      entity.add_loot(0, [Food.new, nil])
+      expect(entity.inventory.size).to eq 1
+      expect(entity.inventory[0].first).to eq Food.new
     end
 
     it "should not output anything for no rewards" do
-      expect { @entity.add_loot(0, nil) }.to output(
+      expect { entity.add_loot(0, nil) }.to output(
         "Loot: nothing!\n\n"
       ).to_stdout
     end
 
     it "should not output anything for empty treasures" do
-      expect { @entity.add_loot(0, []) }.to output(
+      expect { entity.add_loot(0, []) }.to output(
         "Loot: nothing!\n\n"
       ).to_stdout
     end
 
     it "should not output anything for only nil treasures" do
-      expect { @entity.add_loot(0, [nil, nil] )}.to output(
+      expect { entity.add_loot(0, [nil, nil] )}.to output(
         "Loot: nothing!\n\n"
       ).to_stdout
     end
 
     it "should output only the gold" do
-      expect { @entity.add_loot(3, nil) }.to output(
+      expect { entity.add_loot(3, nil) }.to output(
         "Loot: \n* 3 gold\n\n"
       ).to_stdout
     end
 
     it "should output only the treasures" do
-      expect { @entity.add_loot(0, [Item.new, Food.new]) }.to output(
+      expect { entity.add_loot(0, [Item.new, Food.new]) }.to output(
         "Loot: \n* Item\n* Food\n\n"
       ).to_stdout
     end
 
     it "should output both of the rewards" do
-      expect { @entity.add_loot(5, [Item.new]) }.to output(
+      expect { entity.add_loot(5, [Item.new]) }.to output(
         "Loot: \n* 5 gold\n* Item\n\n"
       ).to_stdout
     end
 
     it "should output all of the rewards" do
-      expect { @entity.add_loot(7, [Item.new, Helmet.new, Food.new]) }.to output(
+      expect { entity.add_loot(7, [Item.new, Helmet.new, Food.new]) }.to output(
         "Loot: \n* 7 gold\n* Item\n* Helmet\n* Food\n\n"
       ).to_stdout
     end
 
     it "should not output the nil treasure" do
-      expect { @entity.add_loot(0, [Item.new, nil, Food.new]) }.to output(
+      expect { entity.add_loot(0, [Item.new, nil, Food.new]) }.to output(
         "Loot: \n* Item\n* Food\n\n"
       ).to_stdout
     end
@@ -257,7 +246,6 @@ RSpec.describe Entity do
 
   context "clear inventory" do
     it "has no effect on an empty inventory" do
-      entity = Entity.new
       entity.clear_inventory
       expect(entity.inventory.size).to be_zero
     end
@@ -317,7 +305,6 @@ RSpec.describe Entity do
     end
 
     it "does not equip anything for an absent item" do
-      entity = Entity.new
       entity.equip_item("Weapon")
       expect(entity.outfit).to be_empty
     end
@@ -409,7 +396,6 @@ RSpec.describe Entity do
 
   context "has item" do
     it "correctly indicates an absent item for an object argument" do
-      entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
       index = entity.has_item(Item.new(name: "Banana"))
@@ -417,7 +403,6 @@ RSpec.describe Entity do
     end
 
     it "correctly indicates a present item for an object argument" do
-      entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
       index = entity.has_item(Item.new(name: "Apple"))
@@ -425,7 +410,6 @@ RSpec.describe Entity do
     end
 
     it "correctly indicates an absent item for a string argument" do
-      entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
       index = entity.has_item("Banana")
@@ -433,7 +417,6 @@ RSpec.describe Entity do
     end
 
     it "correctly indicates a present item for a string argument" do
-      entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
       index = entity.has_item("Orange")
@@ -443,7 +426,6 @@ RSpec.describe Entity do
 
   context "print battle commands" do
     it "should print only a newline when there are no battle commands" do
-      entity = Entity.new
       expect { entity.print_battle_commands }.to output("\n").to_stdout
     end
 
@@ -458,7 +440,6 @@ RSpec.describe Entity do
 
   context "print inventory" do
     it "should print the inventory is empty when it is" do
-      entity = Entity.new
       expect { entity.print_inventory }.to output(
         "Current gold in pouch: 0.\n\nEntity's inventory is empty!\n\n"
       ).to_stdout
@@ -497,7 +478,6 @@ RSpec.describe Entity do
     end
 
     it "prints the appropriate info for the default Entity" do
-      entity = Entity.new
       expect { entity.print_status }.to output(
       "Stats:\n* HP: 1/1\n* Attack: 1\n* Defense: 1\n* Agility: 1\n\n"\
       "Equipment:\n* Weapon: none\n* Shield: none\n* Helmet: none\n"\
@@ -508,14 +488,12 @@ RSpec.describe Entity do
 
   context "remove battle command" do
     it "has no effect when no such command is present" do
-      entity = Entity.new
       entity.add_battle_command(Attack.new(name: "Kick"))
       entity.remove_battle_command(BattleCommand.new(name: "Poke"))
       expect(entity.battle_commands.length).to eq 1
     end
 
     it "correctly removes the command in the trivial case" do
-      entity = Entity.new
       entity.add_battle_command(Attack.new(name: "Kick"))
       entity.remove_battle_command(Attack.new(name: "Kick"))
       expect(entity.battle_commands.length).to eq 0
@@ -538,21 +516,18 @@ RSpec.describe Entity do
 
   context "remove item" do
     it "has no effect when no such item is present" do
-      entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.remove_item(Item.new(name: "Banana"))
       expect(entity.inventory.length).to eq 1
     end
 
     it "correctly removes the item in the trivial case" do
-      entity = Entity.new
       entity.add_item(Item.new(name: "Apple"))
       entity.remove_item(Item.new(name: "Apple"))
       expect(entity.inventory.length).to eq 0
     end
 
     it "correctly removes multiple of the same item" do
-      entity = Entity.new
       entity.add_item(Item.new(name: "Apple"), 4)
       entity.remove_item(Item.new(name: "Apple"), 3)
       expect(entity.inventory.length).to eq 1
@@ -560,7 +535,6 @@ RSpec.describe Entity do
     end
 
     it "removes all of an item and leaves no gaps" do
-      entity = Entity.new
       entity.add_item(Item.new(name: "Apple"), 4)
       entity.add_item(Item.new(name: "Banana"), 3)
       entity.add_item(Item.new(name: "Orange"), 7)
@@ -677,8 +651,6 @@ RSpec.describe Entity do
     end
 
     it "sets hp to max_hp if hp is passed in as nil" do
-      entity = Entity.new
-
       entity.set_stats({ max_hp: 2, hp: nil })
 
       stats = entity.stats
@@ -687,8 +659,6 @@ RSpec.describe Entity do
     end
 
     it "hp cannot be more than max hp" do
-      entity = Entity.new
-
       entity.set_stats({ max_hp: 2, hp: 3 })
 
       stats = entity.stats
