@@ -20,7 +20,6 @@ if File.exists?("player.yaml")
   input = player_input
   if input.is_positive?
     player = load_game("player.yaml")
-    describe_tile(player)
   end
 end
 

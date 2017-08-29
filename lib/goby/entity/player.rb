@@ -228,18 +228,17 @@ module Goby
       # Prevents operations on nil.
       return if map.nil?
 
-      system("clear") unless ENV['TEST']
-
       y = coordinates.first; x = coordinates.second
 
       # Save the map.
       @saved_maps[@map.name] = @map if @map
 
+      # Even if the player hasn't moved, we still change to true.
+      # This is because we want to re-display the minimap anyway.
+      @moved = true
+
       # Prevents moving onto nonexistent and impassable tiles.
-      if (!map.in_bounds(y,x) || (!map.tiles[y][x].passable))
-        describe_tile(self)
-        return
-      end
+      return if !(map.in_bounds(y,x) && map.tiles[y][x].passable)
 
       @map = @saved_maps[map.name] ? @saved_maps[map.name] : map
       @location = coordinates
@@ -254,8 +253,6 @@ module Goby
           battle(clone)
         end
       end
-
-      describe_tile(self)
     end
 
     # Moves the player up. Decreases 'y' coordinate by 1.
@@ -342,6 +339,7 @@ module Goby
     end
 
     attr_reader :map, :location, :saved_maps
+    attr_accessor :moved
 
   end
 

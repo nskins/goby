@@ -9,18 +9,38 @@ module Goby
   #
   # @param [Player] player the player of the game.
   def run_driver(player)
+    while (run_turn(player)); end
+    stop_music
+  end
 
-    play_music(player.map.music) if player.map.music
-    input = player_input prompt: '> '
+  private
 
-    while (input.casecmp("quit").nonzero?)
-      interpret_command(input, player)
-      play_music(player.map.music) if player.map.music
-      input = player_input prompt: '> '
+    # Clear the terminal and display the minimap.
+    #
+    # @param [Player] player the player of the game.
+    def clear_and_minimap(player)
+      system("clear") unless ENV["TEST"]
+      describe_tile(player)
     end
 
-    stop_music
+    # Runs a single command from the player on the world map.
+    #
+    # @param [Player] player the player of the game.
+    # @return [Bool] true iff the player does not want to quit.
+    def run_turn(player)
 
-  end
+      # Play music and re-display the minimap (when appropriate).
+      play_music(player.map.music) if player.map.music
+      if player.moved
+        clear_and_minimap(player)
+        player.moved = false
+      end
+
+      # Receive input and run the command.
+      input = player_input prompt: '> '
+      interpret_command(input, player)
+
+      return !input.eql?("quit")
+    end
 
 end

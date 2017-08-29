@@ -60,7 +60,12 @@ module Goby
   # @param [Player] player the player object to be saved.
   # @param [String] filename the name under which to save the file.
   def save_game(player, filename)
+
+    # Set 'moved' to true so we see minimap on game load.
+    player.moved = true
     player_data = YAML::dump(player)
+    player.moved = false
+
     File.open(filename, "w") do |file|
       file.puts player_data
     end

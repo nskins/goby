@@ -146,6 +146,10 @@ RSpec.describe do
           WorldCommand::NO_ITEM_DROP_ERROR).to_stdout
       end
 
+      it "should not output anything on quit" do
+        expect { interpret_command("quit", @player) }.to_not output.to_stdout
+      end
+
       it "should equip and unequip the specified item" do
         interpret_command("equip helmet", @player)
         expect(@player.has_item("Helmet")).to be_nil
