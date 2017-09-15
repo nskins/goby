@@ -18,8 +18,8 @@ RSpec.describe Shop do
 
   before (:each) do
     # player1 doesn't have any gold.
-    @player1 = Player.new(inventory: [Couple.new(@apple, 3),
-                                      Couple.new(@banana, 1)] )
+    @player1 = Player.new(inventory: [C[@apple, 3],
+                                      C[@banana, 1]] )
     # player2 has nothing in the inventory.
     @player2 = Player.new(gold: 50)
   end

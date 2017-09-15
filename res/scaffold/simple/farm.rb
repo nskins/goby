@@ -3,7 +3,7 @@
 # the Map - each point is referred to as a Tile.
 class Farm < Map
   def initialize
-    super(name: "Farm", regen_location: Couple.new(2,2))
+    super(name: "Farm", regen_location: C[2,2])
 
     # Define the main tiles on this map.
     grass = Tile.new(description: "You are standing on some grass.")

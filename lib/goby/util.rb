@@ -3,8 +3,16 @@ require 'yaml'
 
 module Goby
 
-  # Stores a pair of values.
-  class Couple
+  # Stores a pair of values as a couple.
+  class C
+
+    # Syntactic sugar to create a couple using C[a, b]
+    #
+    # @param [Object] first the first object in the pair.
+    # @param [Object] second the second object in the pair.
+    def self.[](a, b)
+      C.new(a, b)
+    end
 
     # @param [Object] first the first object in the pair.
     # @param [Object] second the second object in the pair.
@@ -13,7 +21,7 @@ module Goby
       @second = second
     end
 
-    # @param [Couple] rhs the couple on the right.
+    # @param [C] rhs the couple on the right.
     def ==(rhs)
       return ((@first == rhs.first) && (@second == rhs.second))
     end

@@ -29,7 +29,7 @@ if player.nil?
   # Use the Player constructor to set the
   # initial Map, (y,x) location, stats,
   # gold, inventory, and more.
-  player = Player.new(map: Farm.new, location: Couple.new(2,2))
+  player = Player.new(map: Farm.new, location: C[2,2])
 
 end
 

@@ -1,34 +1,34 @@
 require 'goby'
 
 RSpec.describe do
-  context "Couple" do
-    it "should correctly initialize the Couple" do
-      couple = Couple.new("Apple", 1)
+  context "couple" do
+    it "should correctly initialize the couple" do
+      couple = C["Apple", 1]
       expect(couple.first).to eq "Apple"
       expect(couple.second).to eq 1
     end
 
     it "should equate two objects based on both 'first' and 'second'" do
-      couple1 = Couple.new("Apple", 1)
-      couple2 = Couple.new("Apple", 1)
+      couple1 = C["Apple", 1]
+      couple2 = C["Apple", 1]
       expect(couple1).to eq couple2
     end
 
     it "should not equate two objects with a different 'first'" do
-      couple1 = Couple.new("Apple", 1)
-      couple2 = Couple.new("Banana", 1)
+      couple1 = C["Apple", 1]
+      couple2 = C["Banana", 1]
       expect(couple1).to_not eq couple2
     end
 
     it "should not equate two objects with a different 'second'" do
-      couple1 = Couple.new("Apple", 1)
-      couple2 = Couple.new("Apple", 2)
+      couple1 = C["Apple", 1]
+      couple2 = C["Apple", 2]
       expect(couple1).to_not eq couple2
     end
 
     it "should not equate two objects with both different 'first' and 'second'" do
-      couple1 = Couple.new("Apple", 1)
-      couple2 = Couple.new("Banana", 2)
+      couple1 = C["Apple", 1]
+      couple2 = C["Banana", 2]
       expect(couple1).to_not eq couple2
     end
   end
