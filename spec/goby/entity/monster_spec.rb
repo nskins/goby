@@ -65,21 +65,19 @@ RSpec.describe Monster do
   end
 
   context "clone" do
-    before(:each) do
-      @monster = Monster.new(inventory: [C[Item.new, 1]])
-      @clone = @monster.clone
-    end
+    let(:monster) { Monster.new(inventory: [C[Item.new, 1]]) }
+    let!(:clone) { monster.clone }
 
     it "should leave the original's inventory the same" do
-      @clone.use_item("Item", @clone)
-      expect(@monster.inventory.size).to eq 1
-      expect(@clone.inventory.size).to be_zero
+      clone.use_item("Item", clone)
+      expect(monster.inventory.size).to eq 1
+      expect(clone.inventory.size).to be_zero
     end
 
     it "should leave the clone's inventory the same" do
-      @monster.use_item("Item", @monster)
-      expect(@monster.inventory.size).to be_zero
-      expect(@clone.inventory.size).to eq 1
+      monster.use_item("Item", monster)
+      expect(monster.inventory.size).to be_zero
+      expect(clone.inventory.size).to eq 1
     end
   end
 

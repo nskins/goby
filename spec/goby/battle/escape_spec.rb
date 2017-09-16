@@ -2,15 +2,13 @@ require 'goby'
 
 RSpec.describe Goby::Escape do
 
-  before(:all) do
-    @player = Player.new
-    @monster = Monster.new
-    @escape = Escape.new
-  end
+  let(:player) { Player.new }
+  let(:monster) { Monster.new }
+  let(:escape) { Escape.new }
 
   context "constructor" do
     it "has an appropriate default name" do
-      expect(@escape.name).to eq "Escape"
+      expect(escape.name).to eq "Escape"
     end
   end
 
@@ -19,8 +17,8 @@ RSpec.describe Goby::Escape do
     it "should return a usable result" do
       # Exercise both branches of this function w/ high probability.
       20.times do
-        @escape.run(@player, @monster)
-        expect(@player.escaped).to_not be nil
+        escape.run(player, monster)
+        expect(player.escaped).to_not be nil
       end
     end
   end

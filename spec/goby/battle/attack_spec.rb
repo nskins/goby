@@ -2,12 +2,10 @@ require 'goby'
 
 RSpec.describe Goby::Attack do
 
-  before(:each) do
-    @user = Player.new(stats: { max_hp: 50, attack: 6, defense: 4 })
-    @enemy = Monster.new(stats: {max_hp: 30, attack: 3, defense: 2})
-    @attack = Attack.new(strength: 5)
-    @cry = Attack.new(name: "Cry", success_rate: 0)
-  end
+  let!(:user) { Player.new(stats: { max_hp: 50, attack: 6, defense: 4 }) }
+  let!(:enemy) { Monster.new(stats: { max_hp: 30, attack: 3, defense: 2 }) }
+  let(:attack) { Attack.new(strength: 5) }
+  let(:cry) { Attack.new(name: "Cry", success_rate: 0) }
 
   context "constructor" do
     it "has the correct default parameters" do
@@ -48,23 +46,23 @@ RSpec.describe Goby::Attack do
 
   context "run" do
     it "does the appropriate amount of damage for attack > defense" do
-      @attack.run(@user, @enemy)
-      expect(@enemy.stats[:hp]).to be_between(21, 24)
+      attack.run(user, enemy)
+      expect(enemy.stats[:hp]).to be_between(21, 24)
     end
 
     it "prevents the enemy's HP from falling below 0" do
-      @user.set_stats(attack: 200)
-      @attack.run(@user, @enemy)
-      expect(@enemy.stats[:hp]).to be_zero
+      user.set_stats(attack: 200)
+      attack.run(user, enemy)
+      expect(enemy.stats[:hp]).to be_zero
     end
 
     it "does the appropriate amount of damage for defense > attack" do
-      @attack.run(@enemy, @user)
-      expect(@user.stats[:hp]).to be_between(45, 46)
+      attack.run(enemy, user)
+      expect(user.stats[:hp]).to be_between(45, 46)
     end
 
     it "prints an appropriate message for a failed attack" do
-      expect { @cry.run(@user, @enemy) }.to output(
+      expect { cry.run(user, enemy) }.to output(
         "Player tries to use Cry, but it fails.\n\n"
       ).to_stdout
     end
@@ -72,18 +70,18 @@ RSpec.describe Goby::Attack do
 
   context "calculate damage" do
     it "returns within the appropriate range for attack > defense" do
-      damage = @attack.calculate_damage(@user, @enemy)
+      damage = attack.calculate_damage(user, enemy)
       expect(damage).to be_between(6, 9)
     end
 
     it "returns within the appropriate range for defense > attack" do
-      damage = @attack.calculate_damage(@enemy, @user)
+      damage = attack.calculate_damage(enemy, user)
       expect(damage).to be_between(4, 5)
     end
 
     it "defaults to 0 when the defense is very high" do
-      @enemy.set_stats(defense: 100)
-      damage = @attack.calculate_damage(@user, @enemy)
+      enemy.set_stats(defense: 100)
+      damage = attack.calculate_damage(user, enemy)
       expect(damage).to be_zero
     end
   end

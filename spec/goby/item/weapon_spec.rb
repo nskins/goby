@@ -2,18 +2,16 @@ require 'goby'
 
 RSpec.describe Weapon do
 
-  before (:all) do
-    @weapon = Weapon.new
-    @entity = Entity.new
-  end
+  let(:weapon) { Weapon.new }
+  let(:entity) { Entity.new }
 
   context "constructor" do
     it "has the correct default parameters" do
-      expect(@weapon.name).to eq "Weapon"
-      expect(@weapon.price).to eq 0
-      expect(@weapon.consumable).to eq false
-      expect(@weapon.disposable).to eq true
-      expect(@weapon.type).to eq :weapon
+      expect(weapon.name).to eq "Weapon"
+      expect(weapon.price).to eq 0
+      expect(weapon.consumable).to eq false
+      expect(weapon.disposable).to eq true
+      expect(weapon.type).to eq :weapon
     end
 
     it "correctly assigns custom parameters" do
@@ -35,7 +33,7 @@ RSpec.describe Weapon do
 
   context "use" do
     it "should print an appropriate message for how to equip" do
-      expect { @weapon.use(@entity, @entity) }.to output(
+      expect { weapon.use(entity, entity) }.to output(
         "Type 'equip Weapon' to equip this item.\n\n"
       ).to_stdout
     end
