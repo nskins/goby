@@ -126,7 +126,7 @@ RSpec.describe Player do
     let!(:banana) { Item.new(name: "Banana") }
     let!(:axe) { Item.new(name: "Axe") }
     let!(:entity) { Player.new(inventory: [C[banana, 1],
-                                          C[axe, 3]]]) }
+                                          C[axe, 3]]) }
     let!(:enemy) { Entity.new(name: "Enemy") }
 
     it "should return correct values based on the input" do
