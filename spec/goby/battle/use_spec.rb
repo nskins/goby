@@ -13,7 +13,7 @@ RSpec.describe Use do
   context "run" do
     let(:player) { Player.new(stats: { max_hp: 10, hp: 3 },
                            battle_commands: [@use],
-                           inventory: [Couple.new(Food.new(recovers: 5), 1)]) }
+                           inventory: [C[Food.new(recovers: 5), 1]]) }
     let(:monster) { Monster.new }
 
     it "uses the specified item and remove it from the entity's inventory" do

@@ -19,11 +19,17 @@ module Goby
     #
     # @param [Player] player the one speaking to the NPC.
     def run(player)
-      print "#{@name}: Hello!\n\n"
+      say "Hello!\n\n"
+    end
+
+    # Function that allows NPCs to output a string of words
+    #
+    # @param [String] string of words to be ouput
+    def say(words)
+      type "#{name}: #{words}"
     end
 
     attr_accessor :name
-
   end
 
 end

@@ -20,7 +20,6 @@ if File.exists?("player.yaml")
   input = player_input
   if input.is_positive?
     player = load_game("player.yaml")
-    describe_tile(player)
   end
 end
 
@@ -30,7 +29,7 @@ if player.nil?
   # Use the Player constructor to set the
   # initial Map, (y,x) location, stats,
   # gold, inventory, and more.
-  player = Player.new(map: Farm.new, location: Couple.new(2,2))
+  player = Player.new(map: Farm.new, location: C[2,2])
 
 end
 

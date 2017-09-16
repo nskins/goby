@@ -9,15 +9,15 @@ RSpec.describe do
                               Tile.new(events: [Event.new(visible: false)]) ],
                             [ Tile.new(events: [Shop.new, NPC.new]),
                               Tile.new(events: [Event.new(visible: false), Shop.new, NPC.new]) ] ],
-                      regen_location: Couple.new(0,0)) }
+                      regen_location: C[0,0]) }
 
   let!(:player) { Player.new(stats: { max_hp: 10, hp: 3 },
-                         inventory: [ Couple.new(Food.new(name: "Banana", recovers: 5), 1),
-                                      Couple.new(Food.new(name: "Onion", disposable: false), 1),
-                                      Couple.new(Item.new(name: "Big Book of Stuff"), 1),
-                                      Couple.new(Helmet.new, 1) ],
+                         inventory: [ C[Food.new(name: "Banana", recovers: 5), 1],
+                                      C[Food.new(name: "Onion", disposable: false), 1],
+                                      C[Item.new(name: "Big Book of Stuff"), 1],
+                                      C[Helmet.new, 1] ],
                          map: map,
-                         location: Couple.new(0, 0)) }
+                         location: C[0, 0]) }
 
   context "display default commands" do
     it "should print the default commands" do
@@ -82,13 +82,13 @@ RSpec.describe do
     context "lowercase" do
       it "should correctly move the player around" do
         interpret_command("s", player)
-        expect(player.location).to eq Couple.new(1, 0)
+        expect(player.location).to eq C[1, 0]
         interpret_command("d", player)
-        expect(player.location).to eq Couple.new(1, 1)
+        expect(player.location).to eq C[1, 1]
         interpret_command("w", player)
-        expect(player.location).to eq Couple.new(0, 1)
+        expect(player.location).to eq C[0, 1]
         interpret_command("a", player)
-        expect(player.location).to eq Couple.new(0, 0)
+        expect(player.location).to eq C[0, 0]
       end
 
       it "should display the help text" do
@@ -144,6 +144,10 @@ RSpec.describe do
           WorldCommand::NO_ITEM_DROP_ERROR).to_stdout
       end
 
+      it "should not output anything on quit" do
+        expect { interpret_command("quit", @player) }.to_not output.to_stdout
+      end
+
       it "should equip and unequip the specified item" do
         interpret_command("equip helmet", player)
         expect(player.has_item("Helmet")).to be_nil
@@ -175,13 +179,13 @@ RSpec.describe do
     context "case-insensitive" do
       it "should correctly move the player around" do
         interpret_command("S", player)
-        expect(player.location).to eq Couple.new(1, 0)
+        expect(player.location).to eq C[1, 0]
         interpret_command("D", player)
-        expect(player.location).to eq Couple.new(1, 1)
+        expect(player.location).to eq C[1, 1]
         interpret_command("W", player)
-        expect(player.location).to eq Couple.new(0, 1)
+        expect(player.location).to eq C[0, 1]
         interpret_command("A", player)
-        expect(player.location).to eq Couple.new(0, 0)
+        expect(player.location).to eq C[0, 0]
       end
     end
 

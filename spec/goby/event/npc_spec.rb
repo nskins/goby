@@ -29,4 +29,12 @@ RSpec.describe NPC do
     end
   end
 
+  context "say" do
+    subject(:npc) { NPC.new }
+
+    it "outputs the NPC's name and words argument" do
+      expect { npc.say("Welcome to Goby") }.to output("NPC: Welcome to Goby").to_stdout
+    end
+  end
+
 end

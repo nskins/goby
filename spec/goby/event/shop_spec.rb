@@ -15,8 +15,8 @@ RSpec.describe Shop do
   let!(:banana) { Item.new(name: "Banana", disposable: false) }
 
   # player1 doesn't have any gold.
-  let!(:player1) { Player.new(inventory: [Couple.new(apple, 3),
-                                    Couple.new(banana, 1)] ) }
+  let!(:player1) { Player.new(inventory: [C[apple, 3],
+                                    C[banana, 1]] ) }
   # player2 has nothing in the inventory.
   let!(:player2) { Player.new(gold: 50) }
 

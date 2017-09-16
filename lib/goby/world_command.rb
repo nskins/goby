@@ -72,6 +72,8 @@ module Goby
     # @param [String] command the player's entire command input.
     # @param [Player] player the player using the command.
     def interpret_command(command, player)
+      return if command.eql?("quit")
+
       words = command.split()
 
       # Default commands that take multiple "arguments" (words).
