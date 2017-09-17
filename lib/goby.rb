@@ -7,6 +7,7 @@ require 'goby/world_command'
 require 'goby/music'
 require 'goby/driver'
 
+require 'goby/battle/battle'
 require 'goby/battle/battle_command'
 require 'goby/battle/attack'
 require 'goby/battle/escape'

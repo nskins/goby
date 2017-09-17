@@ -4,7 +4,7 @@ RSpec.describe Goby::Battle do
 
   context "constructor" do
     it "takes two arguments" do
-      expect { Battle.new }.to raise_error(ArgumentError, "wrong number of arguments (0 for 2)")
+      expect { Battle.new }.to raise_error(ArgumentError, "wrong number of arguments (given 0, expected 2)")
 
       entity_1 = entity_2 = double
       battle = Battle.new(entity_1, entity_2)
@@ -13,9 +13,9 @@ RSpec.describe Goby::Battle do
   end
 
   context "determine_winner" do
-    it "prompts entities to choose an attack" do
-      entity_1 = spy('entity_1', hp: 1, agility: 1)
-      entity_2 = spy('entity_2', hp: 1, agility: 1)
+    it "prompts both entities to choose an attack" do
+      entity_1 = spy('entity_1', stats: {hp: 1, agility: 1})
+      entity_2 = spy('entity_2', stats: {hp: 1, agility: 1})
       Battle.new(entity_1, entity_2).determine_winner
 
       expect(entity_1).to have_received(:choose_attack)
@@ -66,8 +66,8 @@ RSpec.describe Goby::Battle do
       expect([entity_1, entity_2].include?(winner)).to be true
 
       loser = ([entity_1, entity_2] - [winner])[0]
-      expect(winner.hp).to be > 0
-      expect(loser.hp).to be <= 0
+      expect(winner.stats[:hp]).to be > 0
+      expect(loser.stats[:hp]).to eql(0)
     end
 
   end
