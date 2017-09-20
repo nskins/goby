@@ -50,4 +50,4 @@ build-iPhoneSimulator/
 .rvmrc
 
 # this is the save file
-player.yml
+player.yaml
