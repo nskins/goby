@@ -17,6 +17,7 @@ require 'goby/map/map'
 require 'goby/map/tile'
 
 require 'goby/entity/entity'
+require 'goby/entity/fighter'
 require 'goby/entity/monster'
 require 'goby/entity/player'
 
