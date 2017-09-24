@@ -8,11 +8,12 @@ module Goby
   class Player < Entity
 
     include WorldCommand
+    include Fighter
 
     # Default map when no "good" map & location specified.
-    DEFAULT_MAP = Map.new(tiles: [ [Tile.new] ])
+    DEFAULT_MAP = Map.new(tiles: [[Tile.new]])
     # Default location when no "good" map & location specified.
-    DEFAULT_LOCATION = C[0,0]
+    DEFAULT_LOCATION = C[0, 0]
 
     # distance in each direction that tiles are acted upon
     # used in: update_map, print_minimap
@@ -36,7 +37,7 @@ module Goby
       new_location = DEFAULT_LOCATION
       if (map && location)
         y = location.first; x = location.second
-        if (map.in_bounds(y,x) && map.tiles[y][x].passable)
+        if (map.in_bounds(y, x) && map.tiles[y][x].passable)
           new_map = map
           new_location = location
         end
@@ -44,69 +45,6 @@ module Goby
 
       move_to(new_location, new_map)
       @saved_maps = Hash.new
-    end
-
-    # Engages in battle with the specified monster.
-    #
-    # @param [Monster] monster the opponent of the battle.
-    def battle(monster)
-      system("clear") unless ENV['TEST']
-      puts "#{monster.message}\n"
-      type("You've run into a vicious #{monster.name}!\n\n")
-
-      while stats[:hp].positive?
-        # Both choose an attack.
-        player_attack = choose_attack
-
-        # Prevents the user from using "bad" commands.
-        # Example: "Use" with an empty inventory.
-        while (player_attack.fails?(self))
-          player_attack = choose_attack
-        end
-
-        monster_attack = monster.choose_attack
-
-        attackers = Array.new
-        attacks = Array.new
-
-        if sample_agilities(monster)
-          attackers << self << monster
-          attacks << player_attack << monster_attack
-        else
-          attackers << monster << self
-          attacks << monster_attack << player_attack
-        end
-
-        2.times do |i|
-          # The attacker runs its attack on the other attacker.
-          attacks[i].run(attackers[i], attackers[(i + 1) % 2])
-
-          if (attackers[i].escaped)
-            attackers[i].escaped = false
-            return
-          end
-
-          break if monster.stats[:hp].nonpositive? || stats[:hp].nonpositive?
-
-        end
-
-        break if monster.stats[:hp].nonpositive? || stats[:hp].nonpositive?
-
-      end
-
-      die if stats[:hp].nonpositive?
-
-      if monster.stats[:hp].nonpositive?
-        type("You defeated the #{monster.name}!\n\n")
-
-        # Determine the rewards for defeating the monster.
-        rewards = monster.sample_rewards
-        gold = rewards.first
-        treasure = rewards.second
-
-        add_loot(gold, [treasure])
-      end
-
     end
 
     # Uses player input to determine the battle command.
@@ -130,7 +68,7 @@ module Goby
       end
 
       return @battle_commands[index]
-  	end
+    end
 
     # Requires input to select item and on whom to use it
     # during battle (Use command). Return nil on error.
@@ -190,12 +128,6 @@ module Goby
       type("After being knocked out in battle,\n")
       type("you wake up in #{@map.name}.\n\n")
 
-      # Reduce gold if the player has any.
-      if @gold.positive?
-        type("Looks like you lost some gold...\n\n")
-        @gold /= 2
-      end
-
       sleep(2) unless ENV['TEST']
 
       # Heal the player.
@@ -238,7 +170,7 @@ module Goby
       @moved = true
 
       # Prevents moving onto nonexistent and impassable tiles.
-      return if !(map.in_bounds(y,x) && map.tiles[y][x].passable)
+      return if !(map.in_bounds(y, x) && map.tiles[y][x].passable)
 
       @map = @saved_maps[map.name] ? @saved_maps[map.name] : map
       @location = coordinates
@@ -277,7 +209,7 @@ module Goby
         row.each_with_index do |tile, t|
           print_tile(C[r, t])
         end
-  			print "\n"
+        print "\n"
       end
 
       print "\n"
@@ -299,7 +231,7 @@ module Goby
         10.times { print " " }
         for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
           # Prevents operations on nonexistent tiles.
-          print_tile(C[y, x]) if (@map.in_bounds(y,x))
+          print_tile(C[y, x]) if (@map.in_bounds(y, x))
         end
         # new line if this row is not out of bounds
         print "\n" if y < @map.tiles.size
@@ -333,9 +265,40 @@ module Goby
     def update_map(coordinates = @location)
       for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
         for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)
-          @map.tiles[y][x].seen = true if (@map.in_bounds(y,x))
+          @map.tiles[y][x].seen = true if (@map.in_bounds(y, x))
         end
       end
+    end
+
+    # How the Player behaves after winning a battle.
+    #
+    # @param [Entity] entity the Entity who lost the battle.
+    def handle_victory(entity)
+      type("You defeated the #{entity.name}!\n")
+      super(entity)
+      print "\n"
+    end
+
+    # The treasure given by a Player after losing a battle.
+    #
+    # @return [Item] the reward for the victor of the battle (or nil - no treasure).
+    def sample_treasures
+      nil
+    end
+
+    # Returns the gold given to a victorious Entity after losing a battle
+    # and deducts the figure from the Player's total as necessary
+    #
+    # @return[Integer] the amount of gold to award the victorious Entity
+    def sample_gold
+      gold_lost = 0
+      # Reduce gold if the player has any.
+      if @gold.positive?
+        type("Looks like you lost some gold...\n\n")
+        gold_lost = @gold/2
+        @gold -= gold_lost
+      end
+      gold_lost
     end
 
     attr_reader :map, :location, :saved_maps

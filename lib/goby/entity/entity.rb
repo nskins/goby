@@ -42,16 +42,6 @@ module Goby
       @escaped = false
     end
 
-    # Adds the specified battle command to the entity's collection.
-    #
-    # @param [BattleCommand] command the command being added.
-    def add_battle_command(command)
-      @battle_commands.push(command)
-
-      # Maintain sorted battle commands.
-      @battle_commands.sort!{ |x,y| x.name <=> y.name }
-    end
-
     # Adds the given amount of gold.
     #
     # @param [Integer] gold the amount of gold to add.
@@ -104,25 +94,6 @@ module Goby
       end
     end
 
-    # Determines how the entity should select an attack in battle.
-    # Override this method for control over this functionality.
-    #
-    # @return [BattleCommand] the chosen battle command.
-  	def choose_attack
-  	  return @battle_commands[Random.rand(@battle_commands.length)]
-  	end
-
-    # Determines how the entity should select the item and on whom
-    # during battle (Use command). Return nil on error.
-    #
-    # @param [Entity] enemy the opponent in battle.
-    # @return [C(Item, Entity)] the item and on whom it is to be used.
-    def choose_item_and_on_whom(enemy)
-      item = @inventory[Random.rand(@inventory.length)].first
-      whom = [self, enemy].sample
-      return C[item, whom]
-    end
-
     # Removes all items from the entity's inventory.
     def clear_inventory
       while @inventory.size.nonzero?
@@ -151,17 +122,6 @@ module Goby
       else
         print NO_SUCH_ITEM_ERROR
       end
-    end
-
-    # Returns the index of the specified command, if it exists.
-    #
-    # @param [BattleCommand, String] cmd the battle command (or its name).
-    # @return [Integer] the index of an existing command. Otherwise nil.
-    def has_battle_command(cmd)
-      @battle_commands.each_with_index do |command, index|
-        return index if command.name.casecmp(cmd.to_s).zero?
-      end
-      return
     end
 
     # Returns the index of the specified item, if it exists.
@@ -231,14 +191,6 @@ module Goby
         puts "Battle Commands:"
         print_battle_commands
       end
-    end
-
-    # Removes the battle command, if it exists, from the entity's collection.
-    #
-    # @param [BattleCommand, String] command the command being removed.
-    def remove_battle_command(command)
-      index = has_battle_command(command)
-      @battle_commands.delete_at(index) if index
     end
 
     # Removes up to the amount of gold given in the argument.

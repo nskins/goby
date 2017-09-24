@@ -1,6 +1,40 @@
 require 'goby'
 
 RSpec.describe Monster do
+
+  # let!(:wolf) {
+  #   Monster.new(name: "Wolf",
+  #                       stats: { max_hp: 20,
+  #                                hp: 15,
+  #                                attack: 2,
+  #                                defense: 2,
+  #                                agility: 4 },
+  #                       inventory: [C[Item.new, 1]],
+  #                       gold: 10,
+  #                       outfit: { weapon: Weapon.new(
+  #                           attack: Attack.new,
+  #                           stat_change: {attack: 3, defense: 1}
+  #                       ),
+  #                                 helmet: Helmet.new(
+  #                                     stat_change: {attack: 1, defense: 5}
+  #                                 )
+  #                       },
+  #                       battle_commands: [
+  #                           Attack.new(name: "Scratch"),
+  #                           Attack.new(name: "Kick")
+  #                       ],
+  #                       message: "\"Oh, hi.\"",
+  #                       treasures: [C[Item.new, 1],
+  #                                   C[nil, 3]])
+  # }
+  # let!(:dude) { Player.new(stats: { attack: 10, agility: 10000 },
+  #                          battle_commands: [Attack.new(strength: 20), Escape.new, Use.new],
+  #                          map: map, location: center) }
+  # let!(:slime) { Monster.new(battle_commands: [Attack.new(success_rate: 0)],
+  #                            gold: 5000, treasures: [C[Item.new, 1]]) }
+  # let!(:newb) { Player.new(battle_commands: [Attack.new(success_rate: 0)],
+  #                          gold: 50, map: map, location: center) }
+
   context "constructor" do
     it "has the correct default parameters" do
       monster = Monster.new
@@ -80,5 +114,38 @@ RSpec.describe Monster do
       expect(clone.inventory.size).to eq 1
     end
   end
+
+  # Fighter specific specs
+
+  # context "fighter" do
+  #   it "should be a fighter" do
+  #     expect(wolf.fighter?).to be true
+  #   end
+  # end
+
+  # context "battle" do
+  #   it "should allow the player to win in this example" do
+  #     __stdin("attack\n") do
+  #       dude.battle(slime)
+  #     end
+  #     expect(dude.inventory.size).to eq 1
+  #   end
+  #
+  #   it "should allow the player to escape in this example" do
+  #     # Could theoretically fail, but with very low probability.
+  #     __stdin("escape\nescape\nescape\n") do
+  #       dude.battle(slime)
+  #     end
+  #   end
+  #
+  #   it "should allow the monster to win in this example" do
+  #     __stdin("attack\n") do
+  #       newb.battle(dragon)
+  #     end
+  #     # Newb should die and go to respawn location.
+  #     expect(newb.gold).to eq 25
+  #     expect(newb.location).to eq C[1,1]
+  #   end
+  # end
 
 end

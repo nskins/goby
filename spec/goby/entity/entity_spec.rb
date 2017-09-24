@@ -27,8 +27,7 @@ RSpec.describe Entity do
                                 agility: 9 },
                         inventory: [C[Item.new, 1]],
                         gold: 10,
-                        outfit: { weapon: Weapon.new(
-                                    attack: Attack.new,
+                        outfit: { shield: Shield.new(
                                     stat_change: {attack: 3, defense: 1, agility: 4}
                                   ),
                                   helmet: Helmet.new(
@@ -48,11 +47,9 @@ RSpec.describe Entity do
       expect(stats[:agility]).to eq 13
       expect(hero.inventory).to eq [C[Item.new, 1]]
       expect(hero.gold).to eq 10
-      expect(hero.outfit[:weapon]).to eq Weapon.new
+      expect(hero.outfit[:shield]).to eq Shield.new
       expect(hero.outfit[:helmet]).to eq Helmet.new
-      # Attack.new is present due to the equipped weapon.
       expect(hero.battle_commands).to eq [
-        Attack.new,
         Attack.new(name: "Kick"),
         Attack.new(name: "Punch")
       ]
@@ -72,25 +69,6 @@ RSpec.describe Entity do
       expect(entity.inventory).to eq []
       expect(entity.gold).to eq 3
       expect(entity.battle_commands).to eq []
-    end
-  end
-
-  context "add battle command" do
-    it "properly adds the command in a trivial case" do
-      entity.add_battle_command(BattleCommand.new)
-      expect(entity.battle_commands.length).to eq 1
-      expect(entity.battle_commands).to eq [BattleCommand.new]
-    end
-
-    it "maintains the sorted invariant for a more complex case" do
-      entity.add_battle_command(BattleCommand.new(name: "Kick"))
-      entity.add_battle_command(BattleCommand.new(name: "Chop"))
-      entity.add_battle_command(BattleCommand.new(name: "Grab"))
-      expect(entity.battle_commands.length).to eq 3
-      expect(entity.battle_commands).to eq [
-        BattleCommand.new(name: "Chop"),
-        BattleCommand.new(name: "Grab"),
-        BattleCommand.new(name: "Kick")]
     end
   end
 
@@ -219,31 +197,6 @@ RSpec.describe Entity do
     end
   end
 
-  context "choose attack" do
-    it "randomly selects one of the available commands" do
-      kick = BattleCommand.new(name: "Kick")
-      zap = BattleCommand.new(name: "Zap")
-      entity = Entity.new(battle_commands: [kick, zap])
-      attack = entity.choose_attack
-      expect(attack.name).to eq("Kick").or(eq("Zap"))
-    end
-  end
-
-  context "choose item and on whom" do
-    it "randomly selects both item and on whom" do
-      banana = Item.new(name: "Banana")
-      axe = Item.new(name: "Axe")
-
-      entity = Entity.new(inventory: [C[banana, 1],
-                                      C[axe, 3]])
-      enemy = Entity.new(name: "Enemy")
-
-      pair = entity.choose_item_and_on_whom(enemy)
-      expect(pair.first.name).to eq("Banana").or(eq("Axe"))
-      expect(pair.second.name).to eq("Entity").or(eq("Enemy"))
-    end
-  end
-
   context "clear inventory" do
     it "has no effect on an empty inventory" do
       entity.clear_inventory
@@ -260,16 +213,6 @@ RSpec.describe Entity do
   end
 
   context "equip item" do
-    it "correctly equips the weapon and alters the stats" do
-      entity = Entity.new(inventory: [C[
-                                        Weapon.new(stat_change: { attack: 3 },
-                                                   attack: Attack.new), 1]])
-      entity.equip_item("Weapon")
-      expect(entity.outfit[:weapon]).to eq Weapon.new
-      expect(entity.stats[:attack]).to eq 4
-      expect(entity.battle_commands).to eq [Attack.new]
-    end
-
     it "correctly equips the helmet and alters the stats" do
       entity = Entity.new(inventory: [C[
                                         Helmet.new(stat_change: { defense: 3 } ), 1]])
@@ -320,36 +263,32 @@ RSpec.describe Entity do
 
     it "correctly switches the equipped items and alters status as appropriate" do
       entity = Entity.new(inventory: [C[
-                                        Weapon.new(name: "Hammer",
+                                        Helmet.new(name: "Builder",
                                                    stat_change: { attack: 3,
                                                                   defense: 2,
-                                                                  agility: 4 },
-                                                   attack: Attack.new(name: "Bash")), 1],
+                                                                  agility: 4 }), 1],
                                       C[
-                                        Weapon.new(name: "Knife",
+                                        Helmet.new(name: "Viking",
                                                    stat_change: { attack: 5,
                                                                   defense: 3,
-                                                                  agility: 7 },
-                                                   attack: Attack.new(name: "Stab")), 1]])
-      entity.equip_item("Hammer")
+                                                                  agility: 7 }), 1]])
+      entity.equip_item("Builder")
       stats = entity.stats
       expect(stats[:attack]).to eq 4
       expect(stats[:defense]).to eq 3
       expect(stats[:agility]).to eq 5
-      expect(entity.outfit[:weapon].name).to eq "Hammer"
-      expect(entity.battle_commands).to eq [Attack.new(name: "Bash")]
+      expect(entity.outfit[:helmet].name).to eq "Builder"
       expect(entity.inventory.length).to eq 1
-      expect(entity.inventory[0].first.name).to eq "Knife"
+      expect(entity.inventory[0].first.name).to eq "Viking"
 
-      entity.equip_item("Knife")
+      entity.equip_item("Viking")
       stats = entity.stats
       expect(stats[:attack]).to eq 6
       expect(stats[:defense]).to eq 4
       expect(stats[:agility]).to eq 8
-      expect(entity.outfit[:weapon].name).to eq "Knife"
-      expect(entity.battle_commands).to eq [Attack.new(name: "Stab")]
+      expect(entity.outfit[:helmet].name).to eq "Viking"
       expect(entity.inventory.length).to eq 1
-      expect(entity.inventory[0].first.name).to eq "Hammer"
+      expect(entity.inventory[0].first.name).to eq "Builder"
     end
 
     it "prints an error message for an unequippable item" do
@@ -357,40 +296,6 @@ RSpec.describe Entity do
       expect { entity.equip_item("Item") }.to output(
         "Item cannot be equipped!\n\n"
       ).to_stdout
-    end
-  end
-
-  context "has battle command" do
-    it "correctly indicates an absent command for an object argument" do
-      entity = Entity.new(battle_commands: [
-        BattleCommand.new(name: "Kick"),
-        BattleCommand.new(name: "Poke")])
-      index = entity.has_battle_command(BattleCommand.new(name: "Chop"))
-      expect(index).to be_nil
-    end
-
-    it "correctly indicates a present command for an object argument" do
-      entity = Entity.new(battle_commands: [
-        BattleCommand.new(name: "Kick"),
-        BattleCommand.new(name: "Poke")])
-      index = entity.has_battle_command(BattleCommand.new(name: "Poke"))
-      expect(index).to eq 1
-    end
-
-    it "correctly indicates an absent command for a string argument" do
-      entity = Entity.new(battle_commands: [
-        BattleCommand.new(name: "Kick"),
-        BattleCommand.new(name: "Poke")])
-      index = entity.has_battle_command("Chop")
-      expect(index).to be_nil
-    end
-
-    it "correctly indicates a present command for a string argument" do
-      entity = Entity.new(battle_commands: [
-        BattleCommand.new(name: "Kick"),
-        BattleCommand.new(name: "Poke")])
-      index = entity.has_battle_command("Poke")
-      expect(index).to eq 1
     end
   end
 
@@ -486,20 +391,6 @@ RSpec.describe Entity do
     end
   end
 
-  context "remove battle command" do
-    it "has no effect when no such command is present" do
-      entity.add_battle_command(Attack.new(name: "Kick"))
-      entity.remove_battle_command(BattleCommand.new(name: "Poke"))
-      expect(entity.battle_commands.length).to eq 1
-    end
-
-    it "correctly removes the command in the trivial case" do
-      entity.add_battle_command(Attack.new(name: "Kick"))
-      entity.remove_battle_command(Attack.new(name: "Kick"))
-      expect(entity.battle_commands.length).to eq 0
-    end
-  end
-
   context "remove gold" do
     it "should remove the given amount of gold" do
       entity = Entity.new(gold: 50)
@@ -562,14 +453,12 @@ RSpec.describe Entity do
 
   context "unequip item" do
     it "correctly unequips an equipped item" do
-      entity = Entity.new(outfit: { weapon: Weapon.new(stat_change: {agility: 4},
-                                                       attack: Attack.new) })
-      entity.unequip_item("Weapon")
+      entity = Entity.new(outfit: { helmet: Helmet.new(stat_change: {agility: 4})})
+      entity.unequip_item("Helmet")
       expect(entity.outfit).to be_empty
       expect(entity.inventory.length).to eq 1
-      expect(entity.inventory[0].first).to eq Weapon.new
+      expect(entity.inventory[0].first).to eq Helmet.new
       expect(entity.inventory[0].second).to eq 1
-      expect(entity.battle_commands).to be_empty
       expect(entity.stats[:agility]).to eq 1
     end
 

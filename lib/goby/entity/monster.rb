@@ -5,6 +5,8 @@ module Goby
   # An Entity controlled by the CPU. Used for battle against Players.
   class Monster < Entity
 
+    include Fighter
+
     # @param [String] name the name.
     # @param [Hash] stats hash of stats
     # @param [[C(Item, Integer)]] inventory an array of pairs of items and their respective amounts.
@@ -45,41 +47,39 @@ module Goby
       return monster
     end
 
-    # Choose rewards based on the 'gold' and 'treasures' member variables.
+    # What to do if the Monster dies in a Battle
     #
-    # @return [C(Integer, Item)] the gold (first) and the treasure (second).
-    def sample_rewards
-      # Sample a random amount of gold.
-      gold = Random.rand(0..@gold)
-
-      # Determine which treasure to reward the victor.
-      treasure = sample_treasures
-
-      return C[gold, treasure]
+    def die
+      #Do nothing special
     end
 
-    attr_accessor :message, :treasures, :total_treasures
+    # The amount gold given to a victorious Entity after losing a battle
+    #
+    # @return[Integer] the amount of gold to award the victorious Entity
+    def sample_gold
+      # Sample a random amount of gold.
+      Random.rand(0..@gold)
+    end
 
-    private
+    # Chooses a treasure based on the sample distribution.
+    #
+    # @return [Item] the reward for the victor of the battle (or nil - no treasure).
+    def sample_treasures
+      # Return nil for no treasures.
+      return if total_treasures.zero?
 
-      # Chooses a treasure based on the sample distribution.
-      #
-      # @return [Item] the reward for the victor of the battle (or nil - no treasure).
-      def sample_treasures
-        # Return nil for no treasures.
-        return if @total_treasures.zero?
+      # Choose uniformly from the total given above.
+      index = Random.rand(total_treasures)
 
-        # Choose uniformly from the total given above.
-        index = Random.rand(@total_treasures)
-
-        # Choose the treasure based on the distribution.
-        total = 0
-        @treasures.each do |pair|
-          total += pair.second
-          return pair.first if index < total
-        end
+      # Choose the treasure based on the distribution.
+      total = 0
+      treasures.each do |pair|
+        total += pair.second
+        return pair.first if index < total
       end
+    end
 
+    attr_reader :message, :treasures, :total_treasures
   end
 
 end

@@ -157,27 +157,6 @@ RSpec.describe Player do
     end
   end
 
-  context "die" do
-    it "moves the player back to the map's regen location" do
-      dude.move_down
-      expect(dude.location).to eq C[2,1]
-      dude.die
-      expect(dude.location).to eq map.regen_location
-    end
-
-    it "reduces the player's gold by half" do
-      dude.set_gold(10)
-      dude.die
-      expect(dude.gold).to eq 5
-    end
-
-    it "recovers the player's HP to max" do
-      dude.set_stats(hp: 0)
-      dude.die
-      expect(dude.stats[:hp]).to eq dude.stats[:max_hp]
-    end
-  end
-
   context "move to" do
     it "correctly moves the player to a passable tile" do
       dude.move_to(C[2,1])
@@ -336,9 +315,17 @@ RSpec.describe Player do
     end
   end
 
+  # Fighter specific specs
+
+  context "fighter" do
+    it "should be a fighter" do
+      expect(dude.fighter?).to be true
+    end
+  end
+
   context "battle" do
     it "should allow the player to win in this example" do
-      __stdin("use\nattack\n") do
+      __stdin("attack\n") do
         dude.battle(slime)
       end
       expect(dude.inventory.size).to eq 1
@@ -358,6 +345,40 @@ RSpec.describe Player do
       # Newb should die and go to respawn location.
       expect(newb.gold).to eq 25
       expect(newb.location).to eq C[1,1]
+    end
+  end
+
+  context "die" do
+    it "moves the player back to the map's regen location" do
+      dude.move_down
+      expect(dude.location).to eq C[2,1]
+      dude.die
+      expect(dude.location).to eq map.regen_location
+    end
+
+    it "recovers the player's HP to max" do
+      dude.set_stats(hp: 0)
+      dude.die
+      expect(dude.stats[:hp]).to eq dude.stats[:max_hp]
+    end
+  end
+
+  context "sample gold" do
+    it "reduces the player's gold by half" do
+      dude.set_gold(10)
+      dude.sample_gold
+      expect(dude.gold).to eq 5
+    end
+
+    it "returns the amount of gold the player has lost" do
+      dude.set_gold(10)
+      expect(dude.sample_gold).to eq 5
+    end
+  end
+
+  context "sample treasures" do
+    it "returns nil to indicate the player has lost no treasures" do
+      expect(dude.sample_treasures).to be_nil
     end
   end
 end
