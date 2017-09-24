@@ -39,13 +39,14 @@ module Goby
       end
     end
 
+    # A function to check if the given object has implemented the Fighter module
     #
-    #
+    # @returns [Boolean] true
     def fighter?
       true
     end
 
-    # The function that handles how an Entity behaves after winning a battle.
+    # Handles how an Entity behaves after winning a battle.
     #
     # @param [Entity] entity the Entity who lost the battle.
     def handle_victory(entity)
@@ -56,7 +57,7 @@ module Goby
       add_loot(gold, [treasure]) unless gold.nil? && treasure.nil?
     end
 
-    # The function that returns the gold given by an Entity after losing a battle.
+    # Returns the gold given by an Entity after losing a battle.
     #
     # @return[Integer] the amount of gold to award the victorious Entity
     def sample_gold
