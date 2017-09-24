@@ -2,9 +2,10 @@ require 'goby'
 
 RSpec.describe Goby::BattleCommand do
 
+  let(:cmd) { BattleCommand.new }
+
   context "constructor" do
     it "has the correct default parameters" do
-      cmd = BattleCommand.new
       expect(cmd.name).to eq "BattleCommand"
     end
 
@@ -18,7 +19,6 @@ RSpec.describe Goby::BattleCommand do
     it "prints the default message" do
       user = Entity.new
       enemy = Entity.new
-      cmd = BattleCommand.new
       # Rspec: expect output.
       expect { cmd.run(user, enemy) }.to output(Goby::BattleCommand::NO_ACTION).to_stdout
     end
@@ -27,14 +27,13 @@ RSpec.describe Goby::BattleCommand do
   context "fails?" do
     it "returns false for the trivial case" do
       entity = Entity.new
-      command = BattleCommand.new
-      expect(command.fails?(entity)).to be false
+      expect(cmd.fails?(entity)).to be false
     end
   end
 
   context "equality operator" do
     it "returns true for the seemingly trivial case" do
-      expect(BattleCommand.new).to eq BattleCommand.new
+      expect(cmd).to eq cmd
     end
 
     it "returns false for commands with different names" do
@@ -46,7 +45,6 @@ RSpec.describe Goby::BattleCommand do
 
   context "to_s" do
     it "returns the name of the BattleCommand" do
-      cmd = BattleCommand.new
       expect(cmd.to_s).to eq cmd.name
     end
   end

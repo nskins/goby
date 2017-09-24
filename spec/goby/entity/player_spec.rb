@@ -2,31 +2,27 @@ require 'goby'
 
 RSpec.describe Player do
 
-  before(:all) do
-    # Constructs a map in the shape of a plus sign.
-    @map = Map.new(tiles: [ [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ],
-                            [ Tile.new, Tile.new, Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)]) ]) ],
-                            [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ] ],
-                   regen_location: C[1,1])
-    @center = @map.regen_location
-    @passable = Tile::DEFAULT_PASSABLE
-    @impassable = Tile::DEFAULT_IMPASSABLE
-  end
+  # Constructs a map in the shape of a plus sign.
+  let!(:map) { Map.new(tiles: [ [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ],
+                          [ Tile.new, Tile.new, Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)]) ]) ],
+                          [ Tile.new(passable: false), Tile.new, Tile.new(passable: false) ] ],
+                 regen_location: C[1,1]) }
+  let!(:center) { map.regen_location }
+  let!(:passable) { Tile::DEFAULT_PASSABLE }
+  let!(:impassable) { Tile::DEFAULT_IMPASSABLE }
 
-  before(:each) do
-    @dude = Player.new(stats: { attack: 10, agility: 10000 },
-                       battle_commands: [Attack.new(strength: 20), Escape.new, Use.new],
-                       map: @map, location: @center)
-    @slime = Monster.new(battle_commands: [Attack.new(success_rate: 0)],
-                         gold: 5000, treasures: [C[Item.new, 1]])
-    @newb = Player.new(battle_commands: [Attack.new(success_rate: 0)],
-                       gold: 50, map: @map, location: @center)
-    @dragon = Monster.new(stats: { attack: 50, agility: 10000 },
-                          battle_commands: [Attack.new(strength: 50)] )
-    @chest_map = Map.new(name: "Chest Map",
-                         tiles: [ [ Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])] ],
-                         regen_location: C[0,0])
-  end
+  let!(:dude) { Player.new(stats: { attack: 10, agility: 10000 },
+                     battle_commands: [Attack.new(strength: 20), Escape.new, Use.new],
+                     map: map, location: center) }
+  let!(:slime) { Monster.new(battle_commands: [Attack.new(success_rate: 0)],
+                       gold: 5000, treasures: [C[Item.new, 1]]) }
+  let!(:newb) { Player.new(battle_commands: [Attack.new(success_rate: 0)],
+                     gold: 50, map: map, location: center) }
+  let!(:dragon) { Monster.new(stats: { attack: 50, agility: 10000 },
+                        battle_commands: [Attack.new(strength: 50)] ) }
+  let!(:chest_map) { Map.new(name: "Chest Map",
+                       tiles: [ [ Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])] ],
+                       regen_location: C[0,0]) }
 
   context "constructor" do
     it "has the correct default parameters" do
@@ -63,7 +59,7 @@ RSpec.describe Player do
                           BattleCommand.new(name: "Yell"),
                           BattleCommand.new(name: "Run")
                         ],
-                        map: @map,
+                        map: map,
                         location: C[1,1])
       expect(hero.name).to eq "Hero"
       expect(hero.stats[:max_hp]).to eq 50
@@ -80,7 +76,7 @@ RSpec.describe Player do
         BattleCommand.new(name: "Run"),
         BattleCommand.new(name: "Yell")
       ]
-      expect(hero.map).to eq @map
+      expect(hero.map).to eq map
       expect(hero.location).to eq C[1,1]
     end
 
@@ -127,19 +123,16 @@ RSpec.describe Player do
   end
 
   context "choose item and on whom" do
-    # Define some common variables for these tests.
-    before(:all) do
-      banana = Item.new(name: "Banana")
-      axe = Item.new(name: "Axe")
-      @entity = Player.new(inventory: [C[banana, 1],
-                                      C[axe, 3]])
-      @enemy = Entity.new(name: "Enemy")
-    end
+    let!(:banana) { Item.new(name: "Banana") }
+    let!(:axe) { Item.new(name: "Axe") }
+    let!(:entity) { Player.new(inventory: [C[banana, 1],
+                                          C[axe, 3]]) }
+    let!(:enemy) { Entity.new(name: "Enemy") }
 
     it "should return correct values based on the input" do
       # RSpec input example. Also see spec_helper.rb for __stdin method.
       __stdin("goulash\n", "axe\n", "bill\n", "enemy\n") do
-        pair = @entity.choose_item_and_on_whom(@enemy)
+        pair = entity.choose_item_and_on_whom(enemy)
         expect(pair.first.name).to eq "Axe"
         expect(pair.second.name).to eq "Enemy"
       end
@@ -149,7 +142,7 @@ RSpec.describe Player do
       it "for item" do
         # RSpec input example. Also see spec_helper.rb for __stdin method.
         __stdin("goulash\n", "pass\n") do
-          pair = @entity.choose_item_and_on_whom(@enemy)
+          pair = entity.choose_item_and_on_whom(enemy)
           expect(pair).to be_nil
         end
       end
@@ -157,7 +150,7 @@ RSpec.describe Player do
       it "for whom" do
         # RSpec input example. Also see spec_helper.rb for __stdin method.
         __stdin("banana\n", "bill\n", "pass\n") do
-          pair = @entity.choose_item_and_on_whom(@enemy)
+          pair = entity.choose_item_and_on_whom(enemy)
           expect(pair).to be_nil
         end
       end
@@ -166,69 +159,69 @@ RSpec.describe Player do
 
   context "die" do
     it "moves the player back to the map's regen location" do
-      @dude.move_down
-      expect(@dude.location).to eq C[2,1]
-      @dude.die
-      expect(@dude.location).to eq @map.regen_location
+      dude.move_down
+      expect(dude.location).to eq C[2,1]
+      dude.die
+      expect(dude.location).to eq map.regen_location
     end
 
     it "reduces the player's gold by half" do
-      @dude.set_gold(10)
-      @dude.die
-      expect(@dude.gold).to eq 5
+      dude.set_gold(10)
+      dude.die
+      expect(dude.gold).to eq 5
     end
 
     it "recovers the player's HP to max" do
-      @dude.set_stats(hp: 0)
-      @dude.die
-      expect(@dude.stats[:hp]).to eq @dude.stats[:max_hp]
+      dude.set_stats(hp: 0)
+      dude.die
+      expect(dude.stats[:hp]).to eq dude.stats[:max_hp]
     end
   end
 
   context "move to" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_to(C[2,1])
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq C[2,1]
+      dude.move_to(C[2,1])
+      expect(dude.map).to eq map
+      expect(dude.location).to eq C[2,1]
     end
 
     it "prevents the player from moving on an impassable tile" do
-      @dude.move_to(C[2,2])
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq @center
+      dude.move_to(C[2,2])
+      expect(dude.map).to eq map
+      expect(dude.location).to eq center
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_to(C[3,3])
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq @center
+      dude.move_to(C[3,3])
+      expect(dude.map).to eq map
+      expect(dude.location).to eq center
     end
 
     it "saves the information from previous maps" do
-      @dude.move_to(C[0,0], @chest_map)
-      interpret_command("open", @dude)
-      expect(@dude.gold).to eq 5
-      @dude.move_to(C[1,1], Map.new)
-      @dude.move_to(C[0,0], Map.new(name: "Chest Map"))
-      interpret_command("open", @dude)
-      expect(@dude.gold).to eq 5
-      @dude.move_right
-      interpret_command("open", @dude)
-      expect(@dude.gold).to eq 10
+      dude.move_to(C[0,0], chest_map)
+      interpret_command("open", dude)
+      expect(dude.gold).to eq 5
+      dude.move_to(C[1,1], Map.new)
+      dude.move_to(C[0,0], Map.new(name: "Chest Map"))
+      interpret_command("open", dude)
+      expect(dude.gold).to eq 5
+      dude.move_right
+      interpret_command("open", dude)
+      expect(dude.gold).to eq 10
     end
   end
 
   context "move up" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_up
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq C[0,1]
+      dude.move_up
+      expect(dude.map).to eq map
+      expect(dude.location).to eq C[0,1]
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_up; @dude.move_up
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq C[0,1]
+      dude.move_up; dude.move_up
+      expect(dude.map).to eq map
+      expect(dude.location).to eq C[0,1]
     end
   end
 
@@ -236,80 +229,78 @@ RSpec.describe Player do
     it "correctly moves the player to a passable tile" do
       20.times do
         __stdin("Attack\n") do
-          @dude.move_right
-          expect(@dude.map).to eq @map
-          expect(@dude.location).to eq C[1,2]
-          @dude.move_left
+          dude.move_right
+          expect(dude.map).to eq map
+          expect(dude.location).to eq C[1,2]
+          dude.move_left
         end
       end
     end
 
     it "prevents the player from moving on a nonexistent tile" do
       __stdin("Attack\n") do
-        @dude.move_right; @dude.move_right
-        expect(@dude.map).to eq @map
-        expect(@dude.location).to eq C[1,2]
+        dude.move_right; dude.move_right
+        expect(dude.map).to eq map
+        expect(dude.location).to eq C[1,2]
       end
     end
   end
 
   context "move down" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_down
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq C[2,1]
+      dude.move_down
+      expect(dude.map).to eq map
+      expect(dude.location).to eq C[2,1]
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_down; @dude.move_down
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq C[2,1]
+      dude.move_down; dude.move_down
+      expect(dude.map).to eq map
+      expect(dude.location).to eq C[2,1]
     end
   end
 
   context "move left" do
     it "correctly moves the player to a passable tile" do
-      @dude.move_left
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq C[1,0]
+      dude.move_left
+      expect(dude.map).to eq map
+      expect(dude.location).to eq C[1,0]
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      @dude.move_left; @dude.move_left
-      expect(@dude.map).to eq @map
-      expect(@dude.location).to eq C[1,0]
+      dude.move_left; dude.move_left
+      expect(dude.map).to eq map
+      expect(dude.location).to eq C[1,0]
     end
   end
 
   context "update map" do
-    before(:each) do
-      @line_map = Map.new(tiles: [ [ Tile.new, Tile.new, Tile.new, Tile.new ] ])
-      @player = Player.new(map: @line_map, location: C[0, 0])
-    end
+    let!(:line_map) { Map.new(tiles: [ [ Tile.new, Tile.new, Tile.new, Tile.new ] ]) }
+    let!(:player) { Player.new(map: line_map, location: C[0, 0]) }
 
     it "uses default argument to update tiles" do
-      @player.update_map
-      expect(@line_map.tiles[0][3].seen).to eq false
+      player.update_map
+      expect(line_map.tiles[0][3].seen).to eq false
     end
 
     it "uses given argument to update tiles" do
-      @player.update_map(C[0, 2])
-      expect(@line_map.tiles[0][3].seen).to eq true
+      player.update_map(C[0, 2])
+      expect(line_map.tiles[0][3].seen).to eq true
     end
   end
 
   context "print map" do
     it "should display as appropriate" do
-      edge_row = "#{@impassable} #{@passable} #{@impassable} \n"
-      middle_row = "#{@passable} ¶ #{@passable} \n"
+      edge_row = "#{impassable} #{passable} #{impassable} \n"
+      middle_row = "#{passable} ¶ #{passable} \n"
 
-      expect { @dude.print_map }.to output(
+      expect { dude.print_map }.to output(
         "   Map\n\n"\
         "  #{edge_row}"\
         "  #{middle_row}"\
         "  #{edge_row}"\
         "\n"\
-        "   ¶ - #{@dude.name}'s\n"\
+        "   ¶ - #{dude.name}'s\n"\
         "       location\n\n"
       ).to_stdout
     end
@@ -317,10 +308,10 @@ RSpec.describe Player do
 
   context "print minimap" do
     it "should display as appropriate" do
-      edge_row = "#{@impassable} #{@passable} #{@impassable} \n"
-      middle_row = "#{@passable} ¶ #{@passable} \n"
+      edge_row = "#{impassable} #{passable} #{impassable} \n"
+      middle_row = "#{passable} ¶ #{passable} \n"
 
-      expect { @dude.print_minimap }.to output(
+      expect { dude.print_minimap }.to output(
         "\n"\
         "          #{edge_row}"\
         "          #{middle_row}"\
@@ -332,41 +323,41 @@ RSpec.describe Player do
 
   context "print tile" do
     it "should display the marker on the player's location" do
-      expect { @dude.print_tile(@dude.location) }.to output("¶ ").to_stdout
+      expect { dude.print_tile(dude.location) }.to output("¶ ").to_stdout
     end
 
     it "should display the graphic of the tile elsewhere" do
-      expect { @dude.print_tile(C[0,0]) }.to output(
-         "#{@impassable} "
+      expect { dude.print_tile(C[0,0]) }.to output(
+         "#{impassable} "
       ).to_stdout
-      expect { @dude.print_tile(C[0,1]) }.to output(
-        "#{@passable} "
-        ).to_stdout
+      expect { dude.print_tile(C[0,1]) }.to output(
+        "#{passable} "
+      ).to_stdout
     end
   end
 
   context "battle" do
     it "should allow the player to win in this example" do
       __stdin("use\nattack\n") do
-        @dude.battle(@slime)
+        dude.battle(slime)
       end
-      expect(@dude.inventory.size).to eq 1
+      expect(dude.inventory.size).to eq 1
     end
 
     it "should allow the player to escape in this example" do
       # Could theoretically fail, but with very low probability.
       __stdin("escape\nescape\nescape\n") do
-        @dude.battle(@slime)
+        dude.battle(slime)
       end
     end
 
     it "should allow the monster to win in this example" do
       __stdin("attack\n") do
-        @newb.battle(@dragon)
+        newb.battle(dragon)
       end
       # Newb should die and go to respawn location.
-      expect(@newb.gold).to eq 25
-      expect(@newb.location).to eq C[1,1]
+      expect(newb.gold).to eq 25
+      expect(newb.location).to eq C[1,1]
     end
   end
 end
