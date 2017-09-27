@@ -138,6 +138,16 @@ RSpec.describe Monster do
       end
       expect(dude.inventory.size).to eq 1
     end
+
+    it "should allow the stronger monster to win as the attacker" do
+      wolf.battle(slime)
+      expect(wolf.inventory.size).to eq 1
+    end
+
+    it "should allow the stronger monster to win as the defender" do
+      slime.battle(wolf)
+      expect(wolf.inventory.size).to eq 1
+    end
   end
 
   context "die" do
