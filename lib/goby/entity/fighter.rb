@@ -18,7 +18,7 @@ module Goby
       raise(NotImplementedError, 'A Fighter Entity must know whether it returns treasure or not after losing a battle')
     end
 
-    # The fucntion that returns the gold given by an Entity after losing a battle.
+    # The function that returns the gold given by an Entity after losing a battle.
     #
     # @return[Integer] the amount of gold to award the victorious Entity
     def sample_gold
@@ -41,7 +41,7 @@ module Goby
     def battle(entity)
       raise("Entity of type #{Entity.class} does not know how to fight") unless entity.fighter?
       system("clear") unless ENV['TEST']
-      puts "#{entity.message}\n"
+      puts "#{entity.message}\n" if entity.message
       type("You've run into a vicious #{entity.name}!\n\n")
 
       battle = Battle.new(self, entity)
@@ -104,12 +104,29 @@ module Goby
       return
     end
 
+    # The message that the Fighter says before starting a Battle.
+    # Implementers should override this method with a custom message.
+    #
+    # @return[String] the message the Fighter will say when attacked
+    def message
+      ''
+    end
+
     # Removes the battle command, if it exists, from the entity's collection.
     #
     # @param [BattleCommand, String] command the command being removed.
     def remove_battle_command(command)
       index = has_battle_command(command)
       @battle_commands.delete_at(index) if index
+    end
+
+    # Uses the agility levels of the two Fighters to determine who should go first.
+    #
+    # @param [Entity] fighter the opponent with whom the calling Fighter is competing.
+    # @return [Boolean] true when calling Fighter should go first. Otherwise, false.
+    def sample_agilities(fighter)
+      sum = fighter.stats[:agility] + stats[:agility]
+      Random.rand(sum) < stats[:agility]
     end
 
   end

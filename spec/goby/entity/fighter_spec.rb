@@ -150,6 +150,12 @@ RSpec.describe Fighter do
     end
   end
 
+  context "message" do
+    it "returns an empty String by default" do
+      expect(fighter.message).to eql ''
+    end
+  end
+
   context "remove battle command" do
     it "has no effect when no such command is present" do
       fighter.add_battle_command(Attack.new(name: "Kick"))

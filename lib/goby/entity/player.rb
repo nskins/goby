@@ -250,15 +250,6 @@ module Goby
       end
     end
 
-    # Uses the agility levels of the player and monster to determine who should go first.
-    #
-    # @param [Monster] monster the opponent with whom the player is competing.
-    # @return [Boolean] true when player should go first. Otherwise, false.
-    def sample_agilities(monster)
-      sum = monster.stats[:agility] + stats[:agility]
-      Random.rand(sum) < stats[:agility]
-    end
-
     # Updates the 'seen' attributes of the tiles on the player's current map.
     #
     # @param [C(Integer, Integer)] coordinates to update seen attribute for tiles on the map
