@@ -14,7 +14,6 @@ RSpec.describe Entity do
       expect(stats[:agility]).to eq 1
       expect(entity.inventory).to eq Array.new
       expect(entity.gold).to eq 0
-      expect(entity.battle_commands).to eq Array.new
       expect(entity.outfit).to eq Hash.new
     end
 
@@ -32,11 +31,7 @@ RSpec.describe Entity do
                                   ),
                                   helmet: Helmet.new(
                                       stat_change: {attack: 1, defense: 5}
-                                  ) },
-                        battle_commands: [
-                          Attack.new(name: "Punch"),
-                          Attack.new(name: "Kick")
-                        ])
+                                  ) })
       expect(hero.name).to eq "Hero"
       stats = hero.stats
       expect(stats[:max_hp]).to eq 50
@@ -49,10 +44,6 @@ RSpec.describe Entity do
       expect(hero.gold).to eq 10
       expect(hero.outfit[:shield]).to eq Shield.new
       expect(hero.outfit[:helmet]).to eq Helmet.new
-      expect(hero.battle_commands).to eq [
-        Attack.new(name: "Kick"),
-        Attack.new(name: "Punch")
-      ]
     end
 
     it "assigns default keyword arguments as appropriate" do
@@ -68,7 +59,6 @@ RSpec.describe Entity do
       expect(stats[:agility]).to eq 1
       expect(entity.inventory).to eq []
       expect(entity.gold).to eq 3
-      expect(entity.battle_commands).to eq []
     end
   end
 

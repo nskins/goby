@@ -3,7 +3,15 @@ require 'goby'
 RSpec.describe Fighter do
 
   let!(:empty_fighter) { Class.new { extend Fighter } }
-  let(:fighter_class) { Class.new(Entity) { include Fighter } }
+  let(:fighter_class) {
+    Class.new(Entity) do
+      include Fighter
+      def initialize(name: "Fighter", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {})
+        super(name: name, stats: stats, inventory: inventory, gold: gold, outfit: outfit)
+        add_battle_commands(battle_commands)
+      end
+    end
+  }
   let(:fighter) { fighter_class.new }
 
   context "fighter" do
@@ -66,7 +74,7 @@ RSpec.describe Fighter do
 
       pair = entity.choose_item_and_on_whom(enemy)
       expect(pair.first.name).to eq("Banana").or(eq("Axe"))
-      expect(pair.second.name).to eq("Entity").or(eq("Enemy"))
+      expect(pair.second.name).to eq("Fighter").or(eq("Enemy"))
     end
   end
 

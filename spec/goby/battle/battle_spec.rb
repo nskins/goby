@@ -2,7 +2,16 @@ require 'goby'
 
 RSpec.describe Goby::Battle do
 
-  let(:dummy_fighter_class) { Class.new(Entity) {include Fighter} }
+  let(:dummy_fighter_class) {
+    Class.new(Entity) do
+      include Fighter
+
+      def initialize(name: "Player", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {})
+        super(name: name, stats: stats, inventory: inventory, gold: gold, outfit: outfit)
+        add_battle_commands(battle_commands)
+      end
+    end
+  }
 
   context "constructor" do
     it "takes two arguments" do
@@ -26,42 +35,42 @@ RSpec.describe Goby::Battle do
 
     it "returns the entity with positive hp" do
       entity_1 = dummy_fighter_class.new(name: "Player",
-                                       stats: {max_hp: 20,
-                                               hp: 15,
-                                               attack: 2,
-                                               defense: 2,
-                                               agility: 4},
-                                       outfit: {weapon: Weapon.new(
-                                           attack: Attack.new,
-                                           stat_change: {attack: 3, defense: 1}
-                                       ),
-                                                helmet: Helmet.new(
-                                                    stat_change: {attack: 1, defense: 5}
-                                                )
-                                       },
-                                       battle_commands: [
-                                           Attack.new(name: "Scratch"),
-                                           Attack.new(name: "Kick")
-                                       ])
+                                         stats: {max_hp: 20,
+                                                 hp: 15,
+                                                 attack: 2,
+                                                 defense: 2,
+                                                 agility: 4},
+                                         outfit: {weapon: Weapon.new(
+                                             attack: Attack.new,
+                                             stat_change: {attack: 3, defense: 1}
+                                         ),
+                                                  helmet: Helmet.new(
+                                                      stat_change: {attack: 1, defense: 5}
+                                                  )
+                                         },
+                                         battle_commands: [
+                                             Attack.new(name: "Scratch"),
+                                             Attack.new(name: "Kick")
+                                         ])
 
       entity_2 = dummy_fighter_class.new(name: "Clown",
-                                       stats: {max_hp: 20,
-                                               hp: 15,
-                                               attack: 2,
-                                               defense: 2,
-                                               agility: 4},
-                                       outfit: {weapon: Weapon.new(
-                                           attack: Attack.new,
-                                           stat_change: {attack: 3, defense: 1}
-                                       ),
-                                                helmet: Helmet.new(
-                                                    stat_change: {attack: 1, defense: 5}
-                                                )
-                                       },
-                                       battle_commands: [
-                                           Attack.new(name: "Scratch"),
-                                           Attack.new(name: "Kick")
-                                       ])
+                                         stats: {max_hp: 20,
+                                                 hp: 15,
+                                                 attack: 2,
+                                                 defense: 2,
+                                                 agility: 4},
+                                         outfit: {weapon: Weapon.new(
+                                             attack: Attack.new,
+                                             stat_change: {attack: 3, defense: 1}
+                                         ),
+                                                  helmet: Helmet.new(
+                                                      stat_change: {attack: 1, defense: 5}
+                                                  )
+                                         },
+                                         battle_commands: [
+                                             Attack.new(name: "Scratch"),
+                                             Attack.new(name: "Kick")
+                                         ])
 
       battle = Battle.new(entity_1, entity_2)
       winner = battle.determine_winner

@@ -17,7 +17,7 @@ module Goby
     # @param [[C(Item, Integer)]] treasures an array of treasures and the likelihood of receiving each.
     def initialize(name: "Monster", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!",
                    treasures: [])
-      super(name: name, stats: stats, inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
+      super(name: name, stats: stats, inventory: inventory, gold: gold, outfit: outfit)
       @message = message
       @treasures = treasures
 
@@ -26,6 +26,8 @@ module Goby
       @treasures.each do |pair|
         @total_treasures += pair.second
       end
+
+      add_battle_commands(battle_commands)
     end
 
     # Provides a deep copy of the monster. This is necessary since

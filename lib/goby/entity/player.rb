@@ -29,7 +29,7 @@ module Goby
     # @param [C(Integer,Integer)] location the 2D index of the map (the exact tile).
     def initialize(name: "Player", stats: {}, inventory: [], gold: 0, battle_commands: [],
                    outfit: {}, map: nil, location: nil)
-      super(name: name, stats: stats, inventory: inventory, gold: gold, battle_commands: battle_commands, outfit: outfit)
+      super(name: name, stats: stats, inventory: inventory, gold: gold, outfit: outfit)
       @saved_maps = Hash.new
 
       # Ensure that the map and the location are valid.
@@ -42,6 +42,8 @@ module Goby
           new_location = location
         end
       end
+
+      add_battle_commands(battle_commands)
 
       move_to(new_location, new_map)
       @saved_maps = Hash.new

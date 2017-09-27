@@ -29,10 +29,17 @@ module Goby
     #
     # @param [BattleCommand] command the command being added.
     def add_battle_command(command)
-      @battle_commands.push(command)
+      battle_commands.push(command)
 
       # Maintain sorted battle commands.
-      @battle_commands.sort!{ |x,y| x.name <=> y.name }
+      battle_commands.sort! { |x, y| x.name <=> y.name }
+    end
+
+    # Adds the specified battle commands to the entity's collection.
+    #
+    # @param [Array] battle_commands the commands being added.
+    def add_battle_commands(battle_commands)
+      battle_commands.each { |command| add_battle_command(command) }
     end
 
     # Engages in battle with the specified entity.
@@ -56,12 +63,21 @@ module Goby
       end
     end
 
+    # Returns the Array for BattleCommands available for the Fighter.
+    # Sets @battle_commands to an empty Array if it's the first time it's called.
+    #
+    # @return [Array] array of the available BattleCommands for the Fighter.
+    def battle_commands
+      @battle_commands ||= []
+      @battle_commands
+    end
+
     # Determines how the entity should select an attack in battle.
     # Override this method for control over this functionality.
     #
     # @return [BattleCommand] the chosen battle command.
     def choose_attack
-      return @battle_commands[Random.rand(@battle_commands.length)]
+      return battle_commands[Random.rand(@battle_commands.length)]
     end
 
     # Determines how the entity should select the item and on whom
@@ -98,7 +114,7 @@ module Goby
     # @param [BattleCommand, String] cmd the battle command (or its name).
     # @return [Integer] the index of an existing command. Otherwise nil.
     def has_battle_command(cmd)
-      @battle_commands.each_with_index do |command, index|
+      battle_commands.each_with_index do |command, index|
         return index if command.name.casecmp(cmd.to_s).zero?
       end
       return
@@ -117,15 +133,22 @@ module Goby
     # @param [BattleCommand, String] command the command being removed.
     def remove_battle_command(command)
       index = has_battle_command(command)
-      @battle_commands.delete_at(index) if index
+      battle_commands.delete_at(index) if index
     end
 
     # Prints the available battle commands.
     def print_battle_commands
-      @battle_commands.each do |command|
+      battle_commands.each do |command|
         print "❊ #{command.name}\n"
       end
       print "\n"
+    end
+
+    # Appends battle commands to the end of the Entity print_status output.
+    def print_status
+      super
+      puts "Battle Commands:"
+      print_battle_commands
     end
 
     # Uses the agility levels of the two Fighters to determine who should go first.

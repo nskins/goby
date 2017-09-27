@@ -20,17 +20,12 @@ module Goby
     # @option stats [Integer] :agility speed of commands in battle. Set to be positive.
     # @param [[C(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
     # @param [Integer] gold the currency used for economical transactions.
-    # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
-    def initialize(name: "Entity", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {})
+    def initialize(name: "Entity", stats: {}, inventory: [], gold: 0, outfit: {})
       @name = name
       set_stats(stats)
       @inventory = inventory
       set_gold(gold)
-
-      @battle_commands = battle_commands
-      # Maintain sorted battle commands.
-      @battle_commands.sort!{ |x,y| x.name <=> y.name }
 
       # See its attr_accessor below.
       @outfit = {}
@@ -178,11 +173,6 @@ module Goby
       puts @outfit[:legs] ? "#{@outfit[:legs].name}" : "none"
 
       print "\n"
-
-      if self.respond_to?(:battle_commands) && !battle_commands.empty?
-        puts "Battle Commands:"
-        print_battle_commands
-      end
     end
 
     # Removes up to the amount of gold given in the argument.
@@ -295,16 +285,8 @@ module Goby
       @name == rhs.name
     end
 
-    attr_accessor :name
-
-    attr_accessor :inventory
-    attr_reader :gold
-
-    attr_reader :outfit
-
-    attr_reader :battle_commands
-
-    attr_accessor :escaped
+    attr_accessor :escaped, :inventory, :name
+    attr_reader :gold, :outfit
 
     private
 
