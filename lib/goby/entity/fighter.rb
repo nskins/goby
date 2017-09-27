@@ -46,7 +46,7 @@ module Goby
     #
     # @param [Entity] entity the opponent of the battle.
     def battle(entity)
-      raise("Entity of type #{Entity.class} does not know how to fight") unless entity.fighter?
+      #TODO: Decide how best to handle if a Fighter attempt to start a battle with a non-Fighter Entity
       system("clear") unless ENV['TEST']
       puts "#{entity.message}\n" if entity.message
       type("You've run into a vicious #{entity.name}!\n\n")
