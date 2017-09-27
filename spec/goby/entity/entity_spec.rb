@@ -329,20 +329,6 @@ RSpec.describe Entity do
     end
   end
 
-  context "print battle commands" do
-    it "should print only a newline when there are no battle commands" do
-      expect { entity.print_battle_commands }.to output("\n").to_stdout
-    end
-
-    it "should print each battle command in a list" do
-      kick = Attack.new(name: "Kick")
-      entity = Entity.new(battle_commands: [kick, Use.new, Escape.new])
-      expect { entity.print_battle_commands }.to output(
-        "❊ Escape\n❊ Kick\n❊ Use\n\n"
-      ).to_stdout
-    end
-  end
-
   context "print inventory" do
     it "should print the inventory is empty when it is" do
       expect { entity.print_inventory }.to output(
@@ -373,12 +359,11 @@ RSpec.describe Entity do
                                     legs: Legs.new,
                                     shield: Shield.new,
                                     torso: Torso.new,
-                                    weapon: Weapon.new },
-                          battle_commands: [Escape.new])
+                                    weapon: Weapon.new })
       expect { entity.print_status }.to output(
         "Stats:\n* HP: 30/50\n* Attack: 5\n* Defense: 3\n* Agility: 4\n\n"\
         "Equipment:\n* Weapon: Weapon\n* Shield: Shield\n* Helmet: Helmet\n"\
-        "* Torso: Torso\n* Legs: Legs\n\nBattle Commands:\n❊ Escape\n\n"
+        "* Torso: Torso\n* Legs: Legs\n\n"
       ).to_stdout
     end
 

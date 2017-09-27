@@ -135,14 +135,6 @@ module Goby
       return
     end
 
-    # Prints the available battle commands.
-    def print_battle_commands
-      @battle_commands.each do |command|
-        print "❊ #{command.name}\n"
-      end
-      print "\n"
-    end
-
     # Prints the inventory in a nice format.
     def print_inventory
       print "Current gold in pouch: #{@gold}.\n\n"
@@ -187,7 +179,7 @@ module Goby
 
       print "\n"
 
-      unless @battle_commands.empty?
+      if self.respond_to?(:battle_commands) && !battle_commands.empty?
         puts "Battle Commands:"
         print_battle_commands
       end

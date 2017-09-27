@@ -120,6 +120,14 @@ module Goby
       @battle_commands.delete_at(index) if index
     end
 
+    # Prints the available battle commands.
+    def print_battle_commands
+      @battle_commands.each do |command|
+        print "❊ #{command.name}\n"
+      end
+      print "\n"
+    end
+
     # Uses the agility levels of the two Fighters to determine who should go first.
     #
     # @param [Entity] fighter the opponent with whom the calling Fighter is competing.
