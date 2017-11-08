@@ -158,12 +158,6 @@ RSpec.describe Fighter do
     end
   end
 
-  context "message" do
-    it "returns an empty String by default" do
-      expect(fighter.message).to eql ''
-    end
-  end
-
   context "print battle commands" do
     it "should print only a newline when there are no battle commands" do
       expect { fighter.print_battle_commands }.to output("\n").to_stdout

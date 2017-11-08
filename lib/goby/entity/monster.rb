@@ -13,12 +13,10 @@ module Goby
     # @param [Integer] gold the max amount of gold that can be rewarded to the opponent.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the coolection of equippable items currently worn.
-    # @param [String] message the monster's battle cry.
     # @param [[C(Item, Integer)]] treasures an array of treasures and the likelihood of receiving each.
-    def initialize(name: "Monster", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {}, message: "!!!",
+    def initialize(name: "Monster", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {},
                    treasures: [])
       super(name: name, stats: stats, inventory: inventory, gold: gold, outfit: outfit)
-      @message = message
       @treasures = treasures
 
       # Find the total number of treasures in the distribution.
@@ -81,7 +79,7 @@ module Goby
       end
     end
 
-    attr_reader :message, :treasures, :total_treasures
+    attr_reader :treasures, :total_treasures
   end
 
 end

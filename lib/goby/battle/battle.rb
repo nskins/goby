@@ -15,6 +15,7 @@ module Goby
     #
     # @return [Entity] the winner of the battle
     def determine_winner
+      type("#{entity_a.name} enters a battle with #{entity_b.name}!\n\n")
       until someone_dead?
         #Determine order of attacks
         attackers = determine_order

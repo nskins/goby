@@ -48,8 +48,6 @@ module Goby
     def battle(entity)
       #TODO: Decide how best to handle if a Fighter attempt to start a battle with a non-Fighter Entity
       system("clear") unless ENV['TEST']
-      puts "#{entity.message}\n" if entity.message
-      type("You've run into a vicious #{entity.name}!\n\n")
 
       battle = Battle.new(self, entity)
       winner = battle.determine_winner
@@ -118,14 +116,6 @@ module Goby
         return index if command.name.casecmp(cmd.to_s).zero?
       end
       return
-    end
-
-    # The message that the Fighter says before starting a Battle.
-    # Implementers should override this method with a custom message.
-    #
-    # @return[String] the message the Fighter will say when attacked
-    def message
-      ''
     end
 
     # Removes the battle command, if it exists, from the entity's collection.

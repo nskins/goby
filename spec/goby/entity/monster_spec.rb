@@ -24,8 +24,7 @@ RSpec.describe Monster do
                         battle_commands: [
                             Attack.new(name: "Scratch"),
                             Attack.new(name: "Kick")
-                        ],
-                        message: "\"Oh, hi.\"")
+                        ])
   }
   let!(:dude) { Player.new(stats: { attack: 10, agility: 10000 },
                            battle_commands: [Attack.new(strength: 20), Escape.new, Use.new])}
@@ -47,7 +46,6 @@ RSpec.describe Monster do
       expect(monster.gold).to eq 0
       expect(monster.outfit).to eq Hash.new
       expect(monster.battle_commands).to eq Array.new
-      expect(monster.message).to eq "!!!"
       expect(monster.treasures).to eq Array.new
     end
 
@@ -72,7 +70,6 @@ RSpec.describe Monster do
                           Attack.new(name: "Scratch"),
                           Attack.new(name: "Kick")
                         ],
-                        message: "\"Oh, hi.\"",
                         treasures: [C[Item.new, 1],
                                     C[nil, 3]])
       expect(clown.name).to eq "Clown"
@@ -90,7 +87,6 @@ RSpec.describe Monster do
         Attack.new(name: "Kick"),
         Attack.new(name: "Scratch")
       ]
-      expect(clown.message).to eq "\"Oh, hi.\""
       expect(clown.treasures).to eq [C[Item.new, 1],
                                      C[nil, 3]]
       expect(clown.total_treasures).to eq 4
@@ -153,16 +149,6 @@ RSpec.describe Monster do
   context "die" do
     it "does nothing" do
       expect(wolf.die).to be_nil
-    end
-  end
-
-  context "message" do
-    it "returns '!!!' by default" do
-      expect(slime.message).to eql "!!!"
-    end
-
-    it "returns a custom message if one is set" do
-      expect(wolf.message).to eql "\"Oh, hi.\""
     end
   end
 
