@@ -159,21 +159,43 @@ RSpec.describe Fighter do
   end
 
   context "print battle commands" do
-    it "should print only a newline when there are no battle commands" do
-      expect { fighter.print_battle_commands }.to output("\n").to_stdout
+    it "should print only the default header when there are no battle commands" do
+      expect { fighter.print_battle_commands }.to output("Battle Commands:\n\n").to_stdout
+    end
+
+    it "should print the custom header when one is passed" do
+      expect { fighter.print_battle_commands("Choose an attack:") }.to output("Choose an attack:\n\n").to_stdout
     end
 
     it "should print each battle command in a list" do
       kick = Attack.new(name: "Kick")
       entity = fighter_class.new(battle_commands: [kick, Use.new, Escape.new])
       expect { entity.print_battle_commands }.to output(
-                                                     "❊ Escape\n❊ Kick\n❊ Use\n\n"
+                                                     "Battle Commands:\n❊ Escape\n❊ Kick\n❊ Use\n\n"
                                                  ).to_stdout
     end
   end
 
-  context "print status with battle commands" do
-    it "prints all of the entity's information" do
+  context "print status" do
+    it "prints all of the entity's information without battle commands" do
+      entity = fighter_class.new(stats: {max_hp: 50,
+                                         hp: 30,
+                                         attack: 5,
+                                         defense: 3,
+                                         agility: 4},
+                                 outfit: {helmet: Helmet.new,
+                                          legs: Legs.new,
+                                          shield: Shield.new,
+                                          torso: Torso.new,
+                                          weapon: Weapon.new})
+      expect { entity.print_status }.to output(
+                                            "Stats:\n* HP: 30/50\n* Attack: 5\n* Defense: 3\n* Agility: 4\n\n"\
+        "Equipment:\n* Weapon: Weapon\n* Shield: Shield\n* Helmet: Helmet\n"\
+        "* Torso: Torso\n* Legs: Legs\n\n"
+                                        ).to_stdout
+    end
+
+    it "prints all of the entity's information including battle commands" do
       entity = fighter_class.new(stats: {max_hp: 50,
                                          hp: 30,
                                          attack: 5,

@@ -53,8 +53,7 @@ module Goby
     #
     # @return [BattleCommand] the chosen battle command.
     def choose_attack
-      puts "Choose an action:"
-      print_battle_commands
+      print_battle_commands(header = "Choose an attack:")
 
       input = player_input
       index = has_battle_command(input)
@@ -62,8 +61,7 @@ module Goby
       #input error loop
       while !index
         puts "You don't have '#{input}'"
-        puts "Try one of these:"
-        print_battle_commands
+        print_battle_commands(header = "Try one of these:")
 
         input = player_input
         index = has_battle_command(input)

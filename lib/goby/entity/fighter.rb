@@ -75,7 +75,7 @@ module Goby
     #
     # @return [BattleCommand] the chosen battle command.
     def choose_attack
-      return battle_commands[Random.rand(@battle_commands.length)]
+      battle_commands[Random.rand(@battle_commands.length)]
     end
 
     # Determines how the entity should select the item and on whom
@@ -127,7 +127,10 @@ module Goby
     end
 
     # Prints the available battle commands.
-    def print_battle_commands
+    #
+    # @param [String] header the text to output as a heading for the list of battle commands.
+    def print_battle_commands(header = "Battle Commands:")
+      puts header
       battle_commands.each do |command|
         print "❊ #{command.name}\n"
       end
@@ -137,8 +140,7 @@ module Goby
     # Appends battle commands to the end of the Entity print_status output.
     def print_status
       super
-      puts "Battle Commands:"
-      print_battle_commands
+      print_battle_commands unless battle_commands.empty?
     end
 
     # Uses the agility levels of the two Fighters to determine who should go first.
