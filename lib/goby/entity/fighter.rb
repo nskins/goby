@@ -4,6 +4,9 @@ module Goby
 
   module Fighter
 
+    class UnfightableEntityException < Exception
+    end
+
     # The function that handles how an Entity behaves after losing a battle.
     # Subclasses must override this function.
     #
@@ -46,7 +49,9 @@ module Goby
     #
     # @param [Entity] entity the opponent of the battle.
     def battle(entity)
-      #TODO: Decide how best to handle if a Fighter attempt to start a battle with a non-Fighter Entity
+      unless entity.class.included_modules.include?(Fighter)
+        raise(UnfightableEntityException, "You can't start a battle with an Entity of type #{entity.class} as it doesn't implement the Fighter module")
+      end
       system("clear") unless ENV['TEST']
 
       battle = Battle.new(self, entity)
@@ -87,13 +92,6 @@ module Goby
       item = @inventory[Random.rand(@inventory.length)].first
       whom = [self, enemy].sample
       return C[item, whom]
-    end
-
-    # A function to check if the given object has implemented the Fighter module
-    #
-    # @returns [Boolean] true
-    def fighter?
-      true
     end
 
     # Handles how an Entity behaves after winning a battle.

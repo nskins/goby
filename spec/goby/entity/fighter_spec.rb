@@ -16,7 +16,7 @@ RSpec.describe Fighter do
 
   context "fighter" do
     it "is a fighter" do
-      expect(fighter.fighter?).to be true
+      expect(fighter.class.included_modules.include?(Fighter)).to be true
     end
   end
 
@@ -50,6 +50,13 @@ RSpec.describe Fighter do
                                                 BattleCommand.new(name: "Chop"),
                                                 BattleCommand.new(name: "Grab"),
                                                 BattleCommand.new(name: "Kick")]
+    end
+  end
+
+  context "battle" do
+    it "raises an error when starting a battle against a non-Fighter Entity" do
+      expect {empty_fighter.battle(Class.new)}.to raise_error(Fighter::UnfightableEntityException,
+                                                              "You can't start a battle with an Entity of type Class as it doesn't implement the Fighter module")
     end
   end
 

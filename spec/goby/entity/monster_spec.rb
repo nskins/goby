@@ -114,7 +114,7 @@ RSpec.describe Monster do
 
   context "fighter" do
     it "should be a fighter" do
-      expect(wolf.fighter?).to be true
+      expect(wolf.class.included_modules.include?(Fighter)).to be true
     end
   end
 

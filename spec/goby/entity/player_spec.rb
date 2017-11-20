@@ -319,7 +319,7 @@ RSpec.describe Player do
 
   context "fighter" do
     it "should be a fighter" do
-      expect(dude.fighter?).to be true
+      expect(dude.class.included_modules.include?(Fighter)).to be true
     end
   end
 
