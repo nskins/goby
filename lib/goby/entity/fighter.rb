@@ -57,7 +57,7 @@ module Goby
       battle = Battle.new(self, entity)
       winner = battle.determine_winner
 
-      if winner == self
+      if winner.equal?(self)
         handle_victory(entity)
         entity.die
       else
