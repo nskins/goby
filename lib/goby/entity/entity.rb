@@ -20,17 +20,12 @@ module Goby
     # @option stats [Integer] :agility speed of commands in battle. Set to be positive.
     # @param [[C(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
     # @param [Integer] gold the currency used for economical transactions.
-    # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
-    def initialize(name: "Entity", stats: {}, inventory: [], gold: 0, battle_commands: [], outfit: {})
+    def initialize(name: "Entity", stats: {}, inventory: [], gold: 0, outfit: {})
       @name = name
       set_stats(stats)
       @inventory = inventory
       set_gold(gold)
-
-      @battle_commands = battle_commands
-      # Maintain sorted battle commands.
-      @battle_commands.sort!{ |x,y| x.name <=> y.name }
 
       # See its attr_accessor below.
       @outfit = {}
@@ -40,16 +35,6 @@ module Goby
 
       # This should only be switched to true during battle.
       @escaped = false
-    end
-
-    # Adds the specified battle command to the entity's collection.
-    #
-    # @param [BattleCommand] command the command being added.
-    def add_battle_command(command)
-      @battle_commands.push(command)
-
-      # Maintain sorted battle commands.
-      @battle_commands.sort!{ |x,y| x.name <=> y.name }
     end
 
     # Adds the given amount of gold.
@@ -104,25 +89,6 @@ module Goby
       end
     end
 
-    # Determines how the entity should select an attack in battle.
-    # Override this method for control over this functionality.
-    #
-    # @return [BattleCommand] the chosen battle command.
-  	def choose_attack
-  	  return @battle_commands[Random.rand(@battle_commands.length)]
-  	end
-
-    # Determines how the entity should select the item and on whom
-    # during battle (Use command). Return nil on error.
-    #
-    # @param [Entity] enemy the opponent in battle.
-    # @return [C(Item, Entity)] the item and on whom it is to be used.
-    def choose_item_and_on_whom(enemy)
-      item = @inventory[Random.rand(@inventory.length)].first
-      whom = [self, enemy].sample
-      return C[item, whom]
-    end
-
     # Removes all items from the entity's inventory.
     def clear_inventory
       while @inventory.size.nonzero?
@@ -153,17 +119,6 @@ module Goby
       end
     end
 
-    # Returns the index of the specified command, if it exists.
-    #
-    # @param [BattleCommand, String] cmd the battle command (or its name).
-    # @return [Integer] the index of an existing command. Otherwise nil.
-    def has_battle_command(cmd)
-      @battle_commands.each_with_index do |command, index|
-        return index if command.name.casecmp(cmd.to_s).zero?
-      end
-      return
-    end
-
     # Returns the index of the specified item, if it exists.
     #
     # @param [Item, String] item the item (or its name).
@@ -173,14 +128,6 @@ module Goby
         return index if couple.first.name.casecmp(item.to_s).zero?
       end
       return
-    end
-
-    # Prints the available battle commands.
-    def print_battle_commands
-      @battle_commands.each do |command|
-        print "❊ #{command.name}\n"
-      end
-      print "\n"
     end
 
     # Prints the inventory in a nice format.
@@ -226,19 +173,6 @@ module Goby
       puts @outfit[:legs] ? "#{@outfit[:legs].name}" : "none"
 
       print "\n"
-
-      unless @battle_commands.empty?
-        puts "Battle Commands:"
-        print_battle_commands
-      end
-    end
-
-    # Removes the battle command, if it exists, from the entity's collection.
-    #
-    # @param [BattleCommand, String] command the command being removed.
-    def remove_battle_command(command)
-      index = has_battle_command(command)
-      @battle_commands.delete_at(index) if index
     end
 
     # Removes up to the amount of gold given in the argument.
@@ -351,16 +285,8 @@ module Goby
       @name == rhs.name
     end
 
-    attr_accessor :name
-
-    attr_accessor :inventory
-    attr_reader :gold
-
-    attr_reader :outfit
-
-    attr_reader :battle_commands
-
-    attr_accessor :escaped
+    attr_accessor :escaped, :inventory, :name
+    attr_reader :gold, :outfit
 
     private
 

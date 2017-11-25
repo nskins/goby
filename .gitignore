@@ -55,3 +55,6 @@ Gemfile.lock
 
 todo.txt
 player.yaml
+
+#Ignore RubyMine/IntelliJ project files
+/.idea/
