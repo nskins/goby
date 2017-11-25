@@ -60,7 +60,7 @@ module Goby
       if winner.equal?(self)
         handle_victory(entity)
         entity.die
-      else
+      elsif winner.equal?(entity)
         entity.handle_victory(self)
         die
       end
