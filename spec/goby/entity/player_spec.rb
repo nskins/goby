@@ -11,7 +11,7 @@ RSpec.describe Player do
   let!(:passable) { Tile::DEFAULT_PASSABLE }
   let!(:impassable) { Tile::DEFAULT_IMPASSABLE }
 
-  let!(:dude) { Player.new(stats: {attack: 10, agility: 10000, map_hp: 2000},
+  let!(:dude) { Player.new(stats: {attack: 10, agility: 10000, map_hp: 2000}, gold: 10,
                            battle_commands: [Attack.new(strength: 20), Escape.new, Use.new],
                            map: map, location: center) }
   let!(:slime) { Monster.new(battle_commands: [Attack.new(success_rate: 0)],
@@ -179,14 +179,14 @@ RSpec.describe Player do
     it "saves the information from previous maps" do
       dude.move_to(C[0, 0], chest_map)
       interpret_command("open", dude)
-      expect(dude.gold).to eq 5
+      expect(dude.gold).to eq 15
       dude.move_to(C[1, 1], Map.new)
       dude.move_to(C[0, 0], Map.new(name: "Chest Map"))
       interpret_command("open", dude)
-      expect(dude.gold).to eq 5
+      expect(dude.gold).to eq 15
       dude.move_right
       interpret_command("open", dude)
-      expect(dude.gold).to eq 10
+      expect(dude.gold).to eq 20
     end
   end
 
@@ -335,6 +335,7 @@ RSpec.describe Player do
       # Could theoretically fail, but with very low probability.
       __stdin("escape\nescape\nescape\n") do
         dude.battle(slime)
+        expect(dude.gold).to eq 10
       end
     end
 
@@ -355,7 +356,7 @@ RSpec.describe Player do
       expect(newb.gold).to eq 25
       expect(newb.location).to eq C[1, 1]
       # Stronger Player should get weaker Players gold
-      expect(dude.gold).to eq (25)
+      expect(dude.gold).to eq (35)
     end
 
     it "should allow the stronger player to win as the defender" do
@@ -366,7 +367,7 @@ RSpec.describe Player do
       expect(newb.gold).to eq 25
       expect(newb.location).to eq C[1, 1]
       # Stronger Player should get weaker Players gold
-      expect(dude.gold).to eq (25)
+      expect(dude.gold).to eq (35)
     end
 
   end
