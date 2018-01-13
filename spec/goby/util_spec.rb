@@ -33,6 +33,15 @@ RSpec.describe do
     end
   end
 
+  context "location" do
+    it "should correctly initialize the location" do
+      map = Map.new(name: "Test Map")
+      location = Location.new(map, C[0, 0])
+      expect(location.map.name).to eq "Test Map"
+      expect(location.coords).to eq C[0, 0]
+    end
+  end
+
   context "player input" do
     before (:each) { Readline::HISTORY.pop until Readline::HISTORY.size <= 0 }
 
