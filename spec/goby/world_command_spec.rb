@@ -9,15 +9,14 @@ RSpec.describe do
                               Tile.new(events: [Event.new(visible: false)]) ],
                             [ Tile.new(events: [Shop.new, NPC.new]),
                               Tile.new(events: [Event.new(visible: false), Shop.new, NPC.new]) ] ],
-                      regen_location: C[0,0]) }
+                      regen_coords: C[0,0]) }
 
   let!(:player) { Player.new(stats: { max_hp: 10, hp: 3 },
                          inventory: [ C[Food.new(name: "Banana", recovers: 5), 1],
                                       C[Food.new(name: "Onion", disposable: false), 1],
                                       C[Item.new(name: "Big Book of Stuff"), 1],
                                       C[Helmet.new, 1] ],
-                         map: map,
-                         location: C[0, 0]) }
+                         location: Location.new(map, C[0, 0])) }
 
   context "display default commands" do
     it "should print the default commands" do
@@ -82,13 +81,13 @@ RSpec.describe do
     context "lowercase" do
       it "should correctly move the player around" do
         interpret_command("s", player)
-        expect(player.location).to eq C[1, 0]
+        expect(player.location.coords).to eq C[1, 0]
         interpret_command("d", player)
-        expect(player.location).to eq C[1, 1]
+        expect(player.location.coords).to eq C[1, 1]
         interpret_command("w", player)
-        expect(player.location).to eq C[0, 1]
+        expect(player.location.coords).to eq C[0, 1]
         interpret_command("a", player)
-        expect(player.location).to eq C[0, 0]
+        expect(player.location.coords).to eq C[0, 0]
       end
 
       it "should display the help text" do
@@ -179,13 +178,13 @@ RSpec.describe do
     context "case-insensitive" do
       it "should correctly move the player around" do
         interpret_command("S", player)
-        expect(player.location).to eq C[1, 0]
+        expect(player.location.coords).to eq C[1, 0]
         interpret_command("D", player)
-        expect(player.location).to eq C[1, 1]
+        expect(player.location.coords).to eq C[1, 1]
         interpret_command("W", player)
-        expect(player.location).to eq C[0, 1]
+        expect(player.location.coords).to eq C[0, 1]
         interpret_command("A", player)
-        expect(player.location).to eq C[0, 0]
+        expect(player.location.coords).to eq C[0, 0]
       end
     end
 

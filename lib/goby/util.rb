@@ -29,6 +29,22 @@ module Goby
     attr_accessor :first, :second
   end
 
+  # The combination of a map and some coordinates,
+  # which determine a specific position/location on the map.
+  class Location
+
+    # Location constructor.
+    #
+    # @param [Map] map the map component.
+    # @param [C(Integer, Integer)]
+    def initialize(map, coords)
+      @map = map
+      @coords = coords
+    end
+
+    attr_reader :map, :coords
+  end
+
   # Simple player input script.
   #
   # @param [Boolean] lowercase mark true if response should be returned lowercase.

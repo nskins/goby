@@ -6,23 +6,23 @@ RSpec.describe Player do
   let!(:map) { Map.new(tiles: [[Tile.new(passable: false), Tile.new, Tile.new(passable: false)],
                                [Tile.new, Tile.new, Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)])])],
                                [Tile.new(passable: false), Tile.new, Tile.new(passable: false)]],
-                       regen_location: C[1, 1]) }
-  let!(:center) { map.regen_location }
+                       regen_coords: C[1, 1]) }
+  let!(:center) { map.regen_coords }
   let!(:passable) { Tile::DEFAULT_PASSABLE }
   let!(:impassable) { Tile::DEFAULT_IMPASSABLE }
 
   let!(:dude) { Player.new(stats: {attack: 10, agility: 10000, map_hp: 2000}, gold: 10,
                            battle_commands: [Attack.new(strength: 20), Escape.new, Use.new],
-                           map: map, location: center) }
+                           location: Location.new(map, center)) }
   let!(:slime) { Monster.new(battle_commands: [Attack.new(success_rate: 0)],
                              gold: 5000, treasures: [C[Item.new, 1]]) }
   let!(:newb) { Player.new(battle_commands: [Attack.new(success_rate: 0)],
-                           gold: 50, map: map, location: center) }
+                           gold: 50, location: Location.new(map, center)) }
   let!(:dragon) { Monster.new(stats: {attack: 50, agility: 10000},
                               battle_commands: [Attack.new(strength: 50)]) }
   let!(:chest_map) { Map.new(name: "Chest Map",
                              tiles: [[Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])]],
-                             regen_location: C[0, 0]) }
+                             regen_coords: C[0, 0]) }
 
   context "constructor" do
     it "has the correct default parameters" do
@@ -37,8 +37,8 @@ RSpec.describe Player do
       expect(player.gold).to eq 0
       expect(player.outfit).to eq Hash.new
       expect(player.battle_commands).to eq Array.new
-      expect(player.map).to eq Player::DEFAULT_MAP
-      expect(player.location).to eq Player::DEFAULT_LOCATION
+      expect(player.location.map).to eq Player::DEFAULT_MAP
+      expect(player.location.coords).to eq Player::DEFAULT_COORDS
     end
 
     it "correctly assigns custom parameters" do
@@ -59,8 +59,7 @@ RSpec.describe Player do
                             BattleCommand.new(name: "Yell"),
                             BattleCommand.new(name: "Run")
                         ],
-                        map: map,
-                        location: C[1, 1])
+                        location: Location.new(map, C[1, 1]))
       expect(hero.name).to eq "Hero"
       expect(hero.stats[:max_hp]).to eq 50
       expect(hero.stats[:hp]).to eq 35
@@ -76,34 +75,34 @@ RSpec.describe Player do
                                              BattleCommand.new(name: "Run"),
                                              BattleCommand.new(name: "Yell")
                                          ]
-      expect(hero.map).to eq map
-      expect(hero.location).to eq C[1, 1]
+      expect(hero.location.map).to eq map
+      expect(hero.location.coords).to eq C[1, 1]
     end
 
     context "places the player in the default map & location" do
       it "receives the nil map" do
-        player = Player.new(location: C[2, 4])
-        expect(player.map).to eq Player::DEFAULT_MAP
-        expect(player.location).to eq Player::DEFAULT_LOCATION
+        player = Player.new(location: Location.new(nil, C[2, 4]))
+        expect(player.location.map).to eq Player::DEFAULT_MAP
+        expect(player.location.coords).to eq Player::DEFAULT_COORDS
       end
 
-      it "receives the nil location" do
-        player = Player.new(map: Map.new)
-        expect(player.map).to eq Player::DEFAULT_MAP
-        expect(player.location).to eq Player::DEFAULT_LOCATION
+      it "receives nil coordinates" do
+        player = Player.new(location: Location.new(Map.new, nil))
+        expect(player.location.map).to eq Player::DEFAULT_MAP
+        expect(player.location.coords).to eq Player::DEFAULT_COORDS
       end
 
       it "receives an out-of-bounds location" do
-        player = Player.new(map: Map.new, location: C[0, 1])
-        expect(player.map).to eq Player::DEFAULT_MAP
-        expect(player.location).to eq Player::DEFAULT_LOCATION
+        player = Player.new(location: Location.new(Map.new, C[0, 1]))
+        expect(player.location.map).to eq Player::DEFAULT_MAP
+        expect(player.location.coords).to eq Player::DEFAULT_COORDS
       end
 
       it "receives an impassable location" do
-        player = Player.new(map: Map.new(tiles: [[Tile.new(passable: false)]]),
-                            location: C[0, 0])
-        expect(player.map).to eq Player::DEFAULT_MAP
-        expect(player.location).to eq Player::DEFAULT_LOCATION
+        player = Player.new(location: Location.new(
+          Map.new(tiles: [[Tile.new(passable: false)]]), C[0, 0]))
+        expect(player.location.map).to eq Player::DEFAULT_MAP
+        expect(player.location.coords).to eq Player::DEFAULT_COORDS
       end
     end
 
@@ -159,29 +158,29 @@ RSpec.describe Player do
 
   context "move to" do
     it "correctly moves the player to a passable tile" do
-      dude.move_to(C[2, 1])
-      expect(dude.map).to eq map
-      expect(dude.location).to eq C[2, 1]
+      dude.move_to(Location.new(dude.location.map, C[2, 1]))
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq C[2, 1]
     end
 
     it "prevents the player from moving on an impassable tile" do
-      dude.move_to(C[2, 2])
-      expect(dude.map).to eq map
-      expect(dude.location).to eq center
+      dude.move_to(Location.new(dude.location.map, C[2, 2]))
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq center
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      dude.move_to(C[3, 3])
-      expect(dude.map).to eq map
-      expect(dude.location).to eq center
+      dude.move_to(Location.new(dude.location.map, C[3, 3]))
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq center
     end
 
     it "saves the information from previous maps" do
-      dude.move_to(C[0, 0], chest_map)
+      dude.move_to(Location.new(chest_map, C[0, 0]))
       interpret_command("open", dude)
       expect(dude.gold).to eq 15
-      dude.move_to(C[1, 1], Map.new)
-      dude.move_to(C[0, 0], Map.new(name: "Chest Map"))
+      dude.move_to(Location.new(Map.new, C[0, 0]))
+      dude.move_to(Location.new(Map.new(name: "Chest Map"), C[0, 0]))
       interpret_command("open", dude)
       expect(dude.gold).to eq 15
       dude.move_right
@@ -193,14 +192,14 @@ RSpec.describe Player do
   context "move up" do
     it "correctly moves the player to a passable tile" do
       dude.move_up
-      expect(dude.map).to eq map
-      expect(dude.location).to eq C[0, 1]
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq C[0, 1]
     end
 
     it "prevents the player from moving on a nonexistent tile" do
       dude.move_up; dude.move_up
-      expect(dude.map).to eq map
-      expect(dude.location).to eq C[0, 1]
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq C[0, 1]
     end
   end
 
@@ -209,9 +208,11 @@ RSpec.describe Player do
       20.times do
         __stdin("Attack\n") do
           dude.move_right
-          expect(dude.map).to eq map
-          expect(dude.location).to eq C[1, 2]
+          expect(dude.location.map).to eq map
+          expect(dude.location.coords).to eq C[1, 2]
           dude.move_left
+          expect(dude.location.map).to eq map
+          expect(dude.location.coords).to eq C[1, 1]
         end
       end
     end
@@ -219,8 +220,8 @@ RSpec.describe Player do
     it "prevents the player from moving on a nonexistent tile" do
       __stdin("Attack\n") do
         dude.move_right; dude.move_right
-        expect(dude.map).to eq map
-        expect(dude.location).to eq C[1, 2]
+        expect(dude.location.map).to eq map
+        expect(dude.location.coords).to eq C[1, 2]
       end
     end
   end
@@ -228,34 +229,34 @@ RSpec.describe Player do
   context "move down" do
     it "correctly moves the player to a passable tile" do
       dude.move_down
-      expect(dude.map).to eq map
-      expect(dude.location).to eq C[2, 1]
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq C[2, 1]
     end
 
     it "prevents the player from moving on a nonexistent tile" do
       dude.move_down; dude.move_down
-      expect(dude.map).to eq map
-      expect(dude.location).to eq C[2, 1]
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq C[2, 1]
     end
   end
 
   context "move left" do
     it "correctly moves the player to a passable tile" do
       dude.move_left
-      expect(dude.map).to eq map
-      expect(dude.location).to eq C[1, 0]
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq C[1, 0]
     end
 
     it "prevents the player from moving on a nonexistent tile" do
       dude.move_left; dude.move_left
-      expect(dude.map).to eq map
-      expect(dude.location).to eq C[1, 0]
+      expect(dude.location.map).to eq map
+      expect(dude.location.coords).to eq C[1, 0]
     end
   end
 
   context "update map" do
     let!(:line_map) { Map.new(tiles: [[Tile.new, Tile.new, Tile.new, Tile.new]]) }
-    let!(:player) { Player.new(map: line_map, location: C[0, 0]) }
+    let!(:player) { Player.new(location: Location.new(line_map, C[0, 0])) }
 
     it "uses default argument to update tiles" do
       player.update_map
@@ -263,7 +264,7 @@ RSpec.describe Player do
     end
 
     it "uses given argument to update tiles" do
-      player.update_map(C[0, 2])
+      player.update_map(Location.new(player.location.map, C[0, 2]))
       expect(line_map.tiles[0][3].seen).to eq true
     end
   end
@@ -302,7 +303,7 @@ RSpec.describe Player do
 
   context "print tile" do
     it "should display the marker on the player's location" do
-      expect { dude.print_tile(dude.location) }.to output("¶ ").to_stdout
+      expect { dude.print_tile(dude.location.coords) }.to output("¶ ").to_stdout
     end
 
     it "should display the graphic of the tile elsewhere" do
@@ -345,7 +346,7 @@ RSpec.describe Player do
       end
       # Newb should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[1, 1]
     end
 
     it "should allow the stronger player to win as the attacker" do
@@ -354,7 +355,7 @@ RSpec.describe Player do
       end
       # Weaker Player should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[1, 1]
       # Stronger Player should get weaker Players gold
       expect(dude.gold).to eq (35)
     end
@@ -365,7 +366,7 @@ RSpec.describe Player do
       end
       # Weaker Player should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[1, 1]
       # Stronger Player should get weaker Players gold
       expect(dude.gold).to eq (35)
     end
@@ -375,9 +376,9 @@ RSpec.describe Player do
   context "die" do
     it "moves the player back to the map's regen location" do
       dude.move_down
-      expect(dude.location).to eq C[2, 1]
+      expect(dude.location.coords).to eq C[2, 1]
       dude.die
-      expect(dude.location).to eq map.regen_location
+      expect(dude.location.coords).to eq map.regen_coords
     end
 
     it "recovers the player's HP to max" do
