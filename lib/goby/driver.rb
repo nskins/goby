@@ -30,7 +30,7 @@ module Goby
     def run_turn(player)
 
       # Play music and re-display the minimap (when appropriate).
-      play_music(player.map.music) if player.map.music
+      play_music(player.map.music) if player.location.map.music
       if player.moved
         clear_and_minimap(player)
         player.moved = false

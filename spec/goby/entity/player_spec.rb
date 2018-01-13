@@ -6,23 +6,23 @@ RSpec.describe Player do
   let!(:map) { Map.new(tiles: [[Tile.new(passable: false), Tile.new, Tile.new(passable: false)],
                                [Tile.new, Tile.new, Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)])])],
                                [Tile.new(passable: false), Tile.new, Tile.new(passable: false)]],
-                       regen_location: C[1, 1]) }
-  let!(:center) { map.regen_location }
+                       regen_coords: C[1, 1]) }
+  let!(:center) { map.regen_coords }
   let!(:passable) { Tile::DEFAULT_PASSABLE }
   let!(:impassable) { Tile::DEFAULT_IMPASSABLE }
 
   let!(:dude) { Player.new(stats: {attack: 10, agility: 10000, map_hp: 2000}, gold: 10,
                            battle_commands: [Attack.new(strength: 20), Escape.new, Use.new],
-                           map: map, location: center) }
+                           location: Location.new(map, center)) }
   let!(:slime) { Monster.new(battle_commands: [Attack.new(success_rate: 0)],
                              gold: 5000, treasures: [C[Item.new, 1]]) }
   let!(:newb) { Player.new(battle_commands: [Attack.new(success_rate: 0)],
-                           gold: 50, map: map, location: center) }
+                           gold: 50, location: Location.new(map, center)) }
   let!(:dragon) { Monster.new(stats: {attack: 50, agility: 10000},
                               battle_commands: [Attack.new(strength: 50)]) }
   let!(:chest_map) { Map.new(name: "Chest Map",
                              tiles: [[Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])]],
-                             regen_location: C[0, 0]) }
+                             regen_coords: C[0, 0]) }
 
   context "constructor" do
     it "has the correct default parameters" do
@@ -256,7 +256,7 @@ RSpec.describe Player do
 
   context "update map" do
     let!(:line_map) { Map.new(tiles: [[Tile.new, Tile.new, Tile.new, Tile.new]]) }
-    let!(:player) { Player.new(map: line_map, location: C[0, 0]) }
+    let!(:player) { Player.new(location: Location.new(line_map, C[0, 0])) }
 
     it "uses default argument to update tiles" do
       player.update_map
@@ -264,7 +264,7 @@ RSpec.describe Player do
     end
 
     it "uses given argument to update tiles" do
-      player.update_map(C[0, 2])
+      player.update_map(Location.new(player.location.map, C[0, 2]))
       expect(line_map.tiles[0][3].seen).to eq true
     end
   end
@@ -378,7 +378,7 @@ RSpec.describe Player do
       dude.move_down
       expect(dude.location.coords).to eq C[2, 1]
       dude.die
-      expect(dude.location.coords).to eq map.regen_location
+      expect(dude.location.coords).to eq map.regen_coords
     end
 
     it "recovers the player's HP to max" do

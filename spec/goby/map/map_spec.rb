@@ -4,21 +4,21 @@ RSpec.describe Map do
 
   let(:lake) { Map.new(name: "Lake",
                     tiles: [ [ Tile.new, Tile.new(passable: false) ] ],
-                    regen_location: C[0,1]) }
+                    regen_coords: C[0,1]) }
 
   context "constructor" do
     it "has the correct default parameters" do
       map = Map.new
       expect(map.name).to eq "Map"
       expect(map.tiles[0][0].passable).to be true
-      expect(map.regen_location).to eq C[0,0]
+      expect(map.regen_coords).to eq C[0,0]
     end
 
     it "correctly assigns custom parameters" do
       expect(lake.name).to eq "Lake"
       expect(lake.tiles[0][0].passable).to be true
       expect(lake.tiles[0][1].passable).to be false
-      expect(lake.regen_location).to eq C[0,1]
+      expect(lake.regen_coords).to eq C[0,1]
     end
   end
 

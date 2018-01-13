@@ -37,7 +37,7 @@ module Goby
     #
     # @param [Player] player the player who wants to see the special commands.
     def display_special_commands(player)
-      events = player.map.tiles[player.location.first][player.location.second].events
+      events = player.location.map.tiles[player.location.coords.first][player.location.coords.second].events
       if events.nonempty? && events.any? { |event| event.visible }
 
         print SPECIAL_COMMANDS_HEADER + (events.reduce([]) do |commands, event|
@@ -59,7 +59,7 @@ module Goby
     #
     # @param [Player] player the player who needs the tile description.
     def describe_tile(player)
-      tile = player.map.tiles[player.location.first][player.location.second]
+      tile = player.location.map.tiles[player.location.coords.first][player.location.coords.second]
       events = tile.events
 
       player.print_minimap
@@ -134,7 +134,7 @@ module Goby
       end
 
       # Other commands.
-      events = player.map.tiles[player.location.first][player.location.second].events
+      events = player.location.map.tiles[player.location.coords.first][player.location.coords.second].events
       events.each do |event|
         if (event.visible && words[0] && words[0].casecmp(event.command).zero?)
           event.run(player)
