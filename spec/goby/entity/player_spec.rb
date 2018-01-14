@@ -39,6 +39,7 @@ RSpec.describe Player do
       expect(player.battle_commands).to eq Array.new
       expect(player.location.map).to eq Player::DEFAULT_MAP
       expect(player.location.coords).to eq Player::DEFAULT_COORDS
+      expect(player.respawn_location).to be_nil
     end
 
     it "correctly assigns custom parameters" do
@@ -59,7 +60,8 @@ RSpec.describe Player do
                             BattleCommand.new(name: "Yell"),
                             BattleCommand.new(name: "Run")
                         ],
-                        location: Location.new(map, C[1, 1]))
+                        location: Location.new(map, C[1, 1]),
+                        respawn_location: Location.new(map, C[1, 2]))
       expect(hero.name).to eq "Hero"
       expect(hero.stats[:max_hp]).to eq 50
       expect(hero.stats[:hp]).to eq 35
@@ -77,6 +79,8 @@ RSpec.describe Player do
                                          ]
       expect(hero.location.map).to eq map
       expect(hero.location.coords).to eq C[1, 1]
+      expect(hero.respawn_location.map).to eq map
+      expect(hero.respawn_location.coords).to eq C[1, 2]
     end
 
     context "places the player in the default map & location" do
