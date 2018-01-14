@@ -5,9 +5,8 @@ RSpec.describe Player do
   # Constructs a map in the shape of a plus sign.
   let!(:map) { Map.new(tiles: [[Tile.new(passable: false), Tile.new, Tile.new(passable: false)],
                                [Tile.new, Tile.new, Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)])])],
-                               [Tile.new(passable: false), Tile.new, Tile.new(passable: false)]],
-                       regen_coords: C[1, 1]) }
-  let!(:center) { map.regen_coords }
+                               [Tile.new(passable: false), Tile.new, Tile.new(passable: false)]]) }
+  let!(:center) { C[1, 1] }
   let!(:passable) { Tile::DEFAULT_PASSABLE }
   let!(:impassable) { Tile::DEFAULT_IMPASSABLE }
 
@@ -22,8 +21,7 @@ RSpec.describe Player do
   let!(:dragon) { Monster.new(stats: {attack: 50, agility: 10000},
                               battle_commands: [Attack.new(strength: 50)]) }
   let!(:chest_map) { Map.new(name: "Chest Map",
-                             tiles: [[Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])]],
-                             regen_coords: C[0, 0]) }
+                             tiles: [[Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])]]) }
 
   context "constructor" do
     it "has the correct default parameters" do

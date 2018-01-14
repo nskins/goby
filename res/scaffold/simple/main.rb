@@ -25,11 +25,12 @@ end
 
 # No load? Create a new player.
 if player.nil?
+  # A Location specifies the Map and (y,x) coordinates of a Player.
+  home = Location.new(Farm.new, C[1, 1])
 
   # Use the Player constructor to set the
-  # initial Map, (y,x) location, stats,
-  # gold, inventory, and more.
-  player = Player.new(location: Location.new(Farm.new, C[1, 1]))
+  # location, stats, gold, inventory, and more.
+  player = Player.new(location: home, respawn_location: home)
 
 end
 
