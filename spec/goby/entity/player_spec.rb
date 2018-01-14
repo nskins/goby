@@ -17,7 +17,8 @@ RSpec.describe Player do
   let!(:slime) { Monster.new(battle_commands: [Attack.new(success_rate: 0)],
                              gold: 5000, treasures: [C[Item.new, 1]]) }
   let!(:newb) { Player.new(battle_commands: [Attack.new(success_rate: 0)],
-                           gold: 50, location: Location.new(map, center)) }
+                           gold: 50, location: Location.new(map, center),
+                           respawn_location: Location.new(map, C[1, 2])) }
   let!(:dragon) { Monster.new(stats: {attack: 50, agility: 10000},
                               battle_commands: [Attack.new(strength: 50)]) }
   let!(:chest_map) { Map.new(name: "Chest Map",
@@ -350,7 +351,7 @@ RSpec.describe Player do
       end
       # Newb should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location.coords).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[1, 2]
     end
 
     it "should allow the stronger player to win as the attacker" do
@@ -359,7 +360,7 @@ RSpec.describe Player do
       end
       # Weaker Player should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location.coords).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[1, 2]
       # Stronger Player should get weaker Players gold
       expect(dude.gold).to eq (35)
     end
@@ -370,7 +371,7 @@ RSpec.describe Player do
       end
       # Weaker Player should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location.coords).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[1, 2]
       # Stronger Player should get weaker Players gold
       expect(dude.gold).to eq (35)
     end
@@ -379,16 +380,17 @@ RSpec.describe Player do
 
   context "die" do
     it "moves the player back to the map's regen location" do
-      dude.move_down
-      expect(dude.location.coords).to eq C[2, 1]
-      dude.die
-      expect(dude.location.coords).to eq map.regen_coords
+      newb.move_down
+      expect(newb.location.coords).to eq C[2, 1]
+      newb.die
+      expect(newb.location.map).to eq map
+      expect(newb.location.coords).to eq C[1, 2]
     end
 
     it "recovers the player's HP to max" do
-      dude.set_stats(hp: 0)
-      dude.die
-      expect(dude.stats[:hp]).to eq dude.stats[:max_hp]
+      newb.set_stats(hp: 0)
+      newb.die
+      expect(newb.stats[:hp]).to eq newb.stats[:max_hp]
     end
   end
 

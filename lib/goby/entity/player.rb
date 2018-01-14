@@ -123,8 +123,8 @@ module Goby
     def die
       sleep(2) unless ENV['TEST']
 
-      # TODO: fix next line. regen_coords could be nil or "bad."
-      @location = Location.new(@location.map, @location.map.regen_coords)
+      # TODO: No respawn location? Display 'GAME OVER' & end game.
+      @location = @respawn_location
 
       type("After being knocked out in battle,\n")
       type("you wake up in #{@location.map.name}.\n\n")

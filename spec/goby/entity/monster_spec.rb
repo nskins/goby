@@ -31,7 +31,7 @@ RSpec.describe Monster do
   let!(:slime) { Monster.new(battle_commands: [Attack.new(success_rate: 0)],
                              gold: 5000, treasures: [C[slime_item, 1]]) }
   let(:newb) { Player.new(battle_commands: [Attack.new(success_rate: 0)],
-                           gold: 50) }
+                           gold: 50, respawn_location: Location.new(Map.new, C[0, 0])) }
 
   context "constructor" do
     it "has the correct default parameters" do
