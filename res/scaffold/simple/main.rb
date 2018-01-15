@@ -30,7 +30,7 @@ if player.nil?
 
   # Use the Player constructor to set the
   # location, stats, gold, inventory, and more.
-  player = Player.new(location: home, respawn_location: home)
+  player = Player.new(location: home)
 
 end
 

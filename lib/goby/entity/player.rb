@@ -46,7 +46,7 @@ module Goby
       add_battle_commands(battle_commands)
 
       move_to(Location.new(new_map, new_coords))
-      @respawn_location = respawn_location
+      @respawn_location = respawn_location || @location
       @saved_maps = Hash.new
     end
 
@@ -123,9 +123,7 @@ module Goby
     def die
       sleep(2) unless ENV['TEST']
 
-      # TODO: No respawn location? Display 'GAME OVER' & end game.
       @location = @respawn_location
-
       type("After being knocked out in battle,\n")
       type("you wake up in #{@location.map.name}.\n\n")
 
