@@ -123,7 +123,7 @@ module Goby
     def die
       sleep(2) unless ENV['TEST']
 
-      @location = @respawn_location
+      move_to(@respawn_location)
       type("After being knocked out in battle,\n")
       type("you wake up in #{@location.map.name}.\n\n")
 
