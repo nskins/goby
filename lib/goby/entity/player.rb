@@ -293,8 +293,8 @@ module Goby
       gold_lost
     end
 
-    attr_reader :location, :respawn_location, :saved_maps
-    attr_accessor :moved
+    attr_reader :location, :saved_maps
+    attr_accessor :moved, :respawn_location
 
   end
 
