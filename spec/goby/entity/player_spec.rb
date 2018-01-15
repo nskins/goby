@@ -384,7 +384,7 @@ RSpec.describe Player do
   end
 
   context "die" do
-    it "moves the player back to the map's regen location" do
+    it "moves the player back to his/her respawn location" do
       newb.move_left
       expect(newb.location.coords).to eq C[1, 0]
       newb.die
