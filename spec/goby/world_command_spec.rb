@@ -8,8 +8,7 @@ RSpec.describe do
                               Tile.new(events: [NPC.new]),
                               Tile.new(events: [Event.new(visible: false)]) ],
                             [ Tile.new(events: [Shop.new, NPC.new]),
-                              Tile.new(events: [Event.new(visible: false), Shop.new, NPC.new]) ] ],
-                      regen_coords: C[0,0]) }
+                              Tile.new(events: [Event.new(visible: false), Shop.new, NPC.new]) ] ] ) }
 
   let!(:player) { Player.new(stats: { max_hp: 10, hp: 3 },
                          inventory: [ C[Food.new(name: "Banana", recovers: 5), 1],

@@ -25,9 +25,10 @@ module Goby
     # @param [Integer] gold the currency used for economical transactions.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
-    # @param [Location] location at which the player should start.
+    # @param [Location] location the place at which the player should start.
+    # @param [Location] respawn_location the place at which the player respawns.
     def initialize(name: "Player", stats: {}, inventory: [], gold: 0, battle_commands: [],
-                   outfit: {}, location: nil)
+                   outfit: {}, location: nil, respawn_location: nil)
       super(name: name, stats: stats, inventory: inventory, gold: gold, outfit: outfit)
       @saved_maps = Hash.new
 
@@ -45,6 +46,7 @@ module Goby
       add_battle_commands(battle_commands)
 
       move_to(Location.new(new_map, new_coords))
+      @respawn_location = respawn_location || @location
       @saved_maps = Hash.new
     end
 
@@ -121,9 +123,7 @@ module Goby
     def die
       sleep(2) unless ENV['TEST']
 
-      # TODO: fix next line. regen_coords could be nil or "bad."
-      @location = Location.new(@location.map, @location.map.regen_coords)
-
+      move_to(@respawn_location)
       type("After being knocked out in battle,\n")
       type("you wake up in #{@location.map.name}.\n\n")
 
@@ -294,7 +294,7 @@ module Goby
     end
 
     attr_reader :location, :saved_maps
-    attr_accessor :moved
+    attr_accessor :moved, :respawn_location
 
   end
 

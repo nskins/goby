@@ -5,9 +5,8 @@ RSpec.describe Player do
   # Constructs a map in the shape of a plus sign.
   let!(:map) { Map.new(tiles: [[Tile.new(passable: false), Tile.new, Tile.new(passable: false)],
                                [Tile.new, Tile.new, Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)])])],
-                               [Tile.new(passable: false), Tile.new, Tile.new(passable: false)]],
-                       regen_coords: C[1, 1]) }
-  let!(:center) { map.regen_coords }
+                               [Tile.new(passable: false), Tile.new, Tile.new(passable: false)]]) }
+  let!(:center) { C[1, 1] }
   let!(:passable) { Tile::DEFAULT_PASSABLE }
   let!(:impassable) { Tile::DEFAULT_IMPASSABLE }
 
@@ -17,12 +16,12 @@ RSpec.describe Player do
   let!(:slime) { Monster.new(battle_commands: [Attack.new(success_rate: 0)],
                              gold: 5000, treasures: [C[Item.new, 1]]) }
   let!(:newb) { Player.new(battle_commands: [Attack.new(success_rate: 0)],
-                           gold: 50, location: Location.new(map, center)) }
+                           gold: 50, location: Location.new(map, center),
+                           respawn_location: Location.new(map, C[2, 1])) }
   let!(:dragon) { Monster.new(stats: {attack: 50, agility: 10000},
                               battle_commands: [Attack.new(strength: 50)]) }
   let!(:chest_map) { Map.new(name: "Chest Map",
-                             tiles: [[Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])]],
-                             regen_coords: C[0, 0]) }
+                             tiles: [[Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])]]) }
 
   context "constructor" do
     it "has the correct default parameters" do
@@ -39,6 +38,8 @@ RSpec.describe Player do
       expect(player.battle_commands).to eq Array.new
       expect(player.location.map).to eq Player::DEFAULT_MAP
       expect(player.location.coords).to eq Player::DEFAULT_COORDS
+      expect(player.respawn_location.map).to eq Player::DEFAULT_MAP
+      expect(player.respawn_location.coords).to eq Player::DEFAULT_COORDS
     end
 
     it "correctly assigns custom parameters" do
@@ -59,7 +60,8 @@ RSpec.describe Player do
                             BattleCommand.new(name: "Yell"),
                             BattleCommand.new(name: "Run")
                         ],
-                        location: Location.new(map, C[1, 1]))
+                        location: Location.new(map, C[1, 1]),
+                        respawn_location: Location.new(map, C[1, 2]))
       expect(hero.name).to eq "Hero"
       expect(hero.stats[:max_hp]).to eq 50
       expect(hero.stats[:hp]).to eq 35
@@ -77,6 +79,14 @@ RSpec.describe Player do
                                          ]
       expect(hero.location.map).to eq map
       expect(hero.location.coords).to eq C[1, 1]
+      expect(hero.respawn_location.map).to eq map
+      expect(hero.respawn_location.coords).to eq C[1, 2]
+    end
+
+    it "sets respawn to start location for no respawn_location" do
+      player = Player.new(location: Location.new(map, C[1, 1]))
+      expect(player.respawn_location.map).to eq map
+      expect(player.respawn_location.coords).to eq C[1, 1]
     end
 
     context "places the player in the default map & location" do
@@ -346,7 +356,7 @@ RSpec.describe Player do
       end
       # Newb should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location.coords).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[2, 1]
     end
 
     it "should allow the stronger player to win as the attacker" do
@@ -355,7 +365,7 @@ RSpec.describe Player do
       end
       # Weaker Player should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location.coords).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[2, 1]
       # Stronger Player should get weaker Players gold
       expect(dude.gold).to eq (35)
     end
@@ -366,7 +376,7 @@ RSpec.describe Player do
       end
       # Weaker Player should die and go to respawn location.
       expect(newb.gold).to eq 25
-      expect(newb.location.coords).to eq C[1, 1]
+      expect(newb.location.coords).to eq C[2, 1]
       # Stronger Player should get weaker Players gold
       expect(dude.gold).to eq (35)
     end
@@ -374,17 +384,18 @@ RSpec.describe Player do
   end
 
   context "die" do
-    it "moves the player back to the map's regen location" do
-      dude.move_down
-      expect(dude.location.coords).to eq C[2, 1]
-      dude.die
-      expect(dude.location.coords).to eq map.regen_coords
+    it "moves the player back to his/her respawn location" do
+      newb.move_left
+      expect(newb.location.coords).to eq C[1, 0]
+      newb.die
+      expect(newb.location.map).to eq map
+      expect(newb.location.coords).to eq C[2, 1]
     end
 
     it "recovers the player's HP to max" do
-      dude.set_stats(hp: 0)
-      dude.die
-      expect(dude.stats[:hp]).to eq dude.stats[:max_hp]
+      newb.set_stats(hp: 0)
+      newb.die
+      expect(newb.stats[:hp]).to eq newb.stats[:max_hp]
     end
   end
 
