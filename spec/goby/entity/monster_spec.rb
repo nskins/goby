@@ -129,7 +129,7 @@ RSpec.describe Monster do
 
 
     it "should allow the player to win in this example" do
-      __stdin("attack\n") do
+      __stdin("attack\n", "\n") do
         slime.battle(dude)
       end
       expect(dude.inventory.size).to eq 1

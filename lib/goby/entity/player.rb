@@ -141,6 +141,9 @@ module Goby
       gold = fighter.sample_gold
       treasure = fighter.sample_treasures
       add_loot(gold, [treasure]) unless gold.nil? && treasure.nil?
+
+      type("Press enter to continue...")
+      player_input
     end
 
     # Moves the player down. Increases 'y' coordinate by 1.

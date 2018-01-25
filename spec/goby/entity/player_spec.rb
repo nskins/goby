@@ -216,7 +216,7 @@ RSpec.describe Player do
   context "move right" do
     it "correctly moves the player to a passable tile" do
       20.times do
-        __stdin("Attack\n") do
+        __stdin("Attack\n", "\n") do
           dude.move_right
           expect(dude.location.map).to eq map
           expect(dude.location.coords).to eq C[1, 2]
@@ -228,7 +228,7 @@ RSpec.describe Player do
     end
 
     it "prevents the player from moving on a nonexistent tile" do
-      __stdin("Attack\n") do
+      __stdin("Attack\n", "\n") do
         dude.move_right; dude.move_right
         expect(dude.location.map).to eq map
         expect(dude.location.coords).to eq C[1, 2]
@@ -336,7 +336,7 @@ RSpec.describe Player do
 
   context "battle" do
     it "should allow the player to win in this example" do
-      __stdin("attack\n") do
+      __stdin("attack\n", "\n") do
         dude.battle(slime)
       end
       expect(dude.inventory.size).to eq 1
@@ -360,7 +360,7 @@ RSpec.describe Player do
     end
 
     it "should allow the stronger player to win as the attacker" do
-      __stdin("attack\nattack\n") do
+      __stdin("attack\nattack\n", "\n") do
         dude.battle(newb)
       end
       # Weaker Player should die and go to respawn location.
@@ -371,7 +371,7 @@ RSpec.describe Player do
     end
 
     it "should allow the stronger player to win as the defender" do
-      __stdin("attack\nattack\n") do
+      __stdin("attack\nattack\n", "\n") do
         newb.battle(dude)
       end
       # Weaker Player should die and go to respawn location.
