@@ -133,6 +133,16 @@ module Goby
       set_stats(hp: @stats[:max_hp])
     end
 
+    # Retrieve loot obtained by defeating the enemy.
+    #
+    # @param [Fighter] fighter the Fighter who lost the battle.
+    def handle_victory(fighter)
+      type("#{@name} defeated the #{fighter.name}!\n")
+      gold = fighter.sample_gold
+      treasure = fighter.sample_treasures
+      add_loot(gold, [treasure]) unless gold.nil? && treasure.nil?
+    end
+
     # Moves the player down. Increases 'y' coordinate by 1.
     def move_down
       down_tile = C[@location.coords.first + 1, @location.coords.second]
@@ -260,15 +270,6 @@ module Goby
           @location.map.tiles[y][x].seen = true if (@location.map.in_bounds(y, x))
         end
       end
-    end
-
-    # How the Player behaves after winning a battle.
-    #
-    # @param [Entity] entity the Entity who lost the battle.
-    def handle_victory(entity)
-      type("You defeated the #{entity.name}!\n")
-      super(entity)
-      print "\n"
     end
 
     # The treasure given by a Player after losing a battle.

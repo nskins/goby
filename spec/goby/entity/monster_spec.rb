@@ -124,7 +124,7 @@ RSpec.describe Monster do
         wolf.battle(newb)
       end
       # The amount of gold the Monster had + that returned by the Player
-      expect(wolf.gold).to eq 35
+      expect(newb.gold).to eq 25
     end
 
 

@@ -14,6 +14,14 @@ module Goby
       raise(NotImplementedError, 'A Fighter Entity must know how to die')
     end
 
+    # Handles how a Fighter behaves after winning a battle.
+    # Subclasses must override this function.
+    #
+    # @param [Fighter] fighter the Fighter who lost the battle.
+    def handle_victory(fighter)
+      raise(NotImplementedError, 'A Fighter Entity must know how to handle victory')
+    end
+
     # The function that returns the treasure given by an Entity after losing a battle.
     #
     # @return [Item] the reward for the victor of the battle (or nil - no treasure).
@@ -92,17 +100,6 @@ module Goby
       item = @inventory[Random.rand(@inventory.length)].first
       whom = [self, enemy].sample
       return C[item, whom]
-    end
-
-    # Handles how an Entity behaves after winning a battle.
-    #
-    # @param [Entity] entity the Entity who lost the battle.
-    def handle_victory(entity)
-      # Determine the rewards for defeating the entity.
-      gold = entity.sample_gold
-      treasure = entity.sample_treasures
-
-      add_loot(gold, [treasure]) unless gold.nil? && treasure.nil?
     end
 
     # Returns the index of the specified command, if it exists.

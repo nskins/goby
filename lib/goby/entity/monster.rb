@@ -47,10 +47,15 @@ module Goby
       return monster
     end
 
-    # What to do if the Monster dies in a Battle
-    #
+    # What to do if the Monster dies in a Battle.
     def die
-      #Do nothing special
+      # Do nothing special.
+    end
+
+    # What to do if a Monster wins a Battle.
+    def handle_victory(fighter)
+      # Take some of the Player's gold.
+      fighter.sample_gold
     end
 
     # The amount gold given to a victorious Entity after losing a battle
