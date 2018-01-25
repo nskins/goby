@@ -25,6 +25,10 @@ RSpec.describe Fighter do
       expect { empty_fighter.die }.to raise_error(NotImplementedError, 'A Fighter Entity must know how to die')
     end
 
+    it "forces :handle_victory to be implemented" do
+      expect { empty_fighter.handle_victory(fighter) }.to raise_error(NotImplementedError, 'A Fighter Entity must know how to handle victory')
+    end
+
     it "forces :sample_treasures to be implemented" do
       expect { empty_fighter.sample_treasures }.to raise_error(NotImplementedError, 'A Fighter Entity must know whether it returns treasure or not after losing a battle')
     end
