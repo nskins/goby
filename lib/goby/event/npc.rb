@@ -22,9 +22,9 @@ module Goby
       say "Hello!\n\n"
     end
 
-    # Function that allows NPCs to output a string of words
+    # Function that allows NPCs to output a string of words.
     #
-    # @param [String] string of words to be ouput
+    # @param [String] words string of words for the NPC to speak.
     def say(words)
       type "#{name}: #{words}"
     end
