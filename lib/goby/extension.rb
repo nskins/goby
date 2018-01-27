@@ -2,6 +2,7 @@ require 'set'
 
 # Provides additional methods for Array.
 class Array
+  # Returns true iff the array is not empty.
   def nonempty?
     return !empty?
   end

@@ -1,6 +1,8 @@
 require 'readline'
 require 'yaml'
 
+# Collection of classes, modules, and functions that make
+# up the Goby framework.
 module Goby
 
   # Stores a pair of values as a couple.
@@ -10,8 +12,8 @@ module Goby
     #
     # @param [Object] first the first object in the pair.
     # @param [Object] second the second object in the pair.
-    def self.[](a, b)
-      C.new(a, b)
+    def self.[](first, second)
+      C.new(first, second)
     end
 
     # @param [Object] first the first object in the pair.
@@ -27,6 +29,22 @@ module Goby
     end
 
     attr_accessor :first, :second
+  end
+
+  # The combination of a map and y-x coordinates,
+  # which determine a specific position/location on the map.
+  class Location
+
+    # Location constructor.
+    #
+    # @param [Map] map the map component.
+    # @param [C(Integer, Integer)] coords a pair of y-x coordinates.
+    def initialize(map, coords)
+      @map = map
+      @coords = coords
+    end
+
+    attr_reader :map, :coords
   end
 
   # Simple player input script.

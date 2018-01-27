@@ -39,7 +39,7 @@ module Goby
       return if name.casecmp("none").zero?
 
       if index.nil? # non-existent item.
-        print "\nI don't have #{name}!\n\n"
+        print "I don't have #{name}!\n\n"
         return
       end
 
@@ -48,7 +48,6 @@ module Goby
       print "How many do you want?: "
       amount_to_buy = player_input
       total_cost = amount_to_buy.to_i * item.price
-      print "\n"
 
       if total_cost > player.gold # not enough gold.
         puts "You don't have enough gold!"
@@ -148,7 +147,6 @@ module Goby
       print "What would you like to sell? (or none): "
       input = player_input
       index = player.has_item(input)
-      print "\n"
 
       # The player does not want to sell an item.
       return if input.casecmp("none").zero?
@@ -169,7 +167,6 @@ module Goby
       puts "I'll buy that for #{purchase_price(item)} gold."
       print "How many do you want to sell?: "
       amount_to_sell = player_input.to_i
-      print "\n"
 
       if amount_to_sell > item_count # more than in the inventory.
         print "You don't have that many to sell!\n\n"

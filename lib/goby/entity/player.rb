@@ -3,7 +3,7 @@ require 'goby'
 module Goby
 
   # Extends upon Entity by providing a location in the
-  # form of a Map and a pair of y-x coordinates. Overrides
+  # form of a Map and a pair of y-x location. Overrides
   # some methods to accept input during battle.
   class Player < Entity
 
@@ -13,7 +13,7 @@ module Goby
     # Default map when no "good" map & location specified.
     DEFAULT_MAP = Map.new(tiles: [[Tile.new]])
     # Default location when no "good" map & location specified.
-    DEFAULT_LOCATION = C[0, 0]
+    DEFAULT_COORDS = C[0, 0]
 
     # distance in each direction that tiles are acted upon
     # used in: update_map, print_minimap
@@ -25,27 +25,28 @@ module Goby
     # @param [Integer] gold the currency used for economical transactions.
     # @param [[BattleCommand]] battle_commands the commands that can be used in battle.
     # @param [Hash] outfit the collection of equippable items currently worn.
-    # @param [Map] map the map on which the player is located.
-    # @param [C(Integer,Integer)] location the 2D index of the map (the exact tile).
+    # @param [Location] location the place at which the player should start.
+    # @param [Location] respawn_location the place at which the player respawns.
     def initialize(name: "Player", stats: {}, inventory: [], gold: 0, battle_commands: [],
-                   outfit: {}, map: nil, location: nil)
+                   outfit: {}, location: nil, respawn_location: nil)
       super(name: name, stats: stats, inventory: inventory, gold: gold, outfit: outfit)
       @saved_maps = Hash.new
 
       # Ensure that the map and the location are valid.
       new_map = DEFAULT_MAP
-      new_location = DEFAULT_LOCATION
-      if (map && location)
-        y = location.first; x = location.second
-        if (map.in_bounds(y, x) && map.tiles[y][x].passable)
-          new_map = map
-          new_location = location
+      new_coords = DEFAULT_COORDS
+      if (location && location.map && location.coords)
+        y = location.coords.first; x = location.coords.second
+        if (location.map.in_bounds(y, x) && location.map.tiles[y][x].passable)
+          new_map = location.map
+          new_coords = location.coords
         end
       end
 
       add_battle_commands(battle_commands)
 
-      move_to(new_location, new_map)
+      move_to(Location.new(new_map, new_coords))
+      @respawn_location = respawn_location || @location
       @saved_maps = Hash.new
     end
 
@@ -122,11 +123,9 @@ module Goby
     def die
       sleep(2) unless ENV['TEST']
 
-      # TODO: fix next line. regen_location could be nil or "bad."
-      @location = @map.regen_location
-
+      move_to(@respawn_location)
       type("After being knocked out in battle,\n")
-      type("you wake up in #{@map.name}.\n\n")
+      type("you wake up in #{@location.map.name}.\n\n")
 
       sleep(2) unless ENV['TEST']
 
@@ -134,36 +133,51 @@ module Goby
       set_stats(hp: @stats[:max_hp])
     end
 
+    # Retrieve loot obtained by defeating the enemy.
+    #
+    # @param [Fighter] fighter the Fighter who lost the battle.
+    def handle_victory(fighter)
+      type("#{@name} defeated the #{fighter.name}!\n")
+      gold = fighter.sample_gold
+      treasure = fighter.sample_treasures
+      add_loot(gold, [treasure]) unless gold.nil? && treasure.nil?
+
+      type("Press enter to continue...")
+      player_input
+    end
+
     # Moves the player down. Increases 'y' coordinate by 1.
     def move_down
-      down_tile = C[@location.first + 1, @location.second]
-      move_to(down_tile)
+      down_tile = C[@location.coords.first + 1, @location.coords.second]
+      move_to(Location.new(@location.map, down_tile))
     end
 
     # Moves the player left. Decreases 'x' coordinate by 1.
     def move_left
-      left_tile = C[@location.first, @location.second - 1]
-      move_to(left_tile)
+      left_tile = C[@location.coords.first, @location.coords.second - 1]
+      move_to(Location.new(@location.map, left_tile))
     end
 
     # Moves the player right. Increases 'x' coordinate by 1.
     def move_right
-      right_tile = C[@location.first, @location.second + 1]
-      move_to(right_tile)
+      right_tile = C[@location.coords.first, @location.coords.second + 1]
+      move_to(Location.new(@location.map, right_tile))
     end
 
     # Safe setter function for location and map.
     #
-    # @param [C(Integer, Integer)] coordinates the new location.
-    # @param [Map] map the (possibly) new map.
-    def move_to(coordinates, map = @map)
+    # @param [Location] location the new location.
+    def move_to(location)
+
+      map = location.map
+      y = location.coords.first
+      x = location.coords.second
+
       # Prevents operations on nil.
       return if map.nil?
 
-      y = coordinates.first; x = coordinates.second
-
       # Save the map.
-      @saved_maps[@map.name] = @map if @map
+      @saved_maps[@location.map.name] = @location.map if @location
 
       # Even if the player hasn't moved, we still change to true.
       # This is because we want to re-display the minimap anyway.
@@ -172,14 +186,14 @@ module Goby
       # Prevents moving onto nonexistent and impassable tiles.
       return if !(map.in_bounds(y, x) && map.tiles[y][x].passable)
 
-      @map = @saved_maps[map.name] ? @saved_maps[map.name] : map
-      @location = coordinates
-      tile = @map.tiles[y][x]
-
+      # Update the location and surrounding tiles.
+      @location = Location.new(
+        @saved_maps[map.name] ? @saved_maps[map.name] : map, location.coords)
       update_map
 
+      tile = @location.map.tiles[y][x]
       unless tile.monsters.empty?
-        # 50% chance to encounter monster.
+        # 50% chance to encounter monster (TODO: too high?)
         if [true, false].sample
           clone = tile.monsters[Random.rand(0..(tile.monsters.size-1))].clone
           battle(clone)
@@ -189,8 +203,8 @@ module Goby
 
     # Moves the player up. Decreases 'y' coordinate by 1.
     def move_up
-      up_tile = C[@location.first - 1, @location.second]
-      move_to(up_tile)
+      up_tile = C[@location.coords.first - 1, @location.coords.second]
+      move_to(Location.new(@location.map, up_tile))
     end
 
     # Prints the map in regards to what the player has seen.
@@ -200,9 +214,9 @@ module Goby
       # Provide some spacing from the edge of the terminal.
       3.times { print " " };
 
-      print @map.name + "\n\n"
+      print @location.map.name + "\n\n"
 
-      @map.tiles.each_with_index do |row, r|
+      @location.map.tiles.each_with_index do |row, r|
         # Provide spacing for the beginning of each row.
         2.times { print " " }
 
@@ -224,50 +238,41 @@ module Goby
     # Prints a minimap of nearby tiles (using VIEW_DISTANCE).
     def print_minimap
       print "\n"
-      for y in (@location.first-VIEW_DISTANCE)..(@location.first+VIEW_DISTANCE)
+      for y in (@location.coords.first-VIEW_DISTANCE)..(@location.coords.first+VIEW_DISTANCE)
         # skip to next line if out of bounds from above map
         next if y.negative?
         # centers minimap
         10.times { print " " }
-        for x in (@location.second-VIEW_DISTANCE)..(@location.second+VIEW_DISTANCE)
+        for x in (@location.coords.second-VIEW_DISTANCE)..(@location.coords.second+VIEW_DISTANCE)
           # Prevents operations on nonexistent tiles.
-          print_tile(C[y, x]) if (@map.in_bounds(y, x))
+          print_tile(C[y, x]) if (@location.map.in_bounds(y, x))
         end
         # new line if this row is not out of bounds
-        print "\n" if y < @map.tiles.size
+        print "\n" if y < @location.map.tiles.size
       end
       print "\n"
     end
 
     # Prints the tile based on the player's location.
     #
-    # @param [C(Integer, Integer)] coords the y-x coordinates of the tile.
+    # @param [C(Integer, Integer)] coords the y-x location of the tile.
     def print_tile(coords)
-      if ((@location.first == coords.first) && (@location.second == coords.second))
+      if ((@location.coords.first == coords.first) && (@location.coords.second == coords.second))
         print "¶ "
       else
-        print @map.tiles[coords.first][coords.second].to_s
+        print @location.map.tiles[coords.first][coords.second].to_s
       end
     end
 
     # Updates the 'seen' attributes of the tiles on the player's current map.
     #
-    # @param [C(Integer, Integer)] coordinates to update seen attribute for tiles on the map
-    def update_map(coordinates = @location)
-      for y in (coordinates.first-VIEW_DISTANCE)..(coordinates.first+VIEW_DISTANCE)
-        for x in (coordinates.second-VIEW_DISTANCE)..(coordinates.second+VIEW_DISTANCE)
-          @map.tiles[y][x].seen = true if (@map.in_bounds(y, x))
+    # @param [Location] location to update seen attribute for tiles on the map.
+    def update_map(location = @location)
+      for y in (location.coords.first-VIEW_DISTANCE)..(location.coords.first+VIEW_DISTANCE)
+        for x in (location.coords.second-VIEW_DISTANCE)..(location.coords.second+VIEW_DISTANCE)
+          @location.map.tiles[y][x].seen = true if (@location.map.in_bounds(y, x))
         end
       end
-    end
-
-    # How the Player behaves after winning a battle.
-    #
-    # @param [Entity] entity the Entity who lost the battle.
-    def handle_victory(entity)
-      type("You defeated the #{entity.name}!\n")
-      super(entity)
-      print "\n"
     end
 
     # The treasure given by a Player after losing a battle.
@@ -292,8 +297,8 @@ module Goby
       gold_lost
     end
 
-    attr_reader :map, :location, :saved_maps
-    attr_accessor :moved
+    attr_reader :location, :saved_maps
+    attr_accessor :moved, :respawn_location
 
   end
 

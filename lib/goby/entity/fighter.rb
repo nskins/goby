@@ -2,33 +2,42 @@ require 'goby'
 
 module Goby
 
+  # Methods and variables for something that can battle with another Fighter.
   module Fighter
 
-    class UnfightableEntityException < Exception
+    # Exception thrown when a non-Fighter tries to enter battle.
+    class UnfightableException < Exception
     end
 
-    # The function that handles how an Entity behaves after losing a battle.
+    # The function that handles how an Fighter behaves after losing a battle.
+    # Subclasses must override this function.
+    def die
+      raise(NotImplementedError, 'A Fighter must know how to die.')
+    end
+
+    # Handles how a Fighter behaves after winning a battle.
     # Subclasses must override this function.
     #
-    def die
-      raise(NotImplementedError, 'A Fighter Entity must know how to die')
+    # @param [Fighter] fighter the Fighter who lost the battle.
+    def handle_victory(fighter)
+      raise(NotImplementedError, 'A Fighter must know how to handle victory.')
     end
 
-    # The function that returns the treasure given by an Entity after losing a battle.
+    # The function that returns the treasure given by a Fighter after losing a battle.
     #
     # @return [Item] the reward for the victor of the battle (or nil - no treasure).
     def sample_treasures
-      raise(NotImplementedError, 'A Fighter Entity must know whether it returns treasure or not after losing a battle')
+      raise(NotImplementedError, 'A Fighter must know whether it returns treasure or not after losing a battle.')
     end
 
-    # The function that returns the gold given by an Entity after losing a battle.
+    # The function that returns the gold given by a Fighter after losing a battle.
     #
-    # @return[Integer] the amount of gold to award the victorious Entity
+    # @return[Integer] the amount of gold to award the victorious Fighter
     def sample_gold
-      raise(NotImplementedError, 'A Fighter Entity must return some gold after losing a battle')
+      raise(NotImplementedError, 'A Fighter must return some gold after losing a battle.')
     end
 
-    # Adds the specified battle command to the entity's collection.
+    # Adds the specified battle command to the Fighter's collection.
     #
     # @param [BattleCommand] command the command being added.
     def add_battle_command(command)
@@ -38,19 +47,19 @@ module Goby
       battle_commands.sort! { |x, y| x.name <=> y.name }
     end
 
-    # Adds the specified battle commands to the entity's collection.
+    # Adds the specified battle commands to the Fighter's collection.
     #
     # @param [Array] battle_commands the commands being added.
     def add_battle_commands(battle_commands)
       battle_commands.each { |command| add_battle_command(command) }
     end
 
-    # Engages in battle with the specified entity.
+    # Engages in battle with the specified Entity.
     #
     # @param [Entity] entity the opponent of the battle.
     def battle(entity)
       unless entity.class.included_modules.include?(Fighter)
-        raise(UnfightableEntityException, "You can't start a battle with an Entity of type #{entity.class} as it doesn't implement the Fighter module")
+        raise(UnfightableException, "You can't start a battle with an Entity of type #{entity.class} as it doesn't implement the Fighter module")
       end
       system("clear") unless ENV['TEST']
 
@@ -75,7 +84,7 @@ module Goby
       @battle_commands
     end
 
-    # Determines how the entity should select an attack in battle.
+    # Determines how the Fighter should select an attack in battle.
     # Override this method for control over this functionality.
     #
     # @return [BattleCommand] the chosen battle command.
@@ -83,26 +92,15 @@ module Goby
       battle_commands[Random.rand(@battle_commands.length)]
     end
 
-    # Determines how the entity should select the item and on whom
+    # Determines how the Fighter should select the item and on whom
     # during battle (Use command). Return nil on error.
     #
-    # @param [Entity] enemy the opponent in battle.
-    # @return [C(Item, Entity)] the item and on whom it is to be used.
+    # @param [Fighter] enemy the opponent in battle.
+    # @return [C(Item, Fighter)] the item and on whom it is to be used.
     def choose_item_and_on_whom(enemy)
       item = @inventory[Random.rand(@inventory.length)].first
       whom = [self, enemy].sample
       return C[item, whom]
-    end
-
-    # Handles how an Entity behaves after winning a battle.
-    #
-    # @param [Entity] entity the Entity who lost the battle.
-    def handle_victory(entity)
-      # Determine the rewards for defeating the entity.
-      gold = entity.sample_gold
-      treasure = entity.sample_treasures
-
-      add_loot(gold, [treasure]) unless gold.nil? && treasure.nil?
     end
 
     # Returns the index of the specified command, if it exists.
@@ -116,7 +114,7 @@ module Goby
       return
     end
 
-    # Removes the battle command, if it exists, from the entity's collection.
+    # Removes the battle command, if it exists, from the Fighter's collection.
     #
     # @param [BattleCommand, String] command the command being removed.
     def remove_battle_command(command)
@@ -135,7 +133,7 @@ module Goby
       print "\n"
     end
 
-    # Appends battle commands to the end of the Entity print_status output.
+    # Appends battle commands to the end of the Fighter print_status output.
     def print_status
       super
       print_battle_commands unless battle_commands.empty?
@@ -143,7 +141,7 @@ module Goby
 
     # Uses the agility levels of the two Fighters to determine who should go first.
     #
-    # @param [Entity] fighter the opponent with whom the calling Fighter is competing.
+    # @param [Fighter] fighter the opponent with whom the calling Fighter is competing.
     # @return [Boolean] true when calling Fighter should go first. Otherwise, false.
     def sample_agilities(fighter)
       sum = fighter.stats[:agility] + stats[:agility]

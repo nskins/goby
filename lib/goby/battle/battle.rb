@@ -2,6 +2,7 @@ require 'goby'
 
 module Goby
 
+  # Representation of a fight between two Fighters.
   class Battle
 
     # @param [Entity] entity_a the first entity in the battle

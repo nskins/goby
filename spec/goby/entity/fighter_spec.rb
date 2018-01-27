@@ -22,15 +22,19 @@ RSpec.describe Fighter do
 
   context "placeholder methods" do
     it "forces :die to be implemented" do
-      expect { empty_fighter.die }.to raise_error(NotImplementedError, 'A Fighter Entity must know how to die')
+      expect { empty_fighter.die }.to raise_error(NotImplementedError, 'A Fighter must know how to die.')
+    end
+
+    it "forces :handle_victory to be implemented" do
+      expect { empty_fighter.handle_victory(fighter) }.to raise_error(NotImplementedError, 'A Fighter must know how to handle victory.')
     end
 
     it "forces :sample_treasures to be implemented" do
-      expect { empty_fighter.sample_treasures }.to raise_error(NotImplementedError, 'A Fighter Entity must know whether it returns treasure or not after losing a battle')
+      expect { empty_fighter.sample_treasures }.to raise_error(NotImplementedError, 'A Fighter must know whether it returns treasure or not after losing a battle.')
     end
 
     it "forces :sample_gold to be implemented" do
-      expect { empty_fighter.sample_gold }.to raise_error(NotImplementedError, 'A Fighter Entity must return some gold after losing a battle')
+      expect { empty_fighter.sample_gold }.to raise_error(NotImplementedError, 'A Fighter must return some gold after losing a battle.')
     end
   end
 
@@ -55,7 +59,7 @@ RSpec.describe Fighter do
 
   context "battle" do
     it "raises an error when starting a battle against a non-Fighter Entity" do
-      expect {empty_fighter.battle(Class.new)}.to raise_error(Fighter::UnfightableEntityException,
+      expect {empty_fighter.battle(Class.new)}.to raise_error(Fighter::UnfightableException,
                                                               "You can't start a battle with an Entity of type Class as it doesn't implement the Fighter module")
     end
   end
