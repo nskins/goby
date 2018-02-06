@@ -63,7 +63,7 @@ module Goby
       events = tile.events
 
       player.print_minimap
-      print "#{tile.description}\n\n"
+      print "#{tile.description}" if tile.description
       display_special_commands(player)
     end
 

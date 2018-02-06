@@ -6,7 +6,7 @@ class Farm < Map
     super(name: "Farm")
 
     # Define the main tiles on this map.
-    grass = Tile.new(description: "You are standing on some grass.")
+    grass = Tile.new(description: "You are standing on some grass.\n\n")
 
     # Fill the map with "grass."
     @tiles = Array.new(9) { Array.new(5) { grass.clone } }
