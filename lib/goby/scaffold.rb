@@ -21,6 +21,7 @@ module Goby
       # Create the source files.
       gem_location = %x[gem which goby].chomp "/lib/goby.rb\n"
       files = { '.gitignore': '../gitignore',
+                'Gemfile': '../Gemfile',
                 'src/main.rb': 'main.rb',
                 'src/map/farm.rb': 'farm.rb' }
       files.each do |dest, source|
