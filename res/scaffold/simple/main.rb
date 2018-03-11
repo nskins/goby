@@ -2,7 +2,7 @@ require 'goby'
 
 include Goby
 
-require_relative 'map/farm.rb'
+require_relative 'farm.rb'
 
 # Set this to true in order to use BGM.
 Music::set_playback(false)
