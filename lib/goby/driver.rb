@@ -26,7 +26,7 @@ module Goby
     # Runs a single command from the player on the world map.
     #
     # @param [Player] player the player of the game.
-    # @return [Bool] true iff the player does not want to quit.
+    # @return [Bool] true if the player does not want to quit.
     def run_turn(player)
 
       # Play music and re-display the minimap (when appropriate).
@@ -41,7 +41,14 @@ module Goby
       input = player_input prompt: '> '
       interpret_command(input, player)
 
-      return !input.eql?("quit")
+      return continue_game?(input)
     end
 
+    # Checks to see if game should continue.
+    #
+    # @param [Input] text the input text of the player.
+    # @return [Bool] true if the player does not want to quit.
+    def continue_game?(input)
+      !input.eql?("quit")
+    end
 end
