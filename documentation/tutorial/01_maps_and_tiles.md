@@ -15,6 +15,10 @@ default attributes:
 - It will have no monsters (@monsters === [])
 - It will use the default graphic (@graphic === ".")
 
+Also, it is important to note that the Tile class has an instance method called
+`clone`. I'll go into the details of this method later, but for now just remember
+that it is a method within this class.
+
 Many of these attributes mean nothing now, and we will get to them, but let's focus
 on the simplest way in which we can extend this class. The defaults of the Tile class
 can be thought of as representing unremarkable blank space on your map. But what if
@@ -24,11 +28,7 @@ comes in. Here is a small example:
 ```
 class Grass < Goby::Tile
   def initialize(passable: true, seen: false, description: "", events: [], monsters: [])
-    @passable = passable
-    @seen = seen
-    @description = description
-    @events = events
-    @monsters = monsters
+    super(passable, seen, description, events, monsters)
     @graphic = default_graphic
   end
 
@@ -56,11 +56,7 @@ with the latter for now.
 ```
 class Grass < Goby::Tile
   def initialize(passable: true, seen: false, description: "", events: [], monsters: [])
-    @passable = passable
-    @seen = seen
-    @description = description
-    @events = events
-    @monsters = monsters
+    super(passable, seen, description, events, monsters)
     @graphic = set_graphic(passable)
   end
 
@@ -92,14 +88,14 @@ simple, with just 3 properties and 3 methods. The properties are:
 - tiles (defaults to [[Tile.new]])
 - music (defaults to nil)
 
-For now, we will ignore the methods as they aren't something that you will be
+For now, we will ignore these methods as they aren't something that you will be
 actively working with at this point.
 
 Now that we know the properties of the `Map` class, we are ready to start
-constructing our own maps. Let's start by creating a map called `Meadow1`.
+constructing our own maps. Let's start by creating a map called `Meadow`.
 
 ```
-class Meadow1 < Map
+class Meadow < Map
   def initialize
     super(name: "Open Meadow")
 
@@ -110,8 +106,8 @@ class Meadow1 < Map
     # Fill the map with "grass."
     @tiles = Array.new(9)
 
-    normal_row = [grass, grass, grass, grass, grass]
-    blocked_row = [grass, blocked_grass, blocked_grass, blocked_grass, grass]
+    normal_row = [grass.clone, grass.clone, grass.clone, grass.clone, grass.clone]
+    blocked_row = [grass.clone, blocked_grass.clone, blocked_grass.clone, blocked_grass.clone, grass.clone]
 
     @tiles[0] = normal_row
     @tiles[1] = normal_row
@@ -127,31 +123,32 @@ class Meadow1 < Map
 end
 ```
 
-When we create an instance of `Meadow1`, what we end up with is a map that has
+When we create an instance of `Meadow`, what we end up with is a map that has
 passable grass on its borders, and blocked grass in the middle, as a result of
 adding tiles to the `@tiles` property in a specific order.
 
-## Running this simple project
+You'll notice that I am calling the `clone` method that I mentioned earlier when
+describing the Tile class. This is very important with regards to constructing
+a map that behaves the way you would expect. If I had build my `normal_row` and
+`blocked_row` arrays as such:
 
-Now that we have tiles and a map defined, we are ready to lauch this simple game.
-When you initialized your Goby project by calling `goby` at the command line, it
-should have scaffolded out the project, including a `main.rb` file in that
-scaffolding. Down toward the bottom of that file there is a line that should read
-something like
+```
+grass = Grass.new(description: "You are standing on some grass.")
+blocked_grass = Grass.new(passable: false)
 
-`home = Location.new(Farm.new, C[1, 1])`
+normal_row = [grass, grass, grass, grass, grass]
+blocked_row = [grass, blocked_grass, blocked_grass, blocked_grass, grass]
+```
 
-Change the `Farm.new` part to the custom map you defined `Meadow1`. Then run:
+I would have run into issues because each `grass` and `blocked_grass` variable
+would have been a reference to the same object. If that referenced object were
+to change in any way, all references to that object would reflect those changes.
+A practical way to think about this is if the original Tile object had a monster
+in its monsters property, then every tile in the map that referenced that
+original Tile object would have a monster as well. Then, if a player engaged
+in battle with that monster and defeated it, the monster would be removed from
+not only the Tile the user was on, but also every other Tile that referenced the
+original.
 
-`ruby main.rb`
-
-You should end up with a cleared screen that shows a minimap with a "¶" that
-represents the player and the various symbols representing grass. Use "W", "A", "S",
-or "D" followed by the return key for north, west, south, and east movement
-respectively and you should see the player move about the map.
-
-Congratulations! You just created a custom tile, a custom map, and now you are moving
-about that map.
-
-Check out documentation on entities next to understand how you can create and
-customize the player, add monsters to maps, and create NPCs with which to interact.
+The short version? Be sure to clone any Tiles that you wish to reuse and you'll
+get the behavior you expect.
