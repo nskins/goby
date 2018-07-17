@@ -246,6 +246,8 @@ module Goby
     end
 
     #calculates XP needed to reach the next level
+    #
+    # @param [Integer] :current level of the entity
     def nextLevel(level)
       #set for growth rate
       exponent = 1.5
