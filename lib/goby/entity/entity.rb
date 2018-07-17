@@ -280,7 +280,7 @@ module Goby
 
     # defines how much stats should grow per level currently 8-12%
     def perecent_level_growth
-      rand(8..12) * .01
+      rand(8..12) * 0.01
     end
 
     # getter for stats
