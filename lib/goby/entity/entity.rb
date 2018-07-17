@@ -18,6 +18,8 @@ module Goby
     # @option stats [Integer] :attack strength in battle. Set to be positive.
     # @option stats [Integer] :defense protection from attacks. Set to be positive.
     # @option stats [Integer] :agility speed of commands in battle. Set to be positive.
+    # @option stats [Integer] :xp experience used to grow levels. Set to be positive.
+    # @option stats [Integer] :current level of entity. Set to be positive.
     # @param [[C(Item, Integer)]] inventory a list of pairs of items and their respective amounts.
     # @param [Integer] gold the currency used for economical transactions.
     # @param [Hash] outfit the collection of equippable items currently worn.
@@ -154,6 +156,8 @@ module Goby
       puts "* Attack: #{@stats[:attack]}"
       puts "* Defense: #{@stats[:defense]}"
       puts "* Agility: #{@stats[:agility]}"
+      puts "* Level: #{@stats[:level]}"
+      puts "* Experience: #{@stats[:xp]}/#{nextLevel(@stats[:level])}"
       print "\n"
 
       puts "Equipment:"
@@ -220,8 +224,10 @@ module Goby
     # @option passed_in_stats [Integer] :attack strength in battle. Set to be positive.
     # @option passed_in_stats [Integer] :defense protection from attacks. Set to be positive.
     # @option passed_in_stats [Integer] :agility speed of commands in battle. Set to be positive.
+    # @option passed_in_stats [Integer] :xp experience used to grow levels. Set to be positive.
+    # @option passed_in_stats [Integer] :current level of entity. Set to be positive.
     def set_stats(passed_in_stats)
-      current_stats = @stats || { max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1 }
+      current_stats = @stats || { max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1, xp: 1, level: 1 }
       constructed_stats = current_stats.merge(passed_in_stats)
 
       # Set hp to max_hp if hp not specified
@@ -232,12 +238,47 @@ module Goby
       constructed_stats[:hp] = constructed_stats[:hp] > 0 ? constructed_stats[:hp] : 0
       #ensure all other stats > 0
       constructed_stats.each do |key,value|
-        if [:max_hp, :attack, :defense, :agility].include?(key)
+        if [:max_hp, :attack, :defense, :agility, :xp, :level].include?(key)
           constructed_stats[key] = value.nonpositive? ? 1 : value
         end
       end
-
       @stats = constructed_stats
+    end
+
+    #calculates XP needed to reach the next level
+    def nextLevel(level)
+      #set for growth rate
+      exponent = 1.5
+      #set for starting level XP
+      baseXP = 100
+      (baseXP * (level ** exponent)).floor
+    end
+
+    # checks if player should grow in level based on xp
+    def check_level
+      while @stats[:xp] > nextLevel(@stats[:level])
+        growLevel
+      end
+    end
+
+    # increases stats when growing a level
+    def grow_level
+      hp = @stats[max_hp] * perecent_level_growth
+      attack = @stats[attack] * perecent_level_growth
+      defense = @stats[defense] * perecent_level_growth
+      agility = @stats[agility] * perecent_level_growth
+      xp = @stats[:xp] - nextLevel(@stats[:level])
+      if xp <= 0
+        xp = 1
+      end
+      level = @stats[:level] + 1
+      new_stats = {max_hp: hp, hp: hp, attack: attack, defense: defense, agility: agility, xp: xp, level: level}
+      set_stats(new_stats)
+    end
+
+    # defines how much stats should grow per level currently 8-12%
+    def perecent_level_growth
+      rand(8..12) * .01
     end
 
     # getter for stats
