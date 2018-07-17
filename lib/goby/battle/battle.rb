@@ -85,23 +85,23 @@ module Goby
         # Different Mechanics for monster vs pvp
         if loser.class == Monster
           # Gain monsters XP
-          xp = winner[:xp] + loser[:xp]
+          xp = winner.stats[:xp] + loser.stats[:xp]
         else
           # Calculate XP gain based on level difference
-          level_diff = winner[:level] - loser[:level]
+          level_diff = winner.stats[:level] - loser.stats[:level]
           # About 10 victories to level up
           if level_diff == 0
-            xp = (winner.nextLevel(winner[:level]) * 0.01).floor
+            xp = (winner.nextLevel(winner.stats[:level]) * 0.01).floor
           # 10% more XP for each level down
           elsif level_diff > 0
-            xp = (winner.nextLevel(winner[:level]) * 0.01 * level_diff).floor
+            xp = (winner.nextLevel(winner.stats[:level]) * 0.01 * level_diff).floor
           else
             amount = 0.01-0.001 * level_diff
             # Minimum XP gain
             if amount <= 0
               amount = 0.001
             end
-            xp = (winner.nextLevel(winner[:level]) * amount).floor
+            xp = (winner.nextLevel(winner.stats[:level]) * amount).floor
           end
         end
         winner.set_stats(xp: xp)
