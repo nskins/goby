@@ -37,3 +37,19 @@ Keep the documentation up-to-date. Use the style present throughout the codebase
 ## Pull Requests
 
 Ensure that all of your code includes the commits from the `master` branch. Run the `rspec` command in the top-level directory to verify that all tests are passing. You will make your pull request to the branch specified in the issue tracker. If no branch has been mentioned, please write a comment on the appropriate issue, and we will follow up shortly.
+
+
+## Getting Started
+Install dependencies.  Rebuild goby gem.  Run test suite.
+```
+bundle install
+./script/reinstall.sh
+rspec
+```
+## Create Test Game
+Run the goby binary in an empty directory for your game.  Then execute the main loop to start playing.
+```
+goby
+ruby goby-project/src/main.rb
+```
+See the tutorial/ directory for building your own game with goby. 
