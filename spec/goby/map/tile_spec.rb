@@ -36,9 +36,9 @@ RSpec.describe Tile do
       expect(pond.seen).to eq true
       expect(pond.description).to eq "Wet"
       expect(pond.events).to eq [Event.new]
+      expect(pond.auto_event).to eq Event.new
       expect(pond.monsters).to eq [Monster.new]
       expect(pond.graphic).to eq '#'
-      expect(pond.auto_event).to eq Event.new
     end
   end
 
