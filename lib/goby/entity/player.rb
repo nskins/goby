@@ -199,6 +199,11 @@ module Goby
           battle(clone)
         end
       end
+
+      # Run the tile's auto_event after any battles have been resolved
+      unless tile.auto_event.nil?
+        tile.auto_event.run(self)
+      end
     end
 
     # Moves the player up. Decreases 'y' coordinate by 1.
