@@ -43,6 +43,13 @@ module Goby
       return @seen ? @graphic + " " : "  "
     end
 
+    # Runs the tile's auto_event if any exists
+    def run_auto_event(player)
+      unless auto_event.nil? || !auto_event.visible
+        auto_event.run(player)
+      end
+    end
+
     attr_accessor :passable, :seen, :description, :events, :auto_event, :monsters, :graphic
 
     private

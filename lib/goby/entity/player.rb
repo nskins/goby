@@ -48,6 +48,9 @@ module Goby
       move_to(Location.new(new_map, new_coords))
       @respawn_location = respawn_location || @location
       @saved_maps = Hash.new
+      # State variable to prevent any auto-events like
+      # chests running when the player loses a battle
+      @event_can_autorun = true
     end
 
     # Uses player input to determine the battle command.
@@ -131,6 +134,10 @@ module Goby
 
       # Heal the player.
       set_stats(hp: @stats[:max_hp])
+
+      # Prevent the original move_to method from auto-running
+      # any events on from the tile the player died on
+      @event_can_autorun = false
     end
 
     # Retrieve loot obtained by defeating the enemy.
@@ -200,10 +207,10 @@ module Goby
         end
       end
 
-      # Run the tile's auto_event after any battles have been resolved
-      unless tile.auto_event.nil?
-        tile.auto_event.run(self)
-      end
+      tile.run_auto_event(self) if @event_can_autorun
+
+      # Reset the state variable
+      @event_can_autorun = true
     end
 
     # Moves the player up. Decreases 'y' coordinate by 1.
