@@ -10,6 +10,7 @@ module Goby
     def initialize(entity_a, entity_b)
       @entity_a = entity_a
       @entity_b = entity_b
+      @pair = [entity_a, entity_b]
     end
 
     # Determine the winner of the battle
@@ -47,16 +48,15 @@ module Goby
     #
     # @return [Array] the entities in the order of attack
     def determine_order
-      pair = [entity_a, entity_b]
-      total_agility = pair.map(&:stats).sum { |stats| stats[:agility] }
-      Random.rand(0..total_agility - 1) < entity_a.stats[:agility] ? pair : pair.reverse
+      total_agility = @pair.map(&:stats).sum { |stats| stats[:agility] }
+      Random.rand(0..total_agility - 1) < entity_a.stats[:agility] ? @pair : @pair.reverse
     end
 
     # Check if either entity is is dead
     #
     # @return [Boolean] whether an entity is dead or not
     def someone_dead?
-      [entity_a, entity_b].map(&:stats).any? { |stats| stats[:hp] <= 0 }
+      @pair.map(&:stats).any? { |stats| stats[:hp] <= 0 }
     end
 
     attr_reader :entity_a, :entity_b
