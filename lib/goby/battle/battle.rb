@@ -56,7 +56,7 @@ module Goby
     #
     # @return [Boolean] whether an entity is dead or not
     def someone_dead?
-      entity_a.stats[:hp] <= 0 || entity_b.stats[:hp] <= 0
+      [entity_a, entity_b].map(&:stats).any? { |stats| stats[:hp] <= 0 }
     end
 
     attr_reader :entity_a, :entity_b
