@@ -21,12 +21,9 @@ module Goby
       # RANDOMIZE ATTACK
       inflict = Random.rand(0.05..0.15).round(2)
 
-      if enemy.stats[:defense] > user.stats[:attack]
-        # Prevent a negative multiplier.
-        multiplier = [1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * inflict)), 0].max
-      else
-        multiplier = 1 + ((user.stats[:attack] * inflict) - (enemy.stats[:defense] * 0.1))
-      end
+      multiplier = (enemy.stats[:defense] > user.stats[:attack]) ?
+          [1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * inflict)), 0].max :
+          1 + ((user.stats[:attack] * inflict) - (enemy.stats[:defense] * 0.1))
 
       (@strength * multiplier).round(0)
     end
