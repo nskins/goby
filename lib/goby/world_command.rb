@@ -79,25 +79,19 @@ module Goby
 
       # TODO: map command input to functions? Maybe this can
       #       also be done with the multiple-word commands?
-      if command.casecmp?('w')
-        return player.move_up
-      elsif command.casecmp?('a')
-        return player.move_left
-      elsif command.casecmp?('s')
-        return player.move_down
-      elsif command.casecmp?('d')
-        return player.move_right
-      elsif command.casecmp?('help')
-        return help(player)
-      elsif command.casecmp?('map')
-        return player.print_map
-      elsif command.casecmp?('inv')
-        return player.print_inventory
-      elsif command.casecmp?('status')
-        return player.print_status
-      elsif command.casecmp?('save')
-        return save_game(player, 'player.yaml')
-      end
+      commands = {
+        'w' => -> { player.move_up },
+        'a' => -> { player.move_left },
+        's' => -> { player.move_down },
+        'd' => -> { player.move_right },
+        'help' => -> { help(player) },
+        'map' => -> { player.print_map },
+        'inv' => -> { player.print_inventory },
+        'status' => -> { player.print_status },
+        'save' => -> { save_game(player, 'player.yaml') },
+      }
+      _cmd, action = commands.detect { |cmd, _action| command.casecmp?(cmd) }
+      return action.call if action
 
       # Other commands.
       tile(player).events.each do |event|
