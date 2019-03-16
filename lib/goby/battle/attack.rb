@@ -19,11 +19,9 @@ module Goby
     # @return [Integer] the amount of damage to inflict on the enemy.
     def calculate_damage(user, enemy)
       # RANDOMIZE ATTACK
-      inflict = Random.rand(0.05..0.15).round(2)
-
       multiplier = (enemy.stats[:defense] > user.stats[:attack]) ?
-          [1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * inflict)), 0].max :
-          1 + ((user.stats[:attack] * inflict) - (enemy.stats[:defense] * 0.1))
+          [1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * Random.rand(0.05..0.15).round(2))), 0].max :
+          1 + ((user.stats[:attack] * Random.rand(0.05..0.15).round(2)) - (enemy.stats[:defense] * 0.1))
 
       (@strength * multiplier).round(0)
     end
