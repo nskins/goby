@@ -38,8 +38,7 @@ module Goby
         end
       end
 
-      #If @entity_a is dead return @entity_b, otherwise return @entity_a
-      entity_a.stats[:hp] <=0 ? entity_b : entity_a
+      @pair.detect { |entity| entity.stats[:hp] > 0 }
     end
 
     private
