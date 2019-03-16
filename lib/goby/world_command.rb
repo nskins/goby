@@ -36,7 +36,7 @@ module Goby
     # @param [Player] player the player who wants to see the special commands.
     def display_special_commands(player)
       events = player.location.map.tiles[player.location.coords.first][player.location.coords.second].events
-      if events.nonempty? && events.any?(&:visible)
+      if events.any?(&:visible)
         print SPECIAL_COMMANDS_HEADER + (events.each_with_object([]) do |event, commands|
           commands << event.command if event.visible
         end.join(', ')) + "\n\n"
