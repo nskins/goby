@@ -26,11 +26,6 @@ module Goby
     # Message for when the player tries to drop a non-existent item.
     NO_ITEM_DROP_ERROR = "You can't drop what you don't have!\n\n".freeze
 
-    # Prints the commands that are available everywhere.
-    def display_default_commands
-      print DEFAULT_COMMANDS
-    end
-
     # Prints the commands that are tile-specific.
     #
     # @param [Player] player the player who wants to see the special commands.
@@ -43,7 +38,7 @@ module Goby
     #
     # @param [Player] player the player who needs help.
     def help(player)
-      display_default_commands
+      print DEFAULT_COMMANDS
       display_special_commands(player)
     end
 

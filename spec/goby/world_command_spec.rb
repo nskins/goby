@@ -17,13 +17,6 @@ RSpec.describe do
                                       C[Helmet.new, 1] ],
                          location: Location.new(map, C[0, 0])) }
 
-  context "display default commands" do
-    it "should print the default commands" do
-      expect { display_default_commands }.to output(
-        WorldCommand::DEFAULT_COMMANDS).to_stdout
-    end
-  end
-
   context "display special commands" do
     it "should print nothing when no special commands are available" do
       expect { display_special_commands(player) }.to_not output.to_stdout
