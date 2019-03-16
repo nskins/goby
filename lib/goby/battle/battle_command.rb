@@ -1,14 +1,12 @@
 module Goby
-
   # Commands that are used in the battle system. At each turn,
   # an Entity specifies which BattleCommand to use.
   class BattleCommand
-
     # Text for when the battle command does nothing.
-    NO_ACTION = "Nothing happens.\n\n"
+    NO_ACTION = "Nothing happens.\n\n".freeze
 
     # @param [String] name the name.
-    def initialize(name: "BattleCommand")
+    def initialize(name: 'BattleCommand')
       @name = name
     end
 
@@ -38,11 +36,9 @@ module Goby
     # @param [BattleCommand] rhs the command on the right.
     # @return [Boolean] true iff the commands are considered equal.
     def ==(rhs)
-      @name.casecmp(rhs.name).zero?
+      @name.casecmp?(rhs.name)
     end
 
     attr_accessor :name
-
   end
-
 end
