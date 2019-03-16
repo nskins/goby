@@ -61,36 +61,28 @@ module Goby
       words = command.split
       keyword = words[0]
 
-      # Default commands that take multiple "arguments" (words).
       if words.size > 1
-        # Determine the name of the second "argument."
         name = words[1..- 1].join(' ')
-
-        # Determine the appropriate command to use.
-        # TODO: some of those help messages should be string literals.
         commands = {
           'drop' => -> { player.drop_item(name) },
           'equip' => -> { player.equip_item(name) },
           'unequip' => -> { player.unequip_item(name) },
           'use' => -> { player.use_item(name, player) },
         }
-        _cmd, action = commands.detect { |cmd, _action| keyword.casecmp?(cmd) }
-        return action.call if action
+      else
+        commands = {
+          'w' => -> { player.move_up },
+          'a' => -> { player.move_left },
+          's' => -> { player.move_down },
+          'd' => -> { player.move_right },
+          'help' => -> { help(player) },
+          'map' => -> { player.print_map },
+          'inv' => -> { player.print_inventory },
+          'status' => -> { player.print_status },
+          'save' => -> { save_game(player, 'player.yaml') },
+        }
       end
 
-      # TODO: map command input to functions? Maybe this can
-      #       also be done with the multiple-word commands?
-      commands = {
-        'w' => -> { player.move_up },
-        'a' => -> { player.move_left },
-        's' => -> { player.move_down },
-        'd' => -> { player.move_right },
-        'help' => -> { help(player) },
-        'map' => -> { player.print_map },
-        'inv' => -> { player.print_inventory },
-        'status' => -> { player.print_status },
-        'save' => -> { save_game(player, 'player.yaml') },
-      }
       _cmd, action = commands.detect { |cmd, _action| keyword.casecmp?(cmd) }
       return action.call if action
 
