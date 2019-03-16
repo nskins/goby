@@ -68,7 +68,7 @@ module Goby
         # Determine the appropriate command to use.
         # TODO: some of those help messages should be string literals.
         if words[0].casecmp?('drop')
-          return drop_item(name, player)
+          return player.drop_item(name)
         elsif words[0].casecmp?('equip')
           player.equip_item(name); return
         elsif words[0].casecmp?('unequip')
@@ -115,21 +115,6 @@ module Goby
     end
 
     private
-
-    def drop_item(name, player)
-      index = player.has_item(name)
-      if index && !player.inventory[index].first.disposable
-        print "You cannot drop that item.\n\n"
-      elsif index
-        # TODO: Perhaps the player should be allowed to specify
-        #       how many of the Item to drop.
-        item = player.inventory[index].first
-        player.remove_item(item, 1)
-        print "You have dropped #{item}.\n\n"
-      else
-        print NO_ITEM_DROP_ERROR
-      end
-    end
 
     def tile(player)
       player.location.map.tiles[player.location.coords.first][player.location.coords.second]
