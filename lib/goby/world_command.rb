@@ -36,7 +36,8 @@ module Goby
     # @param [Player] player the player who wants to see the special commands.
     def display_special_commands(player)
       events = tile(player).events.select(&:visible)
-      print SPECIAL_COMMANDS_HEADER + events.map(&:command).join(', ') + "\n\n" if events.any?
+      commands = events.map(&:command)
+      print SPECIAL_COMMANDS_HEADER + commands.join(', ') + "\n\n" if commands.any?
     end
 
     # Prints the default and special (tile-specific) commands.
