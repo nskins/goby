@@ -48,14 +48,8 @@ module Goby
     # @return [Array] the entities in the order of attack
     def determine_order
       pair = [entity_a, entity_b]
-      sum = pair.map(&:stats).sum { |stats| stats[:agility] }
-      random_number = Random.rand(0..sum - 1)
-
-      if random_number < entity_a.stats[:agility]
-        pair
-      else
-        pair.reverse
-      end
+      total_agility = pair.map(&:stats).sum { |stats| stats[:agility] }
+      Random.rand(0..total_agility - 1) < entity_a.stats[:agility] ? pair : pair.reverse
     end
 
     # Check if either entity is is dead
