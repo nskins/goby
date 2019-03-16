@@ -22,10 +22,8 @@ module Goby
       inflict = Random.rand(0.05..0.15).round(2)
 
       if enemy.stats[:defense] > user.stats[:attack]
-        multiplier = 1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * inflict))
-
         # Prevent a negative multiplier.
-        multiplier = [multiplier, 0].max
+        multiplier = [1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * inflict)), 0].max
       else
         multiplier = 1 + ((user.stats[:attack] * inflict) - (enemy.stats[:defense] * 0.1))
       end
