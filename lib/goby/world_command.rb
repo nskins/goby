@@ -37,9 +37,7 @@ module Goby
     def display_special_commands(player)
       events = player.location.map.tiles[player.location.coords.first][player.location.coords.second].events
       if events.any?(&:visible)
-        print SPECIAL_COMMANDS_HEADER + (events.each_with_object([]) do |event, commands|
-          commands << event.command if event.visible
-        end.join(', ')) + "\n\n"
+        print SPECIAL_COMMANDS_HEADER + events.select(&:visible).map(&:command).join(', ') + "\n\n"
       end
     end
 
