@@ -62,13 +62,8 @@ module Goby
 
       # Default commands that take multiple "arguments" (words).
       if words.size > 1
-
-        # TODO: this chunk could be a private function.
         # Determine the name of the second "argument."
-        name = words[1]
-        for i in 2..(words.size - 1) do
-          name << ' ' << words[i]
-        end
+        name = words[1..- 1].join(' ')
 
         # Determine the appropriate command to use.
         # TODO: some of those help messages should be string literals.
