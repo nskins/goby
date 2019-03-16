@@ -86,9 +86,11 @@ module Goby
       return action.call if action
 
       # Other commands.
-      tile(player).events.select(&:visible).each do |event|
-        return event.run(player) if keyword.casecmp?(event.command)
-      end
+      commands = tile(player)
+                 .events.select(&:visible)
+                 .map { |event| [event.command, -> { event.run(player) }] }
+      _cmd, action = commands.detect { |cmd, _action| keyword.casecmp?(cmd) }
+      return action.call if action
 
       # Text for incorrect commands.
       # TODO: Add string literal for this.
