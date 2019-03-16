@@ -67,15 +67,14 @@ module Goby
 
         # Determine the appropriate command to use.
         # TODO: some of those help messages should be string literals.
-        if words[0].casecmp?('drop')
-          return player.drop_item(name)
-        elsif words[0].casecmp?('equip')
-          return player.equip_item(name)
-        elsif words[0].casecmp?('unequip')
-          return player.unequip_item(name)
-        elsif words[0].casecmp?('use')
-          return player.use_item(name, player)
-        end
+        commands = {
+          'drop' => -> { player.drop_item(name) },
+          'equip' => -> { player.equip_item(name) },
+          'unequip' => -> { player.unequip_item(name) },
+          'use' => -> { player.use_item(name, player) },
+        }
+        _cmd, action = commands.detect { |cmd, _action| words[0].casecmp?(cmd) }
+        return action.call if action
       end
 
       # TODO: map command input to functions? Maybe this can
