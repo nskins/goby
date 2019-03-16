@@ -30,7 +30,7 @@ module Goby
     #
     # @param [Player] player the player who wants to see the special commands.
     def display_special_commands(player)
-      commands = visible_events(player).map(&:command)
+      commands = player.visible_events.map(&:command)
       print SPECIAL_COMMANDS_HEADER + commands.join(', ') + "\n\n" if commands.any?
     end
 
@@ -82,8 +82,8 @@ module Goby
                            'save' => -> { save_game(player, 'player.yaml') }
                          }
                        end
-      event_commands = visible_events(player)
-                       .map { |event| [event.command, -> { event.run(player) }] }
+      event_commands = player.visible_events
+                             .map { |event| [event.command, -> { event.run(player) }] }
       _cmd, action = [*fixed_commands, *event_commands]
                      .detect { |cmd, _action| keyword.casecmp?(cmd) }
       return action.call if action
@@ -92,12 +92,6 @@ module Goby
       # TODO: Add string literal for this.
       puts "That isn't an available command at this time."
       print "Type 'help' for a list of available commands.\n\n"
-    end
-
-    private
-
-    def visible_events(player)
-      player.tile.events.select(&:visible)
     end
   end
 end

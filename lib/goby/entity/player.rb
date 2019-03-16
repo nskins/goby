@@ -301,6 +301,10 @@ module Goby
       location.map.tiles[location.coords.first][location.coords.second]
     end
 
+    def visible_events
+      tile.events.select(&:visible)
+    end
+
     attr_reader :location, :saved_maps
     attr_accessor :moved, :respawn_location
 
