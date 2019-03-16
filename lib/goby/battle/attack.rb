@@ -25,8 +25,7 @@ module Goby
         multiplier = 1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * inflict))
 
         # Prevent a negative multiplier.
-        multiplier = 0 if multiplier.negative?
-
+        multiplier = [multiplier, 0].max
       else
         multiplier = 1 + ((user.stats[:attack] * inflict) - (enemy.stats[:defense] * 0.1))
       end
