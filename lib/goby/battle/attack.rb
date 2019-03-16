@@ -18,10 +18,7 @@ module Goby
     # @param [Entity] enemy the one on whom the attack is used.
     # @return [Integer] the amount of damage to inflict on the enemy.
     def calculate_damage(user, enemy)
-      multiplier = (enemy.stats[:defense] > user.stats[:attack]) ?
-          [1 + (attack(user) - defense(enemy)), 0].max :
-          1 + (attack(user) - defense(enemy))
-
+      multiplier = [1 + (attack(user) - defense(enemy)), 0].max
       (@strength * multiplier).round(0)
     end
 
