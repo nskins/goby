@@ -67,7 +67,7 @@ module Goby
 
         # Determine the appropriate command to use.
         # TODO: some of those help messages should be string literals.
-        if words[0].casecmp('drop').zero?
+        if words[0].casecmp?('drop')
           index = player.has_item(name)
           if index && !player.inventory[index].first.disposable
             print "You cannot drop that item.\n\n"
@@ -81,34 +81,34 @@ module Goby
             print NO_ITEM_DROP_ERROR
           end
           return
-        elsif words[0].casecmp('equip').zero?
+        elsif words[0].casecmp?('equip')
           player.equip_item(name); return
-        elsif words[0].casecmp('unequip').zero?
+        elsif words[0].casecmp?('unequip')
           player.unequip_item(name); return
-        elsif words[0].casecmp('use').zero?
+        elsif words[0].casecmp?('use')
           player.use_item(name, player); return
         end
       end
 
       # TODO: map command input to functions? Maybe this can
       #       also be done with the multiple-word commands?
-      if command.casecmp('w').zero?
+      if command.casecmp?('w')
         player.move_up; return
-      elsif command.casecmp('a').zero?
+      elsif command.casecmp?('a')
         player.move_left; return
-      elsif command.casecmp('s').zero?
+      elsif command.casecmp?('s')
         player.move_down; return
-      elsif command.casecmp('d').zero?
+      elsif command.casecmp?('d')
         player.move_right; return
-      elsif command.casecmp('help').zero?
+      elsif command.casecmp?('help')
         help(player); return
-      elsif command.casecmp('map').zero?
+      elsif command.casecmp?('map')
         player.print_map; return
-      elsif command.casecmp('inv').zero?
+      elsif command.casecmp?('inv')
         player.print_inventory; return
-      elsif command.casecmp('status').zero?
+      elsif command.casecmp?('status')
         player.print_status; return
-      elsif command.casecmp('save').zero?
+      elsif command.casecmp?('save')
         save_game(player, 'player.yaml'); return
       end
 
