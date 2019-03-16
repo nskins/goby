@@ -22,12 +22,10 @@ module Goby
       if user.sample_agilities(enemy)
         user.escaped = true
         type(SUCCESS)
-        return
+      else
+        user.escaped = false
+        type(FAILURE)
       end
-
-      # Should already be false.
-      user.escaped = false
-      type(FAILURE)
     end
   end
 end
