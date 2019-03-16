@@ -36,7 +36,7 @@ module Goby
         end
       end
 
-      @pair.detect { |entity| entity.stats[:hp] > 0 }
+      @pair.detect { |entity| !entity.dead? }
     end
 
     private
@@ -52,7 +52,7 @@ module Goby
     #
     # @return [Boolean] whether an entity is dead or not
     def someone_dead?
-      stats(:hp).any?(&:nonpositive?)
+      @pair.any?(&:dead?)
     end
 
     def stats(stat)

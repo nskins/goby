@@ -300,6 +300,10 @@ module Goby
       @name == rhs.name
     end
 
+    def dead?
+      @stats[:hp] <= 0
+    end
+
     attr_accessor :escaped, :inventory, :name
     attr_reader :gold, :outfit
 

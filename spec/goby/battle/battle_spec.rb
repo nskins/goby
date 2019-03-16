@@ -25,8 +25,8 @@ RSpec.describe Goby::Battle do
 
   context "determine_winner" do
     it "prompts both entities to choose an attack" do
-      entity_1 = spy('entity_1', stats: {hp: 1, agility: 1})
-      entity_2 = spy('entity_2', stats: {hp: 1, agility: 1})
+      entity_1 = spy('entity_1', stats: {agility: 1}, dead?: false)
+      entity_2 = spy('entity_2', stats: {agility: 1}, dead?: false)
       Battle.new(entity_1, entity_2).determine_winner
 
       expect(entity_1).to have_received(:choose_attack)
