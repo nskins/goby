@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 gemspec
 
+gem 'guard-rspec', require: false
+
 # Test coverage.
 gem 'coveralls', require: false
 
