@@ -48,15 +48,14 @@ module Goby
     #
     # @return [Array] the entities in the order of attack
     def determine_order
-      total_agility = stats(:agility).sum
-      Random.rand(0..total_agility - 1) < entity_a.stats[:agility] ? @pair : @pair.reverse
+      Random.rand(0..stats(:agility).sum - 1) < entity_a.stats[:agility] ? @pair : @pair.reverse
     end
 
     # Check if either entity is is dead
     #
     # @return [Boolean] whether an entity is dead or not
     def someone_dead?
-      stats(:hp).any? { |stat| stat <= 0 }
+      stats(:hp).any?(&:nonpositive?)
     end
 
     def stats(stat)
