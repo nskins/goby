@@ -297,6 +297,10 @@ module Goby
       gold_lost
     end
 
+    def tile
+      location.map.tiles[location.coords.first][location.coords.second]
+    end
+
     attr_reader :location, :saved_maps
     attr_accessor :moved, :respawn_location
 

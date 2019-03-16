@@ -30,7 +30,7 @@ module Goby
     #
     # @param [Player] player the player who wants to see the special commands.
     def display_special_commands(player)
-      commands = tile(player).events.select(&:visible).map(&:command)
+      commands = player.tile.events.select(&:visible).map(&:command)
       print SPECIAL_COMMANDS_HEADER + commands.join(', ') + "\n\n" if commands.any?
     end
 
@@ -47,7 +47,7 @@ module Goby
     # @param [Player] player the player who needs the tile description.
     def describe_tile(player)
       player.print_minimap
-      print "#{tile(player).description}\n\n"
+      print "#{player.tile.description}\n\n"
       display_special_commands(player)
     end
 
@@ -82,8 +82,8 @@ module Goby
                            'save' => -> { save_game(player, 'player.yaml') }
                          }
                        end
-      event_commands = tile(player)
-                       .events.select(&:visible)
+      event_commands = player
+                       .tile.events.select(&:visible)
                        .map { |event| [event.command, -> { event.run(player) }] }
       _cmd, action = [*fixed_commands, *event_commands]
                      .detect { |cmd, _action| keyword.casecmp?(cmd) }
@@ -93,12 +93,6 @@ module Goby
       # TODO: Add string literal for this.
       puts "That isn't an available command at this time."
       print "Type 'help' for a list of available commands.\n\n"
-    end
-
-    private
-
-    def tile(player)
-      player.location.map.tiles[player.location.coords.first][player.location.coords.second]
     end
   end
 end
