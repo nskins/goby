@@ -35,10 +35,8 @@ module Goby
     #
     # @param [Player] player the player who wants to see the special commands.
     def display_special_commands(player)
-      events = player.location.map.tiles[player.location.coords.first][player.location.coords.second].events
-      if events.any?(&:visible)
-        print SPECIAL_COMMANDS_HEADER + events.select(&:visible).map(&:command).join(', ') + "\n\n"
-      end
+      events = player.location.map.tiles[player.location.coords.first][player.location.coords.second].events.select(&:visible)
+      print SPECIAL_COMMANDS_HEADER + events.map(&:command).join(', ') + "\n\n" if events.any?
     end
 
     # Prints the default and special (tile-specific) commands.
