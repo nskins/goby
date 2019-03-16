@@ -31,17 +31,13 @@ module Goby
     # @param [Entity] enemy the one on whom the attack is used.
     def run(user, enemy)
       if Random.rand(100) < @success_rate
-
         # Damage the enemy.
         original_enemy_hp = enemy.stats[:hp]
-        damage = calculate_damage(user, enemy)
-        old_hp = enemy.stats[:hp]
-        enemy.set_stats(hp: old_hp - damage)
+        enemy.set_stats(hp: original_enemy_hp - calculate_damage(user, enemy))
 
         type("#{user.name} uses #{@name}!\n\n")
         type("#{enemy.name} takes #{original_enemy_hp - enemy.stats[:hp]} damage!\n")
         type("#{enemy.name}'s HP: #{original_enemy_hp} -> #{enemy.stats[:hp]}\n\n")
-
       else
         type("#{user.name} tries to use #{@name}, but it fails.\n\n")
       end
