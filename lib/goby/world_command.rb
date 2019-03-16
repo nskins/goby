@@ -61,28 +61,27 @@ module Goby
       words = command.split
       keyword = words[0]
 
-      if words.size > 1
-        name = words[1..- 1].join(' ')
-        commands = {
-          'drop' => -> { player.drop_item(name) },
-          'equip' => -> { player.equip_item(name) },
-          'unequip' => -> { player.unequip_item(name) },
-          'use' => -> { player.use_item(name, player) },
-        }
-      else
-        commands = {
-          'w' => -> { player.move_up },
-          'a' => -> { player.move_left },
-          's' => -> { player.move_down },
-          'd' => -> { player.move_right },
-          'help' => -> { help(player) },
-          'map' => -> { player.print_map },
-          'inv' => -> { player.print_inventory },
-          'status' => -> { player.print_status },
-          'save' => -> { save_game(player, 'player.yaml') },
-        }
-      end
-
+      commands = if words.size > 1
+                   name = words[1..- 1].join(' ')
+                   {
+                     'drop' => -> { player.drop_item(name) },
+                     'equip' => -> { player.equip_item(name) },
+                     'unequip' => -> { player.unequip_item(name) },
+                     'use' => -> { player.use_item(name, player) }
+                   }
+                 else
+                   {
+                     'w' => -> { player.move_up },
+                     'a' => -> { player.move_left },
+                     's' => -> { player.move_down },
+                     'd' => -> { player.move_right },
+                     'help' => -> { help(player) },
+                     'map' => -> { player.print_map },
+                     'inv' => -> { player.print_inventory },
+                     'status' => -> { player.print_status },
+                     'save' => -> { save_game(player, 'player.yaml') }
+                   }
+                 end
       _cmd, action = commands.detect { |cmd, _action| keyword.casecmp?(cmd) }
       return action.call if action
 
