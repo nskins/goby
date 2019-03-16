@@ -18,10 +18,9 @@ module Goby
     # @param [Entity] enemy the one on whom the attack is used.
     # @return [Integer] the amount of damage to inflict on the enemy.
     def calculate_damage(user, enemy)
-      # RANDOMIZE ATTACK
       multiplier = (enemy.stats[:defense] > user.stats[:attack]) ?
-          [1 - ((enemy.stats[:defense] * 0.1) - (user.stats[:attack] * Random.rand(0.05..0.15).round(2))), 0].max :
-          1 + ((user.stats[:attack] * Random.rand(0.05..0.15).round(2)) - (enemy.stats[:defense] * 0.1))
+          [1 - (defense(enemy) - attack(user)), 0].max :
+          1 + (attack(user) - defense(enemy))
 
       (@strength * multiplier).round(0)
     end
@@ -49,5 +48,16 @@ module Goby
     end
 
     attr_accessor :strength, :success_rate
+
+    private
+
+    def attack(user)
+      # RANDOMIZE ATTACK
+      user.stats[:attack] * Random.rand(0.05..0.15).round(2)
+    end
+
+    def defense(enemy)
+      enemy.stats[:defense] * 0.1
+    end
   end
 end
