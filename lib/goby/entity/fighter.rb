@@ -148,6 +148,15 @@ module Goby
       Random.rand(sum) < stats[:agility]
     end
 
+    def escape_from(enemy)
+      # Higher probability of escape when the enemy has low agility.
+      self.escaped = sample_agilities(enemy)
+    end
+
+    def choose_and_use_item_on(enemy)
+      pair = choose_item_and_on_whom(enemy)
+      use_item(pair.first, pair.second) if pair
+    end
   end
 
 end

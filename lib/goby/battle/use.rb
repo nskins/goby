@@ -24,9 +24,7 @@ module Goby
     # @param [Entity] user the one who is using the command.
     # @param [Entity] enemy the one on whom the command is used.
     def run(user, enemy)
-      # Determine the item and on whom to use the item.
-      pair = user.choose_item_and_on_whom(enemy)
-      user.use_item(pair.first, pair.second) if pair
+      user.choose_and_use_item_on(enemy)
     end
   end
 end
