@@ -59,6 +59,7 @@ module Goby
       return if command.eql?('quit')
 
       words = command.split
+      keyword = words[0]
 
       # Default commands that take multiple "arguments" (words).
       if words.size > 1
@@ -73,7 +74,7 @@ module Goby
           'unequip' => -> { player.unequip_item(name) },
           'use' => -> { player.use_item(name, player) },
         }
-        _cmd, action = commands.detect { |cmd, _action| words[0].casecmp?(cmd) }
+        _cmd, action = commands.detect { |cmd, _action| keyword.casecmp?(cmd) }
         return action.call if action
       end
 
@@ -90,7 +91,7 @@ module Goby
         'status' => -> { player.print_status },
         'save' => -> { save_game(player, 'player.yaml') },
       }
-      _cmd, action = commands.detect { |cmd, _action| command.casecmp?(cmd) }
+      _cmd, action = commands.detect { |cmd, _action| keyword.casecmp?(cmd) }
       return action.call if action
 
       # Other commands.
