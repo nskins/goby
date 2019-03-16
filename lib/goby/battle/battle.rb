@@ -22,22 +22,22 @@ module Goby
         attackers = Random.rand(0..total_agility - 1) < @entity_a.stats[:agility] ? @pair : @pair.reverse
 
         # Both choose an attack.
-        attacks = attackers.map(&:choose_attack)
+        attacks = attackers.zip(attackers.reverse).map do |attacker, enemy|
+          [attacker.choose_attack, attacker, enemy]
+        end
 
-        2.times do |i|
+        attacks.each do |attack, attacker, enemy|
           # The attacker runs its attack on the other attacker.
-          attacks[i].run(attackers[i], attackers[(i + 1) % 2])
+          attack.run(attacker, enemy)
 
-          if attackers[i].escaped
-            attackers[i].escaped = false
+          if attacker.escaped
+            attacker.escaped = false
             return
           end
 
-          break if @pair.any?(&:dead?)
+          return @pair.detect { |entity| !entity.dead? } if @pair.any?(&:dead?)
         end
       end
-
-      @pair.detect { |entity| !entity.dead? }
     end
   end
 end
