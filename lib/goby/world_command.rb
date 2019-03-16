@@ -70,34 +70,34 @@ module Goby
         if words[0].casecmp?('drop')
           return player.drop_item(name)
         elsif words[0].casecmp?('equip')
-          player.equip_item(name); return
+          return player.equip_item(name)
         elsif words[0].casecmp?('unequip')
-          player.unequip_item(name); return
+          return player.unequip_item(name)
         elsif words[0].casecmp?('use')
-          player.use_item(name, player); return
+          return player.use_item(name, player)
         end
       end
 
       # TODO: map command input to functions? Maybe this can
       #       also be done with the multiple-word commands?
       if command.casecmp?('w')
-        player.move_up; return
+        return player.move_up
       elsif command.casecmp?('a')
-        player.move_left; return
+        return player.move_left
       elsif command.casecmp?('s')
-        player.move_down; return
+        return player.move_down
       elsif command.casecmp?('d')
-        player.move_right; return
+        return player.move_right
       elsif command.casecmp?('help')
-        help(player); return
+        return help(player)
       elsif command.casecmp?('map')
-        player.print_map; return
+        return player.print_map
       elsif command.casecmp?('inv')
-        player.print_inventory; return
+        return player.print_inventory
       elsif command.casecmp?('status')
-        player.print_status; return
+        return player.print_status
       elsif command.casecmp?('save')
-        save_game(player, 'player.yaml'); return
+        return save_game(player, 'player.yaml')
       end
 
       # Other commands.
