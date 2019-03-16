@@ -86,8 +86,8 @@ module Goby
       return action.call if action
 
       # Other commands.
-      tile(player).events.each do |event|
-        if event.visible && keyword.casecmp?(event.command)
+      tile(player).events.select(&:visible).each do |event|
+        if keyword.casecmp?(event.command)
           event.run(player)
           return
         end
