@@ -88,8 +88,7 @@ module Goby
       # Other commands.
       tile(player).events.select(&:visible).each do |event|
         if keyword.casecmp?(event.command)
-          event.run(player)
-          return
+          return event.run(player)
         end
       end
 
