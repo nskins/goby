@@ -139,18 +139,10 @@ module Goby
       print_battle_commands unless battle_commands.empty?
     end
 
-    # Uses the agility levels of the two Fighters to determine who should go first.
-    #
-    # @param [Fighter] fighter the opponent with whom the calling Fighter is competing.
-    # @return [Boolean] true when calling Fighter should go first. Otherwise, false.
-    def sample_agilities(fighter)
-      sum = fighter.stats[:agility] + stats[:agility]
-      Random.rand(sum) < stats[:agility]
-    end
-
     def escape_from(enemy)
       # Higher probability of escape when the enemy has low agility.
-      self.escaped = sample_agilities(enemy)
+      sum = enemy.stats[:agility] + stats[:agility]
+      self.escaped = Random.rand(sum) < stats[:agility]
     end
 
     def choose_and_use_item_on(enemy)
