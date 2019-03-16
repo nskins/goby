@@ -20,11 +20,7 @@ module Goby
     def run(user, enemy)
       # Higher probability of escape when the enemy has low agility.
       user.escaped = user.sample_agilities(enemy)
-      if user.escaped
-        type(SUCCESS)
-      else
-        type(FAILURE)
-      end
+      type(user.escaped ? SUCCESS : FAILURE)
     end
   end
 end
