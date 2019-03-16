@@ -51,9 +51,8 @@ module Goby
     #
     # @param [Player] player the player who needs the tile description.
     def describe_tile(player)
-      tile = tile(player)
       player.print_minimap
-      print "#{tile.description}\n\n"
+      print "#{tile(player).description}\n\n"
       display_special_commands(player)
     end
 
@@ -124,8 +123,7 @@ module Goby
       end
 
       # Other commands.
-      events = tile(player).events
-      events.each do |event|
+      tile(player).events.each do |event|
         if event.visible && words[0] && words[0].casecmp(event.command).zero?
           event.run(player)
           return
