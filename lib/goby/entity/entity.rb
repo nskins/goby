@@ -48,16 +48,12 @@ module Goby
     # @param [Item] item the item being added.
     # @param [Integer] amount the amount of the item to add.
     def add_item(item, amount = 1)
-      # Increase the amount if the item already exists in the inventory.
-      @inventory.each do |couple|
-        if couple.first == item
-          couple.second += amount
-          return
-        end
+      found = @inventory.detect { |couple| couple.first == item }
+      if found
+        found.second += amount
+      else
+        @inventory.push(C[item, amount])
       end
-
-      # If not already in the inventory, push a couple.
-      @inventory.push(C[item, amount])
     end
 
     # Adds the specified gold and treasures to the inventory.
