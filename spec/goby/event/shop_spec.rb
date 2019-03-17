@@ -76,7 +76,7 @@ RSpec.describe Shop do
         tool_shop.buy(player2)
         expect(player2.inventory.empty?).to be false
         expect(player2.gold).to be 26
-        expect(player2.item_from_inventory("Fork")).to eq Item.new(name: "Fork")
+        expect(player2.entry_from_inventory("Fork").first).to eq Item.new(name: "Fork")
       end
     end
   end

@@ -127,7 +127,7 @@ RSpec.describe do
 
       it "should not drop a non-disposable item" do
         interpret_command("drop onion", player)
-        expect(player.item_from_inventory("Onion")).not_to be_nil
+        expect(player.entry_from_inventory("Onion").first).not_to be_nil
       end
 
       it "should print error text for dropping nonexistent item" do

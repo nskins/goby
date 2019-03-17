@@ -87,7 +87,7 @@ module Goby
 
         return if input.casecmp?('pass')
 
-        item = item_from_inventory(input)
+        item = entry_from_inventory(input)&.first
 
         print NO_SUCH_ITEM_ERROR unless item
       end
