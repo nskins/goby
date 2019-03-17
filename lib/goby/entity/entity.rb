@@ -129,7 +129,7 @@ module Goby
     end
 
     def item_from_inventory(item)
-      inventory.map(&:first).detect { |i| i.name.casecmp?(item.to_s) }
+      entry_from_inventory(item)&.first
     end
 
     # Prints the inventory in a nice format.
