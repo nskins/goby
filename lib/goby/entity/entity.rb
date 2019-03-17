@@ -155,11 +155,11 @@ module Goby
       print "\n"
 
       puts 'Equipment:'
-      print_equipment(:weapon, '* Weapon: ')
-      print_equipment(:shield, '* Shield: ')
-      print_equipment(:helmet, '* Helmet: ')
-      print_equipment(:torso, '* Torso: ')
-      print_equipment(:legs, '* Legs: ')
+      print_equipment(:weapon)
+      print_equipment(:shield)
+      print_equipment(:helmet)
+      print_equipment(:torso)
+      print_equipment(:legs)
 
       print "\n"
     end
@@ -280,8 +280,8 @@ module Goby
 
     private
 
-    def print_equipment(equipment, label)
-      print label
+    def print_equipment(equipment)
+      print "* #{equipment.to_s.capitalize}: "
       puts @outfit[equipment] ? @outfit[equipment].name.to_s : 'none'
     end
 
