@@ -155,20 +155,11 @@ module Goby
       print "\n"
 
       puts 'Equipment:'
-      print '* Weapon: '
-      puts @outfit[:weapon] ? @outfit[:weapon].name.to_s : 'none'
-
-      print '* Shield: '
-      puts @outfit[:shield] ? @outfit[:shield].name.to_s : 'none'
-
-      print '* Helmet: '
-      puts @outfit[:helmet] ? @outfit[:helmet].name.to_s : 'none'
-
-      print '* Torso: '
-      puts @outfit[:torso] ? @outfit[:torso].name.to_s : 'none'
-
-      print '* Legs: '
-      puts @outfit[:legs] ? @outfit[:legs].name.to_s : 'none'
+      print_equipment(:weapon, '* Weapon: ')
+      print_equipment(:shield, '* Shield: ')
+      print_equipment(:helmet, '* Helmet: ')
+      print_equipment(:torso, '* Torso: ')
+      print_equipment(:legs, '* Legs: ')
 
       print "\n"
     end
@@ -288,6 +279,11 @@ module Goby
     attr_reader :gold, :outfit
 
     private
+
+    def print_equipment(equipment, label)
+      print label
+      puts @outfit[equipment] ? @outfit[equipment].name.to_s : 'none'
+    end
 
     # Safety function that prevents gold
     # from decreasing below 0.
