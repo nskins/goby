@@ -87,12 +87,12 @@ module Goby
     def drop_item(name)
       index = has_item(name)
       if index
-        if !inventory[index].first.disposable
+        item = inventory[index].first
+        if !item.disposable
           print "You cannot drop that item.\n\n"
         else
           # TODO: Perhaps the player should be allowed to specify
           #       how many of the Item to drop.
-          item = inventory[index].first
           remove_item(item, 1)
           print "You have dropped #{item}.\n\n"
         end
