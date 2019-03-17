@@ -81,7 +81,7 @@ module Goby
 
     # Removes all items from the entity's inventory.
     def clear_inventory
-      @inventory.pop while @inventory.size.nonzero?
+      @inventory = []
     end
 
     def drop_item(name)
