@@ -293,28 +293,28 @@ RSpec.describe Entity do
     it "correctly indicates an absent item for an object argument" do
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
-      index = entity.entry_from_inventory(Item.new(name: "Banana"))
+      index = entity.inventory_entry(Item.new(name: "Banana"))
       expect(index).to be_nil
     end
 
     it "correctly indicates a present item for an object argument" do
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
-      index = entity.entry_from_inventory(Item.new(name: "Apple"))
+      index = entity.inventory_entry(Item.new(name: "Apple"))
       expect(index).to eq C[Item.new(name: "Apple"), 1]
     end
 
     it "correctly indicates an absent item for a string argument" do
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
-      index = entity.entry_from_inventory("Banana")
+      index = entity.inventory_entry("Banana")
       expect(index).to be_nil
     end
 
     it "correctly indicates a present item for a string argument" do
       entity.add_item(Item.new(name: "Apple"))
       entity.add_item(Item.new(name: "Orange"))
-      index = entity.entry_from_inventory("Orange")
+      index = entity.inventory_entry("Orange")
       expect(index).to eq C[Item.new(name: "Orange"), 1]
     end
   end

@@ -85,7 +85,7 @@ module Goby
     end
 
     def drop_item(name)
-      item = entry_from_inventory(name)&.first
+      item = inventory_entry(name)&.first
       if item
         if item.disposable
           # TODO: Perhaps the player should be allowed to specify
@@ -104,7 +104,7 @@ module Goby
     #
     # @param [Item, String] item the item (or its name) to equip.
     def equip_item(item)
-      actual_item = entry_from_inventory(item)&.first
+      actual_item = inventory_entry(item)&.first
       if actual_item
         # Checks for Equippable without importing the file.
         if defined? actual_item.equip
@@ -124,7 +124,7 @@ module Goby
     #
     # @param [Item, String] item the item (or its name).
     # @return [Integer] the index of an existing item. Otherwise nil.
-    def entry_from_inventory(item)
+    def inventory_entry(item)
       inventory.detect { |couple| couple.first.name.casecmp?(item.to_s) }
     end
 
@@ -266,7 +266,7 @@ module Goby
     # @param [Item, String] item the item (or its name) to use.
     # @param [Entity] entity the entity on which to use the item.
     def use_item(item, entity)
-      actual_item = entry_from_inventory(item)&.first
+      actual_item = inventory_entry(item)&.first
       if actual_item
         actual_item.use(self, entity)
         remove_item(actual_item) if actual_item.consumable

@@ -146,7 +146,7 @@ module Goby
 
       print 'What would you like to sell? (or none): '
       input = player_input
-      inventory_entry = player.entry_from_inventory(input)
+      inventory_entry = player.inventory_entry(input)
 
       # The player does not want to sell an item.
       return if input.casecmp?('none')
