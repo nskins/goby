@@ -61,7 +61,7 @@ module Goby
     # @param [Integer] gold the amount of gold.
     # @param [[Item]] treasures the list of treasures.
     def add_loot(gold, treasures)
-      treasures ||= []
+      (treasures ||= []).compact!
       type('Loot: ')
       if gold.positive? || treasures.any?
         print "\n"
@@ -70,10 +70,8 @@ module Goby
           add_gold(gold)
         end
         treasures.each do |treasure|
-          unless treasure.nil?
-            type("* #{treasure.name}\n")
-            add_item(treasure)
-          end
+          type("* #{treasure.name}\n")
+          add_item(treasure)
         end
         print "\n"
       else
