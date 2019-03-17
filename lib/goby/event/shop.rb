@@ -144,20 +144,20 @@ module Goby
 
       player.print_inventory
 
-      print "What would you like to sell? (or none): "
+      print 'What would you like to sell? (or none): '
       input = player_input
-      index = player.has_item(input)
+      inventory_entry = player.entry_from_inventory(input)
 
       # The player does not want to sell an item.
-      return if input.casecmp("none").zero?
+      return if input.casecmp?('none')
 
-      if index.nil? # non-existent item.
+      unless inventory_entry # non-existent item.
         print "You can't sell what you don't have.\n\n"
         return
       end
 
-      item = player.inventory[index].first
-      item_count = player.inventory[index].second
+      item = inventory_entry.first
+      item_count = inventory_entry.second
 
       unless item.disposable # non-disposable item (cannot sell/drop).
         print "You cannot sell that item.\n\n"
@@ -165,14 +165,14 @@ module Goby
       end
 
       puts "I'll buy that for #{purchase_price(item)} gold."
-      print "How many do you want to sell?: "
+      print 'How many do you want to sell?: '
       amount_to_sell = player_input.to_i
 
       if amount_to_sell > item_count # more than in the inventory.
         print "You don't have that many to sell!\n\n"
         return
       elsif amount_to_sell < 1 # non-positive amount specified.
-        puts "Is this some kind of joke?"
+        puts 'Is this some kind of joke?'
         print "You need to sell a positive amount!\n\n"
         return
       end

@@ -124,8 +124,8 @@ module Goby
     #
     # @param [Item, String] item the item (or its name).
     # @return [Integer] the index of an existing item. Otherwise nil.
-    def has_item(item)
-      inventory.index { |couple| couple.first.name.casecmp?(item.to_s) }
+    def entry_from_inventory(item)
+      inventory.detect { |couple| couple.first.name.casecmp?(item.to_s) }
     end
 
     def item_from_inventory(item)
