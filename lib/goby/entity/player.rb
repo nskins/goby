@@ -60,7 +60,7 @@ module Goby
       index = has_battle_command(input)
 
       #input error loop
-      while !index
+      until index
         puts "You don't have '#{input}'"
         print_battle_commands(header = "Try one of these:")
 
@@ -77,45 +77,40 @@ module Goby
     # @param [Entity] enemy the opponent in battle.
     # @return [C(Item, Entity)] the item and on whom it is to be used.
     def choose_item_and_on_whom(enemy)
-      index = nil
       item = nil
 
       # Choose the item to use.
-      while !index
+      until item
         print_inventory
-        puts "Which item would you like to use?"
+        puts 'Which item would you like to use?'
         input = player_input prompt: "(or type 'pass' to forfeit the turn): "
 
-        return if (input.casecmp("pass").zero?)
+        return if input.casecmp?('pass')
 
-        index = has_item(input)
+        item = item_from_inventory(input)
 
-        if !index
-          print NO_SUCH_ITEM_ERROR
-        else
-          item = @inventory[index].first
-        end
+        print NO_SUCH_ITEM_ERROR unless item
       end
 
       whom = nil
 
       # Choose on whom to use the item.
-      while !whom
+      until whom
         puts "On whom will you use the item (#{@name} or #{enemy.name})?"
         input = player_input prompt: "(or type 'pass' to forfeit the turn): "
 
-        return if (input.casecmp("pass").zero?)
+        return if input.casecmp?("pass")
 
-        if (input.casecmp(@name).zero?)
+        if input.casecmp?(@name)
           whom = self
-        elsif (input.casecmp(enemy.name).zero?)
+        elsif input.casecmp?(enemy.name)
           whom = enemy
         else
           print "What?! Choose either #{@name} or #{enemy.name}!\n\n"
         end
       end
 
-      return C[item, whom]
+      C[item, whom]
     end
 
     # Sends the player back to a safe location,
@@ -184,7 +179,7 @@ module Goby
       @moved = true
 
       # Prevents moving onto nonexistent and impassable tiles.
-      return if !(map.in_bounds(y, x) && map.tiles[y][x].passable)
+      return unless (map.in_bounds(y, x) && map.tiles[y][x].passable)
 
       # Update the location and surrounding tiles.
       @location = Location.new(
