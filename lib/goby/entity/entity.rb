@@ -128,10 +128,7 @@ module Goby
     # @param [Item, String] item the item (or its name).
     # @return [Integer] the index of an existing item. Otherwise nil.
     def has_item(item)
-      inventory.each_with_index do |couple, index|
-        return index if couple.first.name.casecmp?(item.to_s)
-      end
-      nil
+      inventory.index { |couple| couple.first.name.casecmp?(item.to_s) }
     end
 
     # Prints the inventory in a nice format.
