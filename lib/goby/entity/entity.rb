@@ -35,14 +35,12 @@ module Goby
       @escaped = false
     end
 
-
     # Adjusts gold by the given amount.
     # Entity's gold will not be less than zero.
     #
     # @param [Integer] amount the amount of gold to adjust by.
     def adjust_gold_by(amount)
-      @gold += amount
-      check_and_set_gold
+      set_gold(@gold + amount)
     end
 
     # Adds the item and the given amount to the inventory.
