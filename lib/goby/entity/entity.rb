@@ -35,11 +35,14 @@ module Goby
       @escaped = false
     end
 
-    # Adds the given amount of gold.
+
+    # Adjusts gold by the given amount.
+    # Entity's gold will not be less than zero.
     #
-    # @param [Integer] gold the amount of gold to add.
-    def add_gold(gold)
-      adjust_gold_by(gold)
+    # @param [Integer] amount the amount of gold to adjust by.
+    def adjust_gold_by(amount)
+      @gold += amount
+      check_and_set_gold
     end
 
     # Adds the item and the given amount to the inventory.
@@ -66,7 +69,7 @@ module Goby
         print "\n"
         if gold.positive?
           type("* #{gold} gold\n")
-          add_gold(gold)
+          adjust_gold_by(gold)
         end
         treasures.each do |treasure|
           type("* #{treasure.name}\n")
@@ -158,14 +161,6 @@ module Goby
         puts @outfit[equipment] ? @outfit[equipment].name.to_s : 'none'
       end
       print "\n"
-    end
-
-    # Removes up to the amount of gold given in the argument.
-    # Entity's gold will not be less than zero.
-    #
-    # @param [Integer] gold the amount of gold to remove.
-    def remove_gold(gold)
-      adjust_gold_by(-gold)
     end
 
     # Removes the item, if it exists, and, at most, the given amount from the inventory.
@@ -274,11 +269,6 @@ module Goby
     attr_reader :gold, :outfit
 
     private
-
-    def adjust_gold_by(amount)
-      @gold += amount
-      check_and_set_gold
-    end
 
     # Safety function that prevents gold
     # from decreasing below 0.

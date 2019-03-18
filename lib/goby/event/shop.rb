@@ -60,7 +60,7 @@ module Goby
       end
 
       # The player specifies a positive amount.
-      player.remove_gold(total_cost)
+      player.adjust_gold_by(-total_cost)
       player.add_item(item, amount_to_buy.to_i)
       print "Thank you for your patronage!\n\n"
 
@@ -177,7 +177,7 @@ module Goby
         return
       end
 
-      player.add_gold(purchase_price(item) * amount_to_sell)
+      player.adjust_gold_by((purchase_price(item) * amount_to_sell))
       player.remove_item(item, amount_to_sell)
       print "Thank you for your patronage!\n\n"
 

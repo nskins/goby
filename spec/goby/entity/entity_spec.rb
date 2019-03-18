@@ -62,18 +62,6 @@ RSpec.describe Entity do
     end
   end
 
-  context "add gold" do
-    it "properly adds the appropriate amount of gold" do
-      entity.add_gold(30)
-      expect(entity.gold).to eq 30
-    end
-
-    it "prevents gold < 0" do
-      entity.add_gold(-30)
-      expect(entity.gold).to be_zero
-    end
-  end
-
   context "add item" do
     it "properly adds an item in a trivial case" do
       entity.add_item(Item.new)
@@ -367,15 +355,21 @@ RSpec.describe Entity do
   end
 
   context "remove gold" do
+    it "properly adds the appropriate amount of gold" do
+      entity = Entity.new(gold: 50)
+      entity.adjust_gold_by(30)
+      expect(entity.gold).to eq 80
+    end
+
     it "should remove the given amount of gold" do
       entity = Entity.new(gold: 50)
-      entity.remove_gold(20)
+      entity.adjust_gold_by(-20)
       expect(entity.gold).to eq 30
     end
 
     it "should prevent gold < 0" do
       entity = Entity.new(gold: 5)
-      entity.remove_gold(10)
+      entity.adjust_gold_by(-10)
       expect(entity.gold).to be_zero
     end
   end
