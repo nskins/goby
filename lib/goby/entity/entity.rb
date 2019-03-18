@@ -179,7 +179,7 @@ module Goby
     # @param [Integer] gold the amount of gold to set.
     def set_gold(gold)
       @gold = gold
-      check_and_set_gold
+      @gold = 0 if @gold.negative?
     end
 
     # Sets stats
@@ -260,13 +260,5 @@ module Goby
 
     attr_accessor :escaped, :inventory, :name
     attr_reader :gold, :outfit
-
-    private
-
-    # Safety function that prevents gold
-    # from decreasing below 0.
-    def check_and_set_gold
-      @gold = 0 if @gold.negative?
-    end
   end
 end
