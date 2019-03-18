@@ -145,16 +145,19 @@ module Goby
     end
 
     # Prints the status in a nice format.
-    # TODO: encapsulate print_stats and print_equipment in own functions.
     def print_status
       puts 'Stats:'
       puts "* HP: #{@stats[:hp]}/#{@stats[:max_hp]}"
-      %i[attack defense agility].each do |stat| print_stat(stat) end
+      %i[attack defense agility].each do |stat|
+        puts "* #{stat.to_s.capitalize}: #{@stats[stat]}"
+      end
       print "\n"
 
       puts 'Equipment:'
-      %i[weapon shield helmet torso legs].each do |equipment| print_equipment(equipment) end
-
+      %i[weapon shield helmet torso legs].each do |equipment|
+        print "* #{equipment.to_s.capitalize}: "
+        puts @outfit[equipment] ? @outfit[equipment].name.to_s : 'none'
+      end
       print "\n"
     end
 
@@ -273,15 +276,6 @@ module Goby
     attr_reader :gold, :outfit
 
     private
-
-    def print_stat(stat)
-      puts "* #{stat.to_s.capitalize}: #{@stats[stat]}"
-    end
-
-    def print_equipment(equipment)
-      print "* #{equipment.to_s.capitalize}: "
-      puts @outfit[equipment] ? @outfit[equipment].name.to_s : 'none'
-    end
 
     # Safety function that prevents gold
     # from decreasing below 0.
