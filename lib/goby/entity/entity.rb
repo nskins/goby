@@ -39,8 +39,7 @@ module Goby
     #
     # @param [Integer] gold the amount of gold to add.
     def add_gold(gold)
-      @gold += gold
-      check_and_set_gold
+      adjust_gold_by(gold)
     end
 
     # Adds the item and the given amount to the inventory.
@@ -166,8 +165,7 @@ module Goby
     #
     # @param [Integer] gold the amount of gold to remove.
     def remove_gold(gold)
-      @gold -= gold
-      check_and_set_gold
+      adjust_gold_by(-gold)
     end
 
     # Removes the item, if it exists, and, at most, the given amount from the inventory.
@@ -276,6 +274,11 @@ module Goby
     attr_reader :gold, :outfit
 
     private
+
+    def adjust_gold_by(amount)
+      @gold += amount
+      check_and_set_gold
+    end
 
     # Safety function that prevents gold
     # from decreasing below 0.
