@@ -149,9 +149,9 @@ module Goby
     def print_status
       puts 'Stats:'
       puts "* HP: #{@stats[:hp]}/#{@stats[:max_hp]}"
-      puts "* Attack: #{@stats[:attack]}"
-      puts "* Defense: #{@stats[:defense]}"
-      puts "* Agility: #{@stats[:agility]}"
+      print_stat(:attack)
+      print_stat(:defense)
+      print_stat(:agility)
       print "\n"
 
       puts 'Equipment:'
@@ -279,6 +279,10 @@ module Goby
     attr_reader :gold, :outfit
 
     private
+
+    def print_stat(stat)
+      puts "* #{stat.to_s.capitalize}: #{@stats[stat]}"
+    end
 
     def print_equipment(equipment)
       print "* #{equipment.to_s.capitalize}: "
