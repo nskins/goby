@@ -191,22 +191,20 @@ module Goby
     # @option passed_in_stats [Integer] :agility speed of commands in battle. Set to be positive.
     def set_stats(passed_in_stats)
       @stats ||= { max_hp: 1, hp: nil, attack: 1, defense: 1, agility: 1 }
-      constructed_stats = @stats.merge(passed_in_stats)
+      stats = @stats.merge(passed_in_stats)
 
       # Set hp to max_hp if hp not specified
-      constructed_stats[:hp] ||= constructed_stats[:max_hp]
-      # hp should not be greater than max_hp
-      constructed_stats[:hp] = [constructed_stats[:hp], constructed_stats[:max_hp]].min
-      # ensure hp is at least 0
-      constructed_stats[:hp] = [constructed_stats[:hp], 0].max
+      stats[:hp] ||= stats[:max_hp]
+      # hp should not be greater than max_hp and be at least 0
+      stats[:hp] = [[stats[:hp], stats[:max_hp]].min, 0].max
       # ensure all other stats > 0
-      constructed_stats.each do |key, value|
+      stats.each do |key, value|
         if %i[max_hp attack defense agility].include?(key)
-          constructed_stats[key] = [value, 1].max
+          stats[key] = [value, 1].max
         end
       end
 
-      @stats = constructed_stats
+      @stats = stats
     end
 
     # getter for stats
