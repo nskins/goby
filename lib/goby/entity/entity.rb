@@ -149,17 +149,11 @@ module Goby
     def print_status
       puts 'Stats:'
       puts "* HP: #{@stats[:hp]}/#{@stats[:max_hp]}"
-      print_stat(:attack)
-      print_stat(:defense)
-      print_stat(:agility)
+      %i[attack defense agility].each do |stat| print_stat(stat) end
       print "\n"
 
       puts 'Equipment:'
-      print_equipment(:weapon)
-      print_equipment(:shield)
-      print_equipment(:helmet)
-      print_equipment(:torso)
-      print_equipment(:legs)
+      %i[weapon shield helmet torso legs].each do |equipment| print_equipment(equipment) end
 
       print "\n"
     end
