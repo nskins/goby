@@ -220,11 +220,8 @@ module Goby
     #
     # @param [Item, String] item the item (or its name) to unequip.
     def unequip_item(item)
-      pair = @outfit.detect { |_type, value| value.name.casecmp?(item.to_s) }
-      if pair
-        # On a successful find, the "detect" method always returns
-        # an array of length 2; thus, the following line should not fail.
-        item = pair[1]
+      item = @outfit.values.detect { |value| value.name.casecmp?(item.to_s) }
+      if item
         item.unequip(self)
         add_item(item)
       else
