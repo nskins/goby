@@ -178,8 +178,7 @@ module Goby
     #
     # @param [Integer] gold the amount of gold to set.
     def set_gold(gold)
-      @gold = gold
-      @gold = 0 if @gold.negative?
+      @gold = [gold, 0].max
     end
 
     # Sets stats
