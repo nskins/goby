@@ -168,15 +168,10 @@ module Goby
     # @param [Item] item the item being removed.
     # @param [Integer] amount the amount of the item to remove.
     def remove_item(item, amount = 1)
-      # Decrease the amount if the item already exists in the inventory.
-      @inventory.each_with_index do |couple, index|
-        next unless couple.first == item
+      couple = inventory_entry(item)
+      if couple
         couple.second -= amount
-
-        # Delete the item if the amount becomes non-positive.
-        @inventory.delete_at(index) if couple.second.nonpositive?
-
-        return
+        @inventory.delete(couple) if couple.second.nonpositive?
       end
     end
 
