@@ -194,15 +194,15 @@ module Goby
       constructed_stats = @stats.merge(passed_in_stats)
 
       # Set hp to max_hp if hp not specified
-      constructed_stats[:hp] = constructed_stats[:hp] || constructed_stats[:max_hp]
+      constructed_stats[:hp] ||= constructed_stats[:max_hp]
       # hp should not be greater than max_hp
       constructed_stats[:hp] = [constructed_stats[:hp], constructed_stats[:max_hp]].min
       # ensure hp is at least 0
-      constructed_stats[:hp] = constructed_stats[:hp] > 0 ? constructed_stats[:hp] : 0
+      constructed_stats[:hp] = [constructed_stats[:hp], 0].max
       # ensure all other stats > 0
       constructed_stats.each do |key, value|
         if %i[max_hp attack defense agility].include?(key)
-          constructed_stats[key] = value.nonpositive? ? 1 : value
+          constructed_stats[key] = [value, 1].max
         end
       end
 
