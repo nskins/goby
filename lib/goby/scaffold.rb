@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # Functions for scaffolding starter projects.

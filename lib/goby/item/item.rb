@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # Can be used by an Entity in order to trigger anything specified.

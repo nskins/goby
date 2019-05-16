@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # A 2D arrangement of Tiles. The Player can move around on it.

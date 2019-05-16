@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'goby'
 
 RSpec.describe Use do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # Functions that handle commands on the "world map."

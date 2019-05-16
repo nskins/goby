@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # Provides methods for equipping & unequipping an Item.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # Commands that are used in the battle system. At each turn,

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This is an example of how to create a Map. You can
 # define the name, where to respawn, and the 2D display of
 # the Map - each point is referred to as a Tile.

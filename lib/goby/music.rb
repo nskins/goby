@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # Methods for playing/stopping background music (BGM).

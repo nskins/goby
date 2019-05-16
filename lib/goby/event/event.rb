@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # A Player can interact with these on the Map.

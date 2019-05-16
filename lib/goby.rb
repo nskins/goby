@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Import order matters.
 
 require 'goby/scaffold'

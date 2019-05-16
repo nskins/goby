@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'set'
 
 # Provides additional methods for Array.

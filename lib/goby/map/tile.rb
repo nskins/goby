@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Goby
 
   # Describes a single location on a Map. Can have Events and Monsters.
