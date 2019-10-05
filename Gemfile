@@ -11,3 +11,6 @@ gem 'rspec-mocks'
 group :test do
   gem 'rake'
 end
+
+# Compatability for Unix systems
+gem 'rb-readline'
