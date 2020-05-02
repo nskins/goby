@@ -41,7 +41,15 @@ module Goby
       input = player_input prompt: '> '
       interpret_command(input, player)
 
-      return !input.eql?("quit")
+      continue_game?(input)
+    end
+
+    # Check to see if the user has typed quit
+    #
+    # @param [String] input the input the player of the game has typed
+    # @return [Bool] true iff the player does not want to quit
+    def continue_game?(input)
+      !input.eql?("quit")
     end
 
 end

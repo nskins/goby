@@ -7,20 +7,18 @@ module Goby
     #
     # @param [String] project the project name.
     def self.simple(project)
-
-      # TODO: detect existence of project folder.
-
       # Make the directory structure.
-      Dir.mkdir project
+      Dir.mkdir project unless Dir.exist? project
       dirs = [ '', 'battle', 'entity',
                'event', 'item', 'map' ]
       dirs.each do |dir|
-        Dir.mkdir "#{project}/src/#{dir}"
+        Dir.mkdir "#{project}/src/#{dir}" unless Dir.exist? "#{project}/src/#{dir}"
       end
 
       # Create the source files.
       gem_location = %x[gem which goby].chomp "/lib/goby.rb\n"
       files = { '.gitignore': '../gitignore',
+                'Gemfile': '../Gemfile',
                 'src/main.rb': 'main.rb',
                 'src/map/farm.rb': 'farm.rb' }
       files.each do |dest, source|

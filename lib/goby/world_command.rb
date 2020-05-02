@@ -60,10 +60,9 @@ module Goby
     # @param [Player] player the player who needs the tile description.
     def describe_tile(player)
       tile = player.location.map.tiles[player.location.coords.first][player.location.coords.second]
-      events = tile.events
 
       player.print_minimap
-      print "#{tile.description}\n\n"
+      print "#{tile.description}" if tile.description
       display_special_commands(player)
     end
 
