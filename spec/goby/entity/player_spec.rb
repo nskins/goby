@@ -23,6 +23,11 @@ RSpec.describe Player do
   let!(:chest_map) { Map.new(name: "Chest Map",
                              tiles: [[Tile.new(events: [Chest.new(gold: 5)]), Tile.new(events: [Chest.new(gold: 5)])]]) }
 
+  let!(:auto_chests_map) { Map.new(name: "Auto Chests Map",
+                                  tiles: [[Tile.new(passable: false), Tile.new(auto_event: Chest.new(gold: 5)), Tile.new(passable: false)],
+                                  [Tile.new(monsters: [Monster.new(battle_commands: [Attack.new(success_rate: 0)], gold: 5000)], auto_event: Chest.new(gold: 5)), Tile.new(auto_event: Chest.new(gold: 5, visible: false)), Tile.new],
+                                  [Tile.new(passable: false), Tile.new(monsters: [Monster.new(stats: {attack: 50, agility: 10000}, battle_commands: [Attack.new(strength: 50)], gold: 0)], auto_event: Chest.new(gold: 5)), Tile.new(passable: false)]]) }
+
   context "constructor" do
     it "has the correct default parameters" do
       player = Player.new
@@ -196,6 +201,16 @@ RSpec.describe Player do
       dude.move_right
       interpret_command("open", dude)
       expect(dude.gold).to eq 20
+    end
+
+    it "should automatically open the visible chest set to the tile's auto event" do
+      dude.move_to(Location.new(auto_chests_map, C[0, 1]))
+      expect(dude.gold).to eq 15
+    end
+
+    it "should not open the non-visible chest set to the tile's auto event" do
+      dude.move_to(Location.new(auto_chests_map, C[1, 1]))
+      expect(dude.gold).to eq 10
     end
   end
 

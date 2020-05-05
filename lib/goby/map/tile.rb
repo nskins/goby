@@ -13,13 +13,15 @@ module Goby
     # @param [Boolean] seen if true, it will be printed on the map.
     # @param [String] description a summary/message of the contents.
     # @param [[Event]] events the events found on this tile.
+    # @param [Event] auto_event the event to trigger automatically when a player moves onto the tile.
     # @param [[Monster]] monsters the monsters found on this tile.
     # @param [String] graphic the respresentation of this tile graphically.
-    def initialize(passable: true, seen: false, description: "", events: [], monsters: [], graphic: nil)
+    def initialize(passable: true, seen: false, description: "", events: [], auto_event: nil, monsters: [], graphic: nil)
       @passable = passable
       @seen = seen
       @description = description
       @events = events
+      @auto_event = auto_event
       @monsters = monsters
       @graphic = graphic.nil? ? default_graphic : graphic
     end
@@ -41,7 +43,14 @@ module Goby
       return @seen ? @graphic + " " : "  "
     end
 
-    attr_accessor :passable, :seen, :description, :events, :monsters, :graphic
+    # Runs the tile's auto_event if any exists
+    def run_auto_event(player)
+      unless auto_event.nil? || !auto_event.visible
+        auto_event.run(player)
+      end
+    end
+
+    attr_accessor :passable, :seen, :description, :events, :auto_event, :monsters, :graphic
 
     private
 
