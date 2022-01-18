@@ -4,6 +4,13 @@ Goby is a Ruby framework for creating [CLI-based](https://en.wikipedia.org/wiki/
 
 Goby will always be free and open source software. If you have any questions, please contact nskins@umich.edu.
 
+## Example Games
+
+Interested to see what you can do with Goby? Look no further!
+
+- [Ayara](https://github.com/nskins/ayara): an exploration-based RPG that takes place in a city.
+- [Ostrichland](https://github.com/gintavang/Ostrichland): the precursor to the Goby framework!
+
 ## Getting Started
 
 In order to start using Goby in your application, follow these instructions:
