@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 require 'goby'
-Goby::Scaffold::simple "goby-project"
+Goby::GobyCLI::read_cli_args ARGV # ARGV is an array of strings that hold the arguments passed into the CLI

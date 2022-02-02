@@ -1,7 +1,3 @@
-
-# Created by https://www.gitignore.io/api/ruby
-
-### Ruby ###
 *.gem
 *.rbc
 /.config
@@ -46,15 +42,12 @@ build-iPhoneSimulator/
 
 # for a library or gem, you might want to ignore these files since the code is
 # intended to run in multiple environments; otherwise, check them in:
-Gemfile.lock
-.ruby-version
-.ruby-gemset
+# Gemfile.lock
+# .ruby-version
+# .ruby-gemset
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 
-todo.txt
+# this is the save file
 player.yaml
-
-#Ignore RubyMine/IntelliJ project files
-/.idea/
