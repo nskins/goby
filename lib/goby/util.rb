@@ -112,8 +112,34 @@ module Goby
     end
   end
 
-  # Reads the ARGV
-  def read_cli_args(cli_arguments)
+  # Class for running commands based on CLI input
+  class GobyCLI
+    # Default message to be shown if user inputs no arguments in OR user inputs invalid argument
+    # (I realise the spacing is messed up on the editor but it was the only way i found to make it look good on the console output)
+      @@DEFAULT_HELP_MESSAGE =  
+    %{Usage: goby <command>
+All available goby commands:
+  init             Initialize a new goby project in the current working directory
+  --version        Show the current version of goby
+          
+For more information, visit https://github.com/nskins/goby}
+
+    # Reads the ARGV and runs the given commands
+    # @param String[] (Array of strings)
+    def self.read_cli_args(cli_arguments)
+      user_input = cli_arguments[0] # Gets first arg. Eg: "goby init" would set USER_INPUT to "init"
+      goby_ver = Gem.loaded_specs["goby"].version
+
+      case user_input
+        when "init"
+          puts "Executing init command..."
+        when "--version", "--ver", "--v"
+          puts "Using goby v#{goby_ver}"
+        else
+          puts @@DEFAULT_HELP_MESSAGE
+      end
+
+    end
   end
 
 end
