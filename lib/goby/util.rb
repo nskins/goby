@@ -112,4 +112,8 @@ module Goby
     end
   end
 
+  # Reads the ARGV
+  def read_cli_args(cli_arguments)
+  end
+
 end
