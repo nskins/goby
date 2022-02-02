@@ -119,8 +119,8 @@ module Goby
       @@DEFAULT_HELP_MESSAGE =  
     %{Usage: goby <command>
 All available goby commands:
-  init             Initialize a new goby project in the current working directory
-  --version        Show the current version of goby
+  init                 Initialize a new goby project in the current working directory
+  --version            Show the current version of goby
           
 For more information, visit https://github.com/nskins/goby}
 
@@ -128,17 +128,16 @@ For more information, visit https://github.com/nskins/goby}
     # @param String[] (Array of strings)
     def self.read_cli_args(cli_arguments)
       user_input = cli_arguments[0] # Gets first arg. Eg: "goby init" would set USER_INPUT to "init"
-      goby_ver = Gem.loaded_specs["goby"].version
+      goby_ver = Gem.loaded_specs["goby"].version # Gets the goby version stated in the gemspec
 
       case user_input
         when "init"
-          puts "Executing init command..."
+          Goby::Scaffold::simple
         when "--version", "--ver", "--v"
           puts "goby v#{goby_ver}"
         else
           puts @@DEFAULT_HELP_MESSAGE
       end
-
     end
   end
 
