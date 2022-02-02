@@ -134,7 +134,7 @@ For more information, visit https://github.com/nskins/goby}
         when "init"
           puts "Executing init command..."
         when "--version", "--ver", "--v"
-          puts "Using goby v#{goby_ver}"
+          puts "goby v#{goby_ver}"
         else
           puts @@DEFAULT_HELP_MESSAGE
       end
